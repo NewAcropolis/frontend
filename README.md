@@ -4,7 +4,7 @@
 
 Before starting, ensure you are using python 2.7 and that you have (gcloud sdk)[https://cloud.google.com/sdk/docs/] and follow the instructions to install it.
 
-Then install google app engine 
+Then install google app engine
 
 `gcloud components install app-engine-python`
 
@@ -13,6 +13,10 @@ To get the frontend running you may need to update the `PYTHONPATH` to pick up t
 ```
 export PYTHONPATH="$PYTHONPATH:<location of google-cloud-sdk>/platform/google_appengine:<location of google-cloud-sdk>/platform/google_appengine/lib/:<location of google-cloud-sdk>/platform/google_appengine/lib/yaml/"
 ```
+
+## Install requirements
+
+run `pip install -r requirements.txt`
 
 ## Using Makefile
 
@@ -40,3 +44,7 @@ To update a secret you will need to log into the datastore and edit the value th
 Then run `make deploy`, this will add the env vars to the datastore.
 
 Pushing changes to the github repo will trigger an automatic deployment onto app engine.
+
+## Viewing the frontend
+
+Run `make dev-server` and visit `http://localhost:8080/`
