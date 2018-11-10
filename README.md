@@ -14,9 +14,13 @@ To get the frontend running you may need to update the `PYTHONPATH` to pick up t
 export PYTHONPATH="$PYTHONPATH:<location of google-cloud-sdk>/platform/google_appengine:<location of google-cloud-sdk>/platform/google_appengine/lib/:<location of google-cloud-sdk>/platform/google_appengine/lib/yaml/"
 ```
 
-## Install requirements
+## Create virtualenv
 
-run `pip install -r requirements.txt`
+A Virtual Environment is an isolated working copy of Python which
+allows you to work on a specific project without worry of affecting other projects
+
+Follow this guide to set up your virtualenv for this project;
+https://virtualenvwrapper.readthedocs.io/en/latest/
 
 ## Using Makefile
 
@@ -47,4 +51,4 @@ Pushing changes to the github repo will trigger an automatic deployment onto app
 
 ## Viewing the frontend
 
-Run `make dev-server` and visit `http://localhost:8080/`
+Run `make dev-server` and visit `http://localhost:8080
