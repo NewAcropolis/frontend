@@ -55,16 +55,12 @@ figure {
 /*
 Extra small (xs) devices (portrait phones, less than 576px)
 No media query since this is the default in Bootstrap
-
 Small (sm) devices (landscape phones, 576px and up)
 @media (min-width: 576px) { ... }
-
 Medium (md) devices (tablets, 768px and up)
 @media (min-width: 768px) { ... }
-
 Large (lg) devices (desktops, 992px and up)
 @media (min-width: 992px) { ... }
-
 Extra (xl) large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) { ... }
 */
@@ -173,28 +169,23 @@ footer{
   height: 450px;
   width: 100%;
 }
-.carousel_info_rect {
-  background-color: rgba(49,47,47,1.0);
+
+.carousel_info_text {
+  background-color: rgba(255,255,255,0.0);
+  color:white;
+  padding: 0 0.5% 0 0.5%;
+  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-size: 3.7vw;
+  background-color: rgb(169,169,169);
   border-style: solid;
   border-width: 1px;
   border-color: rgba(150,150,150,1.0);
-  opacity: .3;
   position:absolute;
-  height:90px;
-  width:100%;
+  height:auto;
+  width: 100%;
   top:300px;
 }
-.carousel_info_text {
-  background-color: rgba(255,255,255,0.0);
-  position:absolute;
-  top:315px;
-  margin-left:20px;
-  text-align: center;
-  color:white;
-  width: auto;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
-  font-size: 2.8vw;
-}
+
 .carousel_info_text a {
   color:white;
   text-decoration: none;
