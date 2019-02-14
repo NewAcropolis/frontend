@@ -35,11 +35,11 @@ class WhenAccessingHomePage(object):
 
         assert content == intro_course['title']
 
-    @pytest.mark.parametrize('div_class', ['.nav', '.footer_nav'])
+    @pytest.mark.parametrize('div_class', ['.navbar', '.footnav'])
     def it_shows_list_of_available_pages_on_header_and_footer(
         self, client, sample_future_events, sample_articles_summary, div_class
     ):
-        expected_link_text = ['E-shop', 'Resources', 'Whats on', 'What we offer', 'About']
+        expected_link_text = ['About', 'What we offer', 'Whats on', 'Resources', 'E-shop']
         response = client.get(url_for(
             'main.index'
         ))

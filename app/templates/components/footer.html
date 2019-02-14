@@ -1,8 +1,8 @@
 <footer>
-  <div class="container-fluid padding">
-    <div class="row">
-      <div class="col-md-4">
-        <p>NEW ACROPOLIS UK</p>
+  <div class="text-center text-md-left">
+    <div class="row text-center text-md-left">
+      <div class="col-md-4 col-lg-4 col-xl-4">
+        <h6 class="text-uppercase mb-4 font-weight-bold">NEW ACROPOLIS UK</h6>
         <p id="yellow_txt">Address:</p>
         <p>19 Compton Terrace,</p>
         <p>London, N1 2UN</p>
@@ -19,43 +19,29 @@
           <a class="footer_icons"><img src='/static/images/youtube.png'></a>
         </div>
       </div>
-      <div class="col-md-3 text-center">
-        <div>
-          <img src="/static/images/home-image-magazine.png" class="footer_magazine"><br><br>
-          <div class="magazine_form_padding">
-            <form>
-              <input class="subscribe" type="text" id="femail" name="femail" placeholder="subscribe to our magazine">
-            </form>
-          </div>
-        </div>
+
+      <hr class="w-100 clearfix d-md-none">
+      <div class="text-center col-md-4 col-lg-4 col-xl-3">
+        <img src="/static/images/home-image-magazine.png" class="footer_magazine"><br><br><br><br>
+        <form>
+          <input class="subscribe" type="text" id="femail" name="femail" placeholder="subscribe to our magazine">
+        </form>
       </div>
-      <div class="col-md-5">
-        <div class="footer_side_text"><br><br>
-          <p>FAQ page</p>
-          <p>Privacy Policy</p>
-          <p>Reg. Charity No. 1110140</p>
-          <p id="yellow_txt">NEW ACROPOLIS International</p>
-        </div>
-        <div class="footer_nav">
-          <div class="nav">
-            <ul>
-              <li {%- if current_page == "e-shop" %} class="nav_active active" id="yellow_txt"{% endif %}>
-                  <a id="yellow_txt" href="/e-shop">E-shop</a>
-              </li>
-              <li {%- if current_page == "resources" %} class="nav_active active"{% endif %}>
-                  <a href="/resources">Resources</a>
-              </li>
-              <li {%- if current_page == "whats-on" %} class="nav_active active"{% endif %}>
-                  <a href="/whats-on">Whats on</a>
-              </li>
-              <li {%- if current_page == "what-we-offer" %} class="nav_active active"{% endif %}>
-                  <a href="/what-we-offer">What we offer</a>
-              </li>
-              <li {%- if current_page == "/" %} class="nav_active active"{% endif %}>
-                  <a href="/">About</a>
-              </li>
-            </ul>
-          </div>
+
+      <hr class="w-100 clearfix d-md-none">
+      <div class="col-md-4 col-lg-4 col-xl-5">
+        <div class="empty_space d-none d-md-block"></div>
+        <p class="text-xs-center text-lg-right text-md-right">FAQ page</p><br>
+        <p class="text-xs-center text-lg-right text-md-right">Privacy Policy</p><br>
+        <p class="text-xs-center text-lg-right text-md-right">Reg. Charity No. 1110140</p><br>
+        <p class="text-xs-center text-lg-right text-md-right" id="yellow_txt">NEW ACROPOLIS International</p>
+        <div class="empty_space d-none d-md-block"></div>
+        <div class="footnav">
+          <a href="/" {%- if current_page == "" %} class="active"{% endif %}>About</a>
+          <a href="/what-we-offer" {%- if current_page == "what-we-offer" %} class="active"{% endif %}>What we offer</a>
+          <a href="/whats-on" {%- if current_page == "whats-on" %} class="active"{% endif %}>Whats on</a>
+          <a href="/resources" {%- if current_page == "resources" %} class="active"{% endif %}>Resources</a>
+          <a href="/e-shop" id="yellow_txt" {%- if current_page == "e-shop" %} class="active" {% endif %}>E-shop</a>
         </div>
       </div>
     </div>

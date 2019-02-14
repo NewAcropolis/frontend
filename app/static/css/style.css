@@ -11,7 +11,7 @@
 
 }
 /*---Firefox Bug Fix --*/
-.ousel-item {
+.carousel-item {
   transition: -webkit-transform 0.5s ease;
   transition: transform 0.5s ease;
   transition: transform 0.5s ease, -webkit-transform 0.5s ease;
@@ -95,37 +95,43 @@ html, body {
 footer{
   background-color: rgba(12,102,82,1.0);
   color: white;
-  padding: 2%;
+  padding: 2% 4% 2% 4%;
   font-size: 0.8em;
   line-height: 5px;
   border-top: solid 19px rgba(247,231,27,1.0);
   font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
 }
 .footer_icons{
-  padding: 1% 5% 1% 0%;
+  padding: 3%;
 }
-.nav li a:active {
-  color: white !important;
+.empty_space{
+  padding: 8%
 }
-.nav li a:hover {
-  color: white !important;
-}
-.nav {
-  width: 100%;
-}
-.nav ul {
-  list-style-type: none;
+.footnav {
+  position: relative;
   overflow: hidden;
-}
-.nav li {
-  float: right;
-  display: inline-block;
-  margin-right: 35px;
-}
-.nav li a {
-  color: rgb(220,220,220);
+  border-top: white solid 1px;
   text-decoration: none;
-  line-height: 20px;
+  font-size: 1.2em;
+}
+.footnav a {
+  float: left;
+  color: rgb(211,211,211);
+  text-align: center;
+  padding: 18px 20px;
+  text-decoration: none;
+}
+.footnav a:hover {
+  color: white;
+}
+.footnav a.active {
+  color: white;
+}
+@media screen and (max-width: 900px) {
+  .footnav a {
+    float: none;
+    display: block;
+  }
 }
 #yellow_txt {
   color: rgba(247,231,27,1.0);
@@ -133,19 +139,12 @@ footer{
 #purple_txt {
   color: rgba(247,231,27,1.0);
 }
-.footer_nav {
-  border-top: white solid 1px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  padding-top: 2%;
-}
 .footer_magazine{
   height: 215px;
   width: 160px;
 }
 .subscribe{
-  width: 100%;
+  width: 60%;
   background-color: rgba(215,215,215,1.0);
   height: 30px;
   border-radius: 4px;
@@ -155,11 +154,6 @@ footer{
   opacity: .63;
   text-align: center;
   margin: 0 auto;
-}
-.footer_side_text {
-  float: right;
-  padding-bottom: 10%;
-  line-height: 15px;
 }
 
 /* HOME top->bottom */
