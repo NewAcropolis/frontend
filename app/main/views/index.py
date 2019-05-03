@@ -11,7 +11,7 @@ def index():
     for event in events:
         if event['event_type'] == 'Introductory Course':
             event['carousel_text'] = 'Courses starting {}'.format(event['event_monthyear'])
-
+    past_events = api_client.get_events_past_year()
     articles = api_client.get_articles_summary()
     index = randint(0, len(articles) - 1)
     subscription_form = SubscriptionForm()
@@ -27,7 +27,8 @@ def index():
         events=events,
         current_page='',
         subscription_form=subscription_form,
-        email=subscription_form.email.data
+        email=subscription_form.email.data,
+        past_events=past_events
     )
 
 @main.route('/about')

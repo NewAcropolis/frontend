@@ -139,6 +139,21 @@
     {% endif %}
   </div>
 
+  {% for i in events %}
+    {% if events|length < 3 %}
+    <div class="col-md-4 col-sm-6">
+      <div class="card cardmulti bg-light">
+        <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ events[0].image_filename }}">
+        <div class="card-body">
+          <h4 class="card-title" id="blue_txt">{{ events[loop.index0].event_type if events[loop.index0] else past_events[loop.index0].event_type }}</h4>
+          <p class="card-text cardtextmulti">{{ events[loop.index0].event_dates[0].event_datetime if events[loop.index0] else past_events[loop.index0].event_dates[0].event_datetime }}</p>
+          <p class="card-text cardtextmulti dark_grey_txt">{{ events[loop.index0].title if events[loop.index0] else past_events[loop.index0].title }}</p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  {% endfor %}
+
   <div class="cream_backgroundcolour">
     <div class="container-fluid padding">
       <div class="row welcome text-center">
