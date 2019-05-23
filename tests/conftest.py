@@ -144,6 +144,42 @@ def sample_future_events(mocker):
 
 
 @pytest.fixture
+def sample_past_events(mocker):
+    events = [
+        {
+            "title": "Test title 5",
+            "event_type": "Talk",
+            "image_filename": "event.png",
+            "event_dates": [{
+                "event_datetime": "2018-12-30 19:00"
+            }]
+        },
+        {
+            "title": "Test title 6",
+            "event_type": "Talk",
+            "image_filename": "event.png",
+            "event_dates": [{
+                "event_datetime": "2018-12-31 19:00"
+            }]
+        },
+        {
+            "title": "Test title 7",
+            "event_type": "Workshop",
+            "image_filename": "",
+            "event_dates": [{
+                "event_datetime": "2018-01-02 19:00"
+            }],
+        }
+    ]
+
+    mocker.patch(
+        "app.clients.api_client.ApiClient.get_events_past_year",
+        return_value=events
+    )
+    return events
+
+
+@pytest.fixture
 def sample_articles_summary(mocker):
     articles = [
         {

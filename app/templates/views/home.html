@@ -97,63 +97,42 @@
         </div>
       </div>
     </div>
-    {% if events|length > 0 %}
     <div class="container-fluid padding text-center">
       <div class="row padding">
-        <div class="col-md-4 col-sm-6">
-          <div class="card cardmulti bg-light">
-            <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ events[0].image_filename }}">
-            <div class="card-body">
-              <h4 class="card-title" id="blue_txt">{{ events[0].event_type }}</h4>
-              <p class="card-text cardtextmulti">{{ events[0].event_dates[0].event_datetime }}</p>
-              <p class="card-text cardtextmulti dark_grey_txt">{{ events[0].title }}</p>
+        {% for event in events %}
+          {% if loop.index0 <= 2 %} 
+          <div class="col-md-4 col-sm-6">
+              <div class="card cardmulti bg-light">
+                <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ event[loop.index0].image_filename }}">
+                <div class="card-body">
+                  <h4 class="card-title" id="blue_txt">{{ event[loop.index0].event_type }}</h4>
+                  <p class="card-text cardtextmulti">{{ event[loop.index0].event_dates[0].event_datetime }}</p>
+                  <p class="card-text cardtextmulti dark_grey_txt">{{ event[loop.index0].title }}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        {% if events|length > 1 %}
-        <div class="col-md-4 col-sm-6">
-          <div class="card cardmulti bg-light">
-            <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ events[1].image_filename }}">
-            <div class="card-body">
-              <h4 class="card-title" id="blue_txt">{{ events[1].event_type }}</h4>
-              <p class="card-text cardtextmulti">{{ events[1].event_dates[0].event_datetime }}</p>
-              <p class="card-text cardtextmulti dark_grey_txt">{{ events[1].title }}</p>
-            </div>
-          </div>
-        </div>
-        {% endif %}
-        {% if events|length > 2 %}
-        <div class="col-md-4 col-sm-6">
-          <div class="card cardmulti bg-light">
-            <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ events[2].image_filename }}">
-            <div class="card-body">
-              <h4 class="card-title" id="blue_txt">{{ events[2].event_type }}</h4>
-              <p class="card-text cardtextmulti">{{ events[2].event_dates[0].event_datetime }}</p>
-              <p class="card-text cardtextmulti dark_grey_txt">{{ events[2].title }}</p>
-            </div>
-          </div>
-        </div>
-        {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {% for past_event in past_events %}
+          {% if loop.index0 <= 2 %} 
+            <div class="col-md-4 col-sm-6">
+                <div class="card cardmulti bg-light">
+                    <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ past_events[loop.index0].image_filename }}">
+
+                  <div class="card-body">
+                    <h4 class="card-title" id="blue_txt">{{ past_event.event_type }}</h4>
+                    <p class="card-text cardtextmulti">{{ past_event.event_dates[0].event_datetime }}</p>
+                    <p class="card-text cardtextmulti dark_grey_txt">{{ past_event.title }}</p>
+                  </div>
+                </div>
+              </div>
+          {% endif %}
+        {% endfor %}
       </div>
     </div>
-    {% endif %}
   </div>
-
-  {% for i in events %}
-    {% if events|length < 3 %}
-    <div class="col-md-4 col-sm-6">
-      <div class="card cardmulti bg-light">
-        <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ events[0].image_filename }}">
-        <div class="card-body">
-          <h4 class="card-title" id="blue_txt">{{ events[loop.index0].event_type if events[loop.index0] else past_events[loop.index0].event_type }}</h4>
-          <p class="card-text cardtextmulti">{{ events[loop.index0].event_dates[0].event_datetime if events[loop.index0] else past_events[loop.index0].event_dates[0].event_datetime }}</p>
-          <p class="card-text cardtextmulti dark_grey_txt">{{ events[loop.index0].title if events[loop.index0] else past_events[loop.index0].title }}</p>
-        </div>
-      </div>
-    </div>
-    {% endif %}
-  {% endfor %}
-
+  
   <div class="cream_backgroundcolour">
     <div class="container-fluid padding">
       <div class="row welcome text-center">
