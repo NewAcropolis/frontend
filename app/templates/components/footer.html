@@ -12,6 +12,47 @@
         <p>Highbury & Islington,</p>
         <p>Victoria Line</p><br>
         <p id="yellow_txt">SEND US A MESSAGE</p>
+        
+
+                <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+          Launch demo modal
+        </button>
+        
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  {% if contact_form %}
+                  <form action="/" method=post>
+                    {{ contact_form.csrf_token }}
+                    <div class=form-group>
+                      {{ contact_form.name(value=name) }}
+                    </div>
+                    {% for error in contact_form.name.errors %}
+                    <li class="error_text">{{ error }}
+                    {% endfor %}
+                    {% if error %}
+                      <li class="error_text">Failed to process email, please try again later</li>
+                    {% endif %}
+                    <button type="submit" class="btn btn-outline-success">Subscribe</button>
+                  </form>
+                {% endif %}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div>
           <a href="#email" class="footer_icon_padding"><img class="footer_icons" src='/static/images/email.png'></a>
           <a href="https://www.instagram.com/newacropolisuk/" class="footer_icon_padding"><img class="footer_icons" src='/static/images/instagram.png'></a>
@@ -34,7 +75,6 @@
                   <input class="submit_button" type="submit" value="Submit">
               </form>
             {% endif %}
-            
           </div>
         </div>
       </div>

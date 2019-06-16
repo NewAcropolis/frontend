@@ -141,3 +141,9 @@ class ApiClient(BaseAPIClient):
             'email': email
         }
         return self.post(url='subscription', data=data)
+
+    def add_contact_info(self, name):
+        data = {
+            'name': name
+        }
+        return self.post(url='index', data=data)

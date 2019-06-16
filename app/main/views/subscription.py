@@ -23,5 +23,5 @@ def subscription():
     return render_template(
         'views/subscription.html',
         subscription_form=subscription_form,
-        email=request.args['email']
+        email=request.args['email'],
     )
