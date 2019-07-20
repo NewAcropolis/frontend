@@ -142,8 +142,10 @@ class ApiClient(BaseAPIClient):
         }
         return self.post(url='subscription', data=data)
 
-    def add_contact_info(self, name):
+    def add_contact_details(self, name):
         data = {
             'name': name
         }
-        return self.post(url='index', data=data)
+        #return self.post(url='index', data=data)
+        # return {'message': 'Your message was sent'}
+        return {'error': 'Your message was not sent'}

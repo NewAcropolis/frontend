@@ -369,7 +369,8 @@ footer{
 }
 
 .modal,.modal-open {
-    padding-right: 0!important
+    padding-right: 0!important;
+    color: black;
 }
 .modal-open {
     overflow: auto
@@ -377,7 +378,7 @@ footer{
 .scrollable {
     overflow-y: auto
 }
-.modal-footer {
+.modal-footer-magazine {
 	display: flex;
   justify-content: flex-start;
   height: 30px;
@@ -386,7 +387,7 @@ footer{
   max-height: 310px;
   max-width: 220px;
 }
-.modal-dialog{
+.modal-dialog-magazine{
   position: relative;
   display: table;
   overflow-y: auto;    
@@ -395,26 +396,26 @@ footer{
   min-height: 760px;
 }
 @media screen and (max-width: 1100px) {
-  .modal-body {
+  .modal-body-magazine {
     max-width: 350px;
     max-height: 660px;
   }
-  .modal-dialog {
+  .modal-dialog-magazine {
     min-width: 350px;
     min-height: 660px;
   }
 }
 @media screen and (max-width: 800px) {
-  .modal-body {
+  .modal-body-magazine {
     max-width: 250px;
     max-height: 560px;
   }
-  .modal-dialog {
+  .modal-dialog-magazine {
     min-width: 250px;
     min-height: 560px;
   }
 }
-.modal-content{
+.modal-content-magazine{
   max-width: 450px;
   max-height: 760px;
 }
