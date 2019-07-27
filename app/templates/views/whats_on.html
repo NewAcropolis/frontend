@@ -1,8 +1,85 @@
 {% extends "base.html" %}
-{% block title %}Whats on{% endblock %}
-
+{% block title %}What's on{% endblock %}
 {% block content %}
 
-<h1> Whats on <h1>
+  <div class="container-fluid padding">
+    <div class="row text-center">
+      <img src="/static/images/whatson_banner.png" class="courses_header_img">
+    </div>
+  </div>
 
+  <div class="container-fluid padding">
+    <div class="row welcome text-center">
+      <div class="col-12">
+        <h1 class="display-4"> UPCOMING COURSES AND EVENTS </h1>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid padding blue_background">
+    <div class="row padding courses_fee_section_padding">
+      <div class="col-12 text-center">
+        <h1 class="display-4 text-white"> LATEST MAGAZINE ARTICLES </h1>
+      </div>
+      <div class="card mb-3">
+        <div class="row no-gutters">
+          <div class="col-lg-4 col-md-5 col-sml-12 featured_remove_padding_img">
+            <img src="/static/images/featuredblock.png" class="card-img overflow_img">
+          </div>
+          <div class="col-lg-8 col-md-7 col-sm-12">
+            <div class="card-body" id="main_article">
+              <h2 class="dark_grey_txt">{{ main_article.title }}</h2>
+              <p class="light_text">{{ main_article.short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card cardmulti bg-light">
+          <img class="card-img-top cardimgtopmulti" src="/static/images/featured1.png">
+          <div class="card-body">
+            <h4 id="article_1" class="card-title dark_grey_txt">{{ articles[0].title }}</h4>
+            <p class="card-text cardtextmulti">{{ articles[0].very_short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card cardmulti bg-light">
+          <img class="card-img-top cardimgtopmulti" src="/static/images/featured2.png">
+          <div class="card-body">
+            <h4 id="article_2" class="card-title dark_grey_txt">{{ articles[1].title }}</h4>
+            <p class="card-text cardtextmulti">{{ articles[1].very_short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card cardmulti bg-light">
+          <img class="card-img-top cardimgtopmulti" src="/static/images/featured3.png">
+          <div class="card-body">
+            <h4 id="article_3" class="card-title dark_grey_txt">{{ articles[2].title }}</h4>
+            <p class="card-text cardtextmulti">{{ articles[2].very_short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card cardmulti bg-light">
+          <img class="card-img-top cardimgtopmulti" src="/static/images/featured4.png">
+          <div class="card-body">
+            <h4 id="article_4" class="card-title dark_grey_txt">{{ articles[3].title }}</h4>
+            <p class="card-text cardtextmulti">{{ articles[3].very_short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid padding cream_backgroundcolour">
+    <div class="row welcome text-center">
+      <div class="col-12">
+        <h1 class="display-4"> RECENT COURSES AND EVENTS </h1>
+      </div>
+    </div>
+  </div>
+
+  
 {% endblock %}

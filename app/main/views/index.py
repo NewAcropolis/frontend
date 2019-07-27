@@ -63,9 +63,13 @@ def resources(**kwargs):
 @main.route('/whats-on')
 @setup_subscription_form
 def whats_on(**kwargs):
+    articles = api_client.get_articles_summary()
+    index = randint(0, len(articles) - 1)
     return render_template(
         'views/whats_on.html',
         current_page='whats-on',
+        main_article=articles[index],
+        articles=articles,
         **kwargs
     )
 
