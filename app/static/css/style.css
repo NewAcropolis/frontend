@@ -557,7 +557,6 @@ footer{
   padding: 4%;
 }
 
-
 .about_hotspot {
   position: relative;
   display: inline-block;
@@ -633,4 +632,54 @@ footer{
   color:grey;
 }
 
+
+/* EVENT */
+.giant_past_event {
+  object-fit: cover;
+  height: 550px;
+  width: 100%;
+}
+.giant_past_corner {
+  width: 0;
+  height: 0;
+  border-top: 150px solid rgb(105,152,219);
+  border-bottom: 150px solid transparent;
+  border-left: 150px solid transparent;
+  position:absolute;
+  right:0;
+}
+.giant_past_corner span {
+  position:absolute;
+  top: -125px;
+  width: 60px;
+  left: -70px;
+  text-align: center;
+  font-size: 18px;
+  transform: rotate(45deg);
+  display:block;
+  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  color: white;
+}
+.giant_past_card_padding{
+  padding: 0 !important;
+}
+.giant_past_card_text_padding {
+  padding: 2rem;
+}
+.giant_past_content {
+  position: absolute;
+  bottom: 100px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #f1f1f1;
+  width: 100%;
+  padding: 20px;
+}
+.giant_past_container {
+  position: relative;
+}
+.find_out_more_link{
+  text-decoration: none;
+  color: white;
+  font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
+}
 

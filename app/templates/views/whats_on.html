@@ -16,6 +16,24 @@
     </div>
   </div>
 
+  <div class="container-fluid padding text-center">
+    <div class="row padding">
+      {% for event in future_events %}
+        {{ count }}{% set count = loop.index0 %}
+        <div class="col-md-4 col-sm-6">
+          <div class="card cardmulti bg-light">
+            <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ future_events[count].image_filename }}">
+              <div class="card-body">
+                <h4 class="card-title" id="blue_txt">{{ future_events[count].event_type }}</h4>
+                <p class="card-text cardtextmulti">{{ future_events[count].event_dates[0].event_datetime }}</p>
+                <p class="card-text cardtextmulti dark_grey_txt">{{ future_events[count].title }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
   <div class="container-fluid padding blue_background">
     <div class="row padding courses_fee_section_padding">
       <div class="col-12 text-center">
@@ -81,5 +99,40 @@
     </div>
   </div>
 
+  <div class="container-fluid padding cream_backgroundcolour giant_past_container">
+    <div class="row text-center box">
+      <img src="{{ images_url }}{{ past_events[0].image_filename }}" class="giant_past_event">
+      <div class="giant_past_corner"><span>Past Event</span></div>
+      <div class="giant_past_card_text_padding"></div>
+      <div class="giant_past_content">
+        <h1>{{ past_events[0].title }}</h1>
+        <h2 class="">{{ past_events[0].event_type }} : {{ past_events[0].event_dates[0].event_datetime }}</h2>
+        <p><a class="find_out_more_link" href=''>FIND OUT MORE</a><p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid padding cream_backgroundcolour">
+    <div class="container-fluid padding text-center">
+      <div class="row padding">
+        {% for event in past_events %}
+          {{ count }}{% set count = loop.index0 %}
+          <div class="col-md-4 col-sm-6">
+            <div class="card cardmulti bg-light">
+              <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ past_events[count].image_filename }}">
+                <div class="card-body past_card_padding cream_backgroundcolour">
+                  <div class="past_corner"><span>Past Event</span></div>
+                  <div class="past_card_text_padding">
+                  <h4 class="card-title" id="blue_txt">{{ past_events[count].event_type }}</h4>
+                  <p class="card-text cardtextmulti">{{ past_events[count].event_dates[0].event_datetime }}</p>
+                  <p class="card-text cardtextmulti dark_grey_txt">{{ past_events[count].title }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
   
 {% endblock %}

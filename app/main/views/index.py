@@ -63,13 +63,26 @@ def resources(**kwargs):
 @main.route('/whats-on')
 @setup_subscription_form
 def whats_on(**kwargs):
+    images_url=current_app.config['IMAGES_URL'],
     articles = api_client.get_articles_summary()
     index = randint(0, len(articles) - 1)
+
+    future_events = api_client.get_events_in_future(approved_only=True)
+    past_events = []
+    if len(past_events) < 3:
+        all_past_events = api_client.get_events_past_year()
+        while len(past_events) < 3:
+            event = all_past_events.pop(-1)
+            past_events.append(event)
+
     return render_template(
         'views/whats_on.html',
+        images_url=current_app.config['IMAGES_URL'],
         current_page='whats-on',
         main_article=articles[index],
         articles=articles,
+        future_events=future_events,
+        past_events=past_events,
         **kwargs
     )
 
