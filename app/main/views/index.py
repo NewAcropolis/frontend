@@ -63,7 +63,6 @@ def resources(**kwargs):
 @main.route('/whats-on')
 @setup_subscription_form
 def whats_on(**kwargs):
-    images_url=current_app.config['IMAGES_URL'],
     articles = api_client.get_articles_summary()
     index = randint(0, len(articles) - 1)
 

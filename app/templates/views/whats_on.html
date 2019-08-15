@@ -20,7 +20,7 @@
     <div class="row padding">
       {% for event in future_events %}
         {{ count }}{% set count = loop.index0 %}
-        <div class="col-md-4 col-sm-6">
+        <div class="col-md-4 col-sm-6" id="future_event">
           <div class="card cardmulti bg-light">
             <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ future_events[count].image_filename }}">
               <div class="card-body">
