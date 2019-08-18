@@ -1,8 +1,9 @@
-from flask import current_app, render_template
+from flask import current_app, render_template, request
 from random import randint
 from app.main import main
 from app import api_client
 from app.main.decorators import setup_subscription_form
+from six.moves.html_parser import HTMLParser
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -104,3 +105,34 @@ def course_details(**kwargs):
         'views/course_details.html',
         **kwargs
     )
+
+
+@main.route('/event_details')
+@setup_subscription_form
+def event_details(**kwargs):
+    events = api_client.get_events_in_future(approved_only=True)
+    event_details = request.args.get('event_details')
+    future_events = api_client.get_events_in_future(approved_only=True)
+    past_events = api_client.get_events_past_year()
+    all_events = future_events + past_events
+    displayed_event = []
+    for event in all_events:
+        if event_details == event['title']:
+            displayed_event = event
+
+    return render_template(
+        'views/event_details.html',
+        images_url=current_app.config['IMAGES_URL'],
+        displayed_event=displayed_event,
+        events=_unescape_html(events, 'description'),
+        paypal_account=current_app.config['PAYPAL_ACCOUNT'],
+        **kwargs
+    )
+
+
+def _unescape_html(items, field_name):
+    h = HTMLParser()
+    for item in items:
+        item[field_name] = h.unescape(item[field_name])
+
+    return items

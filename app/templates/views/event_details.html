@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Event details{% endblock %}
+{% block content %}
+  <div class="container-fluid padding cream_backgroundcolour">
+    <div class="row topic_details_section">
+      <div class="col-xs-12 col-sm-12 col-md-6 ">
+        <div class="course_details_text">
+          <h2 class="event_blue">{{ displayed_event.event_type }} : {{ displayed_event.event_dates[-1].event_datetime }}</h2>
+          <h2 class="event_title">{{ displayed_event.title }}</h2><br>
+          <p>{{ displayed_event.description }}</p>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-6 ">
+        <img src="{{ images_url }}{{ displayed_event.image_filename }}" class="img-fluid event_details_img">
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid padding cream_backgroundcolour">
+    <div class="row event_details_paypal_section">
+      <div class="col-xs-12 col-sm-12 col-md-6">
+        <h2 class="event_blue">BUY YOUR TICKETS NOW</h2>
+        <p class="important">
+          {% if paypal_account %}
+            <div class="pt-3">
+              <form id="paypalForm{{ displayed_event.id }}" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                <input type="hidden" name="cmd" value="_s-xclick">
+                <input type="hidden" name="fee" value="{{ displayed_event.fee }}">
+                <input type="hidden" name="concfee" value="{{ displayed_event.conc_fee }}">
+                <input type="hidden" name="m_fee" value="{{ displayed_event.multi_day_fee }}">
+                <input type="hidden" name="m_concfee" value="{{ displayed_event.multi_day_conc_fee }}">
+                <input type="hidden" name="hosted_button_id" value="{{ displayed_event.booking_code }}">
+                <table>
+                  <input type="hidden" name="on0" value="Type">
+                  <tr>
+                    <td>
+                      <select id='PayType{{ displayed_event.id }}' name="os0" onchange='getDetails(312)'>
+                          <option value="Full">Full &pound;{{ displayed_event.fee }} GBP</option>
+                          <option value="Concession">Concession &pound;{{ displayed_event.conc_fee }} GBP</option>
+                      </select> 
+                    </td>
+                  </tr>     
+                </table>
+                <br>
+                <input type="hidden" name="currency_code" value="GBP">
+                <input 
+                    type="image"
+                    src="https://www.sandbox.paypal.com/en_GB/i/btn/btn_cart_SM.gif"
+                    border="0"
+                    name="submit"
+                    alt="PayPal � The safer, easier way to pay online."
+                    {% if not displayed_event.booking_code %}
+                        onclick="return false;"
+                    {% endif %}
+                >
+                <img alt="" border="0" src="https://www.sandbox.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+              </form>
+              <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" style='margin-top:5px;'>
+                  <input type="hidden" name="cmd" value="_cart">
+                  <input type="hidden" name="business" value="{{ paypal_account }}">
+                  <input type="hidden" name="display" value="1">
+                  <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_viewcart_SM.gif" border="0" name="submit" alt="PayPal � The safer, easier way to pay online.">
+                  <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+              </form>
+            </div>
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+{% endblock %}
