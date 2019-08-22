@@ -4,15 +4,23 @@ python:
 before_install:
 - openssl aes-256-cbc -K $encrypted_096f46e6f614_key -iv $encrypted_096f46e6f614_iv
   -in client-secret.json.enc -out client-secret.json -d
-# install:
-# - pip install -r requirements.txt -t lib/
+before_deploy:
+- echo $FE_CLIENT_SECRET_live | base64 --decode > fe-client-secret.json
 script:
 - ./scripts/bootstrap.sh
 - make test
 deploy:
-  provider: gae
-  skip_cleanup: true
-  keyfile: client-secret.json
-  project: eng-flux-176109
-  default: true
-  on: master
+  # - provider: gae
+  #   skip_cleanup: true
+  #   keyfile: client-secret.json
+  #   project: eng-flux-176109
+  #   default: true
+  #   on:
+  #     branch: master
+  - provider: gae
+    skip_cleanup: true
+    keyfile: fe-client-secret.json
+    project: newacropolis-uk-web
+    default: true
+    on:
+      tags: true
