@@ -103,7 +103,7 @@
 
 
         {% for event in all_events %}
-          {{ count }}{% set count = loop.index0 %}
+          {% set count = loop.index0 %}
           <div class="col-md-4 col-sm-6">
             <div class="card cardmulti bg-light">
               <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ all_events[count].image_filename }}">
