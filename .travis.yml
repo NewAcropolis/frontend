@@ -19,5 +19,6 @@ deploy:
     skip_cleanup: true
     keyfile: fe-client-secret-live.json
     project: $PROJECT_live
+    default: true
     on:
       tags: true
