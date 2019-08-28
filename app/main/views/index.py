@@ -31,8 +31,7 @@ def index(**kwargs):
 
     return render_template(
         'views/home.html',
-        images_url=current_app.config['IMAGES_URL'],
-        main_article=main_article,
+        main_article=articles[index],
         articles=articles,
         all_events=all_events,
         current_page='',
@@ -68,15 +67,13 @@ def whats_on(**kwargs):
 
     future_events = api_client.get_events_in_future(approved_only=True)
     past_events = []
-    if len(past_events) < 3:
-        all_past_events = api_client.get_events_past_year()
-        while len(past_events) < 3:
-            event = all_past_events.pop(-1)
-            past_events.append(event)
+    all_past_events = api_client.get_events_past_year()
+    while len(past_events) < 3:
+        event = all_past_events.pop(-1)
+        past_events.append(event)
 
     return render_template(
         'views/whats_on.html',
-        images_url=current_app.config['IMAGES_URL'],
         current_page='whats-on',
         main_article=articles[index],
         articles=articles,

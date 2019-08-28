@@ -4,7 +4,7 @@
 
   <div class="container-fluid padding">
     <div class="row text-center">
-      <img src="/static/images/whatson_banner.png" class="courses_header_img">
+      <img src="/static/images/whatson_banner.png" class="page_header_img">
     </div>
   </div>
 
@@ -22,7 +22,7 @@
         {{ count }}{% set count = loop.index0 %}
         <div class="col-md-4 col-sm-6" id="future_event">
           <div class="card cardmulti bg-light">
-            <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ future_events[count].image_filename }}">
+            <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}{{ future_events[count].image_filename }}">
               <div class="card-body">
                 <h4 class="card-title" id="blue_txt">{{ future_events[count].event_type }}</h4>
                 <p class="card-text cardtextmulti">{{ future_events[count].event_dates[0].event_datetime }}</p>
@@ -100,8 +100,8 @@
   </div>
 
   <div class="container-fluid padding cream_backgroundcolour giant_past_container">
-    <div class="row text-center box">
-      <img src="{{ images_url }}{{ past_events[0].image_filename }}" class="giant_past_event">
+    <div class="row text-center">
+      <img src="{{ IMAGES_URL }}{{ past_events[0].image_filename }}" class="giant_past_event">
       <div class="giant_past_corner"><span>Past Event</span></div>
       <div class="giant_past_card_text_padding"></div>
       <div class="giant_past_content">
@@ -119,7 +119,7 @@
           {{ count }}{% set count = loop.index0 %}
           <div class="col-md-4 col-sm-6">
             <div class="card cardmulti bg-light">
-              <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ past_events[count].image_filename }}">
+              <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}{{ past_events[count].image_filename }}">
                 <div class="card-body past_card_padding cream_backgroundcolour">
                   <div class="past_corner"><span>Past Event</span></div>
                   <div class="past_card_text_padding">
