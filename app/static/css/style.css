@@ -412,13 +412,13 @@ footer{
 
 /* About Page */
 .about_box{
-  height: auto;
   border: solid 2px rgba(121, 121, 121, 0.5);
-}
-.about_box_text{
+  height: 100%;
+  width: 100%;
+  padding: 5%; 
   font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
   color: rgba(105, 105, 105, 0.5);
-  padding: 2% 5% 2% 5%;
+  text-align: center;
 }
 .about_blue_box_txt{
   font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
@@ -472,7 +472,7 @@ footer{
 .courses_footer_img{
   width: 100%
 }
-.courses_header_img{
+.page_header_img{
   width: 100%
 }
 .courses_boxes {
@@ -540,7 +540,7 @@ footer{
   font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
   color: rgb(74,74,74);
 }
-.course_details_img{
+.half_screen_img{
   height: 100%;
   width: 100%;
   border: solid 2px rgba(121, 121, 121, 0.5);
@@ -556,3 +556,81 @@ footer{
 .topic_details_section {
   padding: 4%;
 }
+
+
+.about_hotspot {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+.about_hotspot img {
+  max-width:100%;
+  display: block;
+}
+.box {
+  width:18%;
+  height:24%;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+}
+#spot-1 {
+  top:11%;
+  left:41%;
+}
+.box:hover > .spot-text-1 {
+  display: block;
+}
+.spot-text-1 {
+  position: absolute;
+  top:-15%;
+  left:8%;
+  transform:translateY(-50%);
+  white-space:nowrap;
+  color: #D8D8D8;
+}
+.box:hover > .spot-text-1 h5 {
+  color:grey;
+}
+
+#spot-2 {
+  top:66%;
+  left:72%;
+}
+.box:hover > .spot-text-2 {
+  display: block;
+}
+.spot-text-2 {
+  position: absolute;
+  top:120%;
+  transform:translateY(-50%);
+  white-space:nowrap;
+  color: #D8D8D8;
+}
+.box:hover > .spot-text-2 h5 {
+  color:grey;
+}
+#spot-3 {
+  top:66%;
+  left:10%;
+}
+.box:hover > .spot-text-3 {
+  display: block;
+}
+.spot-text-3 {
+  position: absolute;
+  top:120%;
+  transform:translateY(-50%);
+  left:14%;
+  white-space:nowrap;
+  color: #D8D8D8;
+}
+.box:hover > .spot-text-3 h5 {
+  color:grey;
+}
+
+
