@@ -1,7 +1,7 @@
 import os
 import re
 
-from flask import Flask, current_app, jsonify, make_response, render_template, request, session
+from flask import Flask, current_app, make_response, render_template, request, session
 from flask_wtf.csrf import CSRFProtect, CSRFError
 import textile
 
@@ -115,7 +115,7 @@ def init_app(app):
     app.jinja_env.globals['get_course_extra'] = _get_course_extra
 
     @app.before_request
-    def check_auth_required():
+    def before_request():
         if '/admin' in request.url and not session.get('user'):
             from app.main.views import google_login
             return google_login()
@@ -129,9 +129,7 @@ def init_app(app):
 
     @app.errorhandler(Exception)
     def exception(error):
-        print(error)
         app.logger.exception(error)
-        # error.code is set for our exception types.
         # return jsonify(result='error', message=error.message), error.code or 500
         # return jsonify(result='error'), error.code or 500
 
@@ -139,7 +137,7 @@ def init_app(app):
     def page_not_found(e):
         msg = e.description or "Not found"
         app.logger.exception(msg)
-        return jsonify(result='error', message=msg), 404
+        return render_template('errors/errors.html', message=[msg]), 404
 
     @app.errorhandler(CSRFError)
     def handle_csrf(err):
@@ -149,7 +147,7 @@ def init_app(app):
         )
 
         resp = make_response(render_template(
-            "errors/400.html",
+            "errors/errors.html",
             message=['Something went wrong, please go back and try again.']
         ), 400)
         return useful_headers_after_request(resp)
