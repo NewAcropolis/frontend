@@ -193,29 +193,38 @@ footer{
 
 /* HOME top->bottom */
 .carousel-item{
-  min-height: 450px;
-  max-height: 450px;
+  min-height: 500px;
+  max-height: 500px;
   background: no-repeat center center scroll;
   background-size: cover;
 }
 .carousel-item img {
   object-fit: cover;
-  height: 450px;
+  height: 500px;
   width: 100%;
 }
-.carousel-caption {
-  border-style: solid;
-  border-width: 1px;
-  border-color: rgba(150,150,150,1.0);
-  height: auto;
-  background: rgba(0, 0, 0, 0.6);
+.carousel-caption{
   width: 100%;
   left:0 !important;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
-  margin-bottom: 20px;
 }
-.carousel-caption h2 a {
-  color: white;
+.carousel-banner {
+  border-top: solid;
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: rgba(150,150,150,1.0);
+  background: rgba(0, 0, 0, 0.6);
+  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  padding-bottom: 0px !important;
+  padding-top: 10px !important;
+}
+.carousel-caption h5 a {
+  color: yellow;
+}
+.carousel-title{
+  color: yellow;
+  margin-bottom: 75px;
+  font-size: 50px;
+  font-family: 'Palette';
 }
 .introtext {
   font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;

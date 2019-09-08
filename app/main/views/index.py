@@ -1,4 +1,4 @@
-from flask import current_app, render_template
+from flask import render_template
 from random import randint
 from app.main import main
 from app import api_client
@@ -31,7 +31,7 @@ def index(**kwargs):
 
     return render_template(
         'views/home.html',
-        main_article=articles[index],
+        main_article=main_article,
         articles=articles,
         all_events=all_events,
         current_page='',

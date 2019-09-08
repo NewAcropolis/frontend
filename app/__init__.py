@@ -60,6 +60,7 @@ def _user_has_permissions(area):
         return True
     return area in access_areas
 
+
 def _is_admin_user():
     user = session['user']
     return 'admin' in user.get('access_area') or user.get('access_area') == 'admin'
@@ -92,7 +93,7 @@ def _get_summary_course_details(topic):
     # ignore the first line as its the header
     details = ' '.join(details.split('\n')[1:])
 
-    # adjust details for header ength
+    # adjust details for header length
     details = details[header_length:current_app.config['SUMMARY_LIMIT'] + header_length]
 
     # ignore the last word in case it was split
