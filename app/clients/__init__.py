@@ -23,6 +23,9 @@ class BaseAPIClient(object):
         return self.request("DELETE", url)
 
     def get(self, url, params=None):
+        if 'error' in session:
+            del session['error']
+
         return self.request("GET", url, params=params)
 
     def generate_headers(self, api_token):
@@ -57,15 +60,19 @@ class BaseAPIClient(object):
                     api_error.message
                 )
             )
-            raise api_error
+            # raise api_error
+            session["error"] = "Error connecting to API"
+            return False
 
         session["access_token"] = auth_response.json()["access_token"]
+        return True
 
     def request(self, method, url, data=None, params=None):
         current_app.logger.info("API request {} {}".format(method, url))
 
         if not session.get("access_token"):
-            self.set_access_token()
+            if not self.set_access_token():
+                return []
 
         payload = json.dumps(data)
 
@@ -107,7 +114,9 @@ class BaseAPIClient(object):
                     api_error.message
                 )
             )
-            raise api_error
+            # raise api_error
+            session['error'] = "Error code: {}, message: {}".format(api_error.status_code, api_error.message)
+            return []
         finally:
             elapsed_time = time.time() - start_time
             current_app.logger.debug("API {} request on {} finished in {}".format(method, url, elapsed_time))

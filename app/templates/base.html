@@ -23,5 +23,6 @@
       {% include "components/header.html" %}
       <div id="content">{% block content %}{% endblock %}</div>
       {% include "components/footer.html" %}
-  </body>
+      {% if session.get('error') %}<div class='m-1'>{{ session['error']}}</div>{% endif %}
+    </body>
 </html>
