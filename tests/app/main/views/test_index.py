@@ -23,14 +23,14 @@ class WhenAccessingHomePage(object):
                 other_events.append(event)
 
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
-        carousel_items = page.select(".carousel-caption")
+        carousel_title = page.select(".carousel-title")
         for i, event in enumerate(sample_future_events):
             if event['event_type'] == 'Introductory Course':
                 # expect the first event in the carousel to be an intro course
-                assert carousel_items[0].text.strip() == "Courses starting January 2019"
+                assert carousel_title[0].text.strip() == "Test title 3"
             elif event['image_filename']:
                 # expect the other events to be after an intro course if they have an image
-                assert carousel_items[i + 1].text.strip() == other_events[i]['title']
+                assert carousel_title[i + 1].text.strip() == other_events[i]['title']
 
     def it_should_show_future_events_in_cards(self, client, sample_future_events, sample_articles_summary):
         response = client.get(url_for(

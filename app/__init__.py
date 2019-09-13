@@ -60,6 +60,7 @@ def _user_has_permissions(area):
         return True
     return area in access_areas
 
+
 def _is_admin_user():
     user = session['user']
     return 'admin' in user.get('access_area') or user.get('access_area') == 'admin'
@@ -92,7 +93,7 @@ def _get_summary_course_details(topic):
     # ignore the first line as its the header
     details = ' '.join(details.split('\n')[1:])
 
-    # adjust details for header ength
+    # adjust details for header length
     details = details[header_length:current_app.config['SUMMARY_LIMIT'] + header_length]
 
     # ignore the last word in case it was split
@@ -106,6 +107,7 @@ def _get_summary_course_details(topic):
 
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
+    app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
     app.jinja_env.globals['get_email'] = _get_email
     app.jinja_env.globals['get_users_need_access'] = _get_users_need_access
     app.jinja_env.globals['is_admin_user'] = _is_admin_user

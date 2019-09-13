@@ -12,16 +12,12 @@
       {% for event in all_events %}
         {% if not event.get('past') %}
           <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
-            <img class="d-block w-100" src="{{ images_url }}{{ event.image_filename }}">
-            <div class="carousel_caption_block">
-              <div class="carousel-caption d-md-block">
-                <h2><a href=''>
-                  {% if event.carousel_text %}
-                    {{ event.carousel_text }}
-                  {% else %}
-                    {{ event.title }}
-                  {% endif %}
-                </a></h2>
+            <img class="d-block w-100" src="{{ IMAGES_URL }}{{ event.image_filename }}">
+            <div class="carousel-caption d-md-block">
+              <div class="carousel-title">{{ event.title }}</div>
+              <div class="carousel-banner">
+                <h3> {{ event.event_type.upper() }}: {{ event.event_dates[0].event_datetime }} </h3>
+                <h5><a href=''>FIND OUT MORE</a></h5>
               </div>
             </div>
           </div>
@@ -100,13 +96,11 @@
     
     <div class="container-fluid padding text-center">
       <div class="row padding">
-
-
         {% for event in all_events %}
           {% set count = loop.index0 %}
           <div class="col-md-4 col-sm-6">
             <div class="card cardmulti bg-light">
-              <img class="card-img-top cardimgtopmulti" src="{{ images_url }}{{ all_events[count].image_filename }}">
+              <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}{{ all_events[count].image_filename }}">
               {% if event.get('past') %}
                 <div class="card-body past_card_padding cream_backgroundcolour">
                 <div class="past_corner"><span>Past Event</span></div>
