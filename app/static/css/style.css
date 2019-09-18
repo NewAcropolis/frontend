@@ -563,7 +563,7 @@ footer{
   width: 100%;
 }
 .topic_details_section {
-  padding: 4%;
+  padding: 4% 4% 0% 4%;
 }
 .about_hotspot {
   position: relative;
@@ -687,4 +687,21 @@ footer{
   text-decoration: none;
   color: white;
   font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
+}
+/* EVENT DETAILS */
+.event_blue {
+  color: rgb(114,168,232);
+}
+.event_title {
+  color: black;
+  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+}
+.event_details_img{
+  object-fit: cover;  
+  width: 100%;
+  height: 550px !important;
+  border: solid 2px rgba(121, 121, 121, 0.5);
+}
+.event_details_paypal_section {
+  padding: 0% 4% 4% 4%;
 }

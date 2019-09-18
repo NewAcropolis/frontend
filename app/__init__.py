@@ -108,6 +108,7 @@ def _get_summary_course_details(topic):
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
+    app.jinja_env.globals['PAYPAL_ACCOUNT'] = app.config.get('PAYPAL_ACCOUNT')
     app.jinja_env.globals['get_email'] = _get_email
     app.jinja_env.globals['get_users_need_access'] = _get_users_need_access
     app.jinja_env.globals['is_admin_user'] = _is_admin_user

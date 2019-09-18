@@ -17,7 +17,7 @@
               <div class="carousel-title">{{ event.title }}</div>
               <div class="carousel-banner">
                 <h3> {{ event.event_type.upper() }}: {{ event.event_dates[0].event_datetime }} </h3>
-                <h5><a href=''>FIND OUT MORE</a></h5>
+                <h5><a href=''><a href="{{ url_for('main.event_details', event_id=event.id) }}">FIND OUT MORE</a></a></h5>
               </div>
             </div>
           </div>
@@ -97,10 +97,9 @@
     <div class="container-fluid padding text-center">
       <div class="row padding">
         {% for event in all_events %}
-          {% set count = loop.index0 %}
           <div class="col-md-4 col-sm-6">
             <div class="card cardmulti bg-light">
-              <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}{{ all_events[count].image_filename }}">
+              <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}{{ event.image_filename }}">
               {% if event.get('past') %}
                 <div class="card-body past_card_padding cream_backgroundcolour">
                 <div class="past_corner"><span>Past Event</span></div>
@@ -108,9 +107,9 @@
               {% else %}
                 <div class="card-body">
               {% endif %}
-                  <h4 class="card-title" id="blue_txt">{{ all_events[count].event_type }}</h4>
-                  <p class="card-text cardtextmulti">{{ all_events[count].event_dates[0].event_datetime }}</p>
-                  <p class="card-text cardtextmulti dark_grey_txt">{{ all_events[count].title }}</p>
+                <h4 class="card-title" id="blue_txt">{{ event.event_type }}</h4>
+                <p class="card-text cardtextmulti">{{ event.event_dates[0].event_datetime }}</p>
+                <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ event.title }}</a></p>
               {% if event.get('past') %}
                 </div>
               {% endif %}

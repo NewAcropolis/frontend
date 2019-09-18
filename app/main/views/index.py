@@ -1,8 +1,10 @@
+from datetime import datetime
 from flask import render_template
 from random import randint
 from app.main import main
 from app import api_client
 from app.main.decorators import setup_subscription_form
+from six.moves.html_parser import HTMLParser
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -110,3 +112,32 @@ def course_details(**kwargs):
         'views/course_details.html',
         **kwargs
     )
+
+
+@main.route('/event_details/<uuid:event_id>')
+@setup_subscription_form
+def event_details(event_id, **kwargs):
+    event = api_client.get_event_by_id(event_id)
+    event['is_future_event'] = is_future_event(event)
+
+    return render_template(
+        'views/event_details.html',
+        event=event,
+        **kwargs
+    )
+
+
+def is_future_event(event):
+    is_future = False
+    for date in event['event_dates']:
+        if date['event_datetime'] >= str(datetime.today()):
+            is_future = True
+    return is_future
+
+
+def _unescape_html(items, field_name):
+    h = HTMLParser()
+    for item in items:
+        item[field_name] = h.unescape(item[field_name])
+
+    return items
