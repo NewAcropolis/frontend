@@ -1,4 +1,5 @@
-from flask import current_app, render_template, request
+from datetime import datetime
+from flask import render_template
 from random import randint
 from app.main import main
 from app import api_client
@@ -113,26 +114,25 @@ def course_details(**kwargs):
     )
 
 
-@main.route('/event_details')
+@main.route('/event_details/<uuid:event_id>')
 @setup_subscription_form
-def event_details(**kwargs):
-    events = api_client.get_events_in_future(approved_only=True)
-    event_details = request.args.get('event_details')
-    future_events = api_client.get_events_in_future(approved_only=True)
-    past_events = api_client.get_events_past_year()
-    all_events = future_events + past_events
-    displayed_event = []
-    for event in all_events:
-        if event_details == event['title']:
-            displayed_event = event
+def event_details(event_id, **kwargs):
+    event = api_client.get_event_by_id(event_id)
+    event['is_future_event'] = is_future_event(event)
 
     return render_template(
         'views/event_details.html',
-        displayed_event=displayed_event,
-        events=_unescape_html(events, 'description'),
-        paypal_account=current_app.config['PAYPAL_ACCOUNT'],
+        event=event,
         **kwargs
     )
+
+
+def is_future_event(event):
+    is_future = False
+    for date in event['event_dates']:
+        if date['event_datetime'] >= str(datetime.today()):
+            is_future = True
+    return is_future
 
 
 def _unescape_html(items, field_name):

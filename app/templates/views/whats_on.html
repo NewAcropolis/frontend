@@ -15,7 +15,7 @@
             <div class="carousel-title">{{ event.title }}</div>
             <div class="carousel-banner">
               <h3> {{ event.event_type.upper() }}: {{ event.event_dates[0].event_datetime }} </h3>
-              <h5><a href="{{ url_for('main.event_details', event_details=event.title) }}">FIND OUT MORE</a></h5>
+              <h5><a href="{{ url_for('main.event_details', event_id=event.id) }}">FIND OUT MORE</a></h5>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@
               <div class="card-body">
                 <h4 class="card-title" id="blue_txt">{{ future_events[count].event_type }}</h4>
                 <p class="card-text cardtextmulti">{{ future_events[count].event_dates[0].event_datetime }}</p>
-                <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_details=event.title) }}">{{ future_events[count].title }}</a></p>
+                <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ future_events[count].title }}</a></p>
             </div>
           </div>
         </div>
@@ -122,7 +122,7 @@
       <div class="giant_past_content">
         <h1>{{ past_events[0].title }}</h1>
         <h2 class="">{{ past_events[0].event_type }} : {{ past_events[0].event_dates[0].event_datetime }}</h2>
-        <p><a class="find_out_more_link" href=''><a href="{{ url_for('main.event_details', event_details=past_events[0].title) }}">FIND OUT MORE</a></a><p>
+        <p><a class="find_out_more_link" href=''><a href="{{ url_for('main.event_details', event_id=past_events[0].id) }}">FIND OUT MORE</a><p>
       </div>
     </div>
   </div>
@@ -140,7 +140,7 @@
                   <div class="past_card_text_padding">
                   <h4 class="card-title" id="blue_txt">{{ past_events[count].event_type }}</h4>
                   <p class="card-text cardtextmulti">{{ past_events[count].event_dates[0].event_datetime }}</p>
-                  <p class="card-text cardtextmulti dark_grey_txt">{{ past_events[count].title }}</p>
+                  <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=past_events[count].id) }}">{{ past_events[count].title }}</a></p>
                 </div>
               </div>
             </div>

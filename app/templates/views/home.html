@@ -17,7 +17,7 @@
               <div class="carousel-title">{{ event.title }}</div>
               <div class="carousel-banner">
                 <h3> {{ event.event_type.upper() }}: {{ event.event_dates[0].event_datetime }} </h3>
-                <h5><a href=''>FIND OUT MORE</a></h5>
+                <h5><a href=''><a href="{{ url_for('main.event_details', event_id=event.id) }}">FIND OUT MORE</a></a></h5>
               </div>
             </div>
           </div>
@@ -109,7 +109,7 @@
               {% endif %}
                 <h4 class="card-title" id="blue_txt">{{ event.event_type }}</h4>
                 <p class="card-text cardtextmulti">{{ event.event_dates[0].event_datetime }}</p>
-                <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_details=event.title) }}">{{ event.title }}</a></p>
+                <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ event.title }}</a></p>
               {% if event.get('past') %}
                 </div>
               {% endif %}
