@@ -4,7 +4,9 @@ from flask import url_for
 
 
 class WhenAccessingEventsPage(object):
-    def it_should_show_header_logo(self, client, sample_future_events, sample_articles_summary):
+    def it_should_show_header_logo_on_events_page(
+        self, client, sample_future_events, sample_past_events_for_cards, sample_articles_summary
+    ):
         response = client.get(url_for(
             'main.whats_on'
         ))
