@@ -131,7 +131,6 @@
     <div class="container-fluid padding text-center">
       <div class="row padding">
         {% for event in past_events %}
-          {{ count }}{% set count = loop.index0 %}
           <div class="col-md-4 col-sm-6">
             <div class="card cardmulti bg-light">
               <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}{{ past_events[count].image_filename }}">
