@@ -133,13 +133,13 @@
         {% for event in past_events %}
           <div class="col-md-4 col-sm-6">
             <div class="card cardmulti bg-light">
-              <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}{{ past_events[count].image_filename }}">
+              <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}{{ event.image_filename }}">
                 <div class="card-body past_card_padding cream_backgroundcolour">
                   <div class="past_corner"><span>Past Event</span></div>
                   <div class="past_card_text_padding">
-                  <h4 class="card-title" id="blue_txt">{{ past_events[count].event_type }}</h4>
-                  <p class="card-text cardtextmulti">{{ past_events[count].event_dates[0].event_datetime }}</p>
-                  <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=past_events[count].id) }}">{{ past_events[count].title }}</a></p>
+                  <h4 class="card-title" id="blue_txt">{{ event.event_type }}</h4>
+                  <p class="card-text cardtextmulti">{{ event.event_dates[0].event_datetime }}</p>
+                  <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ event.title }}</a></p>
                 </div>
               </div>
             </div>
