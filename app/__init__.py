@@ -131,10 +131,10 @@ def init_app(app):
         return response
 
     @app.errorhandler(Exception)
-    def exception(error):
-        app.logger.exception(error)
-        # return jsonify(result='error', message=error.message), error.code or 500
-        # return jsonify(result='error'), error.code or 500
+    def exception(e):
+        msg = e.description or "Server error"
+        app.logger.exception(e)
+        return render_template('errors/errors.html', message=[msg]), e.code or 500
 
     @app.errorhandler(404)
     def page_not_found(e):
