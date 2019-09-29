@@ -132,9 +132,9 @@ def init_app(app):
 
     @app.errorhandler(Exception)
     def exception(e):
-        msg = e.description or "Server error"
+        msg = e.message if hasattr(e, 'message') else "Server error"
         app.logger.exception(e)
-        return render_template('errors/errors.html', message=[msg]), e.code or 500
+        return render_template('errors/errors.html', message=[msg]), e.code if hasattr(e, 'code') else 500
 
     @app.errorhandler(404)
     def page_not_found(e):

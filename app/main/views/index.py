@@ -65,19 +65,21 @@ def resources(**kwargs):
 @setup_subscription_form
 def whats_on(**kwargs):
     articles = api_client.get_articles_summary()
-    index = randint(0, len(articles) - 1)
+    if articles:
+        index = randint(0, len(articles) - 1)
 
     future_events = api_client.get_events_in_future(approved_only=True)
     past_events = []
     all_past_events = api_client.get_events_past_year()
-    while len(past_events) < 3:
-        event = all_past_events.pop(-1)
-        past_events.append(event)
+    if all_past_events:
+        while len(past_events) < 3:
+            event = all_past_events.pop(-1)
+            past_events.append(event)
 
     return render_template(
         'views/whats_on.html',
         current_page='whats-on',
-        main_article=articles[index],
+        main_article=articles[index] if articles else None,
         articles=articles,
         future_events=future_events,
         past_events=past_events,
