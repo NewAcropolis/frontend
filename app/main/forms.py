@@ -163,10 +163,18 @@ class EmailForm(FlaskForm):
 
         self.events.choices = []
         for event in events:
+            event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
+            parts = [
+                "{}/{}".format(date_parts[1].lstrip('0'), date_parts[0].lstrip('0'))
+                for date_parts in [date.split('-') for date in event_dates]
+            ]
             self.events.choices.append(
                 (
                     event['id'],
                     u'{} - {} - {}'.format(
-                        event['event_dates'][0]['event_datetime'], event['event_type'], event['title'])
+                        ", ".join(parts),
+                        event['event_type'],
+                        event['title']
+                    )
                 )
             )
