@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from flask import current_app, jsonify, redirect, render_template, request, session, url_for
 
 from app import api_client
@@ -81,9 +81,11 @@ def _get_email():
 def _get_event_dates():
     event = [e for e in session['future_events'] if e['id'] == request.args.get('event')]
     if event:
+        first_event_date = event[0]['event_dates'][0]['event_datetime'].split(' ')[0]
+        send_starts_at = datetime.strptime(first_event_date, '%Y-%m-%d') - timedelta(weeks=2)
         last_event_date = event[0]['event_dates'][-1]['event_datetime'].split(' ')[0]
         return jsonify({
-            'send_starts_at': datetime.strptime(last_event_date, '%Y-%m-%d'),
+            'send_starts_at': send_starts_at.strftime('%Y-%m-%d'),
             'last_event_date': last_event_date
         })
     return ''
