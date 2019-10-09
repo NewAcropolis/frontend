@@ -1,3 +1,4 @@
+import io
 import os
 import re
 
@@ -67,19 +68,19 @@ def _is_admin_user():
 
 
 def _get_course_details(topic):
-    with open("app/templates/course_details/" + topic + ".txt", "rb") as f:
+    with io.open("app/templates/course_details/" + topic + ".txt", "r", encoding="utf-8") as f:
         details = f.read()
     return textile.textile(details)
 
 
 def _get_course_extra(topic):
     extra = {}
-    with open("app/templates/course_details/" + topic + "_extra.txt", "rb") as f:
+    with io.open("app/templates/course_details/" + topic + "_extra.txt", "r", encoding="utf-8") as f:
         extra_text = f.read()
     extra_arr = extra_text.split('==')
     extra['events'] = textile.textile(extra_arr[0])
-    extra['person'] = textile.textile(extra_arr[1])
-    extra['ideas'] = textile.textile(extra_arr[2])
+    extra['person'] = textile.textile(extra_arr[1]) if len(extra_arr) > 1 else ''
+    extra['ideas'] = textile.textile(extra_arr[2]) if len(extra_arr) > 2 else ''
     return extra
 
 
