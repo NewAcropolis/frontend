@@ -705,3 +705,13 @@ footer{
 .event_details_paypal_section {
   padding: 0% 4% 4% 4%;
 }
+/* ARTICLES */
+.article_box{
+  background-color: white;
+  border: solid 2px rgba(121, 121, 121, 0.5);
+  height: 100%;
+  width: 100%;
+  padding: 5%; 
+  font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
+  color: rgb(74,74,74);
+}
