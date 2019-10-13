@@ -77,15 +77,19 @@ def _get_email():
     return ''
 
 
-@main.route('/admin/_get_event_dates')
-def _get_event_dates():
+@main.route('/admin/_get_event_dates/<date_type>')
+def _get_event_dates(date_type):
     event = [e for e in session['future_events'] if e['id'] == request.args.get('event')]
     if event:
-        first_event_date = event[0]['event_dates'][0]['event_datetime'].split(' ')[0]
-        send_starts_at = datetime.strptime(first_event_date, '%Y-%m-%d') - timedelta(weeks=2)
-        last_event_date = event[0]['event_dates'][-1]['event_datetime'].split(' ')[0]
-        return jsonify({
-            'send_starts_at': send_starts_at.strftime('%Y-%m-%d'),
-            'last_event_date': last_event_date
-        })
+        if date_type == 'send':
+            first_event_date = event[0]['event_dates'][0]['event_datetime'].split(' ')[0]
+            send_starts_at = datetime.strptime(first_event_date, '%Y-%m-%d') - timedelta(weeks=2)
+            return jsonify({
+                'send_starts_at': send_starts_at.strftime('%Y-%m-%d'),
+            })
+        elif date_type == 'last':
+            last_event_date = event[0]['event_dates'][-1]['event_datetime'].split(' ')[0]
+            return jsonify({
+                'last_event_date': last_event_date
+            })
     return ''

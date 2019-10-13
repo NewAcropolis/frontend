@@ -191,14 +191,18 @@
             }
 
             if (!elements._emails.val()) {
-                today = moment(new Date()).format("YYYY-MM-DD");
                 expires = moment(new Date()).add(14, 'days').format("YYYY-MM-DD");
-                elements._send_starts_at.datepicker("setDate", today);
                 elements._expires.datepicker("setDate", expires);
                 update_for_email_state('new');
 
                 event_id = '';
                 email_json = null;
+
+                $.getJSON("{{ url_for('main._get_event_dates', date_type='send') }}", send, function(data) {
+                    if (data) {
+                        elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
+                    }
+                });    
 
                 updateEvents();
                 return;
@@ -234,10 +238,8 @@
                 return;
             }
 
-            $.getJSON("{{ url_for('main._get_event_dates') }}", send, function(data) {
+            $.getJSON("{{ url_for('main._get_event_dates', date_type='last') }}", send, function(data) {
                 if (data) {
-                    console.log(data);
-                    elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
                     elements._expires.datepicker("setDate", data['last_event_date']);
                 }
             });
