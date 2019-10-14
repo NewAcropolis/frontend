@@ -73,6 +73,11 @@ def admin_emails(selected_email_id=None, api_message=None):
 def _get_email():
     email = [e for e in session['emails'] if e['id'] == request.args.get('email')]
     if email:
+        email[0]['emails_sent_counts'] = {
+            'success': 5,
+            'failed': 2,
+            'total_active_members': 10
+        }
         return jsonify(email[0])
     return ''
 
