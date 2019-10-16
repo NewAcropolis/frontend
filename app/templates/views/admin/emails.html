@@ -218,6 +218,20 @@
                     elements._email_types.val(data['email_type']);
                     elements._emails_sent_counts.attr('style', 'display:block;');
                     if (data['email_type'] == 'event') {
+                        var found = false;
+                        for (i=0; i<events.length; i++) {
+                            if (events[i]['value'] == data['event']['value']) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            events.push({
+                                'name': data['event']['text'],
+                                'value': data['event']['value']
+                            });
+                        }
+
                         elements._events.val(data['event_id']);
                         elements._details.val(data['details']);
                         elements._extra_txt.val(data['extra_txt']);

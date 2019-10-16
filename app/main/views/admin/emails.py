@@ -12,7 +12,7 @@ from app.main.forms import EmailForm
 @main.route('/admin/emails/<uuid:selected_email_id>', methods=['GET', 'POST'])
 @main.route('/admin/events/<uuid:selected_event_id>/<api_message>', methods=['GET', 'POST'])
 def admin_emails(selected_email_id=None, api_message=None):
-    future_emails = api_client.get_future_emails()
+    future_emails = api_client.get_latest_emails()
     email_types = api_client.get_email_types()
     future_events = api_client.get_events_in_future()
 
@@ -78,6 +78,25 @@ def _get_email():
             'failed': 2,
             'total_active_members': 10
         }
+        if email[0]['email_type'] == 'event':
+            event = [e for e in session['future_events'] if e['id'] == request.args.get('event')]
+            if not event:
+                event = api_client.get_event_by_id(email[0]['event_id'])
+
+                event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
+                parts = [
+                    "{}/{}".format(date_parts[1].lstrip('0'), date_parts[0].lstrip('0'))
+                    for date_parts in [date.split('-') for date in event_dates]
+                ]
+
+                email[0]['event'] = {
+                    'value': event['id'],
+                    'text': u'{} - {} - {}'.format(
+                        ", ".join(parts),
+                        event['event_type'],
+                        event['title']
+                    )
+                }
         return jsonify(email[0])
     return ''
 

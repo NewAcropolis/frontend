@@ -22,6 +22,23 @@ class MockAPIClient:
             }
         ]
 
+    def get_latest_emails(self):
+        return [
+            {
+                'id': 'test id',
+                'subject': 'test subject',
+                'event_id': 'test event id',
+                'details': '',
+                'extra_txt': '',
+                'replace_all': False,
+                'email_type': 'event',
+                'email_state': 'draft',
+                'created_at': '2019-07-01 20:00',
+                'send_starts_at': '2019-07-14',
+                'expires': '2019-07-28'
+            }
+        ]
+
     def get_email_types(self):
         return [
             {
