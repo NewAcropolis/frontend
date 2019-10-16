@@ -74,6 +74,9 @@ class ApiClient(BaseAPIClient):
     def get_future_emails(self):
         return self.get(url='emails/future')
 
+    def get_latest_emails(self):
+        return self.get(url='emails/latest')
+
     def get_articles_summary(self):
         return self.get(url='articles/summary')
 

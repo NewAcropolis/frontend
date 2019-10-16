@@ -23,6 +23,9 @@
                 <div class='row'>
                     <div id='status_bar' class='text-left col-6 rounded mt-2 bg-primary text-white'>new</div>
                 </div>
+                <div class ='row' class='text-left ml-2 mt-1'>
+                    <div id='emails_sent_counts' ></div>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -98,9 +101,6 @@
         {% endif %}
         <hr>
         <div class="justify-content-end">
-            {% if update_count %}
-            <span>{{ update_count }} updated</span>
-            {% endif %}
             <button id='preview' type="submit" class="btn btn-outline-info">Preview</button>
             <button id="draft" type="submit" class="btn btn-default">Draft</button>
             <button id='ready' type="submit" class="btn btn-outline-warning">Ready</button>
@@ -149,6 +149,7 @@
             _extra_txt: $('#extra_txt'),
             _send_starts_at: $('#_send_starts_at'),
             _expires: $('#_expires'),
+            _emails_sent_counts: $('#emails_sent_counts')
         };
 
         $('#_send_starts_at').datepicker({
@@ -191,6 +192,7 @@
             }
 
             if (!elements._emails.val()) {
+                elements._emails_sent_counts.attr('style', 'display:none;');
                 expires = moment(new Date()).add(14, 'days').format("YYYY-MM-DD");
                 elements._expires.datepicker("setDate", expires);
                 update_for_email_state('new');
@@ -214,13 +216,32 @@
                     email_json = data;
                     update_for_email_state(data['email_state']);
                     elements._email_types.val(data['email_type']);
+                    elements._emails_sent_counts.attr('style', 'display:block;');
                     if (data['email_type'] == 'event') {
+                        var found = false;
+                        for (i=0; i<events.length; i++) {
+                            if (events[i]['value'] == data['event']['value']) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            events.push({
+                                'name': data['event']['text'],
+                                'value': data['event']['value']
+                            });
+                        }
+
                         elements._events.val(data['event_id']);
                         elements._details.val(data['details']);
                         elements._extra_txt.val(data['extra_txt']);
                         elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
                         elements._expires.datepicker("setDate", data['expires']);
-
+                        elements._emails_sent_counts.html(
+                            '<span class="text-success">success: ' + data['emails_sent_counts']['success'] + '</span> - ' +
+                            '<span class="text-danger">failed: ' + data['emails_sent_counts']['failed'] + '</span> - ' +
+                            '<span class="text-primary">total to send: ' + data['emails_sent_counts']['total_active_members'] + '</span>'
+                        );
                         event_id = data['event_id'];
 
                         updateEvents();
