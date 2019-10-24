@@ -2,7 +2,10 @@ import os
 
 import logging
 
-from google.appengine.ext import ndb
+try:
+    from google.appengine.ext import ndb
+except:
+    print('Problem importing google.appengine.ext.ndb')
 
 
 class Settings(ndb.Model):
