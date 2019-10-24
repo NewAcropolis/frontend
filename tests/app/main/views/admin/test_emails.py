@@ -81,6 +81,14 @@ class MockAPIClient:
             },
         ]
 
+    def get_marketings(self):
+        return [
+            {
+                'id': 'test_marketing',
+                'description': 'Test'
+            }
+        ]
+
 
 class WhenShowingEmails:
 

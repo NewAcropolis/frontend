@@ -11,9 +11,49 @@
         <p id="yellow_txt">Nearest tube:</p>
         <p>Highbury & Islington,</p>
         <p>Victoria Line</p><br>
-        <p id="yellow_txt">SEND US A MESSAGE</p>
+        
+        <a href="#" data-toggle="modal" data-target="#sendMessageModal"><p id="yellow_txt">SEND US A MESSAGE</p></a>
+     
+        <div class="modal fade" id="sendMessageModal" tabindex="-1" role="dialog" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="sendMessageModalLabel">Send us a message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body pb-0">
+                  {% if contact_form %}
+                  <form id='contact_form' action="/" method=post>
+                    {{ contact_form.csrf_token }}
+                    <div class="form-group">
+                      {{ contact_form.contact_name(placeholder='Your name', size=60) }}
+                    </div>
+                    <div class="form-group">
+                        {{ contact_form.contact_email(placeholder='Your email address', size=60) }}
+                    </div>
+                    <div class="form-group">
+                        {{ contact_form.contact_reasons }}
+                    </div>
+                    <div class="form-group" style="line-height: normal;">
+                        {{ contact_form.contact_message(placeholder='Your message', rows=10, cols=60) }}
+                    </div>
+                    <div id='contact_errors' class='d-none' style='line-height:normal;'></div>
+                    <div id='send_message_response' class='d-none'></div>
+                  </form>
+                {% endif %}
+              </div>
+              <div class="modal-footer pt-2">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="send_message" type="submit" class="btn btn-outline-success">Send message</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div>
-          <a href="#email" class="footer_icon_padding"><img class="footer_icons" src='/static/images/email.png'></a>
+          <a id='send_message_icon' data-toggle="modal" data-target="#sendMessageModal" href="#email" class="footer_icon_padding"><img class="footer_icons" src='/static/images/email.png'></a>
           <a href="https://www.instagram.com/newacropolisuk/" class="footer_icon_padding"><img class="footer_icons" src='/static/images/instagram.png'></a>
           <a href="https://www.facebook.com/newacropolisuk/" class="footer_icon_padding"><img class="footer_icons" src='/static/images/facebook.png'></a>
           <a href="https://www.youtube.com/user/nuevacropolisin/featured"><img class="footer_icons" src='/static/images/youtube.png'></a>
@@ -23,18 +63,20 @@
         <div>
           <img src="/static/images/home-image-magazine.png" class="footer_magazine"><br><br>
           <div class="magazine_form_padding">
-            {% if subscription_form %}
+            {% if slim_subscription_form %}
               <form action="/" method=post>
-                {{ subscription_form.csrf_token }}
-                {{ subscription_form.email(class="subscribe") }}
-                <br><br><br>
-                  {% for error in subscription_form.email.errors %}
-                  <li class="error_text">{{ error }}
-                  {% endfor %}
-                  <input class="submit_button" type="submit" value="Submit">
+                {{ slim_subscription_form.csrf_token }}
+                {{ slim_subscription_form.slim_subscription_email(class="subscribe", placeholder="Your email address") }}
+                {% if slim_subscription_form.slim_subscription_email.errors %}
+                <div style="height:30px;padding-top:14px;">
+                  <div class="error_text">{{ slim_subscription_form.slim_subscription_email.errors[0] }}</div> 
+                </div>
+                {% endif %}
+                <div style="padding-top:10px;">
+                  <input class="submit_button" type="submit" value="Subscribe">
+                </div>
               </form>
             {% endif %}
-            
           </div>
         </div>
       </div>
@@ -58,3 +100,70 @@
     </div>
   </div>
 </footer>
+
+{% if contact_form %}
+<script>
+$(document).ready(function() {
+    $('#sendMessageModal').on('shown.bs.modal', function () {
+        $('#contact_name').focus();
+    })
+
+    $('#sendMessageModal').on('hide.bs.modal', function () {
+      $('#send_message_response').addClass('d-none');
+      $('#contact_errors').addClass('d-none');
+      $('#contact_name').val('');
+      $('#contact_email').val('');
+      $('#contact_message').val('');
+      $('#send_message').prop('disabled', false);
+  })
+
+    $('#send_message').on('click', function(e) {
+      var url = "{{ url_for('main._send_message') }}"; // send the form data here.
+      _data = $('#contact_form').serialize();
+      $('#contact_errors').html('');
+      console.log(_data);
+      $.ajax({
+          type: "POST",
+          url: url,
+          data: _data, // serializes the form's elements.
+          success: function (data) {
+              console.log(data)  // display the returned data in the console.
+              if (data) {
+                if (data['errors']) {
+                  console.log('errors: ' + Object.keys(data['errors']));
+                  $('#contact_errors').removeClass('d-none');
+                  $('#contact_errors').html('');
+                  for (i=0; i<Object.keys(data['errors']).length; i++){
+                    $('#contact_errors').append('<div>' + Object.keys(data['errors'])[i].substring(8) + ': ' + data['errors'][Object.keys(data['errors'])[i]][0] + '</div>');
+                  }
+                }
+                else {
+                  $('#send_message_response').removeClass('d-none');
+                  if (data['error']) {
+                    $('#send_message_response').text(data['error']);
+                  } else {
+                    $('#send_message_response').text("Your message has been sent");
+                    $('#send_message').prop('disabled', true);
+                    setTimeout(function() { $('#sendMessageModal').modal('hide'); }, 5000);
+                  }
+                }
+              }
+            }
+      });
+      e.preventDefault(); // block the traditional submission of the form.
+    });
+
+    {% if contact_form.csrf_token %}
+
+    // Inject our CSRF token into our AJAX request.
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", "{{ contact_form.csrf_token._value() }}")
+        }
+      }
+    })
+    {% endif %}
+});
+</script>
+{% endif %}
