@@ -235,8 +235,23 @@ def sample_articles_summary(mocker):
     return articles
 
 
+@pytest.fixture
+def sample_marketings(mocker):
+    marketings = [
+        {
+            "id": "Test title 1",
+            "description": "Search engine"
+        },
+    ]
+
+    mocker.patch('app.clients.api_client.ApiClient.get_marketings', return_value=marketings)
+    return marketings
+
+
+@pytest.fixture
 def mock_sessions(mocker, session_dict={}):
     mocker.patch('app.session', session_dict)
+    mocker.patch('app.clients.session', session_dict)
     mocker.patch('app.main.views.session', session_dict)
     mocker.patch('app.main.views.admin.admin.session', session_dict)
     mocker.patch('app.main.views.admin.emails.session', session_dict)

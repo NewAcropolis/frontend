@@ -14,8 +14,9 @@ class WhenAccessingEventsPage(object):
         header_image = page.find('img')['src']
         assert header_image == '/static/images/acropolis_header.png'
 
-    def it_should_show_past_and_future_events_in_cards(
-        self, mocker, client, sample_articles_summary, sample_future_event_for_cards, sample_past_events_for_cards
+    def it_should_show_in_events_past_and_future_events_in_cards(
+        self, mocker, client,
+        sample_articles_summary, sample_future_event_for_cards, sample_past_events_for_cards, sample_marketings
     ):
         mocker.patch('app.main.views.index.api_client.get_events_in_future', return_value=sample_future_event_for_cards)
         mocker.patch('app.main.views.index.api_client.get_events_past_year', return_value=sample_past_events_for_cards)
