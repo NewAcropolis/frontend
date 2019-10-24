@@ -21,7 +21,7 @@
       <form action="/subscription" method=post>
         {{ subscription_form.csrf_token }}
         <div class="ml-5">
-          <div class="row p-2">{{ subscription_form.subscription_name(placeholder='Your name', value=subscription_form.subscription_name.data, size=70) }}</div>
+          <div class="row p-2">{{ subscription_form.subscription_name(placeholder='Your name', value=subscription_form.subscription_name.data if subscription_form.subscription_name.data else '', size=70) }}</div>
           <div class="row p-2">{{ subscription_form.subscription_email(placeholder='Your email address', value=email, size=70) }}</div>
           <div class="row p-2">{{ subscription_form.subscription_marketings }}</div>
           {% if subscription_form.errors %}
