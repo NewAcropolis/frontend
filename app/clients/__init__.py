@@ -35,6 +35,10 @@ class BaseAPIClient(object):
         }
 
     def set_access_token(self):
+        if not self.base_url:
+            current_app.logger.info("No API URL")
+            return False
+
         current_app.logger.info("set access token")
         auth_payload = {
             "username": self.client_id,
@@ -69,6 +73,10 @@ class BaseAPIClient(object):
 
     def request(self, method, url, data=None, params=None):
         current_app.logger.info("API request {} {}".format(method, url))
+
+        if not self.base_url:
+            current_app.logger.info("No API URL")
+            return []
 
         if not session.get("access_token"):
             if not self.set_access_token():

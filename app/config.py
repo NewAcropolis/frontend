@@ -5,8 +5,8 @@ from app.settings import Settings
 
 def is_running_app_engine():
     return 'SERVER_SOFTWARE' in os.environ and \
-        ('Google App Engine' in os.environ.get('SERVER_SOFTWARE') or \
-        'Development' in os.environ.get('SERVER_SOFTWARE'))
+        ('Google App Engine' in os.environ.get('SERVER_SOFTWARE') or
+         'Development' in os.environ.get('SERVER_SOFTWARE'))
 
 
 def get_setting(name, default=None):
