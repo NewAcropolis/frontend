@@ -15,6 +15,7 @@ pytest-cov==2.5.1
 pytest-eradicate==0.0.3
 pytest-flask==0.10.0
 pytest-mock==1.6.2
+pytz==2019.3
 PyJWT==1.5.3
 requests>=2.0.0
 requests_oauthlib==1.2.0
