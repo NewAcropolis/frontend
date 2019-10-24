@@ -1,9 +1,20 @@
 #!/usr/bin/python
+import os
 from app.settings import Settings
 
 
-def get_setting(name):
-    return Settings.get_or_set(name)
+def is_running_app_engine():
+    return 'SERVER_SOFTWARE' in os.environ and \
+        ('Google App Engine' in os.environ.get('SERVER_SOFTWARE') or
+         'Development' in os.environ.get('SERVER_SOFTWARE'))
+
+
+def get_setting(name, default=None):
+    if is_running_app_engine():
+        return Settings.get_or_set(name)
+    else:
+        print('Running with local env vars')
+        return os.environ.get(name, default)
 
 
 class Config(object):
@@ -13,7 +24,7 @@ class Config(object):
     FRONTEND_BASE_URL = get_setting('FRONTEND_BASE_URL')
     ADMIN_CLIENT_ID = get_setting('ADMIN_CLIENT_ID')
     ADMIN_CLIENT_SECRET = get_setting('ADMIN_CLIENT_SECRET')
-    SECRET_KEY = get_setting('SECRET_KEY')
+    SECRET_KEY = get_setting('SECRET_KEY', 'not_secret')
     AUTH_USERNAME = get_setting('AUTH_USERNAME')
     AUTH_PASSWORD = get_setting('AUTH_PASSWORD')
     GOOGLE_OAUTH2_CLIENT_ID = get_setting('GOOGLE_OAUTH2_CLIENT_ID')

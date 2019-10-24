@@ -7,6 +7,7 @@ from flask_wtf.csrf import CSRFProtect, CSRFError
 import textile
 
 from app.clients.api_client import ApiClient
+from app.config import is_running_app_engine
 import requests_toolbelt.adapters.appengine
 
 # Use the App Engine Requests adapter. This makes sure that Requests uses
@@ -32,7 +33,8 @@ def create_app(**kwargs):
 
     application.config.update(kwargs)
 
-    use_gaesession(application)
+    if is_running_app_engine():
+        use_gaesession(application)
 
     init_app(application)
 
