@@ -13,6 +13,7 @@ def get_setting(name, default=None):
     if is_running_app_engine():
         return Settings.get_or_set(name)
     else:
+        print('Running with local env vars')
         return os.environ.get(name, default)
 
 

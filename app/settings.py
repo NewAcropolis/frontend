@@ -5,6 +5,9 @@ import logging
 try:
     from google.appengine.ext import ndb
 except:
+    import sys
+    from mock import Mock
+    ndb = Mock()
     print('Problem importing google.appengine.ext.ndb')
 
 
