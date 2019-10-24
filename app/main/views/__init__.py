@@ -154,7 +154,7 @@ def render_page(template, **kwargs):
     slim_subscription_form = SlimSubscriptionForm()
 
     if slim_subscription_form.validate_on_submit():
-        return redirect(url_for('main.subscription', email=slim_subscription_form.subscription_email.data))
+        return redirect(url_for('main.subscription', email=slim_subscription_form.slim_subscription_email.data))
 
     return render_template(
         template,

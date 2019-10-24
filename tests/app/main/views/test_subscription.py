@@ -10,7 +10,7 @@ class WhenSubmittingSubscriptionForm(object):
         response = client.post(
             url_for('main.index'),
             data={
-                'subscription_email': 'test@test.com',
+                'slim_subscription_email': 'test@test.com',
             },
             follow_redirects=True
         )

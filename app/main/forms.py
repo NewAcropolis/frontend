@@ -4,10 +4,11 @@ from wtforms.validators import DataRequired, Email, ValidationError
 
 
 class SlimSubscriptionForm(FlaskForm):
-    subscription_email = StringField('email', validators=[DataRequired(), Email()])
+    slim_subscription_email = StringField('email', validators=[DataRequired(), Email()])
 
-class SubscriptionForm(SlimSubscriptionForm):
+class SubscriptionForm(FlaskForm):
     subscription_name = StringField('name')
+    subscription_email = StringField('email', validators=[DataRequired(), Email()])
     subscription_marketings = SelectField('marketings')
 
     def setup(self, marketings):

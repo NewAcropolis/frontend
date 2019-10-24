@@ -1,6 +1,7 @@
-from flask import current_app, render_template, request
+from flask import current_app, request
 from app.main.forms import SubscriptionForm
 from app.main import main
+from app.main.views import render_page
 from app import api_client
 
 
@@ -17,26 +18,26 @@ def subscription():
                 subscription_form.subscription_email.data,
                 subscription_form.subscription_marketings.data
             )
-            return render_template(
+            return render_page(
                 'views/subscription.html',
                 subscription_form=subscription_form,
                 done=True,
             )
         except Exception as e:
             current_app.logger.error('Problem subscribing email: %r', e)
-            return render_template(
+            return render_page(
                 'views/subscription.html',
                 subscription_form=subscription_form,
                 error=e.message
             )
     elif subscription_form.errors:
-        return render_template(
+        return render_page(
             'views/subscription.html',
             subscription_form=subscription_form,
             email=subscription_form.subscription_email.data
         )
 
-    return render_template(
+    return render_page(
         'views/subscription.html',
         subscription_form=subscription_form,
         email=request.args.get('email'),

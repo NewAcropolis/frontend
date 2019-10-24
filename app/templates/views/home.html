@@ -226,11 +226,11 @@
             {% if slim_subscription_form %}
             <form action="/" method=post>
               {{ slim_subscription_form.csrf_token }}
-              {{ slim_subscription_form.subscription_email(class="magazine_email", placeholder="Your email address") }}
+              {{ slim_subscription_form.slim_subscription_email(class="magazine_email", placeholder="Your email address") }}
        
               {% if slim_subscription_form.errors %}
                 <div>
-                {% for error in slim_subscription_form.subscription_email.errors %}
+                {% for error in slim_subscription_form.slim_subscription_email.errors %}
                   <div class="error_text">{{ error }}</div>
                 {% endfor %}
                 </div>

@@ -66,10 +66,10 @@
             {% if slim_subscription_form %}
               <form action="/" method=post>
                 {{ slim_subscription_form.csrf_token }}
-                {{ slim_subscription_form.subscription_email(class="subscribe", placeholder="Your email address") }}
-                {% if slim_subscription_form.subscription_email.errors %}
+                {{ slim_subscription_form.slim_subscription_email(class="subscribe", placeholder="Your email address") }}
+                {% if slim_subscription_form.slim_subscription_email.errors %}
                 <div style="height:30px;padding-top:14px;">
-                  <div class="error_text">{{ slim_subscription_form.subscription_email.errors[0] }}</div> 
+                  <div class="error_text">{{ slim_subscription_form.slim_subscription_email.errors[0] }}</div> 
                 </div>
                 {% endif %}
                 <div style="padding-top:10px;">
