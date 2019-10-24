@@ -8,6 +8,7 @@ from oauthlib.oauth2 import TokenExpiredError
 
 from app import api_client
 from app.main import main
+from app.main.forms import ContactForm, SlimSubscriptionForm
 from app.clients.errors import HTTPError
 
 # OAuth endpoints given in the Google API documentation
@@ -144,3 +145,20 @@ def logout():
         )
 
     return redirect(url_for('.index'))
+
+
+def render_page(template, **kwargs):
+    contact_form = ContactForm()
+    contact_form.setup()
+
+    slim_subscription_form = SlimSubscriptionForm()
+
+    if slim_subscription_form.validate_on_submit():
+        return redirect(url_for('main.subscription', email=slim_subscription_form.subscription_email.data))
+
+    return render_template(
+        template,
+        contact_form=contact_form,
+        slim_subscription_form=slim_subscription_form,
+        **kwargs
+    )

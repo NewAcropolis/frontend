@@ -5,20 +5,36 @@
 
 <div class="container-fluid padding">
   <div class="row padding text-center ">
+    {% if done %}
+      Your email has been subscribed, transferring you to the home page
+      <meta http-equiv="refresh" content="5;URL='/'" />
+    {% else %}
     <div class="col-xs-12 col-sm-12 col-md-6">
-       <h2> By clicking subscribe you will receive our magazine and information about our events: </h2><br>
-       <form action="/subscription" method=post>
+       <h4> By clicking subscribe you will receive our magazine and information about our events: </h4><br>
+       {% if error %}
+       <div class="error_text">Failed to process email, please try again later</div>
+       {% endif %}
+      <form action="/subscription" method=post>
         {{ subscription_form.csrf_token }}
-        {{ subscription_form.email(value=email) }}
-        <button type="submit" class="btn btn-outline-success">Subscribe</button>
+        <div class="ml-5">
+          <div class="row p-2">{{ subscription_form.subscription_name(placeholder='Your name', value=subscription_name, size=70) }}</div>
+          <div class="row p-2">{{ subscription_form.subscription_email(placeholder='Your email address', value=email, size=70) }}</div>
+          <div class="row p-2">{{ subscription_form.subscription_marketings }}</div>
+          {% if subscription_form.errors %}
+          <p>
+            {% for error in subscription_form.errors %}
+          <div class="error_text">{{ subscription_form.errors[error][0] }}</div>
+            {% endfor %}
+          </p>
+          {% endif %}
+          <button type="submit" class="btn btn-outline-success">Subscribe</button>
+        </div>
       </form>
-      {% if error %}
-        <li class="error_text">Failed to process email, please try again later</li>
-      {% endif %}
     </div>
     <div class="col-xs-12 col-sm-12 col-md-6">
       <iframe src="/static/pdfs/Website_Privacy_Notice.pdf" width="100%" height="480"></iframe>
     </div>
+    {% endif %}
   </div>
 </div>
 

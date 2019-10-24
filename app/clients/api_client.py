@@ -83,6 +83,9 @@ class ApiClient(BaseAPIClient):
     def get_article(self, id):
         return self.get(url='article/{}'.format(id))
 
+    def get_marketings(self):
+        return self.get(url='marketings')
+
     def get_nice_event_dates(self, events):
         for event in events:
             dates = []
@@ -136,16 +139,20 @@ class ApiClient(BaseAPIClient):
         }
         return self.post(url='user/{}'.format(user_id), data=data)
 
-    def add_subscription_email(self, email):
+    def add_subscription_email(self, name, email, marketing_id):
         data = {
-            'email': email
+            'name': name,
+            'email': email,
+            'marketing_id': marketing_id
         }
-        return self.post(url='subscription', data=data)
+        return self.post(url='member/subscribe', data=data)
 
-    def add_contact_details(self, name):
+    def send_message(self, name, email, reason, message):
         data = {
-            'name': name
+            'name': name,
+            'email': email,
+            'reason': reason,
+            'message': message,
         }
-        #return self.post(url='index', data=data)
-        # return {'message': 'Your message was sent'}
-        return {'error': 'Your message was not sent'}
+
+        return self.post(url='send_message', data=data)

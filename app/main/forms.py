@@ -1,13 +1,42 @@
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, FormField, FieldList, FileField, HiddenField, SelectField, StringField, TextAreaField
-from wtforms.validators import DataRequired, Email
+from wtforms.validators import DataRequired, Email, ValidationError
 
 
-class SubscriptionForm(FlaskForm):
-    email = StringField('email', validators=[DataRequired(), Email()])
+class SlimSubscriptionForm(FlaskForm):
+    subscription_email = StringField('email', validators=[DataRequired(), Email()])
+
+class SubscriptionForm(SlimSubscriptionForm):
+    subscription_name = StringField('name')
+    subscription_marketings = SelectField('marketings')
+
+    def setup(self, marketings):
+        self.subscription_marketings.choices = [
+            (m['id'], m['description']) for m in marketings
+        ]
+        self.subscription_marketings.choices.insert(0, ('', 'How did you hear about us?'))
+        self.subscription_marketings.default = ''
+
+    def validate_subscription_marketings(form, field):
+        if not field.data:
+            raise ValidationError("Please select a marketing option")
+
 
 class ContactForm(FlaskForm):
-    name = StringField('name', validators=[DataRequired()])
+    contact_name = StringField('name', validators=[DataRequired()])
+    contact_email = StringField('email', validators=[DataRequired(), Email()])
+    contact_message = TextAreaField('message', validators=[DataRequired()])
+    contact_reasons = SelectField('reasons', validators=[DataRequired()])
+
+    def setup(self):
+        self.contact_reasons.choices = [
+            ('contact', 'Make contact'),
+            ('bug', 'Report a problem on the website'),
+            ('course', 'Ask about a course'),
+            ('talk', 'Ask about a talk'),
+            ('other', 'Other')
+        ]
+
 
 class UserForm(FlaskForm):
     str_email = StringField()

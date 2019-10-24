@@ -223,16 +223,19 @@
           </div>
         </div>
         <div class="col-xs-12 col-md-4 text-center">
-            {% if subscription_form %}
+            {% if slim_subscription_form %}
             <form action="/" method=post>
-              {{ subscription_form.csrf_token }}
-              <label for="fname"><h5>enter your email address below</h5></label><br>
-              {{ subscription_form.email(class="magazine_email") }}
+              {{ slim_subscription_form.csrf_token }}
+              {{ slim_subscription_form.subscription_email(class="magazine_email", placeholder="Your email address") }}
        
-                {% for error in subscription_form.email.errors %}
-                <li class="error_text">{{ error }}
+              {% if slim_subscription_form.errors %}
+                <div>
+                {% for error in slim_subscription_form.subscription_email.errors %}
+                  <div class="error_text">{{ error }}</div>
                 {% endfor %}
-                <input class="submit_button" type="submit" value="Submit">
+                </div>
+              {% endif %}
+                <div><input class="submit_button" type="submit" value="Subscribe"></div>
             </form>
           {% endif %}
           <br><br><br>

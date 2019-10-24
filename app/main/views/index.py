@@ -1,18 +1,17 @@
 from datetime import datetime
-from flask import current_app, render_template, redirect, url_for, request, jsonify
+from flask import current_app, jsonify, session
+import pytz
 from random import randint
-from app.main import main
 from app import api_client
-from app.main.decorators import setup_subscription_form
+from app.main import main
+from app.main.views import render_page
 from six.moves.html_parser import HTMLParser
 from app.main.forms import ContactForm
 from app.clients.errors import HTTPError
 
 
-
 @main.route('/', methods=['GET', 'POST'])
-@setup_subscription_form
-def index(**kwargs):
+def index():
     future_events = api_client.get_events_in_future(approved_only=True)
     for event in future_events:
         if event['event_type'] == 'Introductory Course':
@@ -34,53 +33,27 @@ def index(**kwargs):
                 event['past'] = True
                 all_events.append(event)
 
-    contact_form = ContactForm()
-
-    return render_template(
+    return render_page(
         'views/home.html',
         main_article=main_article,
         articles=articles,
         all_events=all_events,
-        current_page='',
-        contact_form=contact_form,
-        **kwargs
+        current_page=''
     )
 
 
 @main.route('/about')
-@setup_subscription_form
-def about(**kwargs):
-    contact_form = ContactForm()
-    events = api_client.get_events_in_future(approved_only=True)
-    for event in events:
-        if event['event_type'] == 'Introductory Course':
-            event['carousel_text'] = 'Courses starting {}'.format(event['event_monthyear'])
-
-    articles = api_client.get_articles_summary()
-    index = randint(0, len(articles) - 1)
-    return render_template(
-        'views/about.html',
-        current_page='about',
-        contact_form=contact_form,
-        **kwargs
-    )
+def about():
+    return render_page('views/about.html')
 
 
 @main.route('/resources')
-@setup_subscription_form
-def resources(**kwargs):
-    contact_form = ContactForm()
-    return render_template(
-        'views/resources.html',
-        current_page='resources',
-        contact_form=contact_form,
-        **kwargs
-    )
+def resources():
+    return render_page('views/resources.html')
 
 
 @main.route('/whats-on')
-@setup_subscription_form
-def whats_on(**kwargs):
+def whats_on():
     articles = api_client.get_articles_summary()
     if articles:
         index = randint(0, len(articles) - 1)
@@ -93,63 +66,39 @@ def whats_on(**kwargs):
             event = all_past_events.pop(-1)
             past_events.append(event)
 
-    contact_form = ContactForm()
-
-    return render_template(
+    return render_page(
         'views/whats_on.html',
         current_page='whats-on',
         main_article=articles[index] if articles else None,
         articles=articles,
         future_events=future_events,
         past_events=past_events,
-        contact_form=contact_form,
-        **kwargs
     )
 
 
 @main.route('/what-we-offer')
-@setup_subscription_form
-def what_we_offer(**kwargs):
-    contact_form = ContactForm()
-    return render_template(
-        'views/what_we_offer.html',
-        current_page='what-we-offer',
-        contact_form=contact_form,
-        **kwargs
-    )
+def what_we_offer():
+    return render_page('views/what_we_offer.html')
 
 
 @main.route('/e-shop')
-@setup_subscription_form
-def e_shop(**kwargs):
-    contact_form = ContactForm()
-    return render_template(
-        'views/e-shop.html',
-        current_page='e-shop',
-        contact_form=contact_form,
-        **kwargs
-    )
+def e_shop():
+    return render_page('views/e-shop.html')
 
 
 @main.route('/course_details')
-@setup_subscription_form
-def course_details(**kwargs):
-    return render_template(
-        'views/course_details.html',
-        **kwargs
-    )
+def course_details():
+    return render_page('views/course_details.html')
 
 
 @main.route('/event_details/<uuid:event_id>')
-@setup_subscription_form
 def event_details(event_id, **kwargs):
     event = api_client.get_event_by_id(event_id)
     event['is_future_event'] = is_future_event(event)
 
-    return render_template(
+    return render_page(
         'views/event_details.html',
-        event=event,
-        **kwargs
+        event=event
     )
 
 
@@ -169,12 +118,36 @@ def _unescape_html(items, field_name):
     return items
 
 
-@main.route('/_add_contact_details')
-def _add_contact_details():
-    name = request.args.get('name')
-    if name:
+@main.route('/_send_message', methods=['GET', 'POST'])
+def _send_message():
+    contact_form = ContactForm()
+    contact_form.setup()
+
+    if contact_form.validate_on_submit():
+        current_app.logger.info(
+            'send_message: %s, %s, %s, %s',
+            contact_form.contact_name.data,
+            contact_form.contact_email.data,
+            contact_form.contact_reasons.data,
+            contact_form.contact_message.data
+        )
         try:
-            contact_details = api_client.add_contact_details(name)
-            return jsonify(contact_details)
+            resp = api_client.send_message(
+                name=contact_form.contact_name.data,
+                email=contact_form.contact_email.data,
+                reason=contact_form.contact_reasons.data,
+                message=contact_form.contact_message.data
+            )
+            if 'error' in session:
+                error = session.pop('error')
+                current_app.logger.error(error)
+                tz = pytz.timezone("Europe/London")
+                return jsonify(
+                    {'error': 'Problem sending message at {}, please try again later'.format(
+                        datetime.now(tz).strftime('%H:%M:%S %d/%m/%y'))}
+                )
+            else:
+                return jsonify(resp)
         except HTTPError as e:
             return jsonify({'error': e.message})
+    return jsonify({'errors': contact_form.errors})
