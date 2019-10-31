@@ -103,7 +103,17 @@
 
 {% if contact_form %}
 <script>
+$.urlParam = function (name) {
+  var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                    .exec(window.location.search);
+
+  return (results !== null) ? results[1] || 0 : false;
+}
 $(document).ready(function() {
+  if ($.urlParam('send_message') == 'true') {
+    $('#sendMessageModal').modal('show');
+  }
+
     $('#sendMessageModal').on('shown.bs.modal', function () {
         $('#contact_name').focus();
     })
