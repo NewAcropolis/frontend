@@ -432,7 +432,7 @@ $(function() {
                 elements._file_img.attr('style', 'display:none;');
                 if (data['image_filename']) {
                     elements._file_img.attr('style', 'display:block;width:100px;');
-                    elements._file_img.attr('src', '{{images_url}}' + data['image_filename']);
+                    elements._file_img.attr('src', '{{images_url}}/thumbnail/' + data['image_filename']);
                 }
                 elements._fee.val(data['fee']);
                 elements._conc_fee.val(data['conc_fee']);
@@ -466,7 +466,7 @@ $(function() {
                 console.log(data);
                 if (data['image_filename']) {
                     elements._file_img.attr('style', 'display:block;width:100px;');
-                    elements._file_img.attr('src', '{{images_url}}' + data['image_filename']);
+                    elements._file_img.attr('src', '{{images_url}}/thumbnail/' + data['image_filename']);
                 }
             }
         });
@@ -736,7 +736,7 @@ $(function() {
         $('#event_dates').val(JSON.stringify(event_dates));
         $('#reject_reasons_json').val(JSON.stringify(reject_reasons));
         if ($('#file_img').attr('src'))
-            $('#existing_image_filename').val($('#file_img').attr('src').replace('{{images_url}}', ''));
+            $('#existing_image_filename').val($('#file_img').attr('src').replace('{{images_url}}/thumbnail/', ''));
         $('#pubish').prop('disabled', true);
     }
 
