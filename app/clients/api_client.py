@@ -2,6 +2,7 @@ from datetime import datetime
 from functools import wraps
 
 from app.clients import BaseAPIClient
+from na_common.dates import get_nice_event_dates
 
 
 def only_show_approved_events(func):
@@ -42,7 +43,7 @@ class ApiClient(BaseAPIClient):
         return self.post(url='event/{}'.format(event_id), data=event)
 
     def get_event_by_id(self, event_id):
-        return self.get(url='event/{}'.format(event_id))
+        return self.get_nice_event_date(self.get(url='event/{}'.format(event_id)))
 
     def get_event_types(self):
         return self.get(url='event_types')
@@ -57,7 +58,7 @@ class ApiClient(BaseAPIClient):
 
     @only_show_approved_events
     def get_events_past_year(self):
-        return self.get(url='events/past_year')
+        return self.get_nice_event_dates(self.get(url='events/past_year'))
 
     def add_email(self, email):
         return self.post(url='email', data=email)
@@ -88,25 +89,21 @@ class ApiClient(BaseAPIClient):
 
     def get_nice_event_dates(self, events):
         for event in events:
-            dates = []
-            for event_date in event['event_dates']:
-                _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
-                if _datetime.minute > 0:
-                    time = _datetime.strftime('%-I:%M %p')
-                else:
-                    time = _datetime.strftime('%-I %p')
-                if event['event_type'] == 'Introductory Course':
-                    event['event_monthyear'] = _datetime.strftime('%B %Y')
-                event_date['event_date'] = _datetime.strftime('%Y-%m-%d')
-                dates.append(_datetime.strftime('%Y-%m-%d'))
-                event_date['event_time'] = _datetime.strftime('%H:%M')
-                if not event.get('event_time'):
-                    event['event_time'] = _datetime.strftime('%H:%M')
-                if not event.get('end_time'):
-                    event['end_time'] = event_date.get("end_time")
-                event_date['formatted_event_datetime'] = _datetime.strftime('%a %-d %B at {}'.format(time))
-            event['dates'] = dates
+            event = self.get_nice_event_date(event)
         return events
+
+    def get_nice_event_date(self, event):
+        event['formatted_event_datetimes'] = get_nice_event_dates(event['event_dates'])
+        event['dates'] = self.get_event_dates(event['event_dates'])
+        return event
+
+    def get_event_dates(self, event_dates):
+        dates = []
+        for event_date in event_dates:
+            _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
+            dates.append(_datetime.strftime('%Y-%m-%d'))
+
+        return dates
 
     def _get_events_intro_courses_prioritised(self, events):
         intro_courses_first = []
