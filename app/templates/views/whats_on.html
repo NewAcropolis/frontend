@@ -15,7 +15,7 @@
           <div class="carousel-caption d-md-block">
             <div class="carousel-title">{{ event.title }}</div>
             <div class="carousel-banner">
-              <h3> {{ event.event_type.upper() }}: {{ event.event_dates[0].event_datetime }} </h3>
+              <h3> {{ event.event_type.upper() }}: {{ event.formatted_event_datetimes }} </h3>
               <h5><a href="{{ url_for('main.event_details', event_id=event.id) }}">FIND OUT MORE</a></h5>
             </div>
           </div>
@@ -40,7 +40,7 @@
             <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/standard/{{ event.image_filename }}">
               <div class="card-body">
                 <h4 class="card-title" id="blue_txt">{{ event.event_type }}</h4>
-                <p class="card-text cardtextmulti">{{ event.event_dates[0].event_datetime }}</p>
+                <p class="card-text cardtextmulti">{{ event.formatted_event_datetimes }}</p>
                 <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ event.title }}</a></p>
             </div>
           </div>
@@ -125,7 +125,7 @@
       <div class="giant_past_card_text_padding"></div>
       <div class="giant_past_content">
         <h1>{{ past_events[0].title }}</h1>
-        <h2 class="">{{ past_events[0].event_type }} : {{ past_events[0].event_dates[0].event_datetime }}</h2>
+        <h2 class="">{{ past_events[0].event_type }} : {{ past_events[0].formatted_event_datetimes }}</h2>
         <p><a class="find_out_more_link" href=''><a href="{{ url_for('main.event_details', event_id=past_events[0].id) }}">FIND OUT MORE</a><p>
       </div>
     </div>
@@ -143,7 +143,7 @@
                   <div class="past_corner"><span>Past Event</span></div>
                   <div class="past_card_text_padding">
                   <h4 class="card-title" id="blue_txt">{{ event.event_type }}</h4>
-                  <p class="card-text cardtextmulti">{{ event.event_dates[0].event_datetime }}</p>
+                  <p class="card-text cardtextmulti">{{ event.formatted_event_datetimes }}</p>
                   <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ event.title }}</a></p>
                 </div>
               </div>
