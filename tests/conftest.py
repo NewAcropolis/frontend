@@ -102,7 +102,8 @@ def sample_future_events(mocker):
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-30 19:00"
+                "event_datetime": "2018-12-30 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
@@ -111,7 +112,8 @@ def sample_future_events(mocker):
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-31 19:00"
+                "event_datetime": "2018-12-31 19:00",
+                "end_time": "20:30"
             }],
             "event_state": "approved"
         },
@@ -120,7 +122,8 @@ def sample_future_events(mocker):
             "event_type": "Introductory Course",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2019-01-01 19:00"
+                "event_datetime": "2019-01-01 19:00",
+                "end_time": None
             }],
             "event_monthyear": "January 2019",
             "event_state": "approved"
@@ -130,7 +133,8 @@ def sample_future_events(mocker):
             "event_type": "Workshop",
             "image_filename": "",
             "event_dates": [{
-                "event_datetime": "2019-01-02 19:00"
+                "event_datetime": "2019-01-02 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
@@ -150,7 +154,8 @@ def sample_past_events_for_cards():
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-30 19:00"
+                "event_datetime": "2018-12-30 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
@@ -159,7 +164,8 @@ def sample_past_events_for_cards():
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-31 19:00"
+                "event_datetime": "2018-12-31 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
@@ -168,7 +174,8 @@ def sample_past_events_for_cards():
             "event_type": "Introductory Course",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2019-01-01 19:00"
+                "event_datetime": "2019-01-01 19:00",
+                "end_time": None
             }],
             "event_monthyear": "January 2019",
             "event_state": "approved"
@@ -178,7 +185,8 @@ def sample_past_events_for_cards():
             "event_type": "Workshop",
             "image_filename": "",
             "event_dates": [{
-                "event_datetime": "2019-01-02 19:00"
+                "event_datetime": "2019-01-02 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
@@ -194,7 +202,8 @@ def sample_future_event_for_cards():
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-30 19:00"
+                "event_datetime": "2018-12-30 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },

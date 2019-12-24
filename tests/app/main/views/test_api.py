@@ -169,6 +169,7 @@ class WhenAccessingFutureEventsPage(object):
                     "event_dates": [
                         {
                             "event_datetime": "2019-04-15 19:00",
+                            "end_time": None,
                             "speakers": []
                         }
                     ],
@@ -195,6 +196,7 @@ class WhenAccessingFutureEventsPage(object):
                     "event_dates": [
                         {
                             "event_datetime": "2019-05-15 19:00",
+                            "end_time": None,
                             "speakers": [
                                 {
                                     "name": "Various",
@@ -204,6 +206,7 @@ class WhenAccessingFutureEventsPage(object):
                         },
                         {
                             "event_datetime": "2019-05-26 19:00",
+                            "end_time": None,
                             "speakers": [
                                 {
                                     "name": "Various",
@@ -213,6 +216,7 @@ class WhenAccessingFutureEventsPage(object):
                         },
                         {
                             "event_datetime": "2019-05-03 19:00",
+                            "end_time": None,
                             "speakers": [
                                 {
                                     "name": "Various",
