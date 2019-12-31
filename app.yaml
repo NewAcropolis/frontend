@@ -21,3 +21,17 @@ libraries:
 
 skip_files:
 - app-dev.yaml
+
+# copy this file and create app-dev.yaml, then uncomment env_variables section 
+#
+# env_variables:
+#   SECRET_KEY: "secret_key"
+#   # localhost
+#   API_BASE_URL: "http://localhost:5000/"
+#   ADMIN_CLIENT_ID: "admin"
+#   ADMIN_CLIENT_SECRET: "secret"
+#   IMAGES_URL: "http://images/"
+#   # get google creds
+#   GOOGLE_OAUTH2_CLIENT_ID: "client id"
+#   GOOGLE_OAUTH2_CLIENT_SECRET: "client secret"
+#   GOOGLE_OAUTH2_REDIRECT_URI: "http://localhost:8080/oauth2callback"
