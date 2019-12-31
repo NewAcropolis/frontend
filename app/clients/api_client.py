@@ -87,6 +87,12 @@ class ApiClient(BaseAPIClient):
     def get_article(self, id):
         return self.get(url='article/{}'.format(id))
 
+    def add_magazine(self, magazine):
+        return self.post(url='magazine', data=magazine)
+
+    def update_magazine(self, id, magazine):
+        return self.post(url='magazine/{}'.format(id), data=magazine)
+
     def get_magazine(self, id):
         return self.get(url='magazine/{}'.format(id))
 
