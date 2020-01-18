@@ -11,9 +11,10 @@ def is_running_app_engine():
 
 def get_setting(name, default=None):
     if is_running_app_engine():
-        return Settings.get_or_set(name)
+        setting = Settings.get_or_set(name)
+        return setting if setting != 'NOT SET' else default
     else:
-        print('Running with local env vars')
+        print('Running with local env vars:', name)
         return os.environ.get(name, default)
 
 
@@ -34,6 +35,7 @@ class Config(object):
     PAYPAL_ACCOUNT = get_setting('PAYPAL_ACCOUNT')
     ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'report', 'shop', 'announcement', 'article']
     SUMMARY_LIMIT = 360
+    SESSION_EXPIRY = get_setting('SESSION_EXPIRY', 30)
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
