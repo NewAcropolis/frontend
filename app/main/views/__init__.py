@@ -147,6 +147,13 @@ def logout():
     return redirect(url_for('.index'))
 
 
+@main.route('/_keep_alive', methods=['GET'])
+def keep_alive():
+    api_client.get_info()
+
+    return 'API called'
+
+
 def render_page(template, **kwargs):
     contact_form = ContactForm()
     contact_form.setup()
