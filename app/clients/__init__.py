@@ -74,11 +74,13 @@ class BaseAPIClient(object):
     def request(self, method, url, data=None, params=None):
         current_app.logger.info("API request {} {}".format(method, url))
 
+        # don't set access token for API call to info
+        set_access_token = url != ''
         if not self.base_url:
             current_app.logger.info("No API URL")
             return []
 
-        if not session.get("access_token"):
+        if set_access_token and "access_token" not in session:
             if not self.set_access_token():
                 return []
 
@@ -93,7 +95,7 @@ class BaseAPIClient(object):
                 url,
                 data=payload,
                 params=params,
-                headers={'Authorization': 'Bearer {}'.format(session["access_token"])},
+                headers={'Authorization': 'Bearer {}'.format(session["access_token"])} if set_access_token else {},
                 timeout=30
             )
 
