@@ -7,5 +7,5 @@ from app.main.views import (  # noqa
 )
 
 from app.main.views.admin import (  # noqa
-    admin, events, emails
+    admin, events, emails, magazines
 )

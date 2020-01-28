@@ -74,7 +74,6 @@ def admin_events(selected_event_id=None, api_message=None):
 
         file_request = request.files.get('image_filename')
         if file_request:
-            # filename = secure_filename(file_request.filename)
             file_data = file_request.read()
             file_data_encoded = base64.b64encode(file_data)
 

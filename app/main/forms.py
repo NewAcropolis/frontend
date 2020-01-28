@@ -1,3 +1,5 @@
+import re
+
 from flask_wtf import FlaskForm
 from wtforms import BooleanField, FormField, FieldList, FileField, HiddenField, SelectField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Email, ValidationError
@@ -37,6 +39,31 @@ class ContactForm(FlaskForm):
             ('talk', 'Ask about a talk'),
             ('other', 'Other')
         ]
+
+
+class MagazineForm(FlaskForm):
+    title = StringField('title', validators=[DataRequired()])
+    magazines = SelectField('Magazines')
+    magazine_filename = FileField('Magazine filename')
+    next_issue = HiddenField('Next issue no')
+    existing_magazine_filename = HiddenField('Existing magazine filename')
+
+    def set_magazine_form(self, magazines):
+        MAGAZINE_PATTERN = r'Issue (?P<issue_no>\d+)'
+        match = re.search(MAGAZINE_PATTERN, magazines[0]['title'])
+        if match:
+            issue_no = match.group('issue_no')
+            self.next_issue.data = "Issue %s" % (int(issue_no) + 1)
+
+        self.magazines.choices = [('', 'New magazine')]
+
+        for magazine in magazines:
+            self.magazines.choices.append(
+                (
+                    magazine['id'],
+                    magazine['title']
+                )
+            )
 
 
 class UserForm(FlaskForm):
