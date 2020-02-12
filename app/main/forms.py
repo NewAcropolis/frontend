@@ -47,6 +47,7 @@ class MagazineForm(FlaskForm):
     magazine_filename = FileField('Magazine filename')
     next_issue = HiddenField('Next issue no')
     existing_magazine_filename = HiddenField('Existing magazine filename')
+    topics = TextAreaField('Topics')
 
     def set_magazine_form(self, magazines):
         MAGAZINE_PATTERN = r'Issue (?P<issue_no>\d+)'

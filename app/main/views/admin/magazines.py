@@ -29,6 +29,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
             'magazine_id': form.magazines.data,
             'title': form.title.data,
             'filename': filename,
+            'topics': form.topics.data
         }
 
         file_request = request.files.get('magazine_filename')
@@ -48,6 +49,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
                     api_message = ''
             else:
                 response = api_client.add_magazine(magazine)
+                message = 'magazine added, please a few minutes for upload to complete'
 
             if 'error' in session:
                 errors = session.pop('error')
