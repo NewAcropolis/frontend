@@ -17,6 +17,9 @@
                 <div class='row'>
                     {{form.title(placeholder='Title', size=60)}}
                 </div>
+                <div class='row'>
+                    {{form.topics(placeholder='Topics', rows=8, cols=80)}}
+                </div>
                 <div class='row mt-2'>
                     <img id='magazine_img'>
                 </div>
@@ -42,7 +45,8 @@
             _magazines: $('#magazines'),
             _title: $('#title'),
             _next_issue: $('#next_issue'),
-            _magazine_image: $('#magazine_img')
+            _magazine_image: $('#magazine_img'),
+            _topics: $('#topics')
         };
 
         updateMagazine();
@@ -56,7 +60,8 @@
                 elements._title.val(elements._next_issue.val());
                 elements._magazine_image.attr('style', 'display:none;width:100px;');
                 elements._magazine_image.attr('src', '');
-
+                elements._topics.attr('disabled', true);
+                elements._topics.val('');
                 return;
             }
 
@@ -64,8 +69,12 @@
                 if (data) {
                     elements._magazines.val(data['id']);
                     elements._title.val(data['title']);
-                    elements._magazine_image.attr('style', 'display:block;width:100px;');
-                    elements._magazine_image.attr('src', '{{IMAGES_URL}}thumbnail/pdfs/' + data['filename'] + ".png");
+                    if (!($('#message').val().includes('magazine added'))) {
+                        elements._magazine_image.attr('style', 'display:block;width:100px;');
+                        elements._magazine_image.attr('src', '{{IMAGES_URL}}thumbnail/pdfs/' + data['filename'] + ".png");
+                    }
+                    elements._topics.val(data['topics']);
+                    elements._topics.attr('disabled', false);
                 }
             });
         }
