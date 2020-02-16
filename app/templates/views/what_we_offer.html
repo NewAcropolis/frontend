@@ -1,10 +1,55 @@
 {% extends "base.html" %}
 {% block title %}What we offer{% endblock %}
 {% block content %}
-
+<head>
+  <style>
+    
+      
+      .imgbox {
+          display: grid;
+          height: 100%;
+          
+      }
+      .center-fit {
+          max-width: 100%;
+          max-height: 100vh;
+          margin: auto;
+      }
+      .container {
+          
+          position: relative;
+          max-width: 100%;
+          max-height: 100vh;
+          color: white;
+          padding: 20px;
+          margin: auto;
+      
+      }
+      .container .content {
+          position: absolute;
+          bottom: 20px;
+          left: 20px;
+          background: rgb(0, 0, 0); /* Fallback color */
+          background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
+          color: white;
+          width: 97%;
+          padding: 30px;
+      }
+  </style>
+</head>
   <div class="container-fluid padding">
     <div class="row text-center">
-      <img src="/static/images/courses_banner.png" class="page_header_img">
+        <div class="container">
+          <img src="/static/images/courses_banner.png" class="center-fit">
+            <div class="content">
+              <p style="Margin:0; font:50px; color: white ; text-align: center;">
+               PHILOSOPHIES OF EAST AND WEST<p>
+                 <p style="Margin:0; font:30px; color: yellow ; text-align: center;">
+                  16-week introduction to the major systems of thought from East and West
+                </p>
+              </p>
+            </div>
+        </div>
     </div>
   </div>
 
