@@ -425,6 +425,15 @@ footer{
 }
 
 /* About Page */
+.about_banner{ 
+  position: absolute;
+  bottom:0;
+  left:0;
+  background: rgb(0,0,0); /*Fallback color*/;
+  background: rgba(0,0,0,0.5); /*Black gb with 0.5 opacity*/
+  width: 100%;
+  padding: 40px;
+}
 .about_box{
   border: solid 2px rgba(121, 121, 121, 0.5);
   height: 100%;
@@ -469,7 +478,7 @@ footer{
   width: 100%;
 }
 /* SUBSCIPTION */
-.privacy_policy_iframe {
+.privacy_policy_iframe{
   width: 800;
   height: 800;
 }

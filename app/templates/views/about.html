@@ -7,62 +7,28 @@ Philosophy, in its original meaning, is the love of wisdom and the quest to unde
 Every civilization has passed on to us its knowledge and experience of the essential laws of life. A systematic and comparative study of this vast heritage enables us to discover the universal and timeless ideas that have formed characters, shaped visions of the future and helped men and women to meet the challenges of their time. As a School of Philosophy in the Classical Tradition, we offer a wide-ranging programme of studies designed to provide a holistic education - an education that does not just impart knowledge but also awakens and develops our other human faculties such as love, compassion, imagination, intuition, will power, perseverance, and any others that can help us to overcome our individual and collective problems.<br><br>
 A philosophical education may not lead to the quick, veriﬁable and measurable products we are so accustomed to expect. But it can produce a profound transformation within the individual, and therein lies its value.
 """
-%}<head>
-  <style>
-    
-      
-      .imgbox {
-          display: grid;
-          height: 100%;
-          
-      }
-      .center-fit {
-          max-width: 100%;
-          max-height: 100vh;
-          margin: auto;
-      }
-      .container {
-          
-          position: relative;
-          max-width: 98%;
-          max-height: 100vh;
-          color: white;
-          padding: 20px;
-          margin: auto;
-      
-      }
-      .container .content {
-          position: absolute;
-          bottom: 40px;
-          left: 40px;
-          background: rgb(0, 0, 0); /* Fallback color */
-          background: rgba(0, 0, 0, 0.5); /* Black background with 0.5 opacity */
-          color: #f1f1f1;
-          width: 97%;
-          padding: 75px;
-      }
-  </style>
-</head>
-    <body>
-      <div class="container-fluid padding">
-        <div class="container" style="Margin:20px;">
-          <img src="/static/images/about_us_banner.png" class="center-fit" border="0" style="Margin:0 0 20px 20px; background:rgba(0, 0, 0, 0.5);" />
-            <div class="content">
-            <p style="Margin:0; font:30px; color: white ; text-align: center;">
-              New Acropolis is an international philosophical movement working across comperative philosophical study, culture and working for others through volunteering.
-            </p>
-            </div>
-        </div>
-      </div>
+%}
+<body>
+  <div class="container-fluid padding col-sm-12" 
+  style="height: 500px; background:transparent url('static/images/about_us_banner.png') no-repeat center center /cover">
+    <div class="about_banner">
+      <p class="text-white" style="text-align: left;">
+ New Acropolis is an international philosophical movement working across comperative philosophical study, culture and working for others through volunteering.
+      </p>
+    </div> 
+  </div>
   <div class="container-fluid padding">
     <div class="row topic_details_section">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
         <div class="about_hotspot">
           <img src="/static/images/pyramid.png" class="img-fluid half_screen_img">
-          
           <script>
             function philosophyText() {
-              document.getElementById("about_us_pyramid_text").innerHTML = `{{ philosophyText|safe }}`;
+              document.getElementById("about_us_pyramid_text").innerHTML = `
+Philosophy, in its original meaning, is the love of wisdom and the quest to understand the underlying principles of life. In this sense, we are all philosophers. We all have questions and we all have the intuition that there are answers to be found.<br><br>
+Every civilization has passed on to us its knowledge and experience of the essential laws of life. A systematic and comparative study of this vast heritage enables us to discover the universal and timeless ideas that have formed characters, shaped visions of the future and helped men and women to meet the challenges of their time. As a School of Philosophy in the Classical Tradition, we offer a wide-ranging programme of studies designed to provide a holistic education - an education that does not just impart knowledge but also awakens and develops our other human faculties such as love, compassion, imagination, intuition, will power, perseverance, and any others that can help us to overcome our individual and collective problems.<br><br>
+A philosophical education may not lead to the quick, veriﬁable and measurable products we are so accustomed to expect. But it can produce a profound transformation within the individual, and therein lies its value.
+`;
             } 
           </script>
           <a onclick="philosophyText()">
@@ -75,7 +41,9 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
 
           <script>
             function volunteeringText() {
-              document.getElementById("about_us_pyramid_text").innerHTML = `{{ volunteeringText|safe }}`;
+              document.getElementById("about_us_pyramid_text").innerHTML = `
+VOLUNTEERING Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis est quis fermentum hendrerit. Phasellus faucibus sapien a erat aliquet, quis posuere libero ullamcorper. Donec egestas nec arcu vel sollicitudin. Duis at urna enim. Phasellus eu pharetra nulla. Morbi gravida augue id magna varius consequat. Donec commodo, orci sed pellentesque efficitur, orci magna commodo augue, nec viverra neque magna vel erat
+`;
             } 
           </script>
           <a onclick="volunteeringText()">
@@ -88,7 +56,9 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
 
           <script>
             function cultureText() {
-              document.getElementById("about_us_pyramid_text").innerHTML = `{{ cultureText|safe }}`;
+              document.getElementById("about_us_pyramid_text").innerHTML = `
+CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis est quis fermentum hendrerit. Phasellus faucibus sapien a erat aliquet, quis posuere libero ullamcorper. Donec egestas nec arcu vel sollicitudin. Duis at urna enim. Phasellus eu pharetra nulla. Morbi gravida augue id magna varius consequat. Donec commodo, orci sed pellentesque efficitur, orci magna commodo augue, nec viverra neque magna vel erat
+`;
             } 
           </script>
           <a onclick="cultureText()">
@@ -102,7 +72,11 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
       </div>
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
         <div class="cream_backgroundcolour about_box" id="about_us_pyramid_text">
-            {{ philosophyText|safe }}
+            
+Philosophy, in its original meaning, is the love of wisdom and the quest to understand the underlying principles of life. In this sense, we are all philosophers. We all have questions and we all have the intuition that there are answers to be found.<br><br>
+Every civilization has passed on to us its knowledge and experience of the essential laws of life. A systematic and comparative study of this vast heritage enables us to discover the universal and timeless ideas that have formed characters, shaped visions of the future and helped men and women to meet the challenges of their time. As a School of Philosophy in the Classical Tradition, we offer a wide-ranging programme of studies designed to provide a holistic education - an education that does not just impart knowledge but also awakens and develops our other human faculties such as love, compassion, imagination, intuition, will power, perseverance, and any others that can help us to overcome our individual and collective problems.<br><br>
+A philosophical education may not lead to the quick, veriﬁable and measurable products we are so accustomed to expect. But it can produce a profound transformation within the individual, and therein lies its value.
+
         </div>
       </div>
     </div>
@@ -240,7 +214,46 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
     </div>
   </div>
 
-  {% include "components/contact.html" %}
+  <div class="container-fluid padding cream_backgroundcolour">
+    <div class="row welcome text-center">
+        <div class="col-12">
+        <h1 class="display-4"> CONTACT US </h1>
+        </div>
+    </div>
+</div>
+<div class="container-fluid padding cream_backgroundcolour">
+    <div class="row padding">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+        <a href='https://www.google.com/maps/place/New+Acropolis+Cultural+Association/@51.5449256,-0.1048801,17z/data=!3m1!4b1!4m5!3m4!1s0x48761b64e1e074d7:0x32458fe303edf6e2!8m2!3d51.5449223!4d-0.1026914' target='newwin'>
+            <div class="contactus_padding">
+                <div class="card bg-light">
+                    <img class="card-img-top_contact img-fluid" src="/static/images/map.png">
+                </div>
+            </div>
+        </a>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+        <div class="contactus_text">
+            <br><h5 id="footer_title_txt"><b>NEW ACROPOLIS UK</b></h5>
+            <h5><b>Address:</b></h5>
+            <p>19 Compton Terrace,</p>
+            <p>London, N1 2UN</p>
+            <h5><b>Telephone:</b></h5>
+            <p>0207 359 0059</p>
+            <h5><b>Nearest tube:</b></h5>
+            <p>Highbury & Islington,</p>
+            <p>Victoria Line</p>
+        </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+        <div class="contactus_padding">
+            <div class="card bg-light">
+                <img class="card-img-top_contact img-fluid" src="/static/images/home-school-entrance.png">
+            </div>
+        </div>
+        </div>
+    </div>
+</div> 
 
   <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script type="text/javascript">
@@ -251,6 +264,203 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
      });
    });
   </script>
+</body>
+
+</div>
+      <footer>
+  <div class="text-center text-md-left">
+    <div class="row text-center text-md-left">
+      <div class="col-md-4 col-lg-4 col-xl-4">
+        <h6 class="text-uppercase mb-4 font-weight-bold">NEW ACROPOLIS UK</h6>
+        <p id="yellow_txt">Address:</p>
+        <p>19 Compton Terrace,</p>
+        <p>London, N1 2UN</p>
+        <p id="yellow_txt">Telephone:</p>
+        <p>0207 359 0059</p>
+        <p id="yellow_txt">Nearest tube:</p>
+        <p>Highbury & Islington,</p>
+        <p>Victoria Line</p><br>
+        
+        <a href="#" data-toggle="modal" data-target="#sendMessageModal"><p id="yellow_txt">SEND US A MESSAGE</p></a>
+     
+        <div class="modal fade" id="sendMessageModal" tabindex="-1" role="dialog" aria-labelledby="sendMessageModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="sendMessageModalLabel">Send us a message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body pb-0">
+                  
+                  <form id='contact_form' action="/" method=post>
+                    <input id="csrf_token" name="csrf_token" type="hidden" value="ImFlYTYyNjM5NjYzMWJlY2RkMWMxZDAyMTZjZjdmYTQ5Yjc0Y2IzY2Mi.XksNtg.CKPe5Jt5wpOvjbkEWAQny_wghbI">
+                    <div class="form-group">
+                      <input id="contact_name" name="contact_name" placeholder="Your name" required size="60" type="text" value="">
+                    </div>
+                    <div class="form-group">
+                        <input id="contact_email" name="contact_email" placeholder="Your email address" required size="60" type="text" value="">
+                    </div>
+                    <div class="form-group">
+                        <select id="contact_reasons" name="contact_reasons" required><option value="contact">Make contact</option><option value="bug">Report a problem on the website</option><option value="course">Ask about a course</option><option value="talk">Ask about a talk</option><option value="other">Other</option></select>
+                    </div>
+                    <div class="form-group" style="line-height: normal;">
+                        <textarea cols="60" id="contact_message" name="contact_message" placeholder="Your message" required rows="10"></textarea>
+                    </div>
+                    <div id='contact_errors' class='d-none' style='line-height:normal;'></div>
+                    <div id='send_message_response' class='d-none'></div>
+                  </form>
+                
+              </div>
+              <div class="modal-footer pt-2">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="send_message" type="submit" class="btn btn-outline-success">Send message</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <a id='send_message_icon' data-toggle="modal" data-target="#sendMessageModal" href="#email" class="footer_icon_padding"><img class="footer_icons" src='/static/images/email.png'></a>
+          <a href="https://www.instagram.com/newacropolisuk/" class="footer_icon_padding"><img class="footer_icons" src='/static/images/instagram.png'></a>
+          <a href="https://www.facebook.com/newacropolisuk/" class="footer_icon_padding"><img class="footer_icons" src='/static/images/facebook.png'></a>
+          <a href="https://www.youtube.com/user/nuevacropolisin/featured"><img class="footer_icons" src='/static/images/youtube.png'></a>
+        </div>
+      </div>
+      <div class="col-md-3 text-center">
+        <div>
+          <img src="/static/images/home-image-magazine.png" class="footer_magazine"><br><br>
+          <div class="magazine_form_padding">
+            
+              <form action="/" method=post>
+                <input id="csrf_token" name="csrf_token" type="hidden" value="ImFlYTYyNjM5NjYzMWJlY2RkMWMxZDAyMTZjZjdmYTQ5Yjc0Y2IzY2Mi.XksNtg.CKPe5Jt5wpOvjbkEWAQny_wghbI">
+                <input class="subscribe" id="slim_subscription_email" name="slim_subscription_email" placeholder="Your email address" required type="text" value="">
+                
+                <div style="padding-top:10px;">
+                  <input class="submit_button" type="submit" value="Subscribe">
+                </div>
+              </form>
+            
+          </div>
+        </div>
+      </div>
+
+      <hr class="w-100 clearfix d-md-none">
+      <div class="col-md-4 col-lg-4 col-xl-5">
+        <div class="empty_space d-none d-md-block"></div>
+        <p class="text-xs-center text-lg-right text-md-right">FAQ page</p><br>
+        <p class="text-xs-center text-lg-right text-md-right"><a class="privacy_policy" href="/static/pdfs/Website_Privacy_Notice.pdf" target="_blank">Privacy Policy</a></p><br>
+        <p class="text-xs-center text-lg-right text-md-right">Reg. Charity No. 1110140</p><br>
+        <p class="text-xs-center text-lg-right text-md-right"><a href="https://www.acropolis.org/en/" id="bright_yellow_txt" >NEW ACROPOLIS International</a></p>
+        <div class="empty_space d-none d-md-block"></div>
+        <div class="footnav">
+          <a href="/about">About</a>
+          <a href="/what-we-offer">What we offer</a>
+          <a href="/whats-on">Whats on</a>
+          <a href="/resources">Resources</a>
+          <a href="/e-shop" id="bright_yellow_txt">E-shop</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+$.urlParam = function (name) {
+  var results = new RegExp('[\?&]' + name + '=([^&#]*)')
+                    .exec(window.location.search);
+
+  return (results !== null) ? results[1] || 0 : false;
+}
+$(document).ready(function() {
+  if ($.urlParam('send_message') == 'true') {
+    $('#sendMessageModal').modal('show');
+  }
+
+    $('#sendMessageModal').on('shown.bs.modal', function () {
+        $('#contact_name').focus();
+    })
+
+    $('#sendMessageModal').on('hide.bs.modal', function () {
+      $('#send_message_response').addClass('d-none');
+      $('#contact_errors').addClass('d-none');
+      $('#contact_name').val('');
+      $('#contact_email').val('');
+      $('#contact_message').val('');
+      $('#send_message').prop('disabled', false);
+  })
+
+    $('#send_message').on('click', function(e) {
+      var url = "/_send_message"; // send the form data here.
+      _data = $('#contact_form').serialize();
+      $('#contact_errors').html('');
+      console.log(_data);
+      $.ajax({
+          type: "POST",
+          url: url,
+          data: _data, // serializes the form's elements.
+          success: function (data) {
+              console.log(data)  // display the returned data in the console.
+              if (data) {
+                if (data['errors']) {
+                  console.log('errors: ' + Object.keys(data['errors']));
+                  $('#contact_errors').removeClass('d-none');
+                  $('#contact_errors').html('');
+                  for (i=0; i<Object.keys(data['errors']).length; i++){
+                    $('#contact_errors').append('<div>' + Object.keys(data['errors'])[i].substring(8) + ': ' + data['errors'][Object.keys(data['errors'])[i]][0] + '</div>');
+                  }
+                }
+                else {
+                  $('#send_message_response').removeClass('d-none');
+                  if (data['error']) {
+                    $('#send_message_response').text(data['error']);
+                  } else {
+                    $('#send_message_response').text("Your message has been sent");
+                    $('#send_message').prop('disabled', true);
+                    setTimeout(function() { $('#sendMessageModal').modal('hide'); }, 5000);
+                  }
+                }
+              }
+            }
+      });
+      e.preventDefault(); // block the traditional submission of the form.
+    });
+
+    
+
+    // Inject our CSRF token into our AJAX request.
+    $.ajaxSetup({
+      beforeSend: function(xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+          xhr.setRequestHeader("X-CSRFToken", "ImFlYTYyNjM5NjYzMWJlY2RkMWMxZDAyMTZjZjdmYTQ5Yjc0Y2IzY2Mi.XksNtg.CKPe5Jt5wpOvjbkEWAQny_wghbI")
+        }
+      }
+    })
+    
+});
+</script>
+
+      
+      <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+      <script>
+      window.cookieconsent.initialise({
+        "palette": {
+          "popup": {
+            "background": "#216942",
+            "text": "#b2d192"
+          },
+          "button": {
+            "background": "#afed71"
+          }
+        },
+        "theme": "edgeless",
+        "content": {
+          "href": "/static/pdfs/Website_Privacy_Notice.pdf"
+        }
+      });
+      </script>
 </body>
 
 {% endblock %}
