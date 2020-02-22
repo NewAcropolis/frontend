@@ -107,11 +107,15 @@
             </div>
         </div>
         
-        {% if form.errors %}
+        {% if form.errors or errors %}
+        <div id='errors'>
+            {% if form.errors %}
             <div class='text-danger'>{{ form.errors }}</div>
-        {% endif %}
-        {% if errors %}
+            {% endif %}
+            {% if errors %}
             <div class='text-danger'>{{ errors }}</div>
+            {% endif %}
+        </div>
         {% endif %}
         <hr>
         <div class="justify-content-end">
@@ -302,6 +306,9 @@
         }
 
         $('#emails').on('change', function() {
+            {% if form.errors or errors %}
+            $('#errors').attr('style', 'display:none;');
+            {% endif %}
             updateEmail();
         });
 
