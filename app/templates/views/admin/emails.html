@@ -355,7 +355,7 @@
                 send['magazine_id'] = email_json['magazine_id'];
             }
 
-            var preview = window.open("{{API_BASE_URL}}email/preview?data=" + encodeURIComponent(JSON.stringify(send)));
+            var preview = window.open("{{API_BASE_URL}}/email/preview?data=" + encodeURIComponent(JSON.stringify(send)));
             setTimeout(function() {
                 preview.postMessage(send, '*');
             }, 1000);
