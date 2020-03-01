@@ -5,6 +5,7 @@
   </button>
   <span style="color:white;font-family:'AvenirNext-Medium',Helvetica,Arial,serif">
     {% if get_email() %}
+    <a style='color:white' href='/admin'>Admin home</a><br>
     <a style='color:white' href='/logout'>Logout</a> {{ get_email() }}
     {% endif %}
   </span>
