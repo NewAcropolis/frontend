@@ -49,7 +49,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
                     api_message = ''
             else:
                 response = api_client.add_magazine(magazine)
-                message = 'magazine added, please a few minutes for upload to complete'
+                message = 'magazine added, please wait a few minutes for the upload to complete'
 
             if 'error' in session:
                 errors = session.pop('error')
