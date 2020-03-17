@@ -39,7 +39,7 @@ class Config(object):
     RECAPTCHA_USE_SSL = False
     RECAPTCHA_PUBLIC_KEY = get_setting('RECAPTCHA_PUBLIC_KEY')
     RECAPTCHA_PRIVATE_KEY = get_setting('RECAPTCHA_PRIVATE_KEY')
-    RECAPTCHA_OPTIONS= {'theme':'black'}
+    RECAPTCHA_OPTIONS = {'theme': 'black'}
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None

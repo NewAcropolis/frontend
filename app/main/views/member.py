@@ -1,4 +1,4 @@
-from flask import current_app, request
+from flask import request
 from app.main.forms import UnsubscribeForm, UpdateMemberForm
 from app.main import main
 from app.main.views import render_page
