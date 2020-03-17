@@ -1,6 +1,6 @@
 import re
 
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import BooleanField, FormField, FieldList, FileField, HiddenField, SelectField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Email, ValidationError
 
@@ -238,3 +238,15 @@ class EmailForm(FlaskForm):
                     )
                 )
             )
+
+
+class UnsubscribeForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired()])
+    recaptcha = RecaptchaField()
+
+
+class UpdateMemberForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
+    verify_email = StringField('Verify Email', validators=[DataRequired()])
+    recaptcha = RecaptchaField()
