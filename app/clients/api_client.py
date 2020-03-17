@@ -99,6 +99,19 @@ class ApiClient(BaseAPIClient):
     def get_magazines(self):
         return self.get(url='magazines')
 
+    def get_member_from_unsubcode(self, unsubcode):
+        return self.get(url='member/{}'.format(unsubcode))
+
+    def unsubscribe_member(self, unsubcode):
+        return self.post(url='member/unsubscribe/{}'.format(unsubcode), data=None)
+
+    def update_member(self, unsubcode, name, email):
+        data = {
+            'name': name,
+            'email': email
+        }
+        return self.post(url='member/update/{}'.format(unsubcode), data=data)
+
     def get_marketings(self):
         return self.get(url='marketings')
 
