@@ -36,6 +36,10 @@ class Config(object):
     ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'report', 'shop', 'announcement', 'article']
     SUMMARY_LIMIT = 360
     SESSION_EXPIRY = get_setting('SESSION_EXPIRY', 30)
+    RECAPTCHA_USE_SSL = False
+    RECAPTCHA_PUBLIC_KEY = get_setting('RECAPTCHA_PUBLIC_KEY')
+    RECAPTCHA_PRIVATE_KEY = get_setting('RECAPTCHA_PRIVATE_KEY')
+    RECAPTCHA_OPTIONS= {'theme':'black'}
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
