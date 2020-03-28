@@ -1,6 +1,6 @@
 import re
 
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import BooleanField, FormField, FieldList, FileField, HiddenField, SelectField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Email, ValidationError
 
@@ -222,19 +222,34 @@ class EmailForm(FlaskForm):
             )
 
         self.events.choices = []
-        for event in events:
-            event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
-            parts = [
-                "{}/{}".format(date_parts[1].lstrip('0'), date_parts[0].lstrip('0'))
-                for date_parts in [date.split('-') for date in event_dates]
-            ]
-            self.events.choices.append(
-                (
-                    event['id'],
-                    u'{} - {} - {}'.format(
-                        ", ".join(parts),
-                        event['event_type'],
-                        event['title']
+        if events:
+            for event in events:
+                event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
+                parts = [
+                    "{}/{}".format(date_parts[1].lstrip('0'), date_parts[0].lstrip('0'))
+                    for date_parts in [date.split('-') for date in event_dates]
+                ]
+                self.events.choices.append(
+                    (
+                        event['id'],
+                        u'{} - {} - {}'.format(
+                            ", ".join(parts),
+                            event['event_type'],
+                            event['title']
+                        )
                     )
                 )
-            )
+        else:
+            self.events.choices.append(('', ''))
+
+
+class UnsubscribeForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired()])
+    recaptcha = RecaptchaField()
+
+
+class UpdateMemberForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
+    verify_email = StringField('Verify Email', validators=[DataRequired()])
+    recaptcha = RecaptchaField()

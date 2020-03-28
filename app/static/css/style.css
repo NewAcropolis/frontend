@@ -74,6 +74,10 @@ html, body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.top-buffer div {
+  margin-top:20px;
+}
+
 /* HEADER */
 
 .navbar{

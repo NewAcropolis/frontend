@@ -34,10 +34,12 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
 
     form.set_emails_form(future_emails, email_types, future_events)
 
+    if form.events.data not in [k for k, v in form.events.choices]:
+        form.events.data = None
+
     if form.validate_on_submit():
         email = {
             'email_id': form.emails.data,
-            'event_id': form.events.data,
             'details': form.details.data,
             'extra_txt': form.extra_txt.data,
             'email_state': form.email_state.data,
@@ -45,6 +47,9 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
             'send_starts_at': form.send_starts_at.data,
             'expires': form.expires.data,
         }
+
+        if form.email_types.data == 'event':
+            email.update(event_id=form.events.data)
 
         try:
             message = None
@@ -100,7 +105,8 @@ def _get_email():
                         ", ".join(parts),
                         event['event_type'],
                         event['title']
-                    )
+                    ),
+                    'has_expired': event['has_expired']
                 }
         elif email[0]['email_type'] == 'magazine':
             magazine = api_client.get_magazine(email[0]['magazine_id'])
