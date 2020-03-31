@@ -1,4 +1,5 @@
 from datetime import datetime
+from flask import request
 from random import randint
 from app import api_client
 from app.main import main
@@ -30,8 +31,25 @@ def whats_on():
 
 
 @main.route('/event_details/<uuid:event_id>')
-def event_details(event_id, **kwargs):
-    event = api_client.get_event_by_id(event_id)
+@main.route('/event_details')
+def event_details(event_id=None, **kwargs):
+    if not event_id:
+        event_id = request.args.get('eventid')
+        if not event_id:
+            return render_page(
+                'errors/errors.html',
+                message=['<h3>No event id set</h3>']
+            )
+        else:
+            event = api_client.get_event_by_old_id(event_id)
+
+        if not event:
+            return render_page(
+                'errors/errors.html',
+                message=['<h3>No event found</h3>']
+            )
+    else:
+        event = api_client.get_event_by_id(event_id)
     event['is_future_event'] = is_future_event(event)
 
     return render_page(
