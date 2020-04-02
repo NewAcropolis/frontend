@@ -22,7 +22,6 @@ def whats_on():
 
     return render_page(
         'views/whats_on.html',
-        current_page='whats-on',
         main_article=articles[index] if articles else None,
         articles=articles,
         future_events=future_events,
@@ -42,14 +41,15 @@ def event_details(event_id=None, **kwargs):
             )
         else:
             event = api_client.get_event_by_old_id(event_id)
-
-        if not event:
-            return render_page(
-                'errors/errors.html',
-                message=['<h3>No event found</h3>']
-            )
     else:
         event = api_client.get_event_by_id(event_id)
+
+    if not event:
+        return render_page(
+            'errors/errors.html',
+            message=['<h3>No event found</h3>']
+        )
+
     event['is_future_event'] = is_future_event(event)
 
     return render_page(
@@ -59,8 +59,7 @@ def event_details(event_id=None, **kwargs):
 
 
 def is_future_event(event):
-    is_future = False
     for date in event['event_dates']:
         if date['event_datetime'] >= str(datetime.today()):
-            is_future = True
-    return is_future
+            return True
+    return False
