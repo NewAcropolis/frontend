@@ -11,19 +11,19 @@
   </span>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
-      <li {%- if current_page == "about" %} class="nav-item active"{% endif %}>
+      <li {% if request.endpoint == "main.about" %} class="nav-item active"{% endif %}>
           <a class="nav-link" href="/about">About</a>
       </li>
-      <li {%- if current_page == "what-we-offer" %} class="nav-item active"{% endif %}>
+      <li {% if request.endpoint == "main.what_we_offer" %} class="nav-item active"{% endif %}>
           <a class="nav-link" href="/what-we-offer">What we offer</a>
       </li>
-      <li {%- if current_page == "whats-on" %} class="nav-item active"{% endif %}>
+      <li {% if request.endpoint == "main.whats_on" %} class="nav-item active"{% endif %}>
           <a class="nav-link" href="/whats-on">Whats on</a>
       </li>
-      <li {%- if current_page == "resources" %} class="nav-item active"{% endif %}>
+      <li {% if request.endpoint == "main.resources" %} class="nav-item active"{% endif %}>
           <a class="nav-link" href="/resources">Resources</a>
       </li>
-      <li {%- if current_page == "e-shop" %} class="nav-item active"{% endif %}>
+      <li {% if request.endpoint == "main.e_shop" %} class="nav-item active"{% endif %}>
           <a id="yellow_txt" class="nav-link" href="/e-shop">E-shop</a>
       </li>
     </ul>

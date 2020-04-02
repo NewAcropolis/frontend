@@ -45,6 +45,11 @@ class ApiClient(BaseAPIClient):
     def get_event_by_id(self, event_id):
         return self.get_nice_event_date(self.get(url='event/{}'.format(event_id)))
 
+    def get_event_by_old_id(self, event_id):
+        event = self.get(url='legacy/event_handler?eventid={}'.format(event_id))
+        if event:
+            return self.get_nice_event_date(event)
+
     def get_event_types(self):
         return self.get(url='event_types')
 

@@ -1,5 +1,6 @@
 import os
 import sys
+from uuid import uuid4
 
 from bs4 import BeautifulSoup
 
@@ -98,6 +99,7 @@ def invalid_log_in(mocker):
 def sample_future_events(mocker):
     events = [
         {
+            "id": str(uuid4()),
             "title": "Test title 1",
             "event_type": "Talk",
             "image_filename": "event.png",
@@ -108,6 +110,7 @@ def sample_future_events(mocker):
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 2",
             "event_type": "Talk",
             "image_filename": "event.png",
@@ -118,6 +121,7 @@ def sample_future_events(mocker):
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 3",
             "event_type": "Introductory Course",
             "image_filename": "event.png",
@@ -129,6 +133,7 @@ def sample_future_events(mocker):
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 4",
             "event_type": "Workshop",
             "image_filename": "",
@@ -194,22 +199,27 @@ def sample_past_events_for_cards():
 
     return events
 
-@pytest.fixture
-def sample_future_event_for_cards():
-    events = [
-        {
-            "title": "Test title 1",
-            "event_type": "Talk",
-            "image_filename": "event.png",
-            "event_dates": [{
-                "event_datetime": "2018-12-30 19:00",
-                "end_time": None
-            }],
-            "event_state": "approved"
-        },
-    ]
 
-    return events
+@pytest.fixture
+def sample_future_event(mocker):
+    event = {
+        "id": str(uuid4()),
+        "title": "Test title 1",
+        "event_type": "Talk",
+        "image_filename": "event.png",
+        "event_dates": [{
+            "event_datetime": "2018-12-30 19:00",
+            "end_time": None
+        }],
+        "event_state": "approved"
+    }
+
+    return event
+
+
+@pytest.fixture
+def sample_future_event_for_cards(sample_future_event):
+    return [sample_future_event]
 
 
 @pytest.fixture

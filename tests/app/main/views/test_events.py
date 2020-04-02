@@ -59,3 +59,49 @@ class WhenAccessingEventsPage(object):
 
         for i, li in enumerate(selected_div.select('li a')):
             assert li.text == expected_link_text[i]
+
+
+class WhenAccessingEventsDetailsPage(object):
+    def it_shows_an_event_detail(self, mocker, client, sample_future_event):
+        mocker.patch('app.main.views.index.api_client.get_event_by_id', return_value=sample_future_event)
+
+        response = client.get(url_for(
+            'main.event_details',
+            event_id=sample_future_event['id']
+        ))
+        page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
+        title = page.select_one('.event_title')
+
+        assert title.text == sample_future_event['title']
+
+    def it_shows_an_event_detail_for_legacy_links(self, mocker, client, sample_future_event):
+        mocker.patch('app.main.views.index.api_client.get_event_by_old_id', return_value=sample_future_event)
+
+        response = client.get(url_for(
+            'main.event_details',
+            eventid=sample_future_event['id']
+        ))
+        page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
+        title = page.select_one('.event_title')
+
+        assert title.text == sample_future_event['title']
+
+    def it_shows_an_error_message_when_no_event_id(self, mocker, client):
+        response = client.get(url_for(
+            'main.event_details'
+        ))
+        page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
+        message = page.select_one('#content h3')
+
+        assert message.text == 'No event id set'
+
+    def it_shows_an_error_message_when_event_not_found(self, mocker, client):
+        mocker.patch('app.main.views.index.api_client.get_event_by_old_id', return_value=None)
+        response = client.get(url_for(
+            'main.event_details',
+            eventid='1'
+        ))
+        page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
+        message = page.select_one('#content h3')
+
+        assert message.text == 'No event found'

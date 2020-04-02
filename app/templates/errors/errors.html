@@ -3,10 +3,12 @@
 
 {% block content %}
 
-{% for m in message %}
-<p class='m-1'>
-    {{m}}
-</p>
-{% endfor %}
+<div class='m-3'>
+    {% for m in message %}
+    <div class='m-1'>
+        {{m|safe}}
+    </div>
+    {% endfor %}
+</div>
 
 {% endblock %}
