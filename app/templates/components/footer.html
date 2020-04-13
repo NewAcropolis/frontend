@@ -39,6 +39,7 @@
                     <div class="form-group" style="line-height: normal;">
                         {{ contact_form.contact_message(placeholder='Your message', rows=10, cols=60) }}
                     </div>
+                    <div>{{ contact_form.contact_recaptcha }}</div>
                     <div id='contact_errors' class='d-none' style='line-height:normal;'></div>
                     <div id='send_message_response' class='d-none'></div>
                   </form>
