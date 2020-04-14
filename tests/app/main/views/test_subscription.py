@@ -73,8 +73,11 @@ class WhenSubmittingSubscriptionForm(object):
         )
 
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
-        error = page.find("div", {"class": "error_text"}).text.strip()
-        assert error == "Failed to process email, please try again later"
+
+        errors = page.find_all("div", {"class": "error_text"})
+
+        assert errors[0].text.strip() == "Failed to process subscription:"
+        assert errors[1].text.strip() == "API error"
 
     def it_submits_to_api(self, client, mocker, sample_future_events, sample_articles_summary, sample_marketings):
 
