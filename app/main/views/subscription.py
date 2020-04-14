@@ -1,4 +1,4 @@
-from flask import current_app, request
+from flask import current_app, request, session
 from app.main.forms import SubscriptionForm
 from app.main import main
 from app.main.views import render_page
@@ -21,13 +21,14 @@ def subscription():
             return render_page(
                 'views/subscription.html',
                 subscription_form=subscription_form,
-                done=True,
+                done=True if 'error' not in session else False,
             )
         except Exception as e:
             current_app.logger.error('Problem subscribing email: %r', e)
             return render_page(
                 'views/subscription.html',
                 subscription_form=subscription_form,
+                email=subscription_form.subscription_email.data,
                 error=e.message
             )
     elif subscription_form.errors:
