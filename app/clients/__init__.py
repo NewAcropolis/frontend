@@ -125,7 +125,10 @@ class BaseAPIClient(object):
                 )
             )
             # raise api_error
-            session['error'] = "Error code: {}, message: {}".format(api_error.status_code, api_error.message)
+            session['error'] = {
+                'code': api_error.status_code,
+                'message': api_error.message or response.json()
+            }
             return []
         finally:
             elapsed_time = time.time() - start_time
