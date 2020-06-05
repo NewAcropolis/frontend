@@ -431,8 +431,9 @@ footer{
   left:0;
   background: rgb(0,0,0); /*Fallback color*/;
   background: rgba(0,0,0,0.5); /*Black gb with 0.5 opacity*/
-  width: 100%;
-  padding: 40px;
+  max-width: 100%;
+  padding-bottom: 40px;
+  font-size: x-large;
 }
 .about_box{
   border: solid 2px rgba(121, 121, 121, 0.5);
