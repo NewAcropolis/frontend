@@ -18,7 +18,8 @@
     <div class="col-xs-12 col-sm-12 col-md-6">
        <h4> By clicking subscribe you will receive our magazine and information about our events: </h4><br>
        {% if error %}
-       <div class="error_text">Failed to process email, please try again later</div>
+       <div class="error_text">Failed to process subscription:</div>
+       <div class="error_text">{{ error }}</div>
        {% endif %}
       <form action="/subscription" method=post>
         {{ subscription_form.csrf_token }}
@@ -33,6 +34,7 @@
             {% endfor %}
           </p>
           {% endif %}
+          <div class="row pb-2 pl-2">{{ subscription_form.recaptcha }}</div>
           <button type="submit" class="btn btn-outline-success">Subscribe</button>
         </div>
       </form>

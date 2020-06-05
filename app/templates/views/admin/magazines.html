@@ -25,7 +25,8 @@
                 </div>
                 <div class="row">{{form.magazine_filename}}</div>
                 {{form.existing_magazine_filename}}
-        </div>
+                <div class="row"><a id='email_link' href=''>Magazine email</a></div>
+            </div>
         </div>
         
         <div id='form_errors' class='text-danger' style='display:{% if form.errors %}block{% else %}none{% endif%}'>{{ form.errors }}</div>
@@ -62,6 +63,7 @@
                 elements._magazine_image.attr('src', '');
                 elements._topics.attr('disabled', true);
                 elements._topics.val('');
+                $('#email_link').attr('style', 'display:none');
                 return;
             }
 
@@ -71,10 +73,12 @@
                     elements._title.val(data['title']);
                     if (!($('#message').val().includes('magazine added'))) {
                         elements._magazine_image.attr('style', 'display:block;width:100px;');
-                        elements._magazine_image.attr('src', '{{IMAGES_URL}}thumbnail/pdfs/' + data['filename'] + ".png");
+                        elements._magazine_image.attr('src', '{{IMAGES_URL}}/thumbnail/pdfs/' + data['filename'] + ".png");
                     }
                     elements._topics.val(data['topics']);
                     elements._topics.attr('disabled', false);
+                    $('#email_link').attr('style', 'display:block');
+                    $('#email_link').attr('href', '/admin/emails/magazine/' + data['id'])
                 }
             });
         }

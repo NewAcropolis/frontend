@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Change member{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid padding">
+    <div class="row pl-1">
+        <div class="col-xs-12 top-buffer">
+            {% if message or error %}
+              {% if message %}
+            <div class='text-success'>
+              {% else %}
+              <div class='text-danger'>
+              {% endif %}
+                {{ message or error }}
+            </div>
+            {% endif %}
+            {% if not message %}
+            <form action="/member/update/{{unsubcode}}" method=post>{{ update_member_form.csrf_token }}
+                {% if member_name %}
+                    <div class='pb-2'>{{ member_name }}, enter your new details below:</div>
+                    <div>{{ update_member_form.name(placeholder='Enter your name', size=30) }}</div>
+                    <div>{{ update_member_form.email(placeholder='Enter your email', size=40) }}</div>
+                    <div>{{ update_member_form.verify_email(placeholder='Enter your old email to verify the change', size=40) }}</div>
+                {% else %}
+                    No member found to update
+                {% endif %}                
+                <div class="justify-content-end">
+                    <div class="pb-2 pl-2">{{ update_member_form.recaptcha }}</div>
+                    <button type="submit" class="btn btn-outline-warning">Change details</button>
+                </div>        
+            </form>
+            {% endif %}
+        </div>
+    </div>        
+</div>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Unubscribe{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid padding">
+    <div class="row pl-3 text-center">
+        <div class="col-xs-12">
+            {% if message or error %}
+              {% if message %}
+            <div class='text-success'>
+              {% else %}
+              <div class='text-danger'>
+              {% endif %}
+                {{ message or error }}
+            </div>
+            {% endif %}
+            {% if not message %}
+            <form action="/member/unsubscribe/{{unsubcode}}" method=post>{{ unsubscribe_form.csrf_token }}
+                {% if member_name %}
+                    <div class='pb-2'>{{member_name }} are you sure you want to unsubscribe? <br>
+                    {{ unsubscribe_form.email(placeholder='Please enter your email to unsubscribe', size=40) }}</div>
+                {% else %}
+                    No member found to unsubscribe
+                {% endif %}
+                <div class="justify-content-end">
+                    <div class="pb-2 pl-2">{{ unsubscribe_form.recaptcha }}</div>
+                    <button type="submit" class="pt-2 btn btn-outline-warning">Unsubscribe</button>
+                </div>        
+            </form>
+            {% endif %}
+        </div>
+    </div>        
+</div>
+
+{% endblock %}

@@ -52,14 +52,21 @@
                 <div class="row">
                     <div class='col-s-6 text-left'>
                         <div>Details</div>
-                        {{form.details(cols=60)}}
+                        {{form.details(rows=10, cols=60)}}
                     </div>
                 </div>
             </div>
             <div id='magazine_block'>
                 <div class="row">
                     <div class='col-s-6 text-left'>
-                        Magazine
+                        <div id='magazine_title'></div>
+                        <div id='magazine_image'></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-s-6 text-left'>
+                        <div>Please preview this email using the button below</div>
+                        <div>Update the topics in <a id='magazine_link'>magazine admin</a></div>
                     </div>
                 </div>
             </div>
@@ -92,12 +99,23 @@
                 </div>
             </div>
         </div>
+        <div id="no_magazine_email">
+            <div class="row">
+                <div class='col-s-6'>
+                    Magazine emails are created when a <a href="/admin/magazines">new magazine</a> is uploaded
+                </div>
+            </div>
+        </div>
         
-        {% if form.errors %}
+        {% if form.errors or errors %}
+        <div id='errors'>
+            {% if form.errors %}
             <div class='text-danger'>{{ form.errors }}</div>
-        {% endif %}
-        {% if errors %}
+            {% endif %}
+            {% if errors %}
             <div class='text-danger'>{{ errors }}</div>
+            {% endif %}
+        </div>
         {% endif %}
         <hr>
         <div class="justify-content-end">
@@ -139,6 +157,7 @@
 <script charset="utf-8" type="text/javascript">
     var events = [];
     var event_id = '';
+    var has_expired = false;
     var email_json = null;
     $(function() {
         var elements = {
@@ -173,40 +192,48 @@
             var send = {
                 email: elements._emails.val()
             };
+            has_expired = false;
 
-            for (i=0; i<elements._events[0].length; i++){
-                found = false;
-                for (j=0; j<events.length; j++) {
-                    if (events[j]['value'] == elements._events[0].options[i].value) {
-                        found = true;
-                        break;
+            if (elements._email_types.val() == 'event') {
+                for (i=0; i<elements._events[0].length; i++){
+                    found = false;
+                    for (j=0; j<events.length; j++) {
+                        if (events[j]['value'] == elements._events[0].options[i].value) {
+                            found = true;
+                            break;
+                        }
                     }
-                }
-                if (found) continue;
+                    if (found) continue;
 
-                events.push(
-                    {
-                        'name': elements._events[0].options[i].text,
-                        'value': elements._events[0].options[i].value
-                    });
+                    events.push(
+                        {
+                            'name': elements._events[0].options[i].text,
+                            'value': elements._events[0].options[i].value
+                        });
+                }
             }
 
             if (!elements._emails.val()) {
-                elements._emails_sent_counts.attr('style', 'display:none;');
-                expires = moment(new Date()).add(14, 'days').format("YYYY-MM-DD");
-                elements._expires.datepicker("setDate", expires);
                 update_for_email_state('new');
-
                 event_id = '';
                 email_json = null;
 
-                $.getJSON("{{ url_for('main._get_event_dates', date_type='send') }}", send, function(data) {
-                    if (data) {
-                        elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
-                    }
-                });    
+                if (elements._email_types.val() == 'magazine') {
+                    setDisplayBlocks();
+                }
+                else if (elements._email_types.val() == 'event') {
+                    elements._emails_sent_counts.attr('style', 'display:none;');
+                    expires = moment(new Date()).add(14, 'days').format("YYYY-MM-DD");
+                    elements._expires.datepicker("setDate", expires);
 
-                updateEvents();
+                    $.getJSON("{{ url_for('main._get_event_dates', date_type='send') }}", send, function(data) {
+                        if (data) {
+                            elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
+                        }
+                    });
+
+                    updateEvents();
+                }
                 return;
             }
 
@@ -214,10 +241,22 @@
                 if (data) {
                     console.log(data);
                     email_json = data;
-                    update_for_email_state(data['email_state']);
                     elements._email_types.val(data['email_type']);
-                    elements._emails_sent_counts.attr('style', 'display:block;');
-                    if (data['email_type'] == 'event') {
+                    if (data['email_type'] == 'magazine') {
+                        elements._emails_sent_counts.attr('style', 'display:block;');
+                        elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
+                        elements._expires.datepicker("setDate", data['expires']);
+
+                        event_id = '';
+
+                        $('#magazine_title').text(data['magazine']['title']);
+                        $('#magazine_image').html('<img src="{{IMAGES_URL}}/standard/pdfs/' + data['magazine']['filename'] + '.png">');
+                        $('#magazine_link').attr('href', '/admin/magazines/' + data['magazine_id']);
+
+                        setDisplayBlocks();
+                    }
+                    else if (data['email_type'] == 'event') {
+                        elements._emails_sent_counts.attr('style', 'display:block;');
                         var found = false;
                         for (i=0; i<events.length; i++) {
                             if (events[i]['value'] == data['event']['value']) {
@@ -231,21 +270,23 @@
                                 'value': data['event']['value']
                             });
                         }
+                        has_expired = data['event']['has_expired']
 
                         elements._events.val(data['event_id']);
                         elements._details.val(data['details']);
                         elements._extra_txt.val(data['extra_txt']);
                         elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
                         elements._expires.datepicker("setDate", data['expires']);
-                        elements._emails_sent_counts.html(
-                            '<span class="text-success">success: ' + data['emails_sent_counts']['success'] + '</span> - ' +
-                            '<span class="text-danger">failed: ' + data['emails_sent_counts']['failed'] + '</span> - ' +
-                            '<span class="text-primary">total to send: ' + data['emails_sent_counts']['total_active_members'] + '</span>'
-                        );
                         event_id = data['event_id'];
 
                         updateEvents();
                     }
+                    elements._emails_sent_counts.html(
+                        '<span class="text-success">success: ' + data['emails_sent_counts']['success'] + '</span> - ' +
+                        '<span class="text-danger">failed: ' + data['emails_sent_counts']['failed'] + '</span> - ' +
+                        '<span class="text-primary">total to send: ' + data['emails_sent_counts']['total_active_members'] + '</span>'
+                    );
+                    update_for_email_state(data['email_state']);
                 }
             });
         }
@@ -267,6 +308,9 @@
         }
 
         $('#emails').on('change', function() {
+            {% if form.errors or errors %}
+            $('#errors').attr('style', 'display:none;');
+            {% endif %}
             updateEmail();
         });
 
@@ -301,13 +345,19 @@
 
         $('#preview').on('click', function() {
             var send = {
-                'event_id': $('#events').val(),
                 'details': $('#details').val(),
                 'extra_txt': $('#extra_txt').val(),
                 'email_type': $('#email_types').val() 
             }
 
-            var preview = window.open("{{API_BASE_URL}}email/preview?data=" + encodeURIComponent(JSON.stringify(send)));
+            if (send['email_type'] == 'event') {
+                send['event_id'] = $('#events').val();
+            }
+            else if (send['email_type'] == 'magazine') {
+                send['magazine_id'] = email_json['magazine_id'];
+            }
+
+            var preview = window.open("{{API_BASE_URL}}/email/preview?data=" + encodeURIComponent(JSON.stringify(send)));
             setTimeout(function() {
                 preview.postMessage(send, '*');
             }, 1000);
@@ -326,12 +376,19 @@
                 case 'rejected': css = 'bg-danger text-white'; break;
                 case 'approved': css = 'bg-success text-white'; break;
             }
-            $('#status_bar').attr('class', base_css + css);
-            $('#status_bar').text(email_state);
+            if (has_expired) {
+                $('#status_bar').text('Preview only, event has finished');
+                $('#status_bar').attr('class', base_css + 'bg-info text-white');
+            }
+            else {
+                $('#status_bar').attr('class', base_css + css);
+                $('#status_bar').text(email_state);
+            }
+            $('#draft').prop('disabled', has_expired);
             {% if is_admin_user() %}
-                $('#rejectBtn').prop('disabled', $.inArray( email_state, [ "draft", "new" ] ) >= 0);
-                $('#ready').prop('disabled', email_state == 'ready');
-                $('#send').prop('disabled', email_state != 'ready');
+                $('#rejectBtn').prop('disabled', has_expired || $.inArray( email_state, [ "draft", "new" ] ) >= 0);
+                $('#ready').prop('disabled', has_expired || email_state == 'ready');
+                $('#send').prop('disabled', has_expired || email_state != 'ready');
             {% endif %}
         }
 
@@ -355,16 +412,25 @@
         }
 
         function setDisplayBlocks() {
-            if (elements._emails.val() == '' && elements._email_types.val() == 'event' && elements._events[0].value == '') {
+            if (elements._emails.val() == '') {
                 $("#has_email").attr('style', 'display:none;');
-                $("#no_email").attr('style', 'display:block;');
+                if (elements._email_types.val() == 'magazine') {
+                    $("#no_email").attr('style', 'display:none;');
+                    $("#no_magazine_email").attr('style', 'display:block;');
+                }
+                else {
+                    $("#no_magazine_email").attr('style', 'display:none;');
+                    $("#no_email").attr('style', 'display:block;');
+                }
+                $('#events_block').attr('style', 'display:none;');
+                $('#magazine_block').attr('style', 'display:none;');
+                $('#announcement_block').attr('style', 'display:none;');
                 elements._email_types.prop('disabled', false);
             }
             else {
                 elements._events.prop('disabled', elements._emails.val() != '');
                 elements._email_types.prop('disabled', elements._emails.val() != '');
                 if (elements._events.val() == '') {
-                    alert('test:' + elements._events.val() + ':');
                     $("#has_event").attr('style', 'display:none;');
                     $("#no_event").attr('style', 'display:block;');
                 }
@@ -375,6 +441,7 @@
 
                 $("#has_email").attr('style', 'display:block;');
                 $("#no_email").attr('style', 'display:none;');
+                $("#no_magazine_email").attr('style', 'display:none;');
                 if ($('#email_types').val() == 'event') {
                     $('#events_block').attr('style', 'display:block;');
                     $('#magazine_block').attr('style', 'display:none;');

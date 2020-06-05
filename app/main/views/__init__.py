@@ -163,6 +163,10 @@ def render_page(template, **kwargs):
     if slim_subscription_form.validate_on_submit():
         return redirect(url_for('main.subscription', email=slim_subscription_form.slim_subscription_email.data))
 
+    if 'error' in session and 'error' not in kwargs:
+        error = session.pop('error')
+        kwargs['error'] = error['message']['error']
+
     return render_template(
         template,
         contact_form=contact_form,

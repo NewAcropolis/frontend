@@ -149,7 +149,9 @@ def init_app(app):
     def handle_csrf(err):
         app.logger.warning('csrf.error_message: {}'.format(err))
         app.logger.warning(
-            'csrf.invalid_token: Aborting request, user_id: {}'.format(session['user']['id'])
+            'csrf.invalid_token: Aborting request, user_id: {}'.format(
+                session['user']['id'] if 'user' in session else None
+            )
         )
 
         resp = make_response(render_template(

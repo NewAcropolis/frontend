@@ -45,6 +45,11 @@ class ApiClient(BaseAPIClient):
     def get_event_by_id(self, event_id):
         return self.get_nice_event_date(self.get(url='event/{}'.format(event_id)))
 
+    def get_event_by_old_id(self, event_id):
+        event = self.get(url='legacy/event_handler?eventid={}'.format(event_id))
+        if event:
+            return self.get_nice_event_date(event)
+
     def get_event_types(self):
         return self.get(url='event_types')
 
@@ -98,6 +103,19 @@ class ApiClient(BaseAPIClient):
 
     def get_magazines(self):
         return self.get(url='magazines')
+
+    def get_member_from_unsubcode(self, unsubcode):
+        return self.get(url='member/{}'.format(unsubcode))
+
+    def unsubscribe_member(self, unsubcode):
+        return self.post(url='member/unsubscribe/{}'.format(unsubcode), data=None)
+
+    def update_member(self, unsubcode, name, email):
+        data = {
+            'name': name,
+            'email': email
+        }
+        return self.post(url='member/update/{}'.format(unsubcode), data=data)
 
     def get_marketings(self):
         return self.get(url='marketings')

@@ -9,25 +9,37 @@ from app.main.forms import EmailForm
 
 
 @main.route('/admin/emails', methods=['GET', 'POST'])
+@main.route('/admin/emails/magazine/<uuid:magazine_id>', methods=['GET', 'POST'])
 @main.route('/admin/emails/<uuid:selected_email_id>', methods=['GET', 'POST'])
 @main.route('/admin/events/<uuid:selected_event_id>/<api_message>', methods=['GET', 'POST'])
-def admin_emails(selected_email_id=None, api_message=None):
+def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
+    errors = []
+
     future_emails = api_client.get_latest_emails()
+    if magazine_id:
+        for e in future_emails:
+            if e['magazine_id'] == str(magazine_id):
+                selected_email_id = e['id']
+
+        if not selected_email_id:
+            errors = "No matching magazine email found"
+
     email_types = api_client.get_email_types()
     future_events = api_client.get_events_in_future()
 
     session['emails'] = future_emails
     session['future_events'] = future_events
 
-    errors = []
     form = EmailForm()
 
     form.set_emails_form(future_emails, email_types, future_events)
 
+    if form.events.data not in [k for k, v in form.events.choices]:
+        form.events.data = None
+
     if form.validate_on_submit():
         email = {
             'email_id': form.emails.data,
-            'event_id': form.events.data,
             'details': form.details.data,
             'extra_txt': form.extra_txt.data,
             'email_state': form.email_state.data,
@@ -35,6 +47,9 @@ def admin_emails(selected_email_id=None, api_message=None):
             'send_starts_at': form.send_starts_at.data,
             'expires': form.expires.data,
         }
+
+        if form.email_types.data == 'event':
+            email.update(event_id=form.events.data)
 
         try:
             message = None
@@ -73,11 +88,6 @@ def admin_emails(selected_email_id=None, api_message=None):
 def _get_email():
     email = [e for e in session['emails'] if e['id'] == request.args.get('email')]
     if email:
-        email[0]['emails_sent_counts'] = {
-            'success': 5,
-            'failed': 2,
-            'total_active_members': 10
-        }
         if email[0]['email_type'] == 'event':
             event = [e for e in session['future_events'] if e['id'] == request.args.get('event')]
             if not event:
@@ -95,8 +105,15 @@ def _get_email():
                         ", ".join(parts),
                         event['event_type'],
                         event['title']
-                    )
+                    ),
+                    'has_expired': event['has_expired']
                 }
+        elif email[0]['email_type'] == 'magazine':
+            magazine = api_client.get_magazine(email[0]['magazine_id'])
+            email[0]['magazine'] = {
+                'title': magazine['title'],
+                'filename': magazine['filename'],
+            }
         return jsonify(email[0])
     return ''
 
