@@ -114,3 +114,4 @@ environment.sh
 app-dev.yaml
 client-secret.json
 google_init.sh
+secrets
