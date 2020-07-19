@@ -16,7 +16,7 @@ def whats_on():
     past_events = []
     all_past_events = api_client.get_events_past_year()
     if all_past_events:
-        while len(past_events) < 3:
+        while len(past_events) < 3 and all_past_events:
             event = all_past_events.pop(-1)
             past_events.append(event)
 
