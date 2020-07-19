@@ -28,7 +28,7 @@ def index():
     if len(all_events) < 3:
         past_events = api_client.get_events_past_year()
         if past_events:
-            while len(all_events) < 3:
+            while len(all_events) < 3 and past_events:
                 event = past_events.pop(-1)
                 event['past'] = True
                 all_events.append(event)
