@@ -165,7 +165,7 @@ def render_page(template, **kwargs):
 
     if 'error' in session and 'error' not in kwargs:
         error = session.pop('error')
-        kwargs['error'] = error['message']['error']
+        kwargs['error'] = error['message']['error'] if isinstance(error['message'], dict) else error['message']
 
     return render_template(
         template,
