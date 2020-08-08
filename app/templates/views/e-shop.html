@@ -1,6 +1,18 @@
 {% extends "base.html" %}
 {% block title %}E-shop{% endblock %}
 
+{% block extra_head %}
+<style>
+.rotateimg45 {
+  -webkit-transform:rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+</style>
+{% endblock %}
+
 {% block content %}
 
 <body>
@@ -9,18 +21,9 @@
             <img src="/static/images/eshop_banner.png">
         </div>
     </div>
-    <div class="container-fluid padding yellow_background">
-        <div class="row text-center padding">
-            <div class="col-lg-12">
-                <ul class="list-horizontal">
-                    <b>SPECIAL OFFER</b>
-                    <li>Buy TWO books for the price of ONE! Offer valid until Sunday 23 February</li>
-                </ul>
-            </div>
-        </div>
-    </div>
     <div id="content">
         <div class="cream_backgroundcolour">
+            {% if all_events %}
             <div class="container-fluid padding">
                 <div class="row welcome text-center">
                     <div class="col-sm-12">
@@ -32,71 +35,32 @@
             </div>
             <div class="container-fluid padding text-center">
                 <div class="row padding">
-
+                    {% for event in all_events %}
                     <div class="col-md-4 col-sm-6">
-                        <div class="card cardmulti bg-light">
-                            <img class="card-img-top cardimgtopmulti"
-                                src="http://preview.kentsang.co.uk/images//standard/2019/brain1.jpg">
-
-                            <div class="card-body past_card_padding cream_backgroundcolour">
-                                <div class="past_corner"><span>Past Event</span></div>
-                                <div class="past_card_text_padding">
-
-                                    <h4 class="card-title" id="blue_txt">Talk</h4>
-                                    <p class="card-text cardtextmulti">Thu 31 of October - 7 PM</p>
-                                    <p class="card-text cardtextmulti dark_grey_txt"><a
-                                            href="/event_details/28b429ef-95e5-4f0e-90a9-82fd50e834d5">The Mystery
-                                            Behind the Brain</a></p>
-                                </div>
-
-                            </div>
+                      <div class="card cardmulti bg-light">
+                        <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/standard/{{ event.image_filename }}">
+                        {% if event.get('past') %}
+                          <div class="card-body past_card_padding cream_backgroundcolour">
+                          <div class="past_corner"><span>Past Event</span></div>
+                          <div class="past_card_text_padding">
+                        {% else %}
+                          <div class="card-body">
+                        {% endif %}
+                          <h4 class="card-title" id="blue_txt">{{ event.event_type }}</h4>
+                          <p class="card-text cardtextmulti">{{ event.formatted_event_datetimes }}</p>
+                          <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ event.title }}</a></p>
+                        {% if event.get('past') %}
+                          </div>
+                        {% endif %}
                         </div>
+                      </div>
                     </div>
-                    <div class="col-md-4 col-sm-6">
-                        <div class="card cardmulti bg-light">
-                            <img class="card-img-top cardimgtopmulti"
-                                src="http://preview.kentsang.co.uk/images//standard/2019/brain1.jpg">
-                            <div class="card-body past_card_padding cream_backgroundcolour">
-                                <div class="past_corner"><span>Past Event</span></div>
-                                <div class="past_card_text_padding">
-
-                                    <h4 class="card-title" id="blue_txt">Talk</h4>
-                                    <p class="card-text cardtextmulti">Tue 6 of August, Sat 7 of September - 7 PM</p>
-                                    <p class="card-text cardtextmulti dark_grey_txt"><a
-                                            href="/event_details/27c93ad8-71a3-4775-9506-da9e9f17a2df">The Mystery
-                                            Behind the Brain</a></p>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4 col-sm-6">
-                        <div class="card cardmulti bg-light">
-                            <img class="card-img-top cardimgtopmulti"
-                                src="http://preview.kentsang.co.uk/images//standard/2019/philosophy-of-play-alternative2.jpg">
-
-                            <div class="card-body past_card_padding cream_backgroundcolour">
-                                <div class="past_corner"><span>Past Event</span></div>
-                                <div class="past_card_text_padding">
-
-                                    <h4 class="card-title" id="blue_txt">Talk</h4>
-                                    <p class="card-text cardtextmulti">Wed 31 of July, Fri 1 of November, Fri 10 of
-                                        January - 7 PM</p>
-                                    <p class="card-text cardtextmulti dark_grey_txt"><a
-                                            href="/event_details/c3bdce5a-53db-4eb6-9f94-5284b4e24b8e">Philosophy of
-                                            Play</a></p>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
+                  {% endfor %}
 
                 </div>
             </div>
-        </div>    
+            {% endif %} 
+        </div>   
     </div>
             
         <div class="container-fluid padding">
@@ -119,15 +83,15 @@
                         <div class="col-xs-12 col-sm-6 col-md-4">
                             <a data-target="#modalIMG" data-toggle="modal" href="#"
                                 class="color-gray-darker td-hover-none">
-                                <img class="card-img-top card_img_size" src="/static/images/home-image-magazine.png">
+                                <img class="card-img-top card_img_size rotateimg45" src="/static/images/home-image-magazine.png">
                             </a>
                             <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG"
                                 role="dialog" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
                                     <div class="modal-content modal-content-magazine">
                                         <div class="modal-body modal-body-magazine mb-0 p-0">
-                                            <a href="/static/images/home-image-magazine.png" download><img
-                                                    src="/static/images/home-image-magazine.png" style="width:100%"></a>
+                                            <a href="/static/images/home-image-magazine.png" download>
+                                                <img src="/static/images/home-image-magazine.png" style="width:100%"></a>
                                         </div>
                                         <div class="modal-footer modal-footer-magazine">
                                             <div>
@@ -153,57 +117,5 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid padding">
-            <div class="row welcome text-center">
-                <div class="col-12">
-                    <h1 class="display-4">
-                        <p style="display:inline" class="text-info">NEW ACROPOLIS </p>BOOKS
-                    </h1>
-                </div>
-            </div>
-        </div>
-        <div class="cream_backgroundcolour">
-            <div class="container-fluid padding">
-                    <div class="row no-gutters" style="text-align: center;">
-                        <div class="col-md-1">
-                            <img src="/static/images/alchemist.png" class="card-img">
-                        </div>
-                        <div class="col-md-9">
-                            <div class="card-body" id="main_article">
-                                <h2 class="dark_grey_txt" style="text-align: left;">THE ALCHEMIST</h2>
-                                <p style="text-align: left;" class="light_text">by Angel Livraga Rizzi</p>
-                                <p style="text-align: left;" class="light_text">Set in the times of the Spanish Inquisition,
-                                    this historical novel describes the secret life of an esoteric lodge in the darkest times of the Counter-Reformation.
-                                    Amidst the constant dangers of discovery and potential torture and execution, 
-                                    Pablo SimOn, a young aspirant to the Mysteries, learns about the universe as a living being and begins to discover another universe within himself.
-                                    Travelling to the East, he studies with a spiritual teacher who helps him to develop his inner powers. On his return,
-                                    a meeting with the Renaissance philosopher Giordano Bruno - the philosopher of fire - leads him to another fateful encounter - with his destiny.
-                                    The Alchemist is a fast-paced, exciting tale of suspense and drama; a deep insight into the politico-religious reality of the Counter-Reformation and Renaissance Europe - and,
-                                    most of all, an inspiring and profoundly moving account of the timeless and universal attempt to remember that we are gods. 
-                                    <a href='/article/226b43a7-91ac-4502-8528-db025276e49f'>BUY IT NOW</a></p>
-                            </div>
-                        </div>
-                        
-                    <div class="col-md-2" style="margin: auto;">
-                        <button type="button" class="btn btn-warning">
-                            <P>BROWSE</P>AND BUY BOOKS</p>HERE
-                        </button>
-                    </div>
-                    </div>
-                </div>
-        </div>
-        <div class="container-fluid padding yellow_background">
-            <div class="container-fluid padding">
-                <div class="row welcome text-center">
-                    <div class="col-sm-12">
-                        <h1 class="display-4">
-                            <p style="display:inline" class="text-info">MORE </p>RESOURCES</p>
-                            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                        </h1>
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </body>
 {% endblock %}

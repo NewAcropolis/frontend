@@ -20,6 +20,9 @@
       <li {% if request.endpoint == "main.whats_on" %} class="nav-item active"{% endif %}>
           <a class="nav-link" href="/whats-on">Whats on</a>
       </li>
+      <li {% if request.endpoint == "main.magazines" %} class="nav-item active"{% endif %}>
+        <a class="nav-link" href="/magazines">Magazines</a>
+    </li>
       <li {% if request.endpoint == "main.resources" %} class="nav-item active"{% endif %}>
           <a class="nav-link" href="/resources">Resources</a>
       </li>
