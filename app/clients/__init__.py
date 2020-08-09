@@ -52,7 +52,8 @@ class BaseAPIClient(object):
                 auth_url,
                 data=json.dumps(auth_payload),
                 headers={'Content-Type': 'application/json'},
-                allow_redirects=False
+                allow_redirects=False,
+                timeout=60
             )
             auth_response.raise_for_status()
         except (requests.RequestException, requests.Timeout) as e:
