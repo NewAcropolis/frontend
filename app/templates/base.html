@@ -31,6 +31,7 @@
       <div id="content">{% block content %}{% endblock %}</div>
       {% include "components/footer.html" %}
       {% if session.get('error') %}<div class='m-1'>{{ session['error']}}</div>{% endif %}
+      {% if error %}<div class='m-1'>{{ error }}</div>{% endif %}
       <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
       <script>
       window.cookieconsent.initialise({
