@@ -26,7 +26,6 @@ class Config(object):
     ADMIN_CLIENT_ID = get_setting('ADMIN_CLIENT_ID')
     ADMIN_CLIENT_SECRET = get_setting('ADMIN_CLIENT_SECRET')
     SECRET_KEY = get_setting('SECRET_KEY', 'not_secret')
-    SERVER_NAME = get_setting('SERVER_NAME')
     AUTH_USERNAME = get_setting('AUTH_USERNAME')
     AUTH_PASSWORD = get_setting('AUTH_PASSWORD')
     GOOGLE_OAUTH2_CLIENT_ID = get_setting('GOOGLE_OAUTH2_CLIENT_ID')
@@ -44,6 +43,7 @@ class Config(object):
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
+    WTF_CSRF_SSL_STRICT = False
 
 
 class Development(Config):
