@@ -8,7 +8,10 @@ from app import api_client
 from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import EventForm
+from app.main.views import render_page
+from app.main.views.events import is_future_event
 
+from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
 def is_admin_user():
     user = session['user']
@@ -146,11 +149,10 @@ def preview_event():
     venue = api_client.get_venue_by_id(data['venue_id'])
 
     data['venue'] = venue
+    data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'])
+    data['is_future_event'] = is_future_event(data)
 
-    return render_template(
-        'views/admin/preview.html',
-        images_url=current_app.config['IMAGES_URL'],
-        events=[data],
-        api_base_url=api_client.base_url,
-        paypal_account=current_app.config['PAYPAL_ACCOUNT']
+    return render_page(
+        'views/event_details.html',
+        event=data
     )
