@@ -3,6 +3,7 @@
 
 {% if user_has_permissions('magazine') %}
 <div class="container pb-3 text-right" style="width: 800px;">
+    <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
     <form class="form" id="magazines_form" method="post" enctype="multipart/form-data">{{ form.csrf_token }}
         <div class="row">
             <div class='ml-3 col-12'>
@@ -30,7 +31,6 @@
         </div>
         
         <div id='form_errors' class='text-danger' style='display:{% if form.errors %}block{% else %}none{% endif%}'>{{ form.errors }}</div>
-        <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
         <div id='message' class='text-success pb-3' style='display:{% if message %}block{% else %}none{% endif%}'>{{message}}</div>
         <hr>
         <div class="justify-content-end">

@@ -12,6 +12,16 @@
 
 {% if user_has_permissions('email') %}
 <div class="container pb-3 text-right" style="width: 800px;">
+    {% if form.errors or errors %}
+    <div id='errors'>
+        {% if form.errors %}
+        <div class='text-danger'>{{ form.errors }}</div>
+        {% endif %}
+        {% if errors %}
+        <div class='text-danger'>{{ errors }}</div>
+        {% endif %}
+    </div>
+    {% endif %}
     <form class="form" id="emails_form" method="post">{{ form.csrf_token }}
         {{form.email_state}}
         {{form.events_emailed}}
@@ -107,16 +117,6 @@
             </div>
         </div>
         
-        {% if form.errors or errors %}
-        <div id='errors'>
-            {% if form.errors %}
-            <div class='text-danger'>{{ form.errors }}</div>
-            {% endif %}
-            {% if errors %}
-            <div class='text-danger'>{{ errors }}</div>
-            {% endif %}
-        </div>
-        {% endif %}
         <hr>
         <div class="justify-content-end">
             <button id='preview' type="submit" class="btn btn-outline-info">Preview</button>
