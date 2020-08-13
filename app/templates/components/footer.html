@@ -60,9 +60,10 @@
           <a href="https://www.youtube.com/user/nuevacropolisin/featured"><img class="footer_icons" src='/static/images/youtube.png'></a>
         </div>
       </div>
+      {% if latest_magazine %}
       <div class="col-md-3 text-center">
         <div>
-          <img src="/static/images/home-image-magazine.png" class="footer_magazine"><br><br>
+          <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" class="footer_magazine"><br><br>
           <div class="magazine_form_padding">
             {% if slim_subscription_form %}
               <form action="/" method=post>
@@ -81,6 +82,7 @@
           </div>
         </div>
       </div>
+      {% endif %}
 
       <hr class="w-100 clearfix d-md-none">
       <div class="col-md-4 col-lg-4 col-xl-5">

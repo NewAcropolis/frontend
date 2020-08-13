@@ -268,6 +268,14 @@ def sample_marketings(mocker):
 
 
 @pytest.fixture
+def sample_latest_magazine(mocker):
+    magazine = {"filename": "latest_magazine.pdf"}
+
+    mocker.patch('app.clients.api_client.ApiClient.get_latest_magazine', return_value=magazine)
+    return magazine
+
+
+@pytest.fixture
 def mock_sessions(mocker, session_dict={}):
     mocker.patch('app.session', session_dict)
     mocker.patch('app.clients.session', session_dict)

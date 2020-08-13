@@ -16,7 +16,8 @@ class WhenAccessingEventsPage(object):
 
     def it_should_show_in_events_past_and_future_events_in_cards(
         self, mocker, client,
-        sample_articles_summary, sample_future_event_for_cards, sample_past_events_for_cards, sample_marketings
+        sample_articles_summary, sample_future_event_for_cards, sample_past_events_for_cards, sample_marketings,
+        sample_latest_magazine
     ):
         mocker.patch('app.main.views.index.api_client.get_events_in_future', return_value=sample_future_event_for_cards)
         mocker.patch('app.main.views.index.api_client.get_events_past_year', return_value=sample_past_events_for_cards)
@@ -32,7 +33,8 @@ class WhenAccessingEventsPage(object):
         assert len(future_events) == 1
 
     def it_should_show_giant_past_event(
-        self, mocker, client, sample_articles_summary, sample_future_event_for_cards, sample_past_events_for_cards
+        self, mocker, client, sample_articles_summary, sample_future_event_for_cards, sample_past_events_for_cards,
+        sample_latest_magazine
     ):
         mocker.patch('app.main.views.index.api_client.get_events_in_future', return_value=sample_future_event_for_cards)
         mocker.patch('app.main.views.index.api_client.get_events_past_year', return_value=sample_past_events_for_cards)
@@ -62,7 +64,7 @@ class WhenAccessingEventsPage(object):
 
 
 class WhenAccessingEventsDetailsPage(object):
-    def it_shows_an_event_detail(self, mocker, client, sample_future_event):
+    def it_shows_an_event_detail(self, mocker, client, sample_future_event, sample_latest_magazine):
         mocker.patch('app.main.views.index.api_client.get_event_by_id', return_value=sample_future_event)
 
         response = client.get(url_for(
@@ -74,7 +76,7 @@ class WhenAccessingEventsDetailsPage(object):
 
         assert title.text == sample_future_event['title']
 
-    def it_shows_an_event_detail_for_legacy_links(self, mocker, client, sample_future_event):
+    def it_shows_an_event_detail_for_legacy_links(self, mocker, client, sample_future_event, sample_latest_magazine):
         mocker.patch('app.main.views.index.api_client.get_event_by_old_id', return_value=sample_future_event)
 
         response = client.get(url_for(
@@ -86,7 +88,7 @@ class WhenAccessingEventsDetailsPage(object):
 
         assert title.text == sample_future_event['title']
 
-    def it_shows_an_error_message_when_no_event_id(self, mocker, client):
+    def it_shows_an_error_message_when_no_event_id(self, mocker, client, sample_latest_magazine):
         response = client.get(url_for(
             'main.event_details'
         ))
@@ -95,7 +97,7 @@ class WhenAccessingEventsDetailsPage(object):
 
         assert message.text == 'No event id set'
 
-    def it_shows_an_error_message_when_event_not_found(self, mocker, client):
+    def it_shows_an_error_message_when_event_not_found(self, mocker, client, sample_latest_magazine):
         mocker.patch('app.main.views.index.api_client.get_event_by_old_id', return_value=None)
         response = client.get(url_for(
             'main.event_details',
