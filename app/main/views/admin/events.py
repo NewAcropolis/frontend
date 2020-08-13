@@ -95,11 +95,17 @@ def admin_events(selected_event_id=None, api_message=None):
             else:
                 response = api_client.add_event(adjusted_event)
 
-            return redirect(url_for('main.admin_events', selected_event_id=response['id'], api_message=message))
+            if 'error' in session:
+                raise HTTPError(response, message=session.pop('error'))
+
+            return redirect(url_for('main.admin_events', selected_event_id=response.get('id'), api_message=message))
         except HTTPError as e:
             current_app.logger.error(e)
             temp_event = json.dumps(event)
-            errors = json.dumps(e.message)
+            if "message" in e.message:
+                errors = e.message['message']
+            else:
+                errors = json.dumps(e.message)
 
     return render_template(
         'views/admin/events.html',
