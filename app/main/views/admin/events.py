@@ -8,7 +8,10 @@ from app import api_client
 from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import EventForm
+from app.main.views import render_page
+from app.main.views.events import is_future_event
 
+from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
 def is_admin_user():
     user = session['user']
@@ -92,11 +95,17 @@ def admin_events(selected_event_id=None, api_message=None):
             else:
                 response = api_client.add_event(adjusted_event)
 
-            return redirect(url_for('main.admin_events', selected_event_id=response['id'], api_message=message))
+            if 'error' in session:
+                raise HTTPError(response, message=session.pop('error'))
+
+            return redirect(url_for('main.admin_events', selected_event_id=response.get('id'), api_message=message))
         except HTTPError as e:
             current_app.logger.error(e)
             temp_event = json.dumps(event)
-            errors = json.dumps(e.message)
+            if "message" in e.message:
+                errors = e.message['message']
+            else:
+                errors = json.dumps(e.message)
 
     return render_template(
         'views/admin/events.html',
@@ -146,11 +155,10 @@ def preview_event():
     venue = api_client.get_venue_by_id(data['venue_id'])
 
     data['venue'] = venue
+    data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'])
+    data['is_future_event'] = is_future_event(data)
 
-    return render_template(
-        'views/admin/preview.html',
-        images_url=current_app.config['IMAGES_URL'],
-        events=[data],
-        api_base_url=api_client.base_url,
-        paypal_account=current_app.config['PAYPAL_ACCOUNT']
+    return render_page(
+        'views/event_details.html',
+        event=data
     )

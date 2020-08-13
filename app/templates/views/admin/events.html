@@ -44,6 +44,7 @@
 
 {% if user_has_permissions('event') %}
 <div class="container pb-3 text-right">
+    <div id='error_section' class='text-danger'></div>
     <div class="modal fade" id="speakerModal" tabindex="-1" role="dialog" aria-labelledby="speakerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -133,7 +134,6 @@
             {{ form.reject_reasons_json }}
         </div>
         <hr>
-        <div id='error_section' class='text-danger'></div>
         {% if message %}
         <div id='message' class='text-success pb-3'>{{message}}</div>
         {% endif %}
@@ -184,7 +184,8 @@ $(function() {
     {% endif %}
 
     {% if errors %}
-    var errors = {{ errors|safe }};
+    console.log('error: {{ errors }}');
+    var errors = "{{ errors }}";
     {% endif %}
 
     $('#datepicker').datepicker({
@@ -194,14 +195,13 @@ $(function() {
 
     $('#preview').on('click', function() {
         $('#submit_type').val('preview');
-
         var send = {
             // alt_event_images: $('#alt_event_images').val(),
-            event_type: $('#event_type').val(),
+            event_type: $('#event_type option:selected').text(),
             title: $('#title').val(),
             sub_title: $('#sub_title').val(),
             description: $('#description').val(),
-            image_filename: $('#file_img').attr('src').replace('{{images_url}}', ''),
+            image_filename: $('#file_img').attr('src').replace('{{images_url}}/thumbnail', ''),
             fee: $('#fee').val(),
             conc_fee: $('#conc_fee').val(),
             multi_day_fee: $('#multi_day_fee').val(),
@@ -345,6 +345,10 @@ $(function() {
     };
 
     // call to update on load
+    hash_event_id = document.location.hash.substring("event_id=".length+1)
+    if (hash_event_id != '') {
+        elements._events.val(hash_event_id);
+    }
     updateEvent();
 
     function updateEvent() {
@@ -353,7 +357,6 @@ $(function() {
         };
 
         $('#pubish').prop('disabled', false);
-        $('#error_section').html('');
 
         try {
             temp_event; 
@@ -364,6 +367,7 @@ $(function() {
                         addErrorRow(errors[i]['error'], errors[i]['message']);
                     }
                 } else {
+                    console.log("error list");
                     addErrorRow('Error', errors);
                 }
                 errors = null;
@@ -540,6 +544,7 @@ $(function() {
     }
 
     function addErrorRow(error_type, message) {
+        console.log('add error ' + message);
         $('#error_section').append(
             '<div class="row"><div class="col-2">' + 
             error_type + '</div><div class="col-10">' + message + '</div></div></div>'
@@ -752,6 +757,12 @@ $(function() {
         window.location.replace("/admin/_delete_event/" + $("#events").val());
     });
 
+    function setupEvents(){
+        $('#error_section').html('');
+        document.location.hash = "event_id=" + $('#events').val();
+        updateEvent();
+    }
+
     {% if message %}
     var showMessage=true;
     elements._events.on('change', function() {
@@ -759,11 +770,12 @@ $(function() {
             $('#message').attr('style', 'display:none;');
         }
         showMessage = false;
-        updateEvent();
+
+        setupEvents();
     });
     {% else %}
     elements._events.on('change', function() {
-        updateEvent();
+        setupEvents();
     });
     {% endif %}
     elements._alt_event_images.on('change', function() {
