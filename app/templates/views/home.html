@@ -202,20 +202,22 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
           <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">
-            <img class="card-img-top card_img_size" src="/static/images/home-image-magazine.png">
+            <img class="card-img-top card_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png">
           </a>
           <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG" role="dialog" tabindex="-1">
             <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
               <div class="modal-content modal-content-magazine">
                 <div class="modal-body modal-body-magazine mb-0 p-0">
-                  <a href="/static/images/home-image-magazine.png" download><img src="/static/images/home-image-magazine.png" style="width:100%"></a>
+                  <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                    <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" style="width:100%">
+                  </a>
                 </div>
                 <div class="modal-footer modal-footer-magazine">
                   <div>
-                    <a href="/static/images/home-image-magazine.png" target="_blank" download>Download</a>
+                    <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" target="_blank" download>Download</a>
                   </div>
                   <div>
-                    <a href="/static/images/home-image-magazine.png" data-dismiss="modal">Close</a>
+                    <a href="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" data-dismiss="modal">Close</a>
                   </div>
                 </div>
               </div>
