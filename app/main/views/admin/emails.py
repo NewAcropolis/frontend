@@ -25,7 +25,7 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
             errors = "No matching magazine email found"
 
     email_types = api_client.get_email_types()
-    future_events = api_client.get_events_in_future()
+    future_events = api_client.get_events_in_future(approved_only=True)
 
     session['emails'] = future_emails
     session['future_events'] = future_events
