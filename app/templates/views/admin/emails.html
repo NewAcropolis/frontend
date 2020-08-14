@@ -13,7 +13,7 @@
 {% if user_has_permissions('email') %}
 <div class="container pb-3 text-right" style="width: 800px;">
     {% if form.errors or errors %}
-    <div id='errors'>
+    <div id='errors' class='text-left'>
         {% if form.errors %}
         <div class='text-danger'>{{ form.errors }}</div>
         {% endif %}
@@ -53,16 +53,18 @@
                         No events
                     </div>
                 </div>
-                <div class="row">
-                    <div class='col-s-6 text-left'>
-                        <div>Extra text</div>
-                        {{form.extra_txt(cols=60)}}
+                <div id="event_textblocks">
+                    <div class="row">
+                        <div class='col-s-6 text-left'>
+                            <div>Extra text</div>
+                            {{form.extra_txt(cols=60)}}
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class='col-s-6 text-left'>
-                        <div>Details</div>
-                        {{form.details(rows=10, cols=60)}}
+                    <div class="row">
+                        <div class='col-s-6 text-left'>
+                            <div>Details</div>
+                            {{form.details(rows=10, cols=60)}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -87,36 +89,43 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <div class="row">
-                    <div class='col--xs-4'>
-                        <div style='text-align:center;'>Send starts at</div>
-                        <div id="_send_starts_at" data-date=""></div>
-                        {{form.send_starts_at}}
+            <div id="dates_block">
+                <div id="datepicker_block">
+                    <div class="row">
+                        <div class='col--xs-4'>
+                            <div style='text-align:center;'>Send starts at</div>
+                            <div id="_send_starts_at" data-date=""></div>
+                            {{form.send_starts_at}}
+                        </div>
+                        <div class='col--xs-2 ml-5'>
+                            <div style='text-align:center;'>Expires</div>
+                            <div id="_expires" data-date=""></div>
+                            {{form.expires}}
+                        </div>
                     </div>
-                    <div class='col--xs-2 ml-5'>
-                        <div style='text-align:center;'>Expires</div>
-                        <div id="_expires" data-date=""></div>
-                        {{form.expires}}
+                </div>
+                <div id="dateshow_block">
+                    <div class="row">
+                        <div class='col--xs-4'>
+                            <div style='text-align:center;'>Sent from <span id="sent_from"></span></div>
+                        </div>
+                        <div class='col--xs-2 ml-5'>
+                            <div style='text-align:center;'>Expired on <span id="expired_on"></span></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div id="no_email">
-            <div class="row">
-                <div class='col-s-6'>
+            <div class="row col-s-6">
                     No emails to send
-                </div>
             </div>
-        </div>
+        </div>        
         <div id="no_magazine_email">
-            <div class="row">
-                <div class='col-s-6'>
-                    Magazine emails are created when a <a href="/admin/magazines">new magazine</a> is uploaded
-                </div>
+            <div class='row col-s-6'>
+                Magazine emails are created when a <a href="/admin/magazines">new magazine</a> is uploaded
             </div>
-        </div>
-        
+        </div>        
         <hr>
         <div class="justify-content-end">
             <button id='preview' type="submit" class="btn btn-outline-info">Preview</button>
@@ -204,7 +213,6 @@
                         }
                     }
                     if (found) continue;
-
                     events.push(
                         {
                             'name': elements._events[0].options[i].text,
@@ -286,7 +294,7 @@
                         '<span class="text-danger">failed: ' + data['emails_sent_counts']['failed'] + '</span> - ' +
                         '<span class="text-primary">total to send: ' + data['emails_sent_counts']['total_active_members'] + '</span>'
                     );
-                    update_for_email_state(data['email_state']);
+                    update_for_email_state(data['email_state'], data);
                 }
             });
         }
@@ -366,7 +374,7 @@
 
         });
 
-        function update_for_email_state(email_state) {
+        function update_for_email_state(email_state, data) {
             var base_css = 'text-left col-6 rounded mt-2 ';
             var css = '';
             switch(email_state) {
@@ -379,10 +387,17 @@
             if (has_expired) {
                 $('#status_bar').text('Preview only, event has finished');
                 $('#status_bar').attr('class', base_css + 'bg-info text-white');
+                $('#datepicker_block').attr('style', 'display:none;');
+                $('#dateshow_block').attr('style', 'display:block;');
+
+                $('#sent_from').text(data['send_starts_at']);
+                $('#expired_on').text(data['expires']);
             }
             else {
                 $('#status_bar').attr('class', base_css + css);
                 $('#status_bar').text(email_state);
+                $('#datepicker_block').attr('style', 'display:block;');
+                $('#dateshow_block').attr('style', 'display:none;');
             }
             $('#draft').prop('disabled', has_expired);
             {% if is_admin_user() %}
@@ -413,39 +428,67 @@
 
         function setDisplayBlocks() {
             if (elements._emails.val() == '') {
+                elements._email_types.prop('disabled', false);
+                $('#emails_sent_counts').attr('style', 'display:none;');
+                $('#announcement_block').attr('style', 'display:none;');
                 $("#has_email").attr('style', 'display:none;');
+                $("#no_magazine_email").attr('style', 'display:none;');
                 if (elements._email_types.val() == 'magazine') {
                     $("#no_email").attr('style', 'display:none;');
                     $("#no_magazine_email").attr('style', 'display:block;');
+                    $('#events_block').attr('style', 'display:none;');
+                }
+                else if (elements._email_types.val() == 'event') {
+                    $('#magazine_block').attr('style', 'display:none;');
+                    if (elements._events.val() == '' || !elements._events.val()) {
+                        $("#has_event").attr('style', 'display:none;');
+                        $("#no_event").attr('style', 'display:block;');
+                        $('#events_block').attr('style', 'display:block;');
+                        $("#has_email").attr('style', 'display:block;');
+                        $("#event_textblocks").attr('style', 'display:none;');
+                        $("#dates_block").attr('style', 'display:none;');
+                    }
+                    else {
+                        elements._events.prop('disabled', elements._emails.val() != '');
+                        $("#has_event").attr('style', 'display:block;');
+                        $("#no_event").attr('style', 'display:none;');
+                        $('#events_block').attr('style', 'display:block;');
+                        $("#has_email").attr('style', 'display:block;');
+                        $("#no_email").attr('style', 'display:none;');
+                        $("#event_textblocks").attr('style', 'display:block;');
+                        $("#dates_block").attr('style', 'display:block;');
+                    } 
                 }
                 else {
                     $("#no_magazine_email").attr('style', 'display:none;');
                     $("#no_email").attr('style', 'display:block;');
                 }
-                $('#events_block').attr('style', 'display:none;');
-                $('#magazine_block').attr('style', 'display:none;');
-                $('#announcement_block').attr('style', 'display:none;');
-                elements._email_types.prop('disabled', false);
             }
             else {
                 elements._events.prop('disabled', elements._emails.val() != '');
                 elements._email_types.prop('disabled', elements._emails.val() != '');
-                if (elements._events.val() == '') {
-                    $("#has_event").attr('style', 'display:none;');
-                    $("#no_event").attr('style', 'display:block;');
-                }
-                else {
-                    $("#has_event").attr('style', 'display:block;');
-                    $("#no_event").attr('style', 'display:none;');
-                } 
+
+                $("#has_event").attr('style', 'display:none;');
+                $("#no_event").attr('style', 'display:none;');
 
                 $("#has_email").attr('style', 'display:block;');
                 $("#no_email").attr('style', 'display:none;');
                 $("#no_magazine_email").attr('style', 'display:none;');
+                $("#dates_block").attr('style', 'display:block;');
                 if ($('#email_types').val() == 'event') {
+                    if (elements._events.val() == '') {
+                        $("#has_event").attr('style', 'display:none;');
+                        $("#no_event").attr('style', 'display:block;');
+                    }
+                    else {
+                        $("#has_event").attr('style', 'display:block;');
+                        $("#no_event").attr('style', 'display:none;');
+                    } 
+
                     $('#events_block').attr('style', 'display:block;');
                     $('#magazine_block').attr('style', 'display:none;');
                     $('#announcement_block').attr('style', 'display:none;');
+                    $("#event_textblocks").attr('style', 'display:block;');
                 }
                 else if ($('#email_types').val() == 'magazine') {
                     $('#events_block').attr('style', 'display:none;');
