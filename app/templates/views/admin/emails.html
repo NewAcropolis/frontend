@@ -327,6 +327,7 @@
             if (email_json == null) {
                 updateExpiry();
             }
+            updateEventDetails();
         });
 
         $('#email_types').on('change', function() {
@@ -426,6 +427,19 @@
             setDisplayBlocks();
         }
 
+        function updateEventDetails() {
+            var send = {
+                event: elements._events.val()
+            };
+            $('#details').val('');
+
+            $.getJSON("{{ url_for('main._get_default_details') }}", send, function(data) {
+                if (data) {
+                    $('#details').val(data['details']);
+                }
+            });  
+        }
+
         function setDisplayBlocks() {
             if (elements._emails.val() == '') {
                 elements._email_types.prop('disabled', false);
@@ -457,6 +471,7 @@
                         $("#no_email").attr('style', 'display:none;');
                         $("#event_textblocks").attr('style', 'display:block;');
                         $("#dates_block").attr('style', 'display:block;');
+                        updateEventDetails();
                     } 
                 }
                 else {
