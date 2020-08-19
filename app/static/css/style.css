@@ -83,7 +83,7 @@ html, body {
 .navbar{
   font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
   padding: .8rem;
-  background-color: rgb(10,134,101);
+  background-color: rgb(157, 163, 162);
   border-bottom: solid 19px rgb(238,191,109);
 }
 .navbar-nav li {
@@ -97,7 +97,7 @@ html, body {
 /* FOOTER */
 
 footer{
-  background-color :rgb(10,134,101);
+  background-color: rgb(157, 163, 162);
   color: white;
   padding: 2% 4% 2% 4%;
   font-size: 0.8em;
@@ -719,4 +719,8 @@ footer{
   padding: 5%; 
   font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
   color: rgb(74,74,74);
+}
+
+#banner h5 {
+  color: yellow;
 }
