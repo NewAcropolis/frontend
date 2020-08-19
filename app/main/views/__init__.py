@@ -104,6 +104,11 @@ def callback():
     if not user:
         try:
             api_client.create_user(profile)
+
+            if 'error' in session:
+                error = session.pop('error')
+                raise HTTPError(error)
+
             return render_template(
                 'views/admin/admin_interstitial.html',
                 message="{} has registered as a user, "
@@ -167,7 +172,7 @@ def render_page(template, **kwargs):
         error = session.pop('error')
         kwargs['error'] = error['message']['error'] if isinstance(error, dict) else\
             error['message'] if 'message' in error else\
-            error if isinstance(error, str) else "Unhandled error"
+            error if isinstance(error, basestring) else "Unhandled error"
 
     if 'latest_magazine' not in session:
         latest_magazine = api_client.get_latest_magazine()

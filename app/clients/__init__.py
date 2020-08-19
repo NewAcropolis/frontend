@@ -66,8 +66,9 @@ class BaseAPIClient(object):
                     e.message
                 )
             )
-            # raise api_error
-            session["error"] = "Error connecting to API: " + str(e)
+            # raise api_error            
+            session["error"] = u"Error connecting to API: " +\
+                str(e).replace(current_app.config['API_BASE_URL'], 'https://API')
             return False
 
         session["access_token"] = auth_response.json()["access_token"]
