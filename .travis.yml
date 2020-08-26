@@ -6,6 +6,7 @@ before_deploy:
 - echo $FE_CLIENT_SECRET_preview | base64 --decode > fe-client-secret-preview.json
 script:
 - ./scripts/bootstrap.sh
+- ls -la /home/travis/build/NewAcropolis/frontend/.git/objects/pack/
 - make test
 deploy:
   - provider: gae
