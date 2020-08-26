@@ -37,8 +37,7 @@ def index():
         'views/home.html',
         main_article=main_article,
         articles=articles,
-        all_events=all_events,
-        current_page=''
+        all_events=all_events[:3]
     )
 
 
@@ -55,11 +54,6 @@ def resources():
 @main.route('/what-we-offer')
 def what_we_offer():
     return render_page('views/what_we_offer.html')
-
-
-@main.route('/e-shop')
-def e_shop():
-    return render_page('views/e-shop.html')
 
 
 @main.route('/course_details')

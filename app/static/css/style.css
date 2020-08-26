@@ -71,7 +71,7 @@ Extra (xl) large devices (large desktops, 1200px and up)
 html, body {
   height: 100%;
   width: 100%;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 
 .top-buffer div {
@@ -97,7 +97,7 @@ html, body {
 /* FOOTER */
 
 footer{
-  background-color :rgb(10,134,101);
+  background-color: rgb(157, 163, 162);
   color: white;
   padding: 2% 4% 2% 4%;
   font-size: 0.8em;
@@ -228,7 +228,7 @@ footer{
   color: yellow;
   margin-bottom: 75px;
   font-size: 50px;
-  font-family: 'Palette';
+  font-family: 'AvenirNext-Bold';
 }
 .introtext {
   font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
@@ -719,4 +719,8 @@ footer{
   padding: 5%; 
   font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
   color: rgb(74,74,74);
+}
+
+#banner h5 {
+  color: yellow;
 }
