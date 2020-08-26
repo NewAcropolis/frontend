@@ -1,3 +1,5 @@
+from flask import current_app
+
 REQUEST_ERROR_STATUS_CODE = 503
 REQUEST_ERROR_MESSAGE = "Request failed"
 
