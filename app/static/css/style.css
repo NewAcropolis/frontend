@@ -71,7 +71,7 @@ Extra (xl) large devices (large desktops, 1200px and up)
 html, body {
   height: 100%;
   width: 100%;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 
 .top-buffer div {
@@ -83,7 +83,7 @@ html, body {
 .navbar{
   font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
   padding: .8rem;
-  background-color: rgb(157, 163, 162);
+  background-color: rgb(10,134,101);
   border-bottom: solid 19px rgb(238,191,109);
 }
 .navbar-nav li {
@@ -228,7 +228,7 @@ footer{
   color: yellow;
   margin-bottom: 75px;
   font-size: 50px;
-  font-family: 'Palette';
+  font-family: 'AvenirNext-Bold';
 }
 .introtext {
   font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
