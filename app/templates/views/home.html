@@ -1,9 +1,5 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
-{% block extra_head %}
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
-{% endblock %}
 {% block content %}
 
 <body>
@@ -278,15 +274,5 @@
   </div>
 
   {% include "components/contact.html" %}
-
-  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-  <script type="text/javascript">
-   $(document).ready(function(){
-     $('.carousel').slick({
-       "autoplay": true,
-       "autoplaySpeed": 5000,
-     });
-   });
-  </script>
 </body>
 {% endblock %}
