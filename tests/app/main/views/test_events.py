@@ -8,7 +8,7 @@ class WhenAccessingEventsPage(object):
         self, client, sample_future_events, sample_past_events_for_cards, sample_articles_summary
     ):
         response = client.get(url_for(
-            'main.whats_on'
+            'main.events'
         ))
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
         header_image = page.find('img')['src']
@@ -22,7 +22,7 @@ class WhenAccessingEventsPage(object):
         mocker.patch('app.main.views.index.api_client.get_events_in_future', return_value=sample_future_event_for_cards)
         mocker.patch('app.main.views.index.api_client.get_events_past_year', return_value=sample_past_events_for_cards)
         response = client.get(url_for(
-            'main.whats_on'
+            'main.events'
         ))
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
 
@@ -39,7 +39,7 @@ class WhenAccessingEventsPage(object):
         mocker.patch('app.main.views.index.api_client.get_events_in_future', return_value=sample_future_event_for_cards)
         mocker.patch('app.main.views.index.api_client.get_events_past_year', return_value=sample_past_events_for_cards)
         response = client.get(url_for(
-            'main.whats_on'
+            'main.events'
         ))
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
 
@@ -51,9 +51,9 @@ class WhenAccessingEventsPage(object):
     def it_shows_list_of_available_pages_on_header_and_footer(
         self, client, sample_future_events, sample_articles_summary, div_class
     ):
-        expected_link_text = ['About', 'Courses', 'Whats on', 'Resources', 'E-shop']
+        expected_link_text = ['About', 'Courses', 'Events', 'Resources', 'E-shop']
         response = client.get(url_for(
-            'main.whats_on'
+            'main.events'
         ))
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
 

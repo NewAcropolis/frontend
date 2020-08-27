@@ -1,11 +1,11 @@
 {% extends "base.html" %}
-{% block title %}What's on{% endblock %}
+{% block title %}Events{% endblock %}
 {% block extra_head %}
 {% endblock %}
 {% block content %}
 
   {% if future_events %}
-  <div id="whats_on_carousel" class="carousel slide" data-ride="carousel">
+  <div id="events_carousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       {% for event in future_events %}
         <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
