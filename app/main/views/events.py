@@ -6,8 +6,8 @@ from app.main import main
 from app.main.views import render_page
 
 
-@main.route('/whats-on')
-def whats_on():
+@main.route('/events')
+def events():
     articles = api_client.get_articles_summary()
     if articles:
         index = randint(0, len(articles) - 1)
@@ -21,7 +21,7 @@ def whats_on():
             past_events.append(event)
 
     return render_page(
-        'views/whats_on.html',
+        'views/events.html',
         main_article=articles[index] if articles else None,
         articles=articles,
         future_events=future_events,

@@ -51,9 +51,9 @@ def resources():
     return render_page('views/resources.html')
 
 
-@main.route('/what-we-offer')
-def what_we_offer():
-    return render_page('views/what_we_offer.html')
+@main.route('/courses')
+def courses():
+    return render_page('views/courses.html')
 
 
 @main.route('/course_details')
