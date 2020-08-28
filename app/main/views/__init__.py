@@ -170,9 +170,13 @@ def render_page(template, **kwargs):
 
     if 'error' in session and 'error' not in kwargs:
         error = session.pop('error')
-        kwargs['error'] = error['message']['error'] if isinstance(error, dict) else\
-            error['message'] if 'message' in error else\
-            error if isinstance(error, basestring) else "Unhandled error"
+        try:
+            kwargs['error'] = error['message']['error'] if isinstance(error, dict) else\
+                error['message'] if 'message' in error else\
+                error if isinstance(error, basestring) else "Unhandled error"
+        except TypeError:
+            current_app.logger.error("Unhandled error %r", error)
+            kwargs['error'] = "Unhandled error"
 
     if 'latest_magazine' not in session:
         latest_magazine = api_client.get_latest_magazine()
