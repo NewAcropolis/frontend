@@ -78,6 +78,10 @@ html, body {
   margin-top:20px;
 }
 
+.content-width {
+  max-width: 900px;
+}
+
 /* HEADER */
 
 .navbar{
@@ -212,13 +216,11 @@ footer{
   left:0 !important;
 }
 .carousel-banner {
-  border-top: solid;
-  border-bottom: solid;
   border-width: 1px;
   border-color: rgba(150,150,150,1.0);
-  background: rgba(0, 0, 0, 0.6);
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
-  padding-bottom: 0px !important;
+  background: rgba(80, 80, 80, 0.6);
+  font-family: 'Avenir',Helvetica,Arial,serif;
+  padding-bottom: 5px !important;
   padding-top: 10px !important;
 }
 .carousel-caption h5 a {
