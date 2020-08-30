@@ -241,14 +241,19 @@ footer{
 .cream_backgroundcolour{
   background-color: rgb(245,242,234);
 }
-.pcv_block{
-  padding: 21% 12% 21% 12%;
-  height: 320px;
+.pcv_block {
+  padding: 8%;
+  height: 260px;
   background-color: white;
   width: 100%;
   font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
   color: rgb(157,157,157); 
 }
+
+.pcv_block hr {
+  width: 50%;
+}
+
 .pcv_padding {
   padding-bottom: 5%;
 }
