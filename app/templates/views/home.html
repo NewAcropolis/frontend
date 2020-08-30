@@ -2,7 +2,6 @@
 {% block title %}Home{% endblock %}
 {% block content %}
 
-<body>
   <div id="homepage_carousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       {% for event in all_events %}
@@ -22,10 +21,10 @@
     </div>
   </div>
 
-  <div class="container-fluid padding">
+  <div class="container-fluid padding" style="background-color: white;">
     <div class="row text-center padding">
-      <div class="col-lg-12">
-        <p class="introtext">New Acropolis UK is a registered educational charity and part of an international network of afﬁliated organisations in more than 60 countries, working in the ﬁelds of Philosophy, Culture and Volunteering. <br><br> 
+      <div class="col-lg-12 d-flex justify-content-center">
+        <p class="introtext content-width">New Acropolis UK is a registered educational charity and part of an international network of afﬁliated organisations in more than 60 countries, working in the ﬁelds of Philosophy, Culture and Volunteering. <br><br> 
           Our purpose is to make widely accessible a holistic philosophical education which can help us to understand and develop ourselves and to work together in order to meet the challenges of our times. <br><br> 
           We understand philosophy in its classical sense as philo-sophia – love of wisdom. Wisdom is practical and active rather than purely intellectual. It is knowing how to act, knowing what is 'good' and knowing which ends are worth striving for.</p>
       </div>
@@ -33,7 +32,7 @@
   </div>
 
   <div class="container-fluid padding cream_backgroundcolour">
-    <div class="row text-center ">
+    <div class="row text-center content-width mx-auto">
       <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="pcv_padding">
           <div class="pcv_block">
@@ -68,7 +67,7 @@
   </div>
 
   <div class="container-fluid padding blue_background">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width mx-auto">
       <div class="col-lg-12">
         <h1 id="yellow_txt">Philosophies of East & West</h1>
         <h2 id="yellow_txt">16-week Foundation Course</h2><br>
@@ -87,7 +86,7 @@
       </div>
     </div>
     
-    <div class="container-fluid padding text-center">
+    <div class="container-fluid padding text-center content-width">
       <div class="row padding">
         {% for event in all_events %}
           <div class="col-md-4 col-sm-6">
@@ -122,7 +121,7 @@
           </div>
         </div>
       </div>
-      <div class="container-fluid padding">
+      <div class="container-fluid padding content-width">
         <div class="card mb-3">
           <div class="row no-gutters">
             <div class="col-md-4">
@@ -139,14 +138,14 @@
       </div>
     </div>
 
-    <div class="container-fluid padding">
+    <div class="container-fluid padding content-width">
       <div class="row padding">
         <div class="col-md-3 col-sm-6">
           <div class="card cardmulti bg-light">
             <img class="card-img-top cardimgtopmulti" src="/static/images/featured1.png">
             <div class="card-body">
               <h4 id="article_1" class="card-title dark_grey_txt">{{ articles[0].title }}</h4>
-              <p class="card-text cardtextmulti">{{ articles[0].very_short_content }} <a href='/article/{{ articles[0].id }}'>READ MORE</a></p>
+              <p class="card-text cardtextmulti">{{ articles[0].very_short_content[:40] }} <a href='/article/{{ articles[0].id }}'>READ MORE</a></p>
             </div>
           </div>
         </div>
@@ -155,7 +154,7 @@
             <img class="card-img-top cardimgtopmulti" src="/static/images/featured2.png">
             <div class="card-body">
               <h4 id="article_2" class="card-title dark_grey_txt">{{ articles[1].title }}</h4>
-              <p class="card-text cardtextmulti">{{ articles[1].very_short_content }} <a href='/article/{{ articles[1].id }}'>READ MORE</a></p>
+              <p class="card-text cardtextmulti">{{ articles[1].very_short_content[:40] }} <a href='/article/{{ articles[1].id }}'>READ MORE</a></p>
             </div>
           </div>
         </div>
@@ -164,7 +163,7 @@
             <img class="card-img-top cardimgtopmulti" src="/static/images/featured3.png">
             <div class="card-body">
               <h4 id="article_3" class="card-title dark_grey_txt">{{ articles[2].title }}</h4>
-              <p class="card-text cardtextmulti">{{ articles[2].very_short_content }} <a href='/article/{{ articles[2].id }}'>READ MORE</a></p>
+              <p class="card-text cardtextmulti">{{ articles[2].very_short_content[:40] }} <a href='/article/{{ articles[2].id }}'>READ MORE</a></p>
             </div>
           </div>
         </div>
@@ -173,7 +172,7 @@
             <img class="card-img-top cardimgtopmulti" src="/static/images/featured4.png">
             <div class="card-body">
               <h4 id="article_4" class="card-title dark_grey_txt">{{ articles[3].title }}</h4>
-              <p class="card-text cardtextmulti">{{ articles[3].very_short_content }} <a href='/article/{{ articles[3].id }}'>READ MORE</a></p>
+              <p class="card-text cardtextmulti">{{ articles[3].very_short_content[:40] }} <a href='/article/{{ articles[3].id }}'>READ MORE</a></p>
             </div>
           </div>
         </div>
@@ -185,12 +184,12 @@
       <div class="row text-center padding">
         <div class="col-lg-12 subscribe_section">
           <h1>Subscribe to our free bi-monthly magazine !</h1>
-          <h3>Reflective and concise articles on esoterica, philosophy, art, society and more…</h3>
+          <h3 class="mx-auto content-width">Reflective and concise articles on esoterica, philosophy, art, society and more…</h3>
         </div>
       </div>
     </div>
 
-    <div class="container-fluid padding">
+    <div class="container-fluid padding content-width">
       <div class="row text-center padding">
         <div class="col-xs-12 col-sm-6 col-md-4 magazine_txt">
           <p>New Acropolis Magazine</p><br>
@@ -225,7 +224,7 @@
             <form action="/" method=post>
               {{ slim_subscription_form.csrf_token }}
               {{ slim_subscription_form.slim_subscription_email(class="magazine_email", placeholder="Your email address") }}
-       
+      
               {% if slim_subscription_form.errors %}
                 <div>
                 {% for error in slim_subscription_form.slim_subscription_email.errors %}
@@ -253,26 +252,24 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid padding">
+  <div class="container-fluid padding content-width">
     <div class="row text-center padding">
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="col-xs-12 col-sm-6 col-md-4 p-5">
         <img src="/static/images/founding-hands.png" class="founding_img"><br><br>
         <h5 class="founding_headings"> FRATERNITY </h5>
         <p class="light_text">To promote an ideal of international fraternity, based on respect for human dignity, beyond racial, sexual, cultural, religious, social or other differences.</p>
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="col-xs-12 col-sm-6 col-md-4 p-5">
         <img src="/static/images/founding-book.png" class="founding_img"><br><br>
         <h5 class="founding_headings"> KNOWLEDGE </h5>
         <p class="light_text">To encourage the love of wisdom through the comparative study of philosophies, religions, sciences and arts, in order to promote the knowledge of the human being, the laws of Nature and the Universe.</p>
       </div>
-      <div class="col-xs-12 col-md-4">
+      <div class="col-xs-12 col-md-4 p-5">
         <img src="/static/images/founding-spiral.png" class="founding_img"><br><br>
         <h5 class="founding_headings"> DEVELOPMENT </h5>
         <p class="light_text">To develop the best of the human potential, by promoting the realization of the human being as an individual and his or her integration as an active and conscious part of society and nature, in order to improve the world.</p>
       </div>
     </div>
   </div>
-
   {% include "components/contact.html" %}
-</body>
 {% endblock %}

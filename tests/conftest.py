@@ -228,22 +228,26 @@ def sample_articles_summary(mocker):
         {
             'title': 'Article title 1',
             'short_content':
-                'some short content 1, some short content 1, some short content 1, some short content 1'
+                'some short content 1, some short content 1, some short content 1, some short content 1',
+            'very_short_content': 'some short content 1'
         },
         {
             'title': 'Article title 2',
             'short_content':
-                'some short content 2, some short content 2, some short content 2, some short content 2'
+                'some short content 2, some short content 2, some short content 2, some short content 2',
+            'very_short_content': 'some short content 2'
         },
         {
             'title': 'Article title 3',
             'short_content':
-                'some short content 3, some short content 3, some short content 3, some short content 3'
+                'some short content 3, some short content 3, some short content 3, some short content 3',
+            'very_short_content': 'some short content 3'
         },
         {
             'title': 'Article title 4',
             'short_content':
-                'some short content 4, some short content 4, some short content 4, some short content 4'
+                'some short content 4, some short content 4, some short content 4, some short content 4',
+            'very_short_content': 'some short content 4'
         }
     ]
 
