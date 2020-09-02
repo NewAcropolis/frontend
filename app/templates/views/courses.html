@@ -18,35 +18,35 @@
 </div>
 
   <div class="container-fluid padding yellow_background">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-lg-12">
         <ul class="list-horizontal">
-          <li>Timeless & Universal Philosophy</li>
-          <li>India</li>
-          <li>Tibet</li>
-          <li>Buddhism</li>
-          <li>China</li>
-          <li>Egypt</li>
-          <li>Greece</li>
-          <li>Rome</li>
-          <li>The Neoplatonic School</li>
-          <li>Philosophy of History</li>
-          <li>The Human Being & the Universe</li>
-          <li>The Hermetic Tradition</li>
+          <li><a href="{{ url_for('main.course_details', topic='timeless_universal') }}">Timeless & Universal Philosophy</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='india') }}">India</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='tibet') }}">Tibet</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='buddhism') }}">Buddhism</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='china') }}">China</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='egypt') }}">Egypt</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='greece') }}">Greece</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='rome') }}">Rome</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='neoplatonic_school') }}">The Neoplatonic School</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='philosophy_history') }}">Philosophy of History</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='human_being_universe') }}">The Human Being & the Universe</a></li>
+          <li><a href="{{ url_for('main.course_details', topic='hermetic_tradition') }}">The Hermetic Tradition</a></li>
         </ul>    
       </div>
     </div>
   </div>
 
   <div class="container-fluid padding cream_backgroundcolour">
-    <div class="row padding">
+    <div class="row padding content-width-lg mx-auto">
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/timeless_universal.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <div class="dark_grey_txt">Timeless & Universal Philosophy</div>
                 <p class="light_text">{{ get_summary_course_details('timeless_universal')|safe }} <a href="{{ url_for('main.course_details', topic='timeless_universal') }}">READ MORE</a></p>
@@ -58,10 +58,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/india.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">India</h2>
                 <p class="light_text">{{ get_summary_course_details('india')|safe }} <a href="{{ url_for('main.course_details', topic='india') }}">READ MORE</a></p>
@@ -73,10 +73,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/tibet.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Tibet</h2>
                 <p class="light_text">{{ get_summary_course_details('tibet')|safe }} <a href="{{ url_for('main.course_details', topic='tibet') }}">READ MORE</a></p>
@@ -88,10 +88,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-6 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/buddhism.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-6 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Buddhism</h2>
                 <p class="light_text">{{ get_summary_course_details('buddhism')|safe }} <a href="{{ url_for('main.course_details', topic='buddhism') }}">READ MORE</a></p>
@@ -103,10 +103,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/china.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">China</h2>
                 <p class="light_text">{{ get_summary_course_details('china')|safe }} <a href="{{ url_for('main.course_details', topic='china') }}">READ MORE</a></p>
@@ -118,10 +118,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/egypt.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Egypt</h2>
                 <p class="light_text">{{ get_summary_course_details('egypt')|safe }} <a href="{{ url_for('main.course_details', topic='egypt') }}">READ MORE</a></p>
@@ -133,10 +133,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/greece.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Greece</h2>
                 <p class="light_text">{{ get_summary_course_details('greece')|safe }} <a href="{{ url_for('main.course_details', topic='greece') }}">READ MORE</a></p>
@@ -148,10 +148,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/rome.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Rome</h2>
                 <p class="light_text">{{ get_summary_course_details('rome')|safe }} <a href="{{ url_for('main.course_details', topic='rome') }}">READ MORE</a></p>
@@ -163,10 +163,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/neoplatonic_school.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">The Neoplatonic School</h2>
                 <p class="light_text">{{ get_summary_course_details('neoplatonic_school')|safe }} <a href="{{ url_for('main.course_details', topic='neoplatonic_school') }}">READ MORE</a></p>
@@ -178,10 +178,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/philosophy_history.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Philosophy of History</h2>
                 <p class="light_text">{{ get_summary_course_details('philosophy_history')|safe }} <a href="{{ url_for('main.course_details', topic='philosophy_history') }}">READ MORE</a></p>
@@ -193,10 +193,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/human_being_universe.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">The Human Being and the Universe</h2>
                 <p class="light_text">{{ get_summary_course_details('human_being_universe')|safe }} <a href="{{ url_for('main.course_details', topic='human_being_universe') }}">READ MORE</a></p>
@@ -208,10 +208,10 @@
       <div class="col-lg-6 col-md-12 col-sm-12">
         <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/hermetic_tradition.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7 py-0">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">The Hermetic Tradition</h2>
                 <p class="light_text">{{ get_summary_course_details('hermetic_tradition')|safe }} <a href="{{ url_for('main.course_details', topic='hermetic_tradition') }}">READ MORE</a></p>
