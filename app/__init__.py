@@ -108,6 +108,15 @@ def _get_summary_course_details(topic):
     return clean_details
 
 
+def _get_shortened_article_text(article, limit=None):
+    if not limit:
+        limit = current_app.config['ARTICLE_SUMMARY_LIMIT']
+    content = article['very_short_content'][: limit - len(article['title'])]
+
+    # ignore the last word in case it was split
+    return ' '.join(content.split(' ')[:-1])
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
@@ -118,6 +127,7 @@ def init_app(app):
     app.jinja_env.globals['user_has_permissions'] = _user_has_permissions
     app.jinja_env.globals['get_course_details'] = _get_course_details
     app.jinja_env.globals['get_summary_course_details'] = _get_summary_course_details
+    app.jinja_env.globals['get_shortened_article_text'] = _get_shortened_article_text
     app.jinja_env.globals['get_course_extra'] = _get_course_extra
 
     @app.before_request

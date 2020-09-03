@@ -35,6 +35,7 @@ class Config(object):
     PAYPAL_ACCOUNT = get_setting('PAYPAL_ACCOUNT')
     ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'report', 'shop', 'announcement', 'article']
     SUMMARY_LIMIT = 190
+    ARTICLE_SUMMARY_LIMIT = 110
     SESSION_EXPIRY = get_setting('SESSION_EXPIRY', 30)
     RECAPTCHA_USE_SSL = False
     RECAPTCHA_PUBLIC_KEY = get_setting('RECAPTCHA_PUBLIC_KEY')
