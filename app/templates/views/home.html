@@ -124,8 +124,8 @@
       <div class="container-fluid padding content-width">
         <div class="card mb-3">
           <div class="row no-gutters">
-            <div class="col-md-4">
-              <img src="/static/images/featuredblock.png" class="card-img">
+            <div class="col-md-4 py-0">
+              <img src="/static/images/featuredblock.png" class="card-img featured_article">
             </div>
             <div class="col-md-8">
               <div class="card-body" id="main_article">
@@ -145,7 +145,7 @@
             <img class="card-img-top cardimgtopmulti" src="/static/images/featured1.png">
             <div class="card-body">
               <h4 id="article_1" class="card-title dark_grey_txt">{{ articles[0].title }}</h4>
-              <p class="card-text cardtextmulti">{{ articles[0].very_short_content[:40] }} <a href='/article/{{ articles[0].id }}'>READ MORE</a></p>
+              <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[0]) }} <a href='/article/{{ articles[0].id }}'>READ MORE</a></p>
             </div>
           </div>
         </div>
@@ -154,7 +154,7 @@
             <img class="card-img-top cardimgtopmulti" src="/static/images/featured2.png">
             <div class="card-body">
               <h4 id="article_2" class="card-title dark_grey_txt">{{ articles[1].title }}</h4>
-              <p class="card-text cardtextmulti">{{ articles[1].very_short_content[:40] }} <a href='/article/{{ articles[1].id }}'>READ MORE</a></p>
+              <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[1]) }} <a href='/article/{{ articles[1].id }}'>READ MORE</a></p>
             </div>
           </div>
         </div>
@@ -163,7 +163,7 @@
             <img class="card-img-top cardimgtopmulti" src="/static/images/featured3.png">
             <div class="card-body">
               <h4 id="article_3" class="card-title dark_grey_txt">{{ articles[2].title }}</h4>
-              <p class="card-text cardtextmulti">{{ articles[2].very_short_content[:40] }} <a href='/article/{{ articles[2].id }}'>READ MORE</a></p>
+              <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[2]) }} <a href='/article/{{ articles[2].id }}'>READ MORE</a></p>
             </div>
           </div>
         </div>
@@ -172,7 +172,7 @@
             <img class="card-img-top cardimgtopmulti" src="/static/images/featured4.png">
             <div class="card-body">
               <h4 id="article_4" class="card-title dark_grey_txt">{{ articles[3].title }}</h4>
-              <p class="card-text cardtextmulti">{{ articles[3].very_short_content[:40] }} <a href='/article/{{ articles[3].id }}'>READ MORE</a></p>
+              <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[3]) }} <a href='/article/{{ articles[3].id }}'>READ MORE</a></p>
             </div>
           </div>
         </div>
