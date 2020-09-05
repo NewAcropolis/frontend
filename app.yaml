@@ -5,6 +5,7 @@ threadsafe: true
 handlers:
 - url: /static
   static_dir: app/static
+  application_readable: true
 - url: /robots.txt
   static_files: app/static/robots.txt
   upload: app/static/robots.txt
