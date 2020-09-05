@@ -4,15 +4,31 @@
 
   <div id="homepage_carousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
+      {% for banner in get_home_banner_files() %}
+      <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
+        <img class="d-block w-100" src="/static/images/home_banner/{{ banner.filename }}">
+        {% if banner.text %}
+        <div class="carousel-caption d-md-block">
+          <div class="carousel-banner">
+            <h3> {{ banner.text }} </h3>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    {% endfor %}
       {% for event in all_events %}
         {% if not event.get('past') %}
-          <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
+          {% if get_home_banner_files() %}
+          <div class="carousel-item">
+            {% else %}
+          <div class="carousel-item {% if loop.index == 1 %} active{% endif %}"></div>
+          {% endif %}
             <img class="d-block w-100" src="{{ IMAGES_URL }}/standard/{{ event.image_filename }}">
             <div class="carousel-caption d-md-block">
               <div class="carousel-title">{{ event.title }}</div>
               <div class="carousel-banner">
                 <h3> {{ event.event_type.upper() }}: {{ event.formatted_event_datetimes }} </h3>
-                <h5><a href=''><a href="{{ url_for('main.event_details', event_id=event.id) }}">FIND OUT MORE</a></a></h5>
+                <h5><a href="{{ url_for('main.event_details', event_id=event.id) }}">FIND OUT MORE</a></h5>
               </div>
             </div>
           </div>

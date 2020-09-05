@@ -117,6 +117,24 @@ def _get_shortened_article_text(article, limit=None):
     return ' '.join(content.split(' ')[:-1])
 
 
+def _get_home_banner_files():
+    HOME_BANNER_PATH = os.path.join(current_app.static_folder, "images/home_banner/")
+
+    all_static_filenames = os.listdir(HOME_BANNER_PATH)
+    img_filenames = [f for f in all_static_filenames if not f.endswith('.txt')]
+
+    banner_files = []
+    for img_f in sorted(img_filenames):
+        if os.path.exists(HOME_BANNER_PATH + img_f + ".txt"):
+            with io.open(HOME_BANNER_PATH + img_f + ".txt", "r", encoding="utf-8") as f:
+                banner_text = f.read()
+            banner_files.append({'filename': img_f, 'text': banner_text})
+        else:
+            banner_files.append({'filename': img_f, 'text': ''})
+
+    return banner_files
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
@@ -129,6 +147,7 @@ def init_app(app):
     app.jinja_env.globals['get_summary_course_details'] = _get_summary_course_details
     app.jinja_env.globals['get_shortened_article_text'] = _get_shortened_article_text
     app.jinja_env.globals['get_course_extra'] = _get_course_extra
+    app.jinja_env.globals['get_home_banner_files'] = _get_home_banner_files
 
     @app.before_request
     def before_request():
