@@ -17,26 +17,7 @@
   </div>
 </div>
 
-  <div class="container-fluid padding yellow_background">
-    <div class="row text-center padding content-width-lg mx-auto">
-      <div class="col-lg-12">
-        <ul class="list-horizontal">
-          <li><a href="{{ url_for('main.course_details', topic='timeless_universal') }}">Timeless & Universal Philosophy</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='india') }}">India</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='tibet') }}">Tibet</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='buddhism') }}">Buddhism</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='china') }}">China</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='egypt') }}">Egypt</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='greece') }}">Greece</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='rome') }}">Rome</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='neoplatonic_school') }}">The Neoplatonic School</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='philosophy_history') }}">Philosophy of History</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='human_being_universe') }}">The Human Being & the Universe</a></li>
-          <li><a href="{{ url_for('main.course_details', topic='hermetic_tradition') }}">The Hermetic Tradition</a></li>
-        </ul>    
-      </div>
-    </div>
-  </div>
+{% include "components/topics.html" %}
 
   <div class="container-fluid padding cream_backgroundcolour">
     <div class="row padding content-width-lg mx-auto">
