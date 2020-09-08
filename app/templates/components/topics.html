@@ -1,0 +1,25 @@
+<div class="container-fluid padding {% if request.path == '/course_details' %}course_details_background{% else %}yellow_background{% endif %}">
+    {% if request.path == '/course_details' %}
+    <div class="topics_header text-center">16-week course topics:</div>
+    {% endif %}
+    {% set topics = get_topic_list_elements(request.args.get('topic')) %}
+
+    <div class="row text-center padding content-width-lg mx-auto">
+        <span class="col-lg-12">
+        <ul class="list-horizontal">
+            <li>{{topics.timeless_universal|safe}}</li>
+            <li>{{topics.india|safe}}</li>
+            <li>{{topics.tibet|safe}}</li>
+            <li>{{topics.buddhism|safe}}</li>
+            <li>{{topics.china|safe}}</li>
+            <li>{{topics.egypt|safe}}</li>
+            <li>{{topics.greece|safe}}</li>
+            <li>{{topics.rome|safe}}</li>
+            <li>{{topics.neoplatonic_school|safe}}</li>
+            <li>{{topics.philosophy_history|safe}}</li>
+            <li>{{topics.human_being_universe|safe}}</li>
+            <li>{{topics.hermetic_tradition|safe}}</li>
+        </ul>    
+        </div>
+    </div>
+</div>

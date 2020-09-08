@@ -89,7 +89,7 @@ html, body {
 /* HEADER */
 
 .navbar{
-  font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   padding: .8rem;
   background-color: rgb(10,134,101);
   border-bottom: solid 19px rgb(238,191,109);
@@ -111,7 +111,7 @@ footer{
   font-size: 0.8em;
   line-height: 5px;
   border-top: solid 19px rgb(238,191,109);
-  font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
 }
 .footer_icons{
   width: 45px;
@@ -176,7 +176,7 @@ footer{
   color: rgba(175,154,89);
 }
 .dark_grey_txt {
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: rgb(74,74,74) !important;
   font-size: 20px;
 }
@@ -237,10 +237,10 @@ footer{
   color: yellow;
   margin-bottom: 75px;
   font-size: 50px;
-  font-family: 'AvenirNext-Bold';
+  font-family: 'AvenirNext-Bold',Avenir;
 }
 .introtext {
-  font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
   padding: 2% 9% 2% 9%;
   font-size: 1.4em;
   color: rgb(157,157,157);
@@ -253,7 +253,7 @@ footer{
   height: 260px;
   background-color: white;
   width: 100%;
-  font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   color: rgb(157,157,157); 
 }
 
@@ -274,7 +274,7 @@ footer{
   color: white;
 }
 .display-4 {
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   padding-top: 2%;
   font-size: 40px !important;
 }
@@ -305,21 +305,21 @@ footer{
   border-color: rgba(150,150,150,1.0);
 }
 .light_text {
-  font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
   color: rgb(157,157,157);
 }
 .subscribe_section{
   background-color: rgb(63,96,144);
   height: auto;
   width: 100%;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: white;
   line-height: 27.0px;
   padding: 1%;
 }
 .magazine_txt {
   font-size: 2.5em;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: rgb(105,152,219);
   text-align: right;
 }
@@ -339,7 +339,7 @@ footer{
   opacity: .76;
   height: auto;
   width: auto;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   font-size: 2em;
   color: rgb(74,74,74);
   line-height: 32.0px;
@@ -368,7 +368,7 @@ footer{
   font-size: 17px;
   transform: rotate(45deg);
   display:block;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: white;
 }
 .past_card_padding{
@@ -385,7 +385,7 @@ footer{
 }
 .contactus_text{
   line-height: 16px;
-  font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
 }
 .contactus_padding {
   padding: 0% 5% 5% 5%;
@@ -446,14 +446,33 @@ footer{
 /* About Page */
 .about_box{
   border: solid 2px rgba(121, 121, 121, 0.5);
-  width: 100%;
+  /* width: 100%; */
   padding: 5%; 
-  font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   color: rgba(105, 105, 105, 0.5);
   text-align: left;
+  height:355px;
+  width: 470px;
 }
 .about_blue_box_txt{
-  font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+}
+.about_hotspot {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-align: center;
+}
+.about_hotspot img {
+  max-width:470px;
+  height:355px;
+  display: block;
+}
+#about_us_pyramid_text {
+  overflow:scroll;
+  height:315px;
 }
 .pyramid {
   max-width: 450px;
@@ -461,7 +480,7 @@ footer{
   border: solid 2px rgba(121, 121, 121, 0.5);
 }
 .statistics_font {
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   font-size: 4em;
 }
 .quote_img {
@@ -474,7 +493,7 @@ footer{
 .visit_website_section{
   height: auto;
   width: 100%;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   padding: 2% 5% 2% 5%;
 }
 .card-img_person {
@@ -482,7 +501,7 @@ footer{
   object-fit: cover;
 }
 .ourschool_text{
-  font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
   padding: 2% 7% 2% 7%;
   width: 100%;
 }
@@ -532,7 +551,7 @@ footer{
   min-width: 390px;
   width: 100%;
   border: 4px solid rgb(240,200,129);
-  font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
 }
 .courses_reserve_box {
   height: 70px;
@@ -541,7 +560,7 @@ footer{
   width: 340px;
   border: 4px solid rgb(240,200,129);
   background-color:rgb(240,200,129);
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
 }
 .courses_foundation_advanced_padding{
   font-size: 20px;
@@ -585,39 +604,35 @@ footer{
 .course_details_text{
   background-color: white;
   border: solid 2px rgba(121, 121, 121, 0.5);
-  height: 100%;
-  width: 100%;
   padding: 5%; 
-  font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
   color: rgb(74,74,74);
 }
 .half_screen_img{
-  height: 100%;
-  width: 100%;
+  max-height: 500px;
   border: solid 2px rgba(121, 121, 121, 0.5);
 }
 .course_details_key_padding{
   padding: 3%;
 }
-.course_details_key_box{
+.course_details_background {
   background-color: rgb(214,221,232);
+}
+.course_details_key_box{
   height: auto;
   width: 100%;
 }
+.blue_text {
+  color: rgb(72, 146, 227);
+}
+.topics_header {
+  font-size: 24px;
+  font-family: Avenir;
+  color: rgb(72, 146, 227);
+  padding-top:10px;
+}
 .topic_details_section {
   padding: 4% 4% 0% 4%;
-}
-.about_hotspot {
-  position: relative;
-  display: inline-block;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  text-align: center;
-}
-.about_hotspot img {
-  max-width:100%;
-  display: block;
 }
 .box {
   width: 18%;
@@ -705,7 +720,7 @@ footer{
   font-size: 18px;
   transform: rotate(45deg);
   display:block;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: Avenir,Helvetica,Arial,serif;
   color: white;
 }
 .giant_past_card_padding{
@@ -728,7 +743,7 @@ footer{
 .find_out_more_link{
   text-decoration: none;
   color: white;
-  font-family: 'AvenirNext-DemiBold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
 }
 /* EVENT DETAILS */
 .event_blue {
@@ -736,7 +751,7 @@ footer{
 }
 .event_title {
   color: black;
-  font-family: 'AvenirNext-Bold',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
 }
 .event_details_img{
   object-fit: cover;  
@@ -754,7 +769,7 @@ footer{
   height: 100%;
   width: 100%;
   padding: 5%; 
-  font-family: 'AvenirNext-Medium',Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
   color: rgb(74,74,74);
 }
 

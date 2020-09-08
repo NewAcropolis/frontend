@@ -51,16 +51,6 @@ def resources():
     return render_page('views/resources.html')
 
 
-@main.route('/courses')
-def courses():
-    return render_page('views/courses.html')
-
-
-@main.route('/course_details')
-def course_details():
-    return render_page('views/course_details.html')
-
-
 def _unescape_html(items, field_name):
     h = HTMLParser()
     for item in items:
