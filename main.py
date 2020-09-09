@@ -9,7 +9,7 @@ manager = Manager(application)
 manager.add_command("runserver", Server(host='0.0.0.0'))
 
 
-@application.template_filter('strftime')
+@application.template_filter('strfdate')
 def _jinja2_filter_datetime(date, fmt=None):
     date_obj = datetime.strptime(date, '%Y-%m-%d')
     return date_obj.strftime('%A %-d %B')

@@ -159,6 +159,23 @@ def keep_alive():
     return 'API called'
 
 
+@main.route('/_clear_events', methods=['GET'])
+def clear_event():
+    if "future_events" in session:
+        del session["future_events"]
+        return "future events cleared"
+    return "No events cleared"
+
+
+def get_future_events():
+    if 'future_events' in session:
+        return session["future_events"]
+    else:
+        events = api_client.get_events_in_future(approved_only=True)
+        session["future_events"] = events
+        return events
+
+
 def render_page(template, **kwargs):
     contact_form = ContactForm()
     contact_form.setup()

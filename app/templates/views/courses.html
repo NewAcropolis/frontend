@@ -261,46 +261,26 @@
     </div>
 
     <div class="row text-center content-width-lg mx-auto">
-      <div class="row col-12"></div>
+      {% for intro_course in intro_courses %}
+        {% for date in intro_course.dates %}
       <div class="row mx-auto">
         <div class="col-md-8 col-sm-12">
           <div class="courses_start_date_box">
-            <p>SEPTEMBER 5th 2018<br>16-week introduction philosophies of East & West</p>
+            <p>{{date|strfdate}}<br>
+              16-week introduction philosophies of East & West
+            </p>
           </div>
         </div>
         <div class="col-md-4 col-sm-12">
-          <div class="courses_reserve_box">
-            <h3>RESERVE MY PLACE</h3>
+          <div class="row courses_reserve_box align-items-center">
+            <div class="col-md-12">
+              <h3><a href='{{url_for("main.event_details", event_id=intro_course.id)}}'>RESERVE MY PLACE</a></h3>
+            </div>
           </div>
         </div>
       </div>
-      <div class="row mx-auto">
-        <div class="col-md-8 col-sm-12">
-          <div class="courses_start_date_box">
-            <p>SEPTEMBER 5th 2018<br>16-week introduction philosophies of East & West</p>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-          <div class="courses_reserve_box">
-            <h3>RESERVE MY PLACE</h3>
-          </div>
-        </div>
-      </div>
-      <div class="row mx-auto">
-        <div class="col-md-8 col-sm-12">
-          <div class="courses_start_date_box">
-            <p>SEPTEMBER 5th 2018<br>16-week introduction philosophies of East & West</p>
-          </div>
-        </div>
-        <div class="col-md-4 col-sm-12">
-          <div class="courses_reserve_box">
-            <h3>RESERVE MY PLACE</h3>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-1"></div>
-      </div>
+        {% endfor %}
+      {% endfor %}
     </div>
   </div>
 
