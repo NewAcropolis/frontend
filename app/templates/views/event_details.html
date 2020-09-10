@@ -1,5 +1,28 @@
 {% extends "base.html" %}
 {% block title %}Event details{% endblock %}
+{% block extra_head %}
+<script>
+  function UpdatePayType() {
+    var date_selected = document.getElementById("dateSel");
+    var PaypalForm = document.getElementById("paypalForm");
+    var dateSel = PaypalForm.os1;
+    var pay_type = PaypalForm.os0;
+
+    if (dateSel.value == "all") {
+      pay_type.options[0].text = "Full £"+ PaypalForm.m_fee.value + " GBP";
+      pay_type.options[0].value = "All_Full";
+      pay_type.options[1].text = "Concesssion £"+ PaypalForm.m_concfee.value + " GBP";
+      pay_type.options[1].value = "All_Concession";
+    } 
+    else {
+      pay_type.options[0].text = "Full £"+ PaypalForm.fee.value + " GBP";
+      pay_type.options[0].value = "Full";
+      pay_type.options[1].text = "Concesssion £"+ PaypalForm.concfee.value + " GBP";
+      pay_type.options[1].value = "Concession";
+    }
+  }
+</script>
+{% endblock %}
 {% block content %}
   <div class="container-fluid padding cream_backgroundcolour">
     <div class="row topic_details_section">
@@ -7,7 +30,7 @@
         <div class="course_details_text">
           <h2 class="event_blue">{{ event.event_type }} : {{ event.formatted_event_datetimes }}</h2>
           <h2 class="event_title">{{ event.title }}</h2><br>
-          <p>{{ event.description | safe}}</p>
+          <p>{{ event._description | safe}}</p>
         </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 ">
@@ -24,7 +47,7 @@
         <h2 class="event_blue">BUY YOUR TICKETS NOW</h2>
         <p class="important">
             <div class="pt-3">
-              <form id="paypalForm{{ event.id }}" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+              <form id="paypalForm" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
                 <input type="hidden" name="cmd" value="_s-xclick">
                 <input type="hidden" name="fee" value="{{ event.fee }}">
                 <input type="hidden" name="concfee" value="{{ event.conc_fee }}">
@@ -33,9 +56,18 @@
                 <input type="hidden" name="hosted_button_id" value="{{ event.booking_code }}">
                 <table>
                   <input type="hidden" name="on0" value="Type">
+                  <input type="hidden" name="on1" value="Date">
+                  <select id="dateSel" onchange="UpdatePayType();" name="os1">
+                    {% for date in event.dates %}
+                    <option value="{{loop.index}}">{{ date|strfdate }}</option>
+                    {% endfor %}
+                    {% if event.multi_day_fee %}
+                      <option value="all">All dates</option>
+                    {% endif %}
+                  </select>
                   <tr>
                     <td>
-                      <select id='PayType{{ event.id }}' name="os0" onchange='getDetails(312)'>
+                      <select id='PayType' name="os0">
                           <option value="Full">Full &pound;{{ event.fee }} GBP</option>
                           <option value="Concession">Concession &pound;{{ event.conc_fee }} GBP</option>
                       </select> 

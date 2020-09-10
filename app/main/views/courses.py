@@ -2,12 +2,14 @@ from flask import current_app, request
 import os
 
 from app.main import main
-from app.main.views import render_page
+from app.main.views import render_page, get_future_events
 
 
 @main.route('/courses')
 def courses():
-    return render_page('views/courses.html')
+    future_events = get_future_events()
+    intro_courses = [e for e in future_events if e['event_type'] == 'Introductory Course']
+    return render_page('views/courses.html', intro_courses=intro_courses)
 
 
 @main.route('/course_details')
