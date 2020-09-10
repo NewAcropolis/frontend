@@ -32,6 +32,11 @@ def app():
         'WTF_CSRF_ENABLED': False,
     })
 
+    # just return the date to make strfdate available in jinja2
+    @_app.template_filter('strfdate')
+    def __jinja2_filter_datetime(date, fmt=None):
+        return date
+
     ctx = _app.app_context()
     ctx.push()
 
@@ -205,6 +210,7 @@ def sample_future_event(mocker):
     event = {
         "id": str(uuid4()),
         "title": "Test title 1",
+        "description": "Test description",
         "event_type": "Talk",
         "image_filename": "event.png",
         "event_dates": [{
@@ -228,22 +234,26 @@ def sample_articles_summary(mocker):
         {
             'title': 'Article title 1',
             'short_content':
-                'some short content 1, some short content 1, some short content 1, some short content 1'
+                'some short content 1, some short content 1, some short content 1, some short content 1',
+            'very_short_content': 'some short content 1'
         },
         {
             'title': 'Article title 2',
             'short_content':
-                'some short content 2, some short content 2, some short content 2, some short content 2'
+                'some short content 2, some short content 2, some short content 2, some short content 2',
+            'very_short_content': 'some short content 2'
         },
         {
             'title': 'Article title 3',
             'short_content':
-                'some short content 3, some short content 3, some short content 3, some short content 3'
+                'some short content 3, some short content 3, some short content 3, some short content 3',
+            'very_short_content': 'some short content 3'
         },
         {
             'title': 'Article title 4',
             'short_content':
-                'some short content 4, some short content 4, some short content 4, some short content 4'
+                'some short content 4, some short content 4, some short content 4, some short content 4',
+            'very_short_content': 'some short content 4'
         }
     ]
 
@@ -265,6 +275,14 @@ def sample_marketings(mocker):
 
     mocker.patch('app.clients.api_client.ApiClient.get_marketings', return_value=marketings)
     return marketings
+
+
+@pytest.fixture
+def sample_latest_magazine(mocker):
+    magazine = {"filename": "latest_magazine.pdf"}
+
+    mocker.patch('app.clients.api_client.ApiClient.get_latest_magazine', return_value=magazine)
+    return magazine
 
 
 @pytest.fixture

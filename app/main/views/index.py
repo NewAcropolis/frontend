@@ -4,7 +4,7 @@ import pytz
 from random import randint
 from app import api_client
 from app.main import main
-from app.main.views import render_page
+from app.main.views import render_page, get_future_events
 from six.moves.html_parser import HTMLParser
 from app.main.forms import ContactForm
 from app.clients.errors import HTTPError
@@ -12,11 +12,11 @@ from app.clients.errors import HTTPError
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    future_events = api_client.get_events_in_future(approved_only=True)
+    future_events = get_future_events()
+
     for event in future_events:
         if event['event_type'] == 'Introductory Course':
             event['carousel_text'] = 'Courses starting {}'.format(event['event_monthyear'])
-
     articles = api_client.get_articles_summary()
     if articles:
         index = randint(0, len(articles) - 1)
@@ -28,7 +28,7 @@ def index():
     if len(all_events) < 3:
         past_events = api_client.get_events_past_year()
         if past_events:
-            while len(all_events) < 3:
+            while len(all_events) < 3 and past_events:
                 event = past_events.pop(-1)
                 event['past'] = True
                 all_events.append(event)
@@ -37,8 +37,7 @@ def index():
         'views/home.html',
         main_article=main_article,
         articles=articles,
-        all_events=all_events,
-        current_page=''
+        all_events=all_events[:3]
     )
 
 
@@ -50,21 +49,6 @@ def about():
 @main.route('/resources')
 def resources():
     return render_page('views/resources.html')
-
-
-@main.route('/what-we-offer')
-def what_we_offer():
-    return render_page('views/what_we_offer.html')
-
-
-@main.route('/e-shop')
-def e_shop():
-    return render_page('views/e-shop.html')
-
-
-@main.route('/course_details')
-def course_details():
-    return render_page('views/course_details.html')
 
 
 def _unescape_html(items, field_name):

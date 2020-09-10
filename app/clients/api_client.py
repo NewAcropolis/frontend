@@ -56,6 +56,9 @@ class ApiClient(BaseAPIClient):
     def get_limited_events(self):
         return self.get_nice_event_dates(self.get(url='events/limit/30'))
 
+    def get_latest_magazine(self):
+        return self.get(url='magazine/latest')
+
     @only_show_approved_events
     def get_events_in_future(self):
         events = self.get_nice_event_dates(self.get(url='events/future'))

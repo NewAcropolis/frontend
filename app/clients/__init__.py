@@ -45,27 +45,30 @@ class BaseAPIClient(object):
             "password": self.secret
         }
 
+        auth_url = urljoin(str(self.base_url), "auth/login")
         try:
-            auth_url = urljoin(str(self.base_url), "auth/login")
             auth_response = requests.request(
                 "POST",
                 auth_url,
                 data=json.dumps(auth_payload),
                 headers={'Content-Type': 'application/json'},
-                allow_redirects=False
+                allow_redirects=False,
+                timeout=60
             )
             auth_response.raise_for_status()
-        except requests.RequestException as e:
+        except (requests.RequestException, requests.Timeout) as e:
             api_error = HTTPError.create(e)
             current_app.logger.error(
-                "Set access token: {} failed with {} '{}'".format(
+                "Set access token: {} failed with {} '{}' - '{}'".format(
                     auth_url,
                     api_error.status_code,
-                    api_error.message
+                    api_error.message,
+                    e.message
                 )
             )
             # raise api_error
-            session["error"] = "Error connecting to API"
+            session["error"] = u"Error connecting to API: " +\
+                str(e).replace(current_app.config['API_BASE_URL'], 'https://API')
             return False
 
         session["access_token"] = auth_response.json()["access_token"]

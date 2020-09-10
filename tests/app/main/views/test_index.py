@@ -44,7 +44,8 @@ class WhenAccessingHomePage(object):
         assert content == intro_course['title']
 
     def it_should_show_past_and_future_events_in_cards(
-        self, mocker, client, sample_articles_summary, sample_future_event_for_cards, sample_past_events_for_cards
+        self, mocker, client, sample_articles_summary, sample_future_event_for_cards, sample_past_events_for_cards,
+        sample_latest_magazine
     ):
         mocker.patch('app.main.views.index.api_client.get_events_in_future', return_value=sample_future_event_for_cards)
         mocker.patch('app.main.views.index.api_client.get_events_past_year', return_value=sample_past_events_for_cards)
@@ -81,7 +82,7 @@ class WhenAccessingHomePage(object):
     def it_shows_list_of_available_pages_on_header_and_footer(
         self, client, sample_future_events, sample_articles_summary, div_class
     ):
-        expected_link_text = ['About', 'What we offer', 'Whats on', 'Resources', 'E-shop']
+        expected_link_text = ['About', 'Courses', 'Events', 'Resources', 'E-shop']
         response = client.get(url_for(
             'main.index'
         ))

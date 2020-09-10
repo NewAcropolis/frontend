@@ -1,3 +1,4 @@
+# coding: utf-8
 import json
 from datetime import datetime, timedelta
 from flask import current_app, jsonify, redirect, render_template, request, session, url_for
@@ -25,7 +26,7 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
             errors = "No matching magazine email found"
 
     email_types = api_client.get_email_types()
-    future_events = api_client.get_events_in_future()
+    future_events = api_client.get_events_in_future(approved_only=True)
 
     session['emails'] = future_emails
     session['future_events'] = future_events
@@ -134,3 +135,19 @@ def _get_event_dates(date_type):
                 'last_event_date': last_event_date
             })
     return ''
+
+
+@main.route('/admin/_get_default_details')
+def _get_default_details():
+    event = [e for e in session['future_events'] if e['id'] == request.args.get('event')]
+
+    if not event:
+        return ''
+
+    event = event[0]
+
+    details = u"<div><strong>Fees:</strong> £{}, £{} concession for students, "\
+        u"income support &amp; OAPs, and free for members of New Acropolis.</div><div><strong>Venue:</strong> "\
+        u"{}</div>{}".format(event['fee'], event['conc_fee'], event['venue']['address'], event['venue']['directions'])
+
+    return jsonify({'details': details})

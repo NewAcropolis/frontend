@@ -104,6 +104,11 @@ def callback():
     if not user:
         try:
             api_client.create_user(profile)
+
+            if 'error' in session:
+                error = session.pop('error')
+                raise HTTPError(error)
+
             return render_template(
                 'views/admin/admin_interstitial.html',
                 message="{} has registered as a user, "
@@ -154,6 +159,23 @@ def keep_alive():
     return 'API called'
 
 
+@main.route('/_clear_events', methods=['GET'])
+def clear_event():
+    if "future_events" in session:
+        del session["future_events"]
+        return "future events cleared"
+    return "No events cleared"
+
+
+def get_future_events():
+    if 'future_events' in session:
+        return session["future_events"]
+    else:
+        events = api_client.get_events_in_future(approved_only=True)
+        session["future_events"] = events
+        return events
+
+
 def render_page(template, **kwargs):
     contact_form = ContactForm()
     contact_form.setup()
@@ -165,11 +187,24 @@ def render_page(template, **kwargs):
 
     if 'error' in session and 'error' not in kwargs:
         error = session.pop('error')
-        kwargs['error'] = error['message']['error']
+        try:
+            kwargs['error'] = error['message']['error'] if isinstance(error, dict) else\
+                error['message'] if 'message' in error else\
+                error if isinstance(error, basestring) else "Unhandled error"
+        except TypeError:
+            current_app.logger.error("Unhandled error %r", error)
+            kwargs['error'] = "Unhandled error"
+
+    if 'latest_magazine' not in session:
+        latest_magazine = api_client.get_latest_magazine()
+        session['latest_magazine'] = latest_magazine
+    else:
+        latest_magazine = session['latest_magazine']
 
     return render_template(
         template,
         contact_form=contact_form,
         slim_subscription_form=slim_subscription_form,
+        latest_magazine=latest_magazine,
         **kwargs
     )

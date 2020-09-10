@@ -1,70 +1,75 @@
 {% extends "base.html" %}
-{% block title %}Coure details{% endblock %}
+{% block title %}Course details{% endblock %}
 {% block content %}
   <div class="container-fluid padding cream_backgroundcolour">
     <div class="row topic_details_section">
-      <div class="col-xs-12 col-sm-12 col-md-6 ">
+      <div class="col-xs-12 col-lg-6 ">
         <div class="course_details_text">
           {% set topic = request.args.get('topic') %}
           {% set details = get_course_details(topic) %}
           {{details|safe}}
         </div>
       </div>
-      <div class="col-xs-12 col-sm-12 col-md-6 ">
+      <div class="col-xs-12 col-lg-6 text-center">
         <img src="/static/images/{{ topic }}.png" class="img-fluid half_screen_img">
       </div>
     </div>
   </div>
 
-  <div class="container-fluid padding">
-    <div class="row text-center">
-      <img src="/static/images/course_details_quote.png" class="page_header_img">
-    </div>
-  </div>
+  {% include "components/topics.html" %}
 
   {% set extra = get_course_extra(topic) %}
   <div class="course_details_key_padding">
-    <div class="course_details_key_box">
+    <div class="course_details_key_box course_details_background">
       <div class="course_details_key_padding">
-        <div class="row">
-          <div class="col-lg-12">
-            <h1 class="display-4 text-center"> KEY CHARACTERS/IDEAS/EVENTS </h1>
+        <div class="row content-width-lg mx-auto">
+          <div class="col-12">
+            <h1 class="display-4 text-center font-weight-bold"> KEY IDEAS </h1>
           </div>
-          <div class="col-3">
-            <img src="/static/images/course_details_img1.png" class="img-fluid">
-          </div>
-          <div class="col-3">
-            <img src="/static/images/course_details_img2.png" class="img-fluid">
-          </div>
-          <div class="col-6">
-            <div class="course_details_text">
-              {{extra['events']|safe}}
-            </div>
-          </div>
-          <div class="col-3">
-            <img src="/static/images/course_details_img1.png" class="img-fluid">
-          </div>
-          {% if extra['person'] %}
-          <div class="col-6">
-            <div class="course_details_text">
-              {{extra['person']|safe}}
-            </div>
-          </div>
-          <div class="col-3">
-            <img src="/static/images/course_details_img2.png" class="img-fluid">
-          </div>
-          {% endif %}
-          {% if extra['ideas'] %}
-          <div class="col-6">
-            <div class="course_details_text">
-              {{extra['ideas']|safe}}
-            </div>
-          </div>
-          <div class="col-6">
-            <img src="/static/images/course_details_img3.png" class="img-fluid">
-          </div>
-          {% endif %}
         </div>
+        <div class="row py-2 content-width-lg mx-auto ml-0">
+          <div class="col-xs-12 col-md-6 mx-auto py-0">
+            <div class="course_details_text h-100">
+              {{extra[0]|safe}}
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-6 py-md-0">
+            <img src="/static/images/topics/{{ topic_images[0] }}" class="img-fluid">
+          </div>
+        </div>
+        {% if extra|length > 1 %}
+        <div class="row py-2 content-width-lg mx-auto">
+          <div class="col-xs-12 col-sm-3 py-sm-0 d-none d-sm-block">
+            <img src="/static/images/topics/{{ topic_images[1] }}" class="img-fluid">
+          </div>
+          <div class="col-xs-12 col-sm-6 mx-auto py-0">
+            <div class="course_details_text h-100">
+              {{extra[1]|safe}}
+            </div>
+          </div>
+          <div class="col-xs-12 d-block d-sm-none">
+            <img src="/static/images/topics/{{ topic_images[1] }}" class="img-fluid">
+          </div>
+          <div class="col-sm-3 py-0 d-none d-sm-block">
+            <img src="/static/images/topics/{{ topic_images[2] }}" class="img-fluid">
+          </div>
+        </div>
+          {% if extra|length > 2 %}
+          <div class="row py-2 content-width-lg mx-auto">
+            <div class="col-md-6 py-md-0 d-none d-md-block">
+              <img src="/static/images/topics/{{ topic_images[3] }}" class="img-fluid">
+            </div>
+            <div class="col-xs-12 col-md-6 py-0">
+              <div class="course_details_text h-100">
+                {{extra[2]|safe}}
+              </div>
+            </div>
+            <div class="col-sm-12 d-block d-md-none">
+              <img src="/static/images/topics/{{ topic_images[3] }}" class="img-fluid">
+            </div>
+          </div>
+          {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>

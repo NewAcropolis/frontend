@@ -3,10 +3,11 @@
 {% block content %}
 
 {% set philosophyText =  """
-Philosophy, in its original meaning, is the love of wisdom and the quest to understand the underlying principles of life. In this sense, we are all philosophers. We all have questions and we all have the intuition that there are answers to be found.<br><br>
+PHILOSOPHY, in its original meaning, is the love of wisdom and the quest to understand the underlying principles of life. In this sense, we are all philosophers. We all have questions and we all have the intuition that there are answers to be found.<br><br>
 Every civilization has passed on to us its knowledge and experience of the essential laws of life. A systematic and comparative study of this vast heritage enables us to discover the universal and timeless ideas that have formed characters, shaped visions of the future and helped men and women to meet the challenges of their time. As a School of Philosophy in the Classical Tradition, we offer a wide-ranging programme of studies designed to provide a holistic education - an education that does not just impart knowledge but also awakens and develops our other human faculties such as love, compassion, imagination, intuition, will power, perseverance, and any others that can help us to overcome our individual and collective problems.<br><br>
 A philosophical education may not lead to the quick, veriﬁable and measurable products we are so accustomed to expect. But it can produce a profound transformation within the individual, and therein lies its value.
 """
+<<<<<<< HEAD
 %}<head>
   <style>
     
@@ -54,8 +55,36 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
             </div>
         </div>
       </div>
+=======
+%}
+{% set volunteeringText = """
+VOLUNTEERING Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis est quis fermentum hendrerit. Phasellus faucibus sapien a erat aliquet, quis posuere libero ullamcorper. Donec egestas nec arcu vel sollicitudin. Duis at urna enim. Phasellus eu pharetra nulla. Morbi gravida augue id magna varius consequat. Donec commodo, orci sed pellentesque efficitur, orci magna commodo augue, nec viverra neque magna vel erat
+"""
+%}
+{% set cultureText = """
+CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis est quis fermentum hendrerit. Phasellus faucibus sapien a erat aliquet, quis posuere libero ullamcorper. Donec egestas nec arcu vel sollicitudin. Duis at urna enim. Phasellus eu pharetra nulla. Morbi gravida augue id magna varius consequat. Donec commodo, orci sed pellentesque efficitur, orci magna commodo augue, nec viverra neque magna vel erat
+""" %}
+
+
+<body>
+  <div id="banner" class="carousel slide">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100" src="/static/images/about_us_banner.png">
+          <div class="carousel-caption d-md-block">
+            <div class="carousel-banner">
+              <div class="w-75 mx-auto dispaly-4">
+              <h4>New Acropolis is an International Philosophical Movement working across comparative
+              Philosophical Study, Culture and working for others through Volunteering</h4>
+            </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+>>>>>>> 3952d9b6e70ce06e41c518126b1e81e3209b0c35
   <div class="container-fluid padding">
-    <div class="row topic_details_section">
+    <div class="row topic_details_section content-width-lg mx-auto">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
         <div class="about_hotspot">
           <img src="/static/images/pyramid.png" class="img-fluid half_screen_img">
@@ -108,10 +137,8 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
     </div>
   </div>
 
-  
-
   <div class="container-fluid padding blue_background about_blue_box_txt">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-lg-12">
         <h3 id="yellow_txt">Today New Acropolis is present in over 60 countries and growing.</h3>
         <h3>The figures below are taken from our 2019 yearbook.</h3>
@@ -141,7 +168,7 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
   </div>
   
   <div class="container-fluid padding yellow_background">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-lg-12">
         <h2 class="visit_website_section">Visit our <a href="https://www.acropolis.org/en/">International Website</a> to find out more about our activities and International
             Locations</h2>
@@ -157,7 +184,7 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
     </div>
   </div>
   <div class="container-fluid padding">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-xs-12 col-sm-6 col-md-4">
         <img src="/static/images/founding-hands.png" class="founding_img"><br><br>
         <h5 class="founding_headings"> FRATERNITY </h5>
@@ -177,9 +204,9 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
   </div>
 
   <div class="container-fluid padding py-3 cream_backgroundcolour">
-    <div class="card border_about">
+    <div class="card content-width-lg mx-auto">
       <div class="row padding">
-        <div class="col-md-4">
+        <div class="col-md-4 py-0 pl-0">
           <img src="/static/images/man.png" class="card-img_person card-img">
         </div>
         <div class="col-md-8 px-3">
@@ -194,7 +221,6 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
     </div>
   </div>
 
-
   <div class="container-fluid padding blue_background">
     <div class="row text-center padding">
       <div class="col-lg-12">
@@ -204,9 +230,9 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
   </div>
 
   <div class="container-fluid padding py-3 cream_backgroundcolour">
-    <div class="card border_about">
+    <div class="card content-width-lg mx-auto">
       <div class="row padding">
-        <div class="col-md-4">
+        <div class="col-md-4 py-0">
           <img src="/static/images/lady.png" class="card-img_person card-img">
         </div>
         <div class="col-md-8 px-3">
@@ -228,7 +254,7 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
   </div>
 
   <div class="container-fluid padding yellow_background">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-lg-12">
         <h1>New Acropolis UK</h1>
         <h4 class="ourschool_text">Our school in the <b>UK</b> was first established in <b>1974</b> and we have been in <b>Islington</b> since <b>1997</b>.
@@ -241,16 +267,6 @@ A philosophical education may not lead to the quick, veriﬁable and measurable 
   </div>
 
   {% include "components/contact.html" %}
-
-  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-  <script type="text/javascript">
-   $(document).ready(function(){
-     $('.carousel').slick({
-       "autoplay": true,
-       "autoplaySpeed": 5000,
-     });
-   });
-  </script>
 </body>
 
 {% endblock %}

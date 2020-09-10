@@ -5,6 +5,7 @@
       {% block style %}
       <link rel="stylesheet" href="/static/css/style.css" />
       <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+      <meta name="format-detection" content="telephone=no">
       <meta name="google" content="notranslate" />
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -31,6 +32,7 @@
       <div id="content">{% block content %}{% endblock %}</div>
       {% include "components/footer.html" %}
       {% if session.get('error') %}<div class='m-1'>{{ session['error']}}</div>{% endif %}
+      {% if error %}<div class='m-1'>{{ error }}</div>{% endif %}
       <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
       <script>
       window.cookieconsent.initialise({

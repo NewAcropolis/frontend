@@ -202,7 +202,7 @@ class EmailForm(FlaskForm):
         self.emails.choices = [('', 'New email')]
         email_events = []
         for email in emails:
-            if email['email_type'] == 'event':
+            if email['email_type'] == 'event' and email.get('event_id'):
                 email_events.append(email['event_id'])
 
             self.emails.choices.append(
@@ -212,7 +212,8 @@ class EmailForm(FlaskForm):
                 )
             )
 
-        self.events_emailed.data = ','.join(email_events)
+        if email_events:
+            self.events_emailed.data = ','.join(email_events)
 
         self.email_types.choices = []
         for email_type in email_types:

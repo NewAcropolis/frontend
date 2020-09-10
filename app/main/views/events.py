@@ -1,13 +1,16 @@
+# coding: utf-8
 from datetime import datetime
 from flask import request
+from HTMLParser import HTMLParser
 from random import randint
+
 from app import api_client
 from app.main import main
 from app.main.views import render_page
 
 
-@main.route('/whats-on')
-def whats_on():
+@main.route('/events')
+def events():
     articles = api_client.get_articles_summary()
     if articles:
         index = randint(0, len(articles) - 1)
@@ -16,12 +19,12 @@ def whats_on():
     past_events = []
     all_past_events = api_client.get_events_past_year()
     if all_past_events:
-        while len(past_events) < 3:
+        while len(past_events) < 3 and all_past_events:
             event = all_past_events.pop(-1)
             past_events.append(event)
 
     return render_page(
-        'views/whats_on.html',
+        'views/events.html',
         main_article=articles[index] if articles else None,
         articles=articles,
         future_events=future_events,
@@ -51,6 +54,9 @@ def event_details(event_id=None, **kwargs):
         )
 
     event['is_future_event'] = is_future_event(event)
+
+    h = HTMLParser()
+    event['_description'] = h.unescape(event['description'].encode('ascii', 'ignore'))
 
     return render_page(
         'views/event_details.html',

@@ -52,7 +52,7 @@ class MockAPIClient:
             },
         ]
 
-    def get_events_in_future(self):
+    def get_events_in_future(self, approved_only=False):
         return [
             {
                 "event_dates": [

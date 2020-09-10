@@ -34,7 +34,8 @@ class Config(object):
     OAUTHLIB_INSECURE_TRANSPORT = False
     PAYPAL_ACCOUNT = get_setting('PAYPAL_ACCOUNT')
     ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'report', 'shop', 'announcement', 'article']
-    SUMMARY_LIMIT = 360
+    SUMMARY_LIMIT = 190
+    ARTICLE_SUMMARY_LIMIT = 110
     SESSION_EXPIRY = get_setting('SESSION_EXPIRY', 30)
     RECAPTCHA_USE_SSL = False
     RECAPTCHA_PUBLIC_KEY = get_setting('RECAPTCHA_PUBLIC_KEY')
@@ -43,6 +44,7 @@ class Config(object):
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
+    WTF_CSRF_SSL_STRICT = False
 
 
 class Development(Config):

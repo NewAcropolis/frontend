@@ -251,7 +251,7 @@ class WhenAccessingFutureEventsPage(object):
 
 class WhenAccessingArticlesPage(object):
 
-    def it_shows_list_of_articles(self, client, mocker, logged_in):
+    def it_shows_list_of_articles(self, client, mocker, logged_in, sample_latest_magazine):
         mocker.patch(
             "app.clients.api_client.ApiClient.get_articles_summary",
             return_value=[
