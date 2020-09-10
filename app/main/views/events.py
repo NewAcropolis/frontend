@@ -1,6 +1,9 @@
+# coding: utf-8
 from datetime import datetime
 from flask import request
+from HTMLParser import HTMLParser
 from random import randint
+
 from app import api_client
 from app.main import main
 from app.main.views import render_page
@@ -51,6 +54,9 @@ def event_details(event_id=None, **kwargs):
         )
 
     event['is_future_event'] = is_future_event(event)
+
+    h = HTMLParser()
+    event['_description'] = h.unescape(event['description'].encode('ascii', 'ignore'))
 
     return render_page(
         'views/event_details.html',
