@@ -32,6 +32,11 @@ def app():
         'WTF_CSRF_ENABLED': False,
     })
 
+    # just return the date to make strfdate available in jinja2
+    @_app.template_filter('strfdate')
+    def __jinja2_filter_datetime(date, fmt=None):
+        return date
+
     ctx = _app.app_context()
     ctx.push()
 
@@ -205,6 +210,7 @@ def sample_future_event(mocker):
     event = {
         "id": str(uuid4()),
         "title": "Test title 1",
+        "description": "Test description",
         "event_type": "Talk",
         "image_filename": "event.png",
         "event_dates": [{
