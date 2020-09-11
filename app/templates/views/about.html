@@ -17,7 +17,6 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
 """ %}
 
 
-<body>
   <div id="banner" class="carousel slide">
     <div class="carousel-inner">
         <div class="carousel-item active">
@@ -34,7 +33,7 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
     </div>
   </div>
   <div class="container-fluid padding">
-    <div class="row topic_details_section content-width-lg mx-auto">
+    <div class="row topic_details_section content-width-lg mx-auto text-center">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
         <div class="about_hotspot">
           <img src="/static/images/pyramid.png" class="img-fluid half_screen_img">
@@ -216,6 +215,14 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
   </div>
 
   {% include "components/contact.html" %}
-</body>
 
+  <script charset="utf-8" type="text/javascript">
+    var urlParams = new URLSearchParams(window.location.search);
+    subject = urlParams.get('subject');
+    if (subject == 'culture') {
+      cultureText();
+    } else if (subject == 'volunteering') {
+      volunteeringText();
+    }
+  </script>
 {% endblock %}
