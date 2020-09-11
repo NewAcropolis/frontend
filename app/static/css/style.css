@@ -446,7 +446,6 @@ footer{
 /* About Page */
 .about_box{
   border: solid 2px rgba(121, 121, 121, 0.5);
-  /* width: 100%; */
   padding: 5%; 
   font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   color: rgba(105, 105, 105, 0.5);
@@ -472,7 +471,7 @@ footer{
 }
 #about_us_pyramid_text {
   overflow:scroll;
-  height:315px;
+  height:355px;
 }
 .pyramid {
   max-width: 450px;
