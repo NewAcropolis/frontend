@@ -197,6 +197,7 @@ def init_app(app):
     app.jinja_env.globals['get_course_extra'] = _get_course_extra
     app.jinja_env.globals['get_home_banner_files'] = _get_home_banner_files
     app.jinja_env.globals['get_topic_list_elements'] = _get_topic_list_elements
+    app.jinja_env.globals['config'] = app.config
 
     @app.before_request
     def before_request():
