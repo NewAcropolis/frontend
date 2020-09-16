@@ -11,7 +11,7 @@
         {% if banner.text %}
         <div class="carousel-caption d-md-block">
           <div class="carousel-banner">
-            <h3> {{ banner.text }} </h3>
+            <h3> {{ banner.text|safe }} </h3>
           </div>
         </div>
         {% endif %}
