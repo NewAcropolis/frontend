@@ -122,8 +122,9 @@ def _get_home_banner_files():
     banner_files = []
     for img_f in sorted(img_filenames):
         if os.path.exists(HOME_BANNER_PATH + img_f + ".txt"):
-            with io.open(HOME_BANNER_PATH + img_f + ".txt", "r", encoding="utf-8") as f:
+            with io.open(HOME_BANNER_PATH + img_f + ".txt", "rb") as f:
                 banner_text = f.read()
+            banner_text = textile.textile(banner_text)
             banner_files.append({'filename': img_f, 'text': banner_text})
         else:
             banner_files.append({'filename': img_f, 'text': ''})
