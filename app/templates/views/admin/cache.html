@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user_has_permissions('cache') %}
+<div class="container p-3 mx-auto" style="width: 800px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-6 font-weight-bold">Name</div>
+                <div class="col-6 font-weight-bold">Number cached</div>
+            </div>
+        {% for _, c in cache.iteritems() %}
+            <div class="row">
+                <div class="col-6">{{c.name}}</div>
+                <div class="col-6">{{c.count}}</div>
+            </div>  
+        {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <button id="reload" type="button" class="btn btn-warning">Reload cache</button>
+        </div>
+        <div class="col-9">
+            <button id="purge" type="button" class="btn btn-danger">Purge cache</button>
+        </div>
+    </div>
+</div>
+<script charset="utf-8" type="text/javascript">    
+    $(function() {
+        $('#reload').on('click', function() {
+            $.getJSON("{{ url_for('main._reload_cache') }}", null, function(data) {
+                alert(data['response']);
+                location.reload();
+            });
+        });
+        $('#purge').on('click', function() {
+            $.getJSON("{{ url_for('main._purge_cache') }}", null, function(data) {
+                alert(data['response']);
+                location.reload();
+            });
+        });
+    });
+</script>    
+{% endif %}
+{% endblock %}

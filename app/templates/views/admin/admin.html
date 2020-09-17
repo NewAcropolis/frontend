@@ -24,14 +24,9 @@
         {% endif %}
     </div>
     <div class="row">
-        {% if user_has_permissions('shop') %}
+        {% if user_has_permissions('cache') %}
         <div class='col-sm'>
-            Shop
-        </div>
-        {% endif %}
-        {% if user_has_permissions('report') %}
-        <div class='col-sm'>
-            Reports
+            <a href='/admin/cache'>Cache</a>
         </div>
         {% endif %}
         {% if user_has_permissions('announcement') %}
