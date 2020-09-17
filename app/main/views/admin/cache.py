@@ -1,8 +1,7 @@
 from flask import current_app, jsonify, render_template, session
 
 from app import api_client
-from app.clients.api_client import (
-    get_events_intro_courses_prioritised, only_show_approved_events, update_cache_via_thread)
+from app.clients.api_client import only_show_approved_events, update_cache_via_thread
 from app.cache import Cache
 from app.main import main
 

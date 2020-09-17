@@ -6,8 +6,7 @@ import urlparse
 
 from app import api_client
 from app.cache import Cache
-from app.clients.api_client import (
-    get_events_intro_courses_prioritised, only_show_approved_events, update_cache_via_thread)
+from app.clients.api_client import only_show_approved_events, update_cache_via_thread
 from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import EventForm

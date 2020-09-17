@@ -1,10 +1,17 @@
 from flask import current_app
-
 try:
     from google.appengine.ext import ndb
 except Exception:
     from mock import Mock
-    ndb = Mock()
+
+    class MockCache(Mock):
+        def get_data(*args):
+            pass
+
+        def set_data(*args):
+            pass
+
+    ndb = MockCache()
     print('Problem importing google.appengine.ext.ndb')
 
 
@@ -64,12 +71,11 @@ class Cache(ndb.Model):
                 for r_item in Cache.query(Cache.name == name + "_review").fetch():
                     if r_item.data[key] == value:
                         r_item.key.delete()
-                
+
                 cache = Cache(name=name + "_review", data=item)
                 cache.put()
                 return
         current_app.logger.info("No matching item found in cache {} to set for {}".format(name, value))
-
 
     @staticmethod
     def delete_review_entity(name, value, key='id'):
@@ -78,7 +84,6 @@ class Cache(ndb.Model):
                 r_item.key.delete()
                 return
         current_app.logger.info("No matching item found in cache {} to delete for {}".format(name, value))
-
 
     @staticmethod
     def get_review_entities(name):

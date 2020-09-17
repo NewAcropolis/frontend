@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import current_app
 from functools import wraps
 from threading import Thread
@@ -54,7 +54,7 @@ def use_cache(**dkwargs):
                         kwargs['decorator'] = dkwargs['decorator']
                     if 'sort_by' in dkwargs:
                         kwargs['sort_by'] = dkwargs['sort_by']
-                    if (datetime.utcnow() - updated_on).seconds > 6:  #0*60*24:
+                    if (datetime.utcnow() - updated_on).seconds > 60*60*24:  # update pages once a day
                         update_cache_via_thread(f, *args, **kwargs)
 
             if not data:
@@ -62,7 +62,7 @@ def use_cache(**dkwargs):
                     data = dkwargs['db_call'](*args, **kwargs)
                 else:
                     data = f(*args, **kwargs)
-                if not 'from_cache' in dkwargs:
+                if 'from_cache' not in dkwargs:
                     Cache.set_data(f.func_name, data)
             return data
         return decorated
@@ -134,7 +134,7 @@ class ApiClient(BaseAPIClient):
 
     @use_cache(
         db_call=get_event_by_id_from_db,
-        from_cache='get_events_in_future,get_events_past_year', 
+        from_cache='get_events_in_future,get_events_past_year',
         key='id')
     def get_event_by_id(self, event_id):
         return self.get_event_by_id_from_db(event_id)
@@ -161,7 +161,7 @@ class ApiClient(BaseAPIClient):
     @use_cache(
         update_daily=True,
         decorator=only_show_approved_events,
-        approved_only=True, # used by only_show_approved_events
+        approved_only=True,  # used by only_show_approved_events
         db_call=get_events_in_future_from_db,
         sort_by=get_events_intro_courses_prioritised)
     @only_show_approved_events
