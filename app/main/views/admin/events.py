@@ -5,6 +5,8 @@ import urlparse
 # from werkzeug import secure_filename
 
 from app import api_client
+from app.cache import Cache
+from app.clients.api_client import only_show_approved_events, update_cache_via_thread
 from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import EventForm
@@ -92,7 +94,16 @@ def admin_events(selected_event_id=None, api_message=None):
             if event.get('event_id'):
                 response = api_client.update_event(event['event_id'], adjusted_event)
                 message = 'event updated'
+
+                if event['event_state'] != "approved" and not form.cache_switch.data:
+                    Cache.set_review_entity('get_events_in_future', event.get('event_id'))
+                else:
+                    Cache.delete_review_entity('get_events_in_future', event.get('event_id'))
+                    update_cache_via_thread(
+                        api_client.get_events_in_future_from_db,
+                        decorator=only_show_approved_events, approved_only=True)
             else:
+                # do not need to update the cache here as an event is never in approved state when first created
                 response = api_client.add_event(adjusted_event)
 
             if 'error' in session:

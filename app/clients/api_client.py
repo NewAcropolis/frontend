@@ -1,6 +1,9 @@
 from datetime import datetime
+from flask import current_app
 from functools import wraps
+from threading import Thread
 
+from app.cache import Cache
 from app.clients import BaseAPIClient
 from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
@@ -13,6 +16,90 @@ def only_show_approved_events(func):
             return [e for e in events if e.get('event_state') == 'approved']
         return events
     return _only_show_approved_events
+
+
+def get_events_intro_courses_prioritised(events):
+    intro_courses_first = []
+    other_events = []
+    for event in events:
+        if event['event_type'] == 'Introductory Course':
+            intro_courses_first.append(event)
+        else:
+            other_events.append(event)
+
+    intro_courses_first.extend(other_events)
+    return intro_courses_first
+
+
+def use_cache(**dkwargs):
+    def use_cache_inner(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            if 'from_cache' in dkwargs:
+                for cache_name in dkwargs['from_cache'].split(','):
+                    data_cache = Cache.get_data(cache_name)
+                    if len(args) == 2:
+                        data = [d for d in data_cache if d[dkwargs['key']] == str(args[1])]
+                        if len(data) > 0:
+                            data = data[0]
+                            break
+                    else:
+                        current_app.logger.info("from_cache not 2 args")
+            else:
+                data = Cache.get_data(f.func_name)
+
+                if data and dkwargs.get('update_daily'):
+                    updated_on = Cache.get_updated_on(f.func_name)
+                    if 'decorator' in dkwargs:
+                        kwargs['decorator'] = dkwargs['decorator']
+                    if 'sort_by' in dkwargs:
+                        kwargs['sort_by'] = dkwargs['sort_by']
+                    if (datetime.utcnow() - updated_on).seconds > 60*60*24:  # update pages once a day
+                        update_cache_via_thread(f, *args, **kwargs)
+
+            if not data:
+                if 'db_call' in dkwargs:
+                    data = dkwargs['db_call'](*args, **kwargs)
+                else:
+                    data = f(*args, **kwargs)
+                if 'from_cache' not in dkwargs:
+                    Cache.set_data(f.func_name, data)
+            return data
+        return decorated
+    return use_cache_inner
+
+
+def update_cache(*args, **kwargs):
+    func = kwargs.pop('func')
+    cache_func_name = func.func_name.replace("_from_db", "")
+    app = kwargs.pop('app')
+    with app.test_request_context():
+        cached_data = Cache.get_data(cache_func_name)
+        if 'decorator' in kwargs:
+            func = kwargs['decorator'](func)
+
+        data = func(*args, **kwargs)
+
+        review_data = Cache.get_review_entities(func.func_name)
+
+        if review_data and 'sort_by' in kwargs:
+            sort_by = kwargs.pop('sort_by')
+            data = sort_by(data.extend(review_data))
+
+        if cached_data != data:
+            app.logger.info('Cache updated from db')
+            Cache.set_data(cache_func_name, data)
+        else:
+            app.logger.info('Cache does not need updating for {}'.format(func.func_name))
+
+        Cache.purge_older_versions(func.func_name)
+
+
+def update_cache_via_thread(f, *args, **kwargs):
+    kwargs['func'] = f
+    kwargs['app'] = current_app._get_current_object()
+    t = Thread(target=update_cache, args=args, kwargs=kwargs)
+    t.start()
 
 
 class ApiClient(BaseAPIClient):
@@ -42,8 +129,15 @@ class ApiClient(BaseAPIClient):
     def update_event(self, event_id, event):
         return self.post(url='event/{}'.format(event_id), data=event)
 
-    def get_event_by_id(self, event_id):
+    def get_event_by_id_from_db(self, event_id):
         return self.get_nice_event_date(self.get(url='event/{}'.format(event_id)))
+
+    @use_cache(
+        db_call=get_event_by_id_from_db,
+        from_cache='get_events_in_future,get_events_past_year',
+        key='id')
+    def get_event_by_id(self, event_id):
+        return self.get_event_by_id_from_db(event_id)
 
     def get_event_by_old_id(self, event_id):
         event = self.get(url='legacy/event_handler?eventid={}'.format(event_id))
@@ -60,13 +154,27 @@ class ApiClient(BaseAPIClient):
         return self.get(url='magazine/latest')
 
     @only_show_approved_events
-    def get_events_in_future(self):
+    def get_events_in_future_from_db(self):
         events = self.get_nice_event_dates(self.get(url='events/future'))
-        return self._get_events_intro_courses_prioritised(events)
+        return get_events_intro_courses_prioritised(events)
+
+    @use_cache(
+        update_daily=True,
+        decorator=only_show_approved_events,
+        approved_only=True,  # used by only_show_approved_events
+        db_call=get_events_in_future_from_db,
+        sort_by=get_events_intro_courses_prioritised)
+    @only_show_approved_events
+    def get_events_in_future(self):
+        return self.get_events_in_future_from_db()
 
     @only_show_approved_events
-    def get_events_past_year(self):
+    def get_events_past_year_from_db(self):
         return self.get_nice_event_dates(self.get(url='events/past_year'))
+
+    @use_cache(update_daily=True, db_call=get_events_past_year_from_db)
+    def get_events_past_year(self):
+        return self.get_events_past_year_from_db()
 
     def add_email(self, email):
         return self.post(url='email', data=email)
@@ -89,8 +197,12 @@ class ApiClient(BaseAPIClient):
     def get_latest_emails(self):
         return self.get(url='emails/latest')
 
-    def get_articles_summary(self):
+    def get_articles_summary_from_db(self):
         return self.get(url='articles/summary')
+
+    @use_cache(db_call=get_articles_summary_from_db)
+    def get_articles_summary(self):
+        return self.get_articles_summary_from_db()
 
     def get_article(self, id):
         return self.get(url='article/{}'.format(id))
@@ -158,18 +270,6 @@ class ApiClient(BaseAPIClient):
             dates.append(_datetime.strftime('%Y-%m-%d'))
 
         return dates
-
-    def _get_events_intro_courses_prioritised(self, events):
-        intro_courses_first = []
-        other_events = []
-        for event in events:
-            if event['event_type'] == 'Introductory Course':
-                intro_courses_first.append(event)
-            else:
-                other_events.append(event)
-
-        intro_courses_first.extend(other_events)
-        return intro_courses_first
 
     def get_user(self, email):
         return self.get(url='user/{}'.format(email))

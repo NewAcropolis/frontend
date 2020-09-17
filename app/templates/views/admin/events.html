@@ -2,7 +2,7 @@
 {% block extra_head %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/en-gb.js"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/admin.css"/>
@@ -139,6 +139,10 @@
         {% endif %}
         <div class="justify-content-end">
             {{ form.submit_type }}
+            <div id="cache-switch-div" class="custom-control custom-switch pb-2">
+                {{ form.cache_switch(class="custom-control-input") }}
+                <label class="custom-control-label" for="cache_switch">Update cache (will remove from event website unless approved)</label>
+            </div>
             <button id="preview" type="submit" class="btn btn-outline-info">Preview</button>
             <button id="draft" type="submit" class="btn btn-default">Draft</button>
             <button id="ready" type="submit" class="btn btn-outline-warning">Ready</button>
@@ -479,8 +483,9 @@ $(function() {
     function update_for_event_state(event_state) {
         var base_css = 'rounded col-7 mb-1 ml-3 pl-4 w-70 ';
         var css = '';
+        $('#cache-switch-div').attr('style', 'display:block;'); 
         switch(event_state) {
-            case 'new': css = 'bg-primary text-white'; break;
+            case 'new': css = 'bg-primary text-white'; $('#cache-switch-div').attr('style', 'display:none;'); break;
             case 'draft': css = 'bg-default'; break;
             case 'ready': css = 'bg-warning'; break;
             case 'rejected': css = 'bg-danger text-white'; break;
