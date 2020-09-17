@@ -47,10 +47,13 @@ def use_cache(**dkwargs):
                         current_app.logger.info("from_cache not 2 args")
             else:
                 data = Cache.get_data(f.func_name)
+
                 if data and dkwargs.get('update_daily'):
                     updated_on = Cache.get_updated_on(f.func_name)
                     if 'decorator' in dkwargs:
                         kwargs['decorator'] = dkwargs['decorator']
+                    if 'sort_by' in dkwargs:
+                        kwargs['sort_by'] = dkwargs['sort_by']
                     if (datetime.utcnow() - updated_on).seconds > 6:  #0*60*24:
                         update_cache_via_thread(f, *args, **kwargs)
 
@@ -72,31 +75,22 @@ def update_cache(*args, **kwargs):
     app = kwargs.pop('app')
     with app.test_request_context():
         cached_data = Cache.get_data(cache_func_name)
-        if not kwargs.get('approved') and all(k in kwargs for k in ('key', 'value')):
-            updated = False
-            for d in cached_data:
-                if d[kwargs['key']] == kwargs['value'] and 'sort_by' not in d:
-                    d['sort_by'] = kwargs['sort_by']
-                    updated = True
+        if 'decorator' in kwargs:
+            func = kwargs['decorator'](func)
 
-            if updated:
-                app.logger.info('Cache updated: {}={}'.format(d[kwargs['key']], d[kwargs['value']]))
-                Cache.set_data(func.func_name, cached_data)
+        data = func(*args, **kwargs)
+
+        review_data = Cache.get_review_entities(func.func_name)
+
+        if review_data and 'sort_by' in kwargs:
+            sort_by = kwargs.pop('sort_by')
+            data = sort_by(data.extend(review_data))
+
+        if cached_data != data:
+            app.logger.info('Cache updated from db')
+            Cache.set_data(cache_func_name, data)
         else:
-            if 'decorator' in kwargs:
-                func = kwargs['decorator'](func)
-            data = func(*args, **kwargs)
-            if 'approved' not in kwargs:
-                items = [d for d in cached_data if 'sort_by' in d]
-                if items:
-                    sort_by = items[0]['sort_by']
-                    data = sort_by(data.extend(items))
-
-            if cached_data != data:
-                app.logger.info('Cache updated from db')
-                Cache.set_data(cache_func_name, data)
-            else:
-                app.logger.info('Cache does not need updating for {}'.format(func.func_name))
+            app.logger.info('Cache does not need updating for {}'.format(func.func_name))
 
         Cache.purge_older_versions(func.func_name)
 
@@ -167,6 +161,7 @@ class ApiClient(BaseAPIClient):
     @use_cache(
         update_daily=True,
         decorator=only_show_approved_events,
+        approved_only=True, # used by only_show_approved_events
         db_call=get_events_in_future_from_db,
         sort_by=get_events_intro_courses_prioritised)
     @only_show_approved_events
