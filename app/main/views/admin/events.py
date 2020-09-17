@@ -5,6 +5,7 @@ import urlparse
 # from werkzeug import secure_filename
 
 from app import api_client
+from app.clients.api_client import get_events_intro_courses_prioritised, update_cache_via_thread
 from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import EventForm
@@ -92,8 +93,21 @@ def admin_events(selected_event_id=None, api_message=None):
             if event.get('event_id'):
                 response = api_client.update_event(event['event_id'], adjusted_event)
                 message = 'event updated'
+                if event['event_state'] != "approved":
+                    update_cache_via_thread(
+                        api_client.get_events_in_future_from_db,
+                        decorator=only_show_approved_events,
+                        key="id", value=event.get('event_id'), approved=False,
+                        sort_by=get_events_intro_courses_prioritised)
+                else:
+                    update_cache_via_thread(
+                        api_client.get_events_in_future_from_db,
+                        decorator=only_show_approved_events,
+                        key="id", value=event.get('event_id'), approved=True)
             else:
                 response = api_client.add_event(adjusted_event)
+                if event['event_state'] == "approved":
+                    update_cache_via_thread(api_client.get_events_in_future_from_db)
 
             if 'error' in session:
                 raise HTTPError(response, message=session.pop('error'))
@@ -127,6 +141,12 @@ def _get_event():
         event[0]['description'] = h.unescape(event[0]['description'])
         return jsonify(event[0])
     return ''
+
+@main.route('/admin/_update_future_events')
+def _update_future_events():
+    update_cache_via_thread(api_client.get_events_in_future)
+
+    return 'Updating future events'
 
 
 @main.route('/admin/_delete_event/<uuid:event_id>')
