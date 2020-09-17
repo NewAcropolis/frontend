@@ -4,7 +4,7 @@ import pytz
 from random import randint
 from app import api_client
 from app.main import main
-from app.main.views import render_page, get_future_events
+from app.main.views import render_page
 from six.moves.html_parser import HTMLParser
 from app.main.forms import ContactForm
 from app.clients.errors import HTTPError
@@ -12,7 +12,7 @@ from app.clients.errors import HTTPError
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    future_events = get_future_events()
+    future_events = api_client.get_events_in_future(approved_only=True)
 
     for event in future_events:
         if event['event_type'] == 'Introductory Course':
