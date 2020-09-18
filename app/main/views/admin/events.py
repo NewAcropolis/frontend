@@ -1,5 +1,6 @@
 import base64
 from flask import current_app, jsonify, redirect, render_template, request, session, url_for
+from HTMLParser import HTMLParser
 import json
 import urlparse
 # from werkzeug import secure_filename
@@ -168,6 +169,10 @@ def preview_event():
     data['venue'] = venue
     data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'])
     data['is_future_event'] = is_future_event(data)
+    data['dates'] = api_client.get_event_dates(data['event_dates'])
+
+    h = HTMLParser()
+    data['_description'] = h.unescape(data['description'].encode('ascii', 'ignore'))
 
     return render_page(
         'views/event_details.html',
