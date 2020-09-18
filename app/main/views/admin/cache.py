@@ -14,13 +14,15 @@ def cache():
 
 @main.route('/admin/_reload_cache')
 def _reload_cache():
-    current_app.logger.info("Resetting cache: {}".format(session["user_profile"]["name"]))
+    current_app.logger.info("Reloading cache: {}".format(session["user_profile"]["name"]))
 
     update_cache(
         func=api_client.get_events_in_future_from_db,
         decorator=only_show_approved_events, approved_only=True)
     update_cache(func=api_client.get_events_past_year_from_db)
     update_cache(func=api_client.get_articles_summary_from_db)
+
+    Cache.purge_older_versions()
 
     return jsonify({'response': 'get_events_in_future, get_events_past_year, get_articles_summary reloaded'})
 
