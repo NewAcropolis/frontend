@@ -1,4 +1,5 @@
 from flask import current_app
+import json
 try:
     from google.appengine.ext import ndb
 except Exception:
@@ -17,7 +18,8 @@ except Exception:
 
 class Cache(ndb.Model):
     name = ndb.StringProperty()
-    data = ndb.JsonProperty()
+    # data = ndb.JsonProperty()
+    data = ndb.TextProperty(indexed=False)
     updated_on = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
 
     @staticmethod
@@ -37,7 +39,7 @@ class Cache(ndb.Model):
     def get_data(name, index=0):
         retval = Cache.query(Cache.name == name).order(-Cache.updated_on).fetch(1, offset=index)
         if retval:
-            return retval[0].data
+            return json.loads(retval[0].data)
 
     @staticmethod
     def get_updated_on(name):
@@ -47,7 +49,7 @@ class Cache(ndb.Model):
 
     @staticmethod
     def set_data(name, data):
-        cache = Cache(name=name, data=data)
+        cache = Cache(name=name, data=json.dumps(data))
         cache.put()
 
     @staticmethod
@@ -65,14 +67,15 @@ class Cache(ndb.Model):
     @staticmethod
     def set_review_entity(name, value, key='id'):
         latest = Cache.query(Cache.name == name).order(-Cache.updated_on).get()
-        for item in latest.data:
+        for item in json.loads(latest.data):
             if item[key] == value:
                 # remove any other review items that match the key, as there should only be 1 in review
                 for r_item in Cache.query(Cache.name == name + "_review").fetch():
-                    if r_item.data[key] == value:
+                    _r_item = json.loads(r_item.data)
+                    if _r_item[key] == value:
                         r_item.key.delete()
 
-                cache = Cache(name=name + "_review", data=item)
+                cache = Cache(name=name + "_review", data=json.dumps(item))
                 cache.put()
                 return
         current_app.logger.info("No matching item found in cache {} to set for {}".format(name, value))
@@ -80,7 +83,8 @@ class Cache(ndb.Model):
     @staticmethod
     def delete_review_entity(name, value, key='id'):
         for r_item in Cache.query(Cache.name == name + "_review").fetch():
-            if r_item.data[key] == value:
+            _r_item = json.loads(r_item.data)
+            if _r_item[key] == value:
                 r_item.key.delete()
                 return
         current_app.logger.info("No matching item found in cache {} to delete for {}".format(name, value))
