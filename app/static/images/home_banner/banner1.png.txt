@@ -1,1 +1,2 @@
-Some text for image
+Example formatting with textile
+*Some* _text_ __for__ %{color:yellow;}image%

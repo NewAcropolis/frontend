@@ -9,9 +9,10 @@ from mock import Mock
 
 from app import create_app
 
-# Don't import app.settings to avoid importing google.appengine.ext
+# Don't import ndb to avoid importing google.appengine.ext
 sys.modules['app.settings'] = Mock()
 sys.modules['app.gaesession'] = Mock()
+sys.modules['app.cache'] = Mock()
 
 AUTH_USERNAME = 'user'
 AUTH_PASSWORD = 'pass'

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% block first_head %}{% include "components/ga.html" %}{% endblock %}
 {% block title %}Home{% endblock %}
 {% block content %}
 
@@ -10,7 +11,7 @@
         {% if banner.text %}
         <div class="carousel-caption d-md-block">
           <div class="carousel-banner">
-            <h3> {{ banner.text }} </h3>
+            <h3> {{ banner.text|safe }} </h3>
           </div>
         </div>
         {% endif %}
@@ -57,7 +58,7 @@
             <p>Comparative study and a way of life aligned with our highest values</p>
           </div>
         </div>
-        <img src="/static/images/philosophy_icon.png" class="upw">
+        <a href="{{url_for('main.about')}}?subject=philosophy#about_us_pyramid_text"><img src="/static/images/philosophy_icon.png" class="upw"></a>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="pcv_padding">
@@ -67,7 +68,7 @@
             <p>Enriching the social environment so all individuals can ﬁnd the nutrients they need to ﬂourish</p>
           </div>
         </div>
-        <img src="/static/images/culture_icon.png" class="upw">
+        <a href="{{url_for('main.about')}}?subject=culture#about_us_pyramid_text"><img src="/static/images/culture_icon.png" class="upw"></a>
       </div>
       <div class="col-xs-12 col-sm-6 col-md-4">
         <div class="pcv_padding">
@@ -77,7 +78,7 @@
             <p>To act because it is right and not becasuse it is proﬁtable</p>
           </div>
         </div>
-        <img src="/static/images/volunteering_icon.png" class="upw">
+        <a href="{{url_for('main.about')}}?subject=volunteering#about_us_pyramid_text"><img src="/static/images/volunteering_icon.png" class="upw"></a>
       </div>
     </div>
   </div>

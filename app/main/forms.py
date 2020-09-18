@@ -140,6 +140,7 @@ class EventForm(FlaskForm):
     submit_type = HiddenField()
     reject_reason = TextAreaField('Reject reason')
     reject_reasons_json = HiddenField()
+    cache_switch = BooleanField('cache_switch')
 
     def set_events_form(self, events, event_types, speakers, venues):
         self.set_events(self.events, events, 'New event')

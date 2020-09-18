@@ -1,5 +1,5 @@
 <footer>
-  <div class="text-center mx-auto content-width">
+  <div class="text-center mx-auto content-width-lg">
     <div class="row text-center text-md-left">
       <div class="col-md-4 col-lg-4 col-xl-4">
         <h6 class="text-uppercase mb-4 font-weight-bold">NEW ACROPOLIS UK</h6>
@@ -88,7 +88,6 @@
       <div class="col-md-4 col-lg-4 col-xl-5">
         <div class="float-md-right">
           <div class="empty_space d-none d-md-block"></div>
-          <p class="text-xs-center text-lg-left text-md-left">FAQ page</p><br>
           <p class="text-xs-center text-lg-left text-md-left"><a class="privacy_policy" href="/static/pdfs/Website_Privacy_Notice.pdf" target="_blank">Privacy Policy</a></p><br>
           <p class="text-xs-center text-lg-left text-md-left">Reg. Charity No. 1110140</p><br>
           <p class="text-xs-center text-lg-left text-md-left"><a href="https://www.acropolis.org/en/" id="bright_yellow_txt" >NEW ACROPOLIS International</a></p>
@@ -99,6 +98,7 @@
             <a href="/about" {%- if request.endpoint == "main.about" %} class="active"{% endif %}>About</a>
             <a href="/courses" {%- if request.endpoint == "main.courses" %} class="active"{% endif %}>Courses</a>
             <a href="/events" {%- if request.endpoint == "main.events" %} class="active"{% endif %}>Events</a>
+            <a href="/resources" {%- if request.endpoint == "main.resources" %} class="active"{% endif %}>Resources</a>
           </div>
         </div>
       </div>
@@ -124,7 +124,10 @@ $(document).ready(function() {
     })
 
     $('#sendMessageModal').on('hide.bs.modal', function () {
+      grecaptcha.reset();
+
       $('#send_message_response').addClass('d-none');
+      $('#send_message_response').text("");
       $('#contact_errors').addClass('d-none');
       $('#contact_name').val('');
       $('#contact_email').val('');
