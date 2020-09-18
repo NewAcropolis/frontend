@@ -1,1 +1,7 @@
 indexes:
+
+- kind: Cache
+  properties:
+  - name: name
+  - name: updated_on
+  direction: desc
