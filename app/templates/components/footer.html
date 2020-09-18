@@ -153,6 +153,7 @@ $(document).ready(function() {
                   }
                 }
                 else {
+                  grecaptcha.reset();
                   $('#send_message_response').removeClass('d-none');
                   if (data['error']) {
                     $('#send_message_response').text(data['error']);

@@ -40,11 +40,16 @@
     </div>
   </div>
 
-
-  {% if PAYPAL_ACCOUNT and event.is_future_event %}
   <div class="container-fluid padding cream_backgroundcolour">
     <div class="row event_details_paypal_section">
       <div class="col-xs-12 col-sm-12 col-md-6">
+      {% if event.fee == 0 %}
+      <h2 class="event_blue">Free Admission</h2>
+      {% elif not event.fee or event.fee == -1 %}
+        <h2 class="event_blue">Fee to be decided</h2>
+      {% elif event.fee == -2 %}
+        <h2 class="event_blue">See external site for fees</h2>
+      {% elif PAYPAL_ACCOUNT and event.is_future_event %}
         <h2 class="event_blue">BUY YOUR TICKETS NOW</h2>
         <p class="important">
             <div class="pt-3">
@@ -98,8 +103,8 @@
               </form>
             </div>
         </p>
+      {% endif %}
       </div>
     </div>
   </div>
-  {% endif %}
 {% endblock %}

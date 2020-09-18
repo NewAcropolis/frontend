@@ -86,7 +86,7 @@ def admin_events(selected_event_id=None, api_message=None):
 
         # remove empty values
         for key, value in event.iteritems():
-            if not value:
+            if value != 0 and not value:
                 del adjusted_event[key]
 
         try:
