@@ -28,18 +28,18 @@
                   <form id='contact_form' action="/" method=post>
                     {{ contact_form.csrf_token }}
                     <div class="form-group">
-                      {{ contact_form.contact_name(placeholder='Your name', size=60) }}
+                      {{ contact_form.contact_name(placeholder='Your name', class="w-100") }}
                     </div>
                     <div class="form-group">
-                        {{ contact_form.contact_email(placeholder='Your email address', size=60) }}
+                        {{ contact_form.contact_email(placeholder='Your email address', class="w-100") }}
                     </div>
                     <div class="form-group">
-                        {{ contact_form.contact_reasons }}
+                        {{ contact_form.contact_reasons(class="w-100") }}
                     </div>
                     <div class="form-group" style="line-height: normal;">
-                        {{ contact_form.contact_message(placeholder='Your message', rows=10, cols=60) }}
+                        {{ contact_form.contact_message(placeholder='Your message', rows=10, class="w-100") }}
                     </div>
-                    <div>{{ contact_form.contact_recaptcha }}</div>
+                    <div>{{ contact_form.contact_recaptcha(class="w-100") }}</div>
                     <div id='contact_errors' class='d-none' style='line-height:normal;'></div>
                     <div id='send_message_response' class='d-none'></div>
                   </form>
