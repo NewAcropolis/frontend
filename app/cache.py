@@ -53,10 +53,20 @@ class Cache(ndb.Model):
         cache.put()
 
     @staticmethod
-    def purge_older_versions(name, num_versions=5):
-        for result in Cache.query(Cache.name == name).order(-Cache.updated_on).fetch(offset=num_versions):
-            current_app.logger.info("Deleted: %s - %s", result.name, result.updated_on)
-            result.key.delete()
+    def purge_older_versions(name=None, num_versions=5):
+        def _purge_older_versions(_name):
+            for result in Cache.query(Cache.name == _name).order(-Cache.updated_on).fetch(offset=num_versions):
+                current_app.logger.info("Deleted: %s - %s", result.name, result.updated_on)
+                result.key.delete()
+
+        if name:
+            _purge_older_versions(name)
+        else:
+            names = []
+            for c in Cache.query().fetch():
+                if c.name not in names:
+                    names.append(c.name)
+                    _purge_older_versions(c.name)
 
     @staticmethod
     def purge_cache():

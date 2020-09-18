@@ -1,7 +1,6 @@
 from datetime import datetime
 from flask import current_app
 from functools import wraps
-from threading import Thread
 
 from app.cache import Cache
 from app.clients import BaseAPIClient
@@ -73,34 +72,25 @@ def use_cache(**dkwargs):
 def update_cache(*args, **kwargs):
     func = kwargs.pop('func')
     cache_func_name = func.func_name.replace("_from_db", "")
-    app = kwargs.pop('app')
-    with app.test_request_context():
-        cached_data = Cache.get_data(cache_func_name)
-        if 'decorator' in kwargs:
-            func = kwargs['decorator'](func)
+    cached_data = Cache.get_data(cache_func_name)
+    if 'decorator' in kwargs:
+        func = kwargs['decorator'](func)
 
-        data = func(*args, **kwargs)
+    data = func(*args, **kwargs)
 
-        review_data = Cache.get_review_entities(func.func_name)
+    review_data = Cache.get_review_entities(func.func_name)
 
-        if review_data and 'sort_by' in kwargs:
-            sort_by = kwargs.pop('sort_by')
-            data = sort_by(data.extend(review_data))
+    if review_data and 'sort_by' in kwargs:
+        sort_by = kwargs.pop('sort_by')
+        data = sort_by(data.extend(review_data))
 
-        if cached_data != data:
-            app.logger.info('Cache updated from db')
-            Cache.set_data(cache_func_name, data)
-        else:
-            app.logger.info('Cache does not need updating for {}'.format(func.func_name))
+    if cached_data != data:
+        current_app.logger.info('Cache updated from db')
+        Cache.set_data(cache_func_name, data)
+    else:
+        current_app.logger.info('Cache does not need updating for {}'.format(func.func_name))
 
-        Cache.purge_older_versions(func.func_name)
-
-
-def update_cache_via_thread(f, *args, **kwargs):
-    kwargs['func'] = f
-    kwargs['app'] = current_app._get_current_object()
-    t = Thread(target=update_cache, args=args, kwargs=kwargs)
-    t.start()
+    Cache.purge_older_versions(func.func_name)
 
 
 class ApiClient(BaseAPIClient):
