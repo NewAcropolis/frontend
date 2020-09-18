@@ -50,12 +50,13 @@ def use_cache(**dkwargs):
 
                 if data and dkwargs.get('update_daily'):
                     updated_on = Cache.get_updated_on(f.func_name)
+                    kwargs['func'] = f
                     if 'decorator' in dkwargs:
                         kwargs['decorator'] = dkwargs['decorator']
                     if 'sort_by' in dkwargs:
                         kwargs['sort_by'] = dkwargs['sort_by']
                     if (datetime.utcnow() - updated_on).seconds > 60*60*24:  # update pages once a day
-                        update_cache_via_thread(f, *args, **kwargs)
+                        update_cache(*args, **kwargs)
 
             if not data:
                 if 'db_call' in dkwargs:
