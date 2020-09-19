@@ -3,6 +3,7 @@ from flask import current_app, jsonify, redirect, render_template, request, sess
 import json
 
 from app import api_client
+from app.clients.api_client import update_cache
 from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import MagazineForm
@@ -50,6 +51,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
             else:
                 response = api_client.add_magazine(magazine)
                 message = 'magazine added, please wait a few minutes for the upload to complete'
+                update_cache(func=api_client.get_latest_magazine_from_db)
 
             if 'error' in session:
                 errors = session.pop('error')

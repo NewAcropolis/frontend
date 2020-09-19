@@ -178,16 +178,10 @@ def render_page(template, **kwargs):
             current_app.logger.error("Unhandled error %r", error)
             kwargs['error'] = "Unhandled error"
 
-    if 'latest_magazine' not in session:
-        latest_magazine = api_client.get_latest_magazine()
-        session['latest_magazine'] = latest_magazine
-    else:
-        latest_magazine = session['latest_magazine']
-
     return render_template(
         template,
         contact_form=contact_form,
         slim_subscription_form=slim_subscription_form,
-        latest_magazine=latest_magazine,
+        latest_magazine=api_client.get_latest_magazine(),
         **kwargs
     )
