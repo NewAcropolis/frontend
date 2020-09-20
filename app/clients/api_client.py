@@ -141,6 +141,10 @@ class ApiClient(BaseAPIClient):
     def get_limited_events(self):
         return self.get_nice_event_dates(self.get(url='events/limit/30'))
 
+    def get_latest_magazine_from_db(self):
+        return self.get(url='magazine/latest')
+
+    @use_cache(db_call=get_latest_magazine_from_db)
     def get_latest_magazine(self):
         return self.get(url='magazine/latest')
 
