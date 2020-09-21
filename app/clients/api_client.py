@@ -195,7 +195,7 @@ class ApiClient(BaseAPIClient):
     def get_articles_summary_from_db(self):
         return self.get(url='articles/summary')
 
-    @use_cache(db_call=get_articles_summary_from_db)
+    @use_cache(update_daily=True, db_call=get_articles_summary_from_db)
     def get_articles_summary(self):
         return self.get_articles_summary_from_db()
 
