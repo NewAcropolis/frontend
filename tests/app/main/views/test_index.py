@@ -58,6 +58,9 @@ class WhenAccessingHomePage(object):
         assert len(content) == 2
 
     def it_should_display_text_for_main_article(self, mocker, client, sample_future_events, sample_articles_summary):
+        # store values here as the random article index is always removed
+        sample_title = sample_articles_summary[0]['title']
+        sample_content = sample_articles_summary[0]['short_content']
         mocker.patch('app.main.views.index.randint', return_value=0)
         response = client.get(url_for(
             'main.index'
@@ -65,9 +68,8 @@ class WhenAccessingHomePage(object):
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
         title = page.select_one("#main_article h2").text
         content = page.select_one("#main_article p").text
-
-        assert title == sample_articles_summary[0]['title']
-        assert content == sample_articles_summary[0]['short_content'] + " READ MORE"
+        assert title == sample_title
+        assert content == sample_content + " READ MORE"
 
     def it_should_show_featured_articles_in_cards(self, client, sample_future_events, sample_articles_summary):
         response = client.get(url_for(

@@ -21,6 +21,7 @@ def index():
     if articles:
         index = randint(0, len(articles) - 1)
         main_article = articles[index]
+        del articles[index]
     else:
         main_article = ''
 

@@ -57,7 +57,7 @@
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="card cardmulti bg-light">
-          <img class="card-img-top cardimgtopmulti" src="/static/images/featured1.png">
+          <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/articles/{{ articles[0].image_filename }}">
           <div class="card-body">
             <h4 id="article_1" class="card-title dark_grey_txt">{{ articles[0].title }}</h4>
             <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[0], 160) }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
@@ -66,7 +66,7 @@
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="card cardmulti bg-light">
-          <img class="card-img-top cardimgtopmulti" src="/static/images/featured2.png">
+          <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/articles/{{ articles[1].image_filename }}">
           <div class="card-body">
             <h4 id="article_2" class="card-title dark_grey_txt">{{ articles[1].title }}</h4>
             <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[1], 160) }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
@@ -75,7 +75,7 @@
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="card cardmulti bg-light">
-          <img class="card-img-top cardimgtopmulti" src="/static/images/featured3.png">
+          <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/articles/{{ articles[2].image_filename }}">
           <div class="card-body">
             <h4 id="article_3" class="card-title dark_grey_txt">{{ articles[2].title }}</h4>
             <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[2], 160) }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
@@ -84,7 +84,7 @@
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="card cardmulti bg-light">
-          <img class="card-img-top cardimgtopmulti" src="/static/images/featured4.png">
+          <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/articles/{{ articles[3].image_filename }}">
           <div class="card-body">
             <h4 id="article_4" class="card-title dark_grey_txt">{{ articles[3].title }}</h4>
             <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[3], 160) }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
