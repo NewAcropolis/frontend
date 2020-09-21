@@ -207,15 +207,44 @@
     </div>
 
     <div class="container-fluid padding content-width">
-      <div class="row text-center padding">
-        <div class="col-xs-12 col-sm-6 col-md-4 magazine_txt">
-          <p>New Acropolis Magazine</p><br>
-          <p>Download the latest issue</p>
+      <div class="row text-right padding">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+          <div class="row">
+            <div class="col-md-12 text-right magazine_txt">
+              <div class="text-dark">New Acropolis </div>
+              <div class="font-italic">Magazine</div>
+            </div>
+          </div>
+          <div class="row text-right">
+            <div class="col-md-3"></div>
+            <div class="col-xs-12 col-md-9 text-center pr-2 pt-5 mag_subscribe">
+              {% if slim_subscription_form %}
+              <form action="/" method=post>
+                {{ slim_subscription_form.csrf_token }}
+                {{ slim_subscription_form.slim_subscription_email(class="magazine_email", placeholder="Your email address") }}
+        
+                {% if slim_subscription_form.errors %}
+                  <div>
+                  {% for error in slim_subscription_form.slim_subscription_email.errors %}
+                    <div class="error_text">{{ error }}</div>
+                  {% endfor %}
+                  </div>
+                {% endif %}
+                  <div class="pt-2"><input class="submit_button" type="submit" value="Subscribe"></div>
+              </form>
+              {% endif %}
+            </div>
+          </div>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-4">
+        <div class="col-xs-12 col-sm-6 col-md-6 text-left">
+          <div class="row">
           <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">
             <img class="card-img-top card_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png">
           </a>
+         </div>
+         <div>
+          Click image to download
+          </div>
           <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG" role="dialog" tabindex="-1">
             <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
               <div class="modal-content modal-content-magazine">
@@ -234,28 +263,7 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div class="col-xs-12 col-md-4 text-center">
-            {% if slim_subscription_form %}
-            <form action="/" method=post>
-              {{ slim_subscription_form.csrf_token }}
-              {{ slim_subscription_form.slim_subscription_email(class="magazine_email", placeholder="Your email address") }}
-      
-              {% if slim_subscription_form.errors %}
-                <div>
-                {% for error in slim_subscription_form.slim_subscription_email.errors %}
-                  <div class="error_text">{{ error }}</div>
-                {% endfor %}
-                </div>
-              {% endif %}
-                <div><input class="submit_button" type="submit" value="Subscribe"></div>
-            </form>
-          {% endif %}
-          <br><br><br>
-          <div class="magazine_box">
-            <p>Annual UK postal subscription 4 Issues £12</p>
-          </div>
+            </div>
         </div>
       </div>
     </div>
