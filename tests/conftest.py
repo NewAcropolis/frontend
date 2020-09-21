@@ -255,6 +255,12 @@ def sample_articles_summary(mocker):
             'short_content':
                 'some short content 4, some short content 4, some short content 4, some short content 4',
             'very_short_content': 'some short content 4'
+        },
+        {
+            'title': 'Article title 5',
+            'short_content':
+                'some short content 5, some short content 5, some short content 5, some short content 5',
+            'very_short_content': 'some short content 5'
         }
     ]
 
