@@ -4,8 +4,9 @@ import json
 import logging
 
 from uuid import uuid4
-from datetime import datetime
+from datetime import datetime, timedelta
 
+from flask import current_app
 from flask.sessions import SessionInterface as FlaskSessionInterface
 from flask.sessions import SessionMixin
 from werkzeug.datastructures import CallbackDict
@@ -16,7 +17,7 @@ from google.appengine.ext import ndb
 class SessionModel(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
     updated_on = ndb.DateTimeProperty(auto_now=True, indexed=False)
-    expires_on = ndb.DateTimeProperty(indexed=False)
+    expires_on = ndb.DateTimeProperty(indexed=True)
     data = ndb.StringProperty(indexed=False)
 
     def delete(self):
@@ -104,6 +105,7 @@ class GaeNdbSessionInterface(FlaskSessionInterface):
 
         if sid:
             sid = self._unsign_sid(sid)
+            self.purge_expired_sessions()
             db_session = SessionModel.get_by_id(sid)
             if db_session:
                 # Delete expired session.
@@ -121,6 +123,13 @@ class GaeNdbSessionInterface(FlaskSessionInterface):
 
     def make_null_session(self, app):
         return ServerSideSession()
+
+    def purge_expired_sessions(self):
+        for db_session in SessionModel.query().filter(
+            SessionModel.expires_on != None,  # noqa E711
+            SessionModel.expires_on < datetime.utcnow()
+        ):
+            db_session.delete()
 
     def save_session(self, app, session, response):
         # In case of 'log-in' (create) or 'log-out' (destroy) requests,
@@ -149,7 +158,11 @@ class GaeNdbSessionInterface(FlaskSessionInterface):
         if session.modified or db_session.should_slide_expiry():
             db_session.set_data(session)
             # Only makes sense for 'permanent' sessions.
-            db_session.expires_on = self.get_expiration_time(app, session)
+            expires_on = self.get_expiration_time(app, session)
+            if not expires_on:
+                expires_on = datetime.utcnow() + timedelta(minutes=int(current_app.config['SESSION_EXPIRY']))
+
+            db_session.expires_on = expires_on
             db_session.put()
 
         sid = self._sign_sid(session.sid)

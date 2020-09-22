@@ -1,13 +1,12 @@
 {% extends "base.html" %}
-{% block title %}What's on{% endblock %}
+{% block first_head %}{% include "components/ga.html" %}{% endblock %}
+{% block title %}Events{% endblock %}
 {% block extra_head %}
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
 {% endblock %}
 {% block content %}
 
   {% if future_events %}
-  <div id="whats_on_carousel" class="carousel slide" data-ride="carousel">
+  <div id="events_carousel" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
       {% for event in future_events %}
         <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
@@ -33,7 +32,7 @@
   </div>
 
   <div class="container-fluid padding text-center">
-    <div class="row padding">
+    <div class="row padding content-width-lg mx-auto">
       {% for event in future_events %}
         <div class="col-md-4 col-sm-6" id="future_event">
           <div class="card cardmulti bg-light">
@@ -52,56 +51,43 @@
 
   {% if articles %}
   <div class="container-fluid padding blue_background">
-    <div class="row padding courses_fee_section_padding">
+    <div class="row padding courses_fee_section_padding content-width-lg mx-auto">
       <div class="col-12 text-center">
         <h1 class="display-4 text-white"> LATEST MAGAZINE ARTICLES </h1>
       </div>
-      <div class="card mb-3">
-        <div class="row no-gutters">
-          <div class="col-lg-4 col-md-5 col-sml-12 featured_remove_padding_img">
-            <img src="/static/images/featuredblock.png" class="card-img overflow_img">
-          </div>
-          <div class="col-lg-8 col-md-7 col-sm-12">
-            <div class="card-body" id="main_article">
-              <h2 class="dark_grey_txt">{{ main_article.title }}</h2>
-              <p class="light_text">{{ main_article.short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="col-md-3 col-sm-6">
         <div class="card cardmulti bg-light">
-          <img class="card-img-top cardimgtopmulti" src="/static/images/featured1.png">
+          <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/articles/{{ articles[0].image_filename }}">
           <div class="card-body">
             <h4 id="article_1" class="card-title dark_grey_txt">{{ articles[0].title }}</h4>
-            <p class="card-text cardtextmulti">{{ articles[0].very_short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+            <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[0], 160) }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
           </div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="card cardmulti bg-light">
-          <img class="card-img-top cardimgtopmulti" src="/static/images/featured2.png">
+          <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/articles/{{ articles[1].image_filename }}">
           <div class="card-body">
             <h4 id="article_2" class="card-title dark_grey_txt">{{ articles[1].title }}</h4>
-            <p class="card-text cardtextmulti">{{ articles[1].very_short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+            <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[1], 160) }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
           </div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="card cardmulti bg-light">
-          <img class="card-img-top cardimgtopmulti" src="/static/images/featured3.png">
+          <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/articles/{{ articles[2].image_filename }}">
           <div class="card-body">
             <h4 id="article_3" class="card-title dark_grey_txt">{{ articles[2].title }}</h4>
-            <p class="card-text cardtextmulti">{{ articles[2].very_short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+            <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[2], 160) }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
           </div>
         </div>
       </div>
       <div class="col-md-3 col-sm-6">
         <div class="card cardmulti bg-light">
-          <img class="card-img-top cardimgtopmulti" src="/static/images/featured4.png">
+          <img class="card-img-top cardimgtopmulti" src="{{ IMAGES_URL }}/articles/{{ articles[3].image_filename }}">
           <div class="card-body">
             <h4 id="article_4" class="card-title dark_grey_txt">{{ articles[3].title }}</h4>
-            <p class="card-text cardtextmulti">{{ articles[3].very_short_content }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
+            <p class="card-text cardtextmulti">{{ get_shortened_article_text(articles[3], 160) }} <a href='/article/{{ main_article.id }}'>READ MORE</a></p>
           </div>
         </div>
       </div>
@@ -134,7 +120,7 @@
 
   <div class="container-fluid padding cream_backgroundcolour">
     <div class="container-fluid padding text-center">
-      <div class="row padding">
+      <div class="row padding content-width-lg mx-auto">
         {% for event in past_events %}
           <div class="col-md-4 col-sm-6">
             <div class="card cardmulti bg-light">

@@ -124,7 +124,7 @@ class WhenGettingUsers:
             {
                 'id': 'test2 id',
                 'email': 'new2@example.com',
-                'access_area': 'email,report,'
+                'access_area': 'email,magazine,'
             }
         ]
 
@@ -173,7 +173,7 @@ class WhenGettingUsers:
             {
                 'id': 'test2 id',
                 'email': 'new2@example.com',
-                'access_area': 'email,report,'
+                'access_area': 'email,magazine,'
             }
         ]
 
@@ -244,7 +244,7 @@ users = [
     {
         'id': 'test2 id',
         'email': 'new2@example.com',
-        'access_area': 'email,report,'
+        'access_area': 'email,magazine,'
     }
 ]
 
@@ -264,11 +264,10 @@ class WhenPostingUsers:
                 'event': {
                     'data': 'y'
                 },
-                'report': {
+                'admin': {},
+                'magazine': {
                     'data': 'y'
                 },
-                'admin': {},
-                'magazine': {},
                 'shop': {},
                 'announcement': {},
                 'article': {},
@@ -280,12 +279,11 @@ class WhenPostingUsers:
                 'email': {
                     'data': 'y'
                 },
-                'report': {
-                    'data': 'y'
-                },
                 'admin': {},
                 'event': {},
-                'magazine': {},
+                'magazine': {
+                    'data': 'y'
+                },
                 'shop': {},
                 'announcement': {},
                 'article': {},
@@ -303,7 +301,7 @@ class WhenPostingUsers:
             'main.admin_users'
         ))
 
-        mock_api_client.assert_called_once_with(users[1]['id'], 'event,email,report,')
+        mock_api_client.assert_called_once_with(users[1]['id'], 'event,email,magazine,')
 
     def it_does_not_update_if_unchanged(self, client, mocker):
         session_dict = {
@@ -327,7 +325,7 @@ class WhenPostingUsers:
             {
                 'id': 'test2 id',
                 'email': 'new2@example.com',
-                'access_area': 'email,report,'
+                'access_area': 'email,magazine,'
             }
         ]
 
@@ -342,7 +340,6 @@ class WhenPostingUsers:
                 'event': {
                     'data': 'y'
                 },
-                'report': {},
                 'admin': {},
                 'magazine': {},
                 'shop': {},
@@ -356,12 +353,11 @@ class WhenPostingUsers:
                 'email': {
                     'data': 'y'
                 },
-                'report': {
-                    'data': 'y'
-                },
                 'admin': {},
                 'event': {},
-                'magazine': {},
+                'magazine': {
+                    'data': 'y'
+                },
                 'shop': {},
                 'announcement': {},
                 'article': {},

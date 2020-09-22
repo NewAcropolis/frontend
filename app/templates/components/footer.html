@@ -1,5 +1,5 @@
 <footer>
-  <div class="text-center text-md-left">
+  <div class="text-center mx-auto content-width-lg">
     <div class="row text-center text-md-left">
       <div class="col-md-4 col-lg-4 col-xl-4">
         <h6 class="text-uppercase mb-4 font-weight-bold">NEW ACROPOLIS UK</h6>
@@ -28,17 +28,18 @@
                   <form id='contact_form' action="/" method=post>
                     {{ contact_form.csrf_token }}
                     <div class="form-group">
-                      {{ contact_form.contact_name(placeholder='Your name', size=60) }}
+                      {{ contact_form.contact_name(placeholder='Your name', class="w-100") }}
                     </div>
                     <div class="form-group">
-                        {{ contact_form.contact_email(placeholder='Your email address', size=60) }}
+                        {{ contact_form.contact_email(placeholder='Your email address', class="w-100") }}
                     </div>
                     <div class="form-group">
-                        {{ contact_form.contact_reasons }}
+                        {{ contact_form.contact_reasons(class="w-100") }}
                     </div>
                     <div class="form-group" style="line-height: normal;">
-                        {{ contact_form.contact_message(placeholder='Your message', rows=10, cols=60) }}
+                        {{ contact_form.contact_message(placeholder='Your message', rows=10, class="w-100") }}
                     </div>
+                    <div>{{ contact_form.contact_recaptcha(class="w-100") }}</div>
                     <div id='contact_errors' class='d-none' style='line-height:normal;'></div>
                     <div id='send_message_response' class='d-none'></div>
                   </form>
@@ -61,9 +62,10 @@
       </div>
       <div class="col-md-3 text-center">
         <div>
-          <img src="/static/images/home-image-magazine.png" class="footer_magazine"><br><br>
+          {% if latest_magazine %}
+          <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" class="footer_magazine"><br><br>
           <div class="magazine_form_padding">
-            {% if slim_subscription_form %}
+              {% if slim_subscription_form %}
               <form action="/" method=post>
                 {{ slim_subscription_form.csrf_token }}
                 {{ slim_subscription_form.slim_subscription_email(class="subscribe", placeholder="Your email address") }}
@@ -76,25 +78,28 @@
                   <input class="submit_button" type="submit" value="Subscribe">
                 </div>
               </form>
-            {% endif %}
+              {% endif %}
           </div>
+          {% endif %}
         </div>
       </div>
 
-      <hr class="w-100 clearfix d-md-none">
+      <hr class="w-75 clearfix d-md-none">
       <div class="col-md-4 col-lg-4 col-xl-5">
-        <div class="empty_space d-none d-md-block"></div>
-        <p class="text-xs-center text-lg-right text-md-right">FAQ page</p><br>
-        <p class="text-xs-center text-lg-right text-md-right"><a class="privacy_policy" href="/static/pdfs/Website_Privacy_Notice.pdf" target="_blank">Privacy Policy</a></p><br>
-        <p class="text-xs-center text-lg-right text-md-right">Reg. Charity No. 1110140</p><br>
-        <p class="text-xs-center text-lg-right text-md-right"><a href="https://www.acropolis.org/en/" id="bright_yellow_txt" >NEW ACROPOLIS International</a></p>
-        <div class="empty_space d-none d-md-block"></div>
+        <div class="float-md-right">
+          <div class="empty_space d-none d-md-block"></div>
+          <p class="text-xs-center text-lg-left text-md-left"><a class="privacy_policy" href="/static/pdfs/Website_Privacy_Notice.pdf" target="_blank">Privacy Policy</a></p><br>
+          <p class="text-xs-center text-lg-left text-md-left">Reg. Charity No. 1110140</p><br>
+          <p class="text-xs-center text-lg-left text-md-left"><a href="https://www.acropolis.org/en/" id="bright_yellow_txt" >NEW ACROPOLIS International</a></p>
+        </div>
+        <div class="clearfix empty_space d-none d-md-block"></div>
         <div class="footnav">
-          <a href="/about" {%- if current_page == "about" %} class="active"{% endif %}>About</a>
-          <a href="/what-we-offer" {%- if current_page == "what-we-offer" %} class="active"{% endif %}>What we offer</a>
-          <a href="/whats-on" {%- if current_page == "whats-on" %} class="active"{% endif %}>Whats on</a>
-          <a href="/resources" {%- if current_page == "resources" %} class="active"{% endif %}>Resources</a>
-          <a href="/e-shop" id="bright_yellow_txt" {%- if current_page == "e-shop" %} class="active" {% endif %}>E-shop</a>
+          <div class="float-md-right">
+            <a href="/about" {%- if request.endpoint == "main.about" %} class="active"{% endif %}>About</a>
+            <a href="/courses" {%- if request.endpoint == "main.courses" %} class="active"{% endif %}>Courses</a>
+            <a href="/events" {%- if request.endpoint == "main.events" %} class="active"{% endif %}>Events</a>
+            <a href="/resources" {%- if request.endpoint == "main.resources" %} class="active"{% endif %}>Resources</a>
+          </div>
         </div>
       </div>
     </div>
@@ -119,7 +124,10 @@ $(document).ready(function() {
     })
 
     $('#sendMessageModal').on('hide.bs.modal', function () {
+      grecaptcha.reset();
+
       $('#send_message_response').addClass('d-none');
+      $('#send_message_response').text("");
       $('#contact_errors').addClass('d-none');
       $('#contact_name').val('');
       $('#contact_email').val('');

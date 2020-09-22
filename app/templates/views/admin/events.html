@@ -2,7 +2,7 @@
 {% block extra_head %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/en-gb.js"></script>
-
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/admin.css"/>
@@ -44,6 +44,7 @@
 
 {% if user_has_permissions('event') %}
 <div class="container pb-3 text-right">
+    <div id='error_section' class='text-danger'></div>
     <div class="modal fade" id="speakerModal" tabindex="-1" role="dialog" aria-labelledby="speakerModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -124,6 +125,10 @@
             {{ admin_row(form.image_filename, type='file') }}
             {{ form.existing_image_filename }}
             {{ admin_row(form.fee, size=10) }}
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="px-3 pt-0 pb-3">(0 = free admission, -2 = external fees, blank or -1 = to be decided)</div>
+            </div>
             {{ admin_row(form.conc_fee, size=10) }}
             {{ admin_row(form.multi_day_fee, size=10) }}
             {{ admin_row(form.multi_day_conc_fee, size=10) }}
@@ -133,12 +138,15 @@
             {{ form.reject_reasons_json }}
         </div>
         <hr>
-        <div id='error_section' class='text-danger'></div>
         {% if message %}
         <div id='message' class='text-success pb-3'>{{message}}</div>
         {% endif %}
         <div class="justify-content-end">
             {{ form.submit_type }}
+            <div id="cache-switch-div" class="custom-control custom-switch pb-2">
+                {{ form.cache_switch(class="custom-control-input") }}
+                <label class="custom-control-label" for="cache_switch">Update cache (will remove from event website unless approved)</label>
+            </div>
             <button id="preview" type="submit" class="btn btn-outline-info">Preview</button>
             <button id="draft" type="submit" class="btn btn-default">Draft</button>
             <button id="ready" type="submit" class="btn btn-outline-warning">Ready</button>
@@ -184,7 +192,8 @@ $(function() {
     {% endif %}
 
     {% if errors %}
-    var errors = {{ errors|safe }};
+    console.log('error: {{ errors }}');
+    var errors = "{{ errors }}";
     {% endif %}
 
     $('#datepicker').datepicker({
@@ -194,14 +203,13 @@ $(function() {
 
     $('#preview').on('click', function() {
         $('#submit_type').val('preview');
-
         var send = {
             // alt_event_images: $('#alt_event_images').val(),
-            event_type: $('#event_type').val(),
+            event_type: $('#event_type option:selected').text(),
             title: $('#title').val(),
             sub_title: $('#sub_title').val(),
             description: $('#description').val(),
-            image_filename: $('#file_img').attr('src').replace('{{images_url}}', ''),
+            image_filename: $('#file_img').attr('src').replace('{{images_url}}/thumbnail', ''),
             fee: $('#fee').val(),
             conc_fee: $('#conc_fee').val(),
             multi_day_fee: $('#multi_day_fee').val(),
@@ -345,6 +353,10 @@ $(function() {
     };
 
     // call to update on load
+    hash_event_id = document.location.hash.substring("event_id=".length+1)
+    if (hash_event_id != '') {
+        elements._events.val(hash_event_id);
+    }
     updateEvent();
 
     function updateEvent() {
@@ -353,7 +365,6 @@ $(function() {
         };
 
         $('#pubish').prop('disabled', false);
-        $('#error_section').html('');
 
         try {
             temp_event; 
@@ -364,6 +375,7 @@ $(function() {
                         addErrorRow(errors[i]['error'], errors[i]['message']);
                     }
                 } else {
+                    console.log("error list");
                     addErrorRow('Error', errors);
                 }
                 errors = null;
@@ -475,8 +487,9 @@ $(function() {
     function update_for_event_state(event_state) {
         var base_css = 'rounded col-7 mb-1 ml-3 pl-4 w-70 ';
         var css = '';
+        $('#cache-switch-div').attr('style', 'display:block;'); 
         switch(event_state) {
-            case 'new': css = 'bg-primary text-white'; break;
+            case 'new': css = 'bg-primary text-white'; $('#cache-switch-div').attr('style', 'display:none;'); break;
             case 'draft': css = 'bg-default'; break;
             case 'ready': css = 'bg-warning'; break;
             case 'rejected': css = 'bg-danger text-white'; break;
@@ -540,6 +553,7 @@ $(function() {
     }
 
     function addErrorRow(error_type, message) {
+        console.log('add error ' + message);
         $('#error_section').append(
             '<div class="row"><div class="col-2">' + 
             error_type + '</div><div class="col-10">' + message + '</div></div></div>'
@@ -752,6 +766,12 @@ $(function() {
         window.location.replace("/admin/_delete_event/" + $("#events").val());
     });
 
+    function setupEvents(){
+        $('#error_section').html('');
+        document.location.hash = "event_id=" + $('#events').val();
+        updateEvent();
+    }
+
     {% if message %}
     var showMessage=true;
     elements._events.on('change', function() {
@@ -759,11 +779,12 @@ $(function() {
             $('#message').attr('style', 'display:none;');
         }
         showMessage = false;
-        updateEvent();
+
+        setupEvents();
     });
     {% else %}
     elements._events.on('change', function() {
-        updateEvent();
+        setupEvents();
     });
     {% endif %}
     elements._alt_event_images.on('change', function() {

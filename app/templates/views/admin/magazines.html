@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user_has_permissions('magazine') %}
+<div class="container pb-3 text-right" style="width: 800px;">
+    <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
+    <form class="form" id="magazines_form" method="post" enctype="multipart/form-data">{{ form.csrf_token }}
+        <div class="row">
+            <div class='ml-3 col-12'>
+                <div class='row'>
+                    {{form.next_issue}}
+                    {{form.magazines}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class='ml-3 col-12'>
+                <div class='row'>
+                    {{form.title(placeholder='Title', size=60)}}
+                </div>
+                <div class='row'>
+                    {{form.topics(placeholder='Topics', rows=8, cols=80)}}
+                </div>
+                <div class='row mt-2'>
+                    <img id='magazine_img'>
+                </div>
+                <div class="row">{{form.magazine_filename}}</div>
+                {{form.existing_magazine_filename}}
+                <div class="row"><a id='email_link' href=''>Magazine email</a></div>
+            </div>
+        </div>
+        
+        <div id='form_errors' class='text-danger' style='display:{% if form.errors %}block{% else %}none{% endif%}'>{{ form.errors }}</div>
+        <div id='message' class='text-success pb-3' style='display:{% if message %}block{% else %}none{% endif%}'>{{message}}</div>
+        <hr>
+        <div class="justify-content-end">
+            <button id='save' type="submit" class="btn btn-outline-warning">Save</button>
+            <a href="/admin" id="cancel" name="cancel" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+<script charset="utf-8" type="text/javascript">
+    var magazine_id = '';
+    $(function() {
+        var elements = {
+            _magazines: $('#magazines'),
+            _title: $('#title'),
+            _next_issue: $('#next_issue'),
+            _magazine_image: $('#magazine_img'),
+            _topics: $('#topics')
+        };
+
+        updateMagazine();
+
+        function updateMagazine() {
+            var send = {
+                magazine_id: elements._magazines.val()
+            };
+
+            if (!send.magazine_id) {
+                elements._title.val(elements._next_issue.val());
+                elements._magazine_image.attr('style', 'display:none;width:100px;');
+                elements._magazine_image.attr('src', '');
+                elements._topics.attr('disabled', true);
+                elements._topics.val('');
+                $('#email_link').attr('style', 'display:none');
+                return;
+            }
+
+            $.getJSON("{{ url_for('main._get_magazine') }}", send, function(data) {
+                if (data) {
+                    elements._magazines.val(data['id']);
+                    elements._title.val(data['title']);
+                    if (!($('#message').val().includes('magazine added'))) {
+                        elements._magazine_image.attr('style', 'display:block;width:100px;');
+                        elements._magazine_image.attr('src', '{{IMAGES_URL}}/thumbnail/pdfs/' + data['filename'] + ".png");
+                    }
+                    elements._topics.val(data['topics']);
+                    elements._topics.attr('disabled', false);
+                    $('#email_link').attr('style', 'display:block');
+                    $('#email_link').attr('href', '/admin/emails/magazine/' + data['id'])
+                }
+            });
+        }
+
+        var showMessage={% if selected_magazine_id %}true{% else %}false{% endif %};
+        $('#magazines').on('change', function() {
+            if (!showMessage) {
+                $('#message').attr('style', 'display:none;');
+                $('#errors').attr('style', 'display:none;');
+                $('#form_errors').attr('style', 'display:none;');
+            }
+            showMessage = false;
+            updateMagazine();
+        });
+
+        $( "#magazines_form" ).submit(function() {
+            prepSubmit();
+        });
+
+        {% if selected_magazine_id %}
+        $("#magazines").val("{{selected_magazine_id}}").change();
+        {% endif %}
+
+        function prepSubmit() {
+            if ($('#magazine_img').attr('src'))
+                $('#existing_magazine_filename').val($('#magazine_img').attr('src').replace('{{images_url}}/thumbnail/pdfs/', ''));
+            $('#save').prop('disabled', true);
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

@@ -1,4 +1,6 @@
-from flask_wtf import FlaskForm
+import re
+
+from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import BooleanField, FormField, FieldList, FileField, HiddenField, SelectField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Email, ValidationError
 
@@ -10,6 +12,7 @@ class SubscriptionForm(FlaskForm):
     subscription_name = StringField('name')
     subscription_email = StringField('email', validators=[DataRequired(), Email()])
     subscription_marketings = SelectField('marketings')
+    recaptcha = RecaptchaField()
 
     def setup(self, marketings):
         self.subscription_marketings.choices = [
@@ -28,6 +31,7 @@ class ContactForm(FlaskForm):
     contact_email = StringField('email', validators=[DataRequired(), Email()])
     contact_message = TextAreaField('message', validators=[DataRequired()])
     contact_reasons = SelectField('reasons', validators=[DataRequired()])
+    contact_recaptcha = RecaptchaField()
 
     def setup(self):
         self.contact_reasons.choices = [
@@ -37,6 +41,32 @@ class ContactForm(FlaskForm):
             ('talk', 'Ask about a talk'),
             ('other', 'Other')
         ]
+
+
+class MagazineForm(FlaskForm):
+    title = StringField('title', validators=[DataRequired()])
+    magazines = SelectField('Magazines')
+    magazine_filename = FileField('Magazine filename')
+    next_issue = HiddenField('Next issue no')
+    existing_magazine_filename = HiddenField('Existing magazine filename')
+    topics = TextAreaField('Topics')
+
+    def set_magazine_form(self, magazines):
+        MAGAZINE_PATTERN = r'Issue (?P<issue_no>\d+)'
+        match = re.search(MAGAZINE_PATTERN, magazines[0]['title'])
+        if match:
+            issue_no = match.group('issue_no')
+            self.next_issue.data = "Issue %s" % (int(issue_no) + 1)
+
+        self.magazines.choices = [('', 'New magazine')]
+
+        for magazine in magazines:
+            self.magazines.choices.append(
+                (
+                    magazine['id'],
+                    magazine['title']
+                )
+            )
 
 
 class UserForm(FlaskForm):
@@ -110,6 +140,7 @@ class EventForm(FlaskForm):
     submit_type = HiddenField()
     reject_reason = TextAreaField('Reject reason')
     reject_reasons_json = HiddenField()
+    cache_switch = BooleanField('cache_switch')
 
     def set_events_form(self, events, event_types, speakers, venues):
         self.set_events(self.events, events, 'New event')
@@ -172,7 +203,7 @@ class EmailForm(FlaskForm):
         self.emails.choices = [('', 'New email')]
         email_events = []
         for email in emails:
-            if email['email_type'] == 'event':
+            if email['email_type'] == 'event' and email.get('event_id'):
                 email_events.append(email['event_id'])
 
             self.emails.choices.append(
@@ -182,7 +213,8 @@ class EmailForm(FlaskForm):
                 )
             )
 
-        self.events_emailed.data = ','.join(email_events)
+        if email_events:
+            self.events_emailed.data = ','.join(email_events)
 
         self.email_types.choices = []
         for email_type in email_types:
@@ -194,19 +226,34 @@ class EmailForm(FlaskForm):
             )
 
         self.events.choices = []
-        for event in events:
-            event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
-            parts = [
-                "{}/{}".format(date_parts[1].lstrip('0'), date_parts[0].lstrip('0'))
-                for date_parts in [date.split('-') for date in event_dates]
-            ]
-            self.events.choices.append(
-                (
-                    event['id'],
-                    u'{} - {} - {}'.format(
-                        ", ".join(parts),
-                        event['event_type'],
-                        event['title']
+        if events:
+            for event in events:
+                event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
+                parts = [
+                    "{}/{}".format(date_parts[1].lstrip('0'), date_parts[0].lstrip('0'))
+                    for date_parts in [date.split('-') for date in event_dates]
+                ]
+                self.events.choices.append(
+                    (
+                        event['id'],
+                        u'{} - {} - {}'.format(
+                            ", ".join(parts),
+                            event['event_type'],
+                            event['title']
+                        )
                     )
                 )
-            )
+        else:
+            self.events.choices.append(('', ''))
+
+
+class UnsubscribeForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired()])
+    recaptcha = RecaptchaField()
+
+
+class UpdateMemberForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
+    verify_email = StringField('Verify Email', validators=[DataRequired()])
+    recaptcha = RecaptchaField()

@@ -2,7 +2,7 @@ import io
 import os
 import re
 
-from flask import Flask, current_app, make_response, render_template, request, session
+from flask import Flask, current_app, make_response, render_template, request, session, url_for
 from flask_wtf.csrf import CSRFProtect, CSRFError
 import textile
 
@@ -76,14 +76,10 @@ def _get_course_details(topic):
 
 
 def _get_course_extra(topic):
-    extra = {}
     with io.open("app/templates/course_details/" + topic + "_extra.txt", "r", encoding="utf-8") as f:
         extra_text = f.read()
-    extra_arr = extra_text.split('==')
-    extra['events'] = textile.textile(extra_arr[0])
-    extra['person'] = textile.textile(extra_arr[1]) if len(extra_arr) > 1 else ''
-    extra['ideas'] = textile.textile(extra_arr[2]) if len(extra_arr) > 2 else ''
-    return extra
+
+    return [textile.textile(e) for e in extra_text.split('==')]
 
 
 def _get_summary_course_details(topic):
@@ -108,6 +104,86 @@ def _get_summary_course_details(topic):
     return clean_details
 
 
+def _get_shortened_article_text(article, limit=None):
+    if not limit:
+        limit = current_app.config['ARTICLE_SUMMARY_LIMIT']
+    content = article['very_short_content'][: limit - len(article['title'])]
+
+    # ignore the last word in case it was split
+    return ' '.join(content.split(' ')[:-1])
+
+
+def _get_home_banner_files():
+    HOME_BANNER_PATH = os.path.join(current_app.static_folder, "images/home_banner/")
+
+    all_static_filenames = os.listdir(HOME_BANNER_PATH)
+    img_filenames = [f for f in all_static_filenames if not f.endswith('.txt')]
+
+    banner_files = []
+    for img_f in sorted(img_filenames):
+        if os.path.exists(HOME_BANNER_PATH + img_f + ".txt"):
+            with io.open(HOME_BANNER_PATH + img_f + ".txt", "rb") as f:
+                banner_text = f.read()
+            banner_text = textile.textile(banner_text)
+            banner_files.append({'filename': img_f, 'text': banner_text})
+        else:
+            banner_files.append({'filename': img_f, 'text': ''})
+
+    return banner_files
+
+
+def _get_topic_list_elements(topic):
+    topics = {}
+
+    topics["timeless_universal"] = "<a href=\"{}\">Timeless & Universal Philosophy</a>".format(
+        url_for('main.course_details', topic='timeless_universal'))
+    topics["india"] = "<a href=\"{}\">India</a>".format(url_for('main.course_details', topic='india'))
+    topics["tibet"] = "<a href=\"{}\">Tibet</a>".format(url_for('main.course_details', topic='tibet'))
+    topics["buddhism"] = "<a href=\"{}\">Buddhism</a>".format(url_for('main.course_details', topic='buddhism'))
+    topics["china"] = "<a href=\"{}\">China</a>".format(url_for('main.course_details', topic='china'))
+    topics["egypt"] = "<a href=\"{}\">Egypt</a>".format(url_for('main.course_details', topic='egypt'))
+    topics["greece"] = "<a href=\"{}\">Greece</a>".format(url_for('main.course_details', topic='greece'))
+    topics["rome"] = "<a href=\"{}\">Rome</a>".format(url_for('main.course_details', topic='rome'))
+    topics["neoplatonic_school"] = "<a href=\"{}\">The Neoplatonic School</a>".format(
+        url_for('main.course_details', topic='neoplatonic_school'))
+    topics["philosophy_history"] = "<a href=\"{}\">Philosophy of History</a>".format(
+        url_for('main.course_details', topic='philosophy_history'))
+    topics["human_being_universe"] = "<a href=\"{}\">The Human Being &amp; The Universe</a>".format(
+        url_for('main.course_details', topic='human_being_universe'))
+    topics["hermetic_tradition"] = "<a href=\"{}\">The Hermetic Tradition</a>".format(
+        url_for('main.course_details', topic='hermetic_tradition'))
+
+    def get_blue_span(text):
+        return '<span class="blue_text">{}</span>'.format(text)
+
+    if topic == 'timeless_universal':
+        topics["timeless_universal"] = get_blue_span('Timeless & Universal Philosophy')
+    elif topic == 'india':
+        topics["india"] = get_blue_span('India')
+    elif topic == 'tibet':
+        topics["tibet"] = get_blue_span('Tibet')
+    elif topic == 'buddhism':
+        topics["buddhism"] = get_blue_span('Buddhism')
+    elif topic == 'china':
+        topics["china"] = get_blue_span('China')
+    elif topic == 'egypt':
+        topics["egypt"] = get_blue_span('Egypt')
+    elif topic == 'greece':
+        topics["greece"] = get_blue_span('Greece')
+    elif topic == 'rome':
+        topics["rome"] = get_blue_span('Rome')
+    elif topic == 'neoplatonic_school':
+        topics["neoplatonic_school"] = get_blue_span('The Neoplatonic School')
+    elif topic == 'philosophy_history':
+        topics["philosophy_history"] = get_blue_span('Philosophy of History')
+    elif topic == 'human_being_universe':
+        topics["human_being_universe"] = get_blue_span('The Human Being &amp; The Universe')
+    elif topic == 'hermetic_tradition':
+        topics["hermetic_tradition"] = get_blue_span('The Hermetic Tradition')
+
+    return topics
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
@@ -118,7 +194,11 @@ def init_app(app):
     app.jinja_env.globals['user_has_permissions'] = _user_has_permissions
     app.jinja_env.globals['get_course_details'] = _get_course_details
     app.jinja_env.globals['get_summary_course_details'] = _get_summary_course_details
+    app.jinja_env.globals['get_shortened_article_text'] = _get_shortened_article_text
     app.jinja_env.globals['get_course_extra'] = _get_course_extra
+    app.jinja_env.globals['get_home_banner_files'] = _get_home_banner_files
+    app.jinja_env.globals['get_topic_list_elements'] = _get_topic_list_elements
+    app.jinja_env.globals['config'] = app.config
 
     @app.before_request
     def before_request():
@@ -149,7 +229,9 @@ def init_app(app):
     def handle_csrf(err):
         app.logger.warning('csrf.error_message: {}'.format(err))
         app.logger.warning(
-            'csrf.invalid_token: Aborting request, user_id: {}'.format(session['user']['id'])
+            'csrf.invalid_token: Aborting request, user_id: {}'.format(
+                session['user']['id'] if 'user' in session else None
+            )
         )
 
         resp = make_response(render_template(

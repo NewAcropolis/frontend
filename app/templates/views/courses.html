@@ -1,45 +1,36 @@
 {% extends "base.html" %}
-{% block title %}What we offer{% endblock %}
+{% block first_head %}{% include "components/ga.html" %}{% endblock %}
+{% block title %}Courses{% endblock %}
 {% block content %}
 
-  <div class="container-fluid padding">
-    <div class="row text-center">
-      <img src="/static/images/courses_banner.png" class="page_header_img">
-    </div>
-  </div>
-
-  <div class="container-fluid padding yellow_background">
-    <div class="row text-center padding">
-      <div class="col-lg-12">
-        <ul class="list-horizontal">
-          Timeless & Universal Philosophy<li></li>
-          <li>India</li>
-          <li>Tibet</li>
-          <li>Buddhism</li>
-          <li>China</li>
-          <li>Egypt</li>
-          <li>Greece</li>
-          <li>Rome</li>
-          <li>The Neoplatonic School</li>
-          <li>Philosophy of History</li>
-          <li>The Human Being & the Universe</li>
-          <li>The Hermetic Tradition</li>
-        </ul>    
+<div id="banner" class="carousel slide">
+  <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img class="d-block w-100" src="/static/images/courses-banner.png">
+        <div class="carousel-caption d-md-block">
+          <div class="carousel-title text-white">Foundation Course</div>
+          <div class="carousel-banner">
+            <h3> Philosophies of East and West </h3>
+            <h5>16-WEEK INTRODUCTION TO THE MAJOR SYSTEMS OF THOUGHT FROM EAST & WEST</h5>
+          </div>
+        </div>
       </div>
-    </div>
   </div>
+</div>
+
+{% include "components/topics.html" %}
 
   <div class="container-fluid padding cream_backgroundcolour">
-    <div class="row padding">
+    <div class="row padding content-width-lg mx-auto">
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/timeless_universal.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
-                <h2 class="dark_grey_txt">Timeless & Universal Philosophy</h2>
+                <div class="dark_grey_txt">Timeless & Universal Philosophy</div>
                 <p class="light_text">{{ get_summary_course_details('timeless_universal')|safe }} <a href="{{ url_for('main.course_details', topic='timeless_universal') }}">READ MORE</a></p>
               </div>
             </div>
@@ -47,12 +38,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/india.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">India</h2>
                 <p class="light_text">{{ get_summary_course_details('india')|safe }} <a href="{{ url_for('main.course_details', topic='india') }}">READ MORE</a></p>
@@ -62,12 +53,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/tibet.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Tibet</h2>
                 <p class="light_text">{{ get_summary_course_details('tibet')|safe }} <a href="{{ url_for('main.course_details', topic='tibet') }}">READ MORE</a></p>
@@ -77,12 +68,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/buddhism.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Buddhism</h2>
                 <p class="light_text">{{ get_summary_course_details('buddhism')|safe }} <a href="{{ url_for('main.course_details', topic='buddhism') }}">READ MORE</a></p>
@@ -92,12 +83,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/china.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">China</h2>
                 <p class="light_text">{{ get_summary_course_details('china')|safe }} <a href="{{ url_for('main.course_details', topic='china') }}">READ MORE</a></p>
@@ -107,12 +98,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/egypt.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Egypt</h2>
                 <p class="light_text">{{ get_summary_course_details('egypt')|safe }} <a href="{{ url_for('main.course_details', topic='egypt') }}">READ MORE</a></p>
@@ -122,12 +113,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/greece.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Greece</h2>
                 <p class="light_text">{{ get_summary_course_details('greece')|safe }} <a href="{{ url_for('main.course_details', topic='greece') }}">READ MORE</a></p>
@@ -137,12 +128,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/rome.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Rome</h2>
                 <p class="light_text">{{ get_summary_course_details('rome')|safe }} <a href="{{ url_for('main.course_details', topic='rome') }}">READ MORE</a></p>
@@ -152,12 +143,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/neoplatonic_school.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">The Neoplatonic School</h2>
                 <p class="light_text">{{ get_summary_course_details('neoplatonic_school')|safe }} <a href="{{ url_for('main.course_details', topic='neoplatonic_school') }}">READ MORE</a></p>
@@ -167,12 +158,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/philosophy_history.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">Philosophy of History</h2>
                 <p class="light_text">{{ get_summary_course_details('philosophy_history')|safe }} <a href="{{ url_for('main.course_details', topic='philosophy_history') }}">READ MORE</a></p>
@@ -182,12 +173,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/human_being_universe.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">The Human Being and the Universe</h2>
                 <p class="light_text">{{ get_summary_course_details('human_being_universe')|safe }} <a href="{{ url_for('main.course_details', topic='human_being_universe') }}">READ MORE</a></p>
@@ -197,12 +188,12 @@
         </div>
       </div>
       <div class="col-lg-6 col-md-12 col-sm-12">
-        <div class="card mb-3">
+        <div class="card mb-3 course_card">
           <div class="row no-gutters">
-            <div class="col-lg-4 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
+            <div class="col-lg-5 col-md-5 col-sm-5 col-5 featured_remove_padding_img">
               <img src="/static/images/hermetic_tradition.png" class="card-img course_card_imgs">
             </div>
-            <div class="col-lg-8 col-md-7 col-sm-7 col-7">
+            <div class="col-lg-7 col-md-7 col-sm-7 col-7 py-0">
               <div class="card-body">
                 <h2 class="dark_grey_txt">The Hermetic Tradition</h2>
                 <p class="light_text">{{ get_summary_course_details('hermetic_tradition')|safe }} <a href="{{ url_for('main.course_details', topic='hermetic_tradition') }}">READ MORE</a></p>
@@ -217,13 +208,13 @@
   <div class="container-fluid padding cream_backgroundcolour">
     <div class="row welcome text-center">
       <div class="col-12">
-        <h1 class="display-4"> STRUCTURE OF THE COURSE </h1>
+        <h1 class="display-4">FURTHER INFORMATION</h1>
       </div>
     </div>
   </div>
 
-  <div class="container-fluid padding blue_background">
-    <div class="row padding courses_fee_section_padding">
+  <div class="container-fluid blue_background">
+    <div class="row courses_fee_section_padding content-width-lg mx-auto">
       <div class="col-lg-12">
         <h5 id="yellow_txt">The 16-week course will introduce you to the major concepts of Eastern and Western Philosophy and explore their relevance and practical application for our lives. 
           The topics are arranged under three chapters: Ethics, Sociopolitics and Philosophy of History.</h5><br>
@@ -255,7 +246,7 @@
       <div class="col-lg-12">
         <div class="courses_big_box">
           <h4 id="blue_txt">Fees for course are £190,(£130 concessions) inclusive of all hand-outs and printed material.</h4><br>
-          <h4 id="blue_txt">The first evening can be attended separately for a small charge which can then be redeemed against the full course fee.</h4><br>
+          <h4 id="blue_txt">The first evening can be attended separately via Zoom but the course will be held in person at our premises in Islington, subject to government restrictions. In the event of a local lockdown, the classes would temporarily continue on Zoom.</h4><br>
           <h4 id="blue_txt">The course runs from 7pm to 9.30pm.</h4><br>
           <h4 id="blue_txt">There is a break for refereshments where a home cooked vegetarian meal is available (not included in course fee).</h4>
         </div>
@@ -269,31 +260,28 @@
         <h1 class="display-4"> NEXT COURSES START DATES </h1>
       </div>
     </div>
-    <div class="row text-center">
-      <div class="col-1"></div>
-      <div class="col-6">
-        <div class="courses_start_date_box">
-          <p>SEPTEMEBER 5th 2018 - 16-week introduction philosophies of East & West</p>
-        </div><br>
-        <div class="courses_start_date_box">
-          <p>SEPTEMEBER 5th 2018 - 16-week introduction philosophies of East & West</p>
-        </div><br>
-        <div class="courses_start_date_box">
-          <p>SEPTEMEBER 5th 2018 - 16-week introduction philosophies of East & West</p>
-        </div><br>
+
+    <div class="row text-center content-width-lg mx-auto">
+      {% for intro_course in intro_courses %}
+        {% for date in intro_course.dates %}
+      <div class="row mx-auto">
+        <div class="col-md-8 col-sm-12">
+          <div class="courses_start_date_box">
+            <p>{{date|strfdate}}<br>
+              16-week introduction philosophies of East & West
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div class="row courses_reserve_box align-items-center">
+            <div class="col-md-12">
+              <h3><a href='{{url_for("main.event_details", event_id=intro_course.id)}}'>RESERVE MY PLACE</a></h3>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-4">
-        <div class="courses_reserve_box">
-          <h3>RESERVE MY PLACE</h3>
-        </div><br>
-        <div class="courses_reserve_box">
-          <h3>RESERVE MY PLACE</h3>
-        </div><br>
-        <div class="courses_reserve_box">
-          <h3>RESERVE MY PLACE</h3>
-        </div><br>
-      </div>
-      <div class="col-1"></div>
+        {% endfor %}
+      {% endfor %}
     </div>
   </div>
 
@@ -303,45 +291,43 @@
       <h1 class="display-4"> FURTHER PROGRAMME OF STUDIES </h1>
     </div>
   </div>
-  <div class="row no-gutters cream_backgroundcolour">
-      <div>
-        <img src="/static/images/courses_multi_img.png" class="foundation_courses_img">
+  <div class="row">
+    <img src="/static/images/courses_further.png" class="foundation_courses_img">
+  </div>
+</div>
+<div>
+  <div class="container-fluid foundation_courses_banner">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="">
+          <div class="content-width mx-auto">
+            <h5>Following the 16 week foundation course there are advanced courses for those who wish to continue</h5>
+          </div>
+        </div>      
       </div>
-      <div class="col-9 pt-0">
-        <div class="foundation_courses_banner">
-          <h5>The 16-week Foundation Course leads to successive levels of a comprehensive Programme of Studies which links sciences, art, religions and philosophy in a comparative way. [In order to access the Programme of Studies you will have to pass the examination of the Foundation Course and pay a monthly membership fee of £50.</h5>
-        </div>
-        <div id="blue_txt" class="courses_foundation_advanced_padding">
-          <p><b>PSYSCHOLOGY</b>. How we answer the question ‘who we are and what we may be’ will shape and influence almost every individual and collective decision we make. This course is a practical and theoretical exploration of our ‘psyche’ and its faculties: consciousness, attention, memory, imagination, will, etc. The timeless maxim “Man know thyself” and how we can develop our potential and master ourselves are the key-notes of this course, which includes practical exercises for self-development.
-
-          </p>
-          <p><b>WISDOM OF EAST & WEST</b>This course follows on from the Introductory course and runs parallel with Psychology. It takes a look at the bigger questions of life, approaching them from the wisdom traditions of East and West: the enigma of ‘God’, the structure of the universe, the stages of human evolution, the comparative study of religions, the schools of perennial philosophy throughout the ages and teachings regarding the subtle bodies of the human being that have been recognised in many traditional schools of medicine. 
-          </p>
-          <p><b>APPLIED PHILOSOPHY</b>The aim of this subject is to show how the timeless wisdom can be applied in the here and now and help us find solutions to our individual and collective challenges. 
-          </p>
-          <p><b>COMPARATIVE STUDY OF SYMBOLISM OF ALL CULTURES</b>. Symbols are a language we can all recognise but few of us can read. This subject consists of a series of courses that explore the sacred symbols of ancient Egypt, Greece, Rome, India, China, Japan, the Mayas, Incas, Aztecs, etc., as well as the symbolism of plants, minerals, animals and architecture. The aim of the course is to gain a deeper understanding of the importance of the symbolic dimension for the human being and to enable the student to gradually use symbols as bridges to perceive the intelligible world. 
-          </p>
-          <p><b>LATER SUBJECTS IN THE PROGRAMME</b> Moralphilosophy, Sociopolitics, Oratory, History of Philosophy, History of Religions, Anthropogenesis, Cosmogenesis, Astrology, Philosophy of Science, Metaphysical Aesthetics and many more…
-        </div>
-      </div>
+    </div>
+  </div>
+  <div class="container-fluid cream_backgroundcolour padding">
+    <div id="blue_txt" class="courses_foundation_advanced_padding content-width mx-auto">
+      <p><b>PSYSCHOLOGY</b>. How we answer the question ‘who we are and what we may be’ will shape and influence almost every individual and collective decision we make. This course is a practical and theoretical exploration of our ‘psyche’ and its faculties: consciousness, attention, memory, imagination, will, etc. The timeless maxim “Man know thyself” and how we can develop our potential and master ourselves are the key-notes of this course, which includes practical exercises for self-development.</p>
+      <p><b>WISDOM OF EAST & WEST</b>This course follows on from the Introductory course and runs parallel with Psychology. It takes a look at the bigger questions of life, approaching them from the wisdom traditions of East and West: the enigma of ‘God’, the structure of the universe, the stages of human evolution, the comparative study of religions, the schools of perennial philosophy throughout the ages and teachings regarding the subtle bodies of the human being that have been recognised in many traditional schools of medicine. 
+      </p>
+      <p><b>APPLIED PHILOSOPHY</b>The aim of this subject is to show how the timeless wisdom can be applied in the here and now and help us find solutions to our individual and collective challenges. 
+      </p>
+      <p><b>COMPARATIVE STUDY OF SYMBOLISM OF ALL CULTURES</b>. Symbols are a language we can all recognise but few of us can read. This subject consists of a series of courses that explore the sacred symbols of ancient Egypt, Greece, Rome, India, China, Japan, the Mayas, Incas, Aztecs, etc., as well as the symbolism of plants, minerals, animals and architecture. The aim of the course is to gain a deeper understanding of the importance of the symbolic dimension for the human being and to enable the student to gradually use symbols as bridges to perceive the intelligible world. 
+      </p>
+      <p><b>LATER SUBJECTS IN THE PROGRAMME</b> Moralphilosophy, Sociopolitics, Oratory, History of Philosophy, History of Religions, Anthropogenesis, Cosmogenesis, Astrology, Philosophy of Science, Metaphysical Aesthetics and many more…
     </div>
   </div>
 
   <div class="container-fluid padding yellow_background">
     <div class="row padding">
       <div class="col-lg-12">
-        <p class="dark_grey_txt"><br> "Today we emphasise financial, economic or technological support and development. But what is needed is th development of the human factor - the unique potential that lies within each individual. Our problems are not due to technological failures but to our human imperfections."
-          Jorge A. Livraga Rizzi, Founder of New Acropolis
-        </p>
+        <p class="dark_grey_txt content-width mx-auto"> "Today we emphasise financial, economic or technological support and development. But what is needed is th development of the human factor - the unique potential that lies within each individual. Our problems are not due to technological failures but to our human imperfections."
+        <br>Jorge A. Livraga Rizzi, Founder of New Acropolis
         </p>
       </div>
     </div>
   </div>
-
-  <div class="container-fluid padding">
-    <div class="row welcome text-center">
-      <img src="/static/images/courses_footer_img.png" class="courses_footer_img">
-    </div>
-  </div>
-  
+  <div class="empty_space_sm"></div>
 {% endblock %}

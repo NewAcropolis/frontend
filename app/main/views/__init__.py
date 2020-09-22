@@ -104,6 +104,11 @@ def callback():
     if not user:
         try:
             api_client.create_user(profile)
+
+            if 'error' in session:
+                error = session.pop('error')
+                raise HTTPError(error)
+
             return render_template(
                 'views/admin/admin_interstitial.html',
                 message="{} has registered as a user, "
@@ -147,6 +152,13 @@ def logout():
     return redirect(url_for('.index'))
 
 
+@main.route('/_keep_alive', methods=['GET'])
+def keep_alive():
+    api_client.get_info()
+
+    return 'API called'
+
+
 def render_page(template, **kwargs):
     contact_form = ContactForm()
     contact_form.setup()
@@ -156,9 +168,20 @@ def render_page(template, **kwargs):
     if slim_subscription_form.validate_on_submit():
         return redirect(url_for('main.subscription', email=slim_subscription_form.slim_subscription_email.data))
 
+    if 'error' in session and 'error' not in kwargs:
+        error = session.pop('error')
+        try:
+            kwargs['error'] = error['message']['error'] if isinstance(error, dict) else\
+                error['message'] if 'message' in error else\
+                error if isinstance(error, basestring) else "Unhandled error"
+        except TypeError:
+            current_app.logger.error("Unhandled error %r", error)
+            kwargs['error'] = "Unhandled error"
+
     return render_template(
         template,
         contact_form=contact_form,
         slim_subscription_form=slim_subscription_form,
+        latest_magazine=api_client.get_latest_magazine(),
         **kwargs
     )

@@ -169,6 +169,7 @@ class WhenAccessingFutureEventsPage(object):
                     "event_dates": [
                         {
                             "event_datetime": "2019-04-15 19:00",
+                            "end_time": None,
                             "speakers": []
                         }
                     ],
@@ -195,6 +196,7 @@ class WhenAccessingFutureEventsPage(object):
                     "event_dates": [
                         {
                             "event_datetime": "2019-05-15 19:00",
+                            "end_time": None,
                             "speakers": [
                                 {
                                     "name": "Various",
@@ -204,6 +206,7 @@ class WhenAccessingFutureEventsPage(object):
                         },
                         {
                             "event_datetime": "2019-05-26 19:00",
+                            "end_time": None,
                             "speakers": [
                                 {
                                     "name": "Various",
@@ -213,6 +216,7 @@ class WhenAccessingFutureEventsPage(object):
                         },
                         {
                             "event_datetime": "2019-05-03 19:00",
+                            "end_time": None,
                             "speakers": [
                                 {
                                     "name": "Various",
@@ -247,7 +251,7 @@ class WhenAccessingFutureEventsPage(object):
 
 class WhenAccessingArticlesPage(object):
 
-    def it_shows_list_of_articles(self, client, mocker, logged_in):
+    def it_shows_list_of_articles(self, client, mocker, logged_in, sample_latest_magazine):
         mocker.patch(
             "app.clients.api_client.ApiClient.get_articles_summary",
             return_value=[

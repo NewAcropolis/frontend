@@ -19,19 +19,14 @@
         {% endif %}
         {% if user_has_permissions('magazine') %}
         <div class='col-sm'>
-            Magazines
+            <a href='/admin/magazines'>Magazines</a>
         </div>
         {% endif %}
     </div>
     <div class="row">
-        {% if user_has_permissions('shop') %}
+        {% if user_has_permissions('cache') %}
         <div class='col-sm'>
-            Shop
-        </div>
-        {% endif %}
-        {% if user_has_permissions('report') %}
-        <div class='col-sm'>
-            Reports
+            <a href='/admin/cache'>Caches</a>
         </div>
         {% endif %}
         {% if user_has_permissions('announcement') %}

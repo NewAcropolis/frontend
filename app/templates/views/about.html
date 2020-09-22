@@ -1,39 +1,58 @@
 {% extends "base.html" %}
+{% block first_head %}{% include "components/ga.html" %}{% endblock %}
 {% block title %}About{% endblock %}
 {% block content %}
 
 {% set philosophyText =  """
+PHILOSOPHY<br><br>
 Philosophy, in its original meaning, is the love of wisdom and the quest to understand the underlying principles of life. In this sense, we are all philosophers. We all have questions and we all have the intuition that there are answers to be found.<br><br>
-Every civilization has passed on to us its knowledge and experience of the essential laws of life. A systematic and comparative study of this vast heritage enables us to discover the universal and timeless ideas that have formed characters, shaped visions of the future and helped men and women to meet the challenges of their time. As a School of Philosophy in the Classical Tradition, we offer a wide-ranging programme of studies designed to provide a holistic education - an education that does not just impart knowledge but also awakens and develops our other human faculties such as love, compassion, imagination, intuition, will power, perseverance, and any others that can help us to overcome our individual and collective problems.<br><br>
-A philosophical education may not lead to the quick, veriﬁable and measurable products we are so accustomed to expect. But it can produce a profound transformation within the individual, and therein lies its value.
+Every civilization has passed on to us its knowledge and experience of the essential laws of life. A systematic and comparative study of this vast heritage enables us to discover the universal and timeless ideas that have formed characters, shaped visions of the future and helped men and women to meet the challenges of their time.<br><br>
+As a School of Philosophy in the Classical Tradition, we offer a wide-ranging programme of studies designed to provide a holistic education - an education that does not just impart knowledge but also awakens and develops our other human faculties such as love, compassion, imagination, intuition, will power, perseverance, and any others that can help us to overcome our individual and collective problems.<br><br>
+A philosophical education may not lead to the quick, verifiable and measurable products we are so accustomed to expect. But it can produce a profound transformation within the individual, and therein lies its value.
 """
 %}
 {% set volunteeringText = """
-VOLUNTEERING Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis est quis fermentum hendrerit. Phasellus faucibus sapien a erat aliquet, quis posuere libero ullamcorper. Donec egestas nec arcu vel sollicitudin. Duis at urna enim. Phasellus eu pharetra nulla. Morbi gravida augue id magna varius consequat. Donec commodo, orci sed pellentesque efficitur, orci magna commodo augue, nec viverra neque magna vel erat
+VOLUNTEERING<br><br>
+Philosophy also has a practical aim: to provide human beings with valid tools to meet the individual and collective challenges of today and to create a better world for the next generation. Volunteering forms part of our philosophical training and we actively encourage people to take up their civic responsibility and to become involved in a community project.<br><br>
+We all want to be useful and be able to help. Our training programmes for volunteers aim to equip individuals with the necessary skills and know-how to play an active role in society and to prepare them for emergency situations.<br><br>
+Our own volunteering projects include helping with the planting and maintenance in Compton Terrace Gardens and looking after two hives in our Melissa Bee Sanctuary. Our school of philosophy itself offers many opportunities as it is run entirely by volunteers. We also regularly work together with other associations and individuals for the benefit of society
 """
 %}
 {% set cultureText = """
-CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilisis est quis fermentum hendrerit. Phasellus faucibus sapien a erat aliquet, quis posuere libero ullamcorper. Donec egestas nec arcu vel sollicitudin. Duis at urna enim. Phasellus eu pharetra nulla. Morbi gravida augue id magna varius consequat. Donec commodo, orci sed pellentesque efficitur, orci magna commodo augue, nec viverra neque magna vel erat
+CULTURE<br><br>
+What comes first: the human being or culture? This is a chicken and egg question and it is clear that human beings are a product of their culture and that culture is a product of the human being. Culture is education in the widest sense of the word. It is only through culture that human beings can unfold their human-ness. Through the education provided by culture we learn in a few years of our lives what it took humanity thousands of years to learn. In this way, culture has the power to accelerate our evolution.<br><br>
+It is often said that the purpose of education is to ‘draw out’ (Latin: educere) the inner potential. Without culture and education we could not develop this potential.<br><br>
+Culture transmits values and provides us with forms through which we can express these values. Cultural traditions and celebrations enable us to transcend the secular and enter into contact with the sacred. Many traditions also remind us of the annual cycle of nature and help us to re-connect with nature in a profound way.<br><br>
+In New Acropolis we explore various arts, crafts and traditions, visit sites of cultural and historical interest in Britain and abroad, and try to bring people into closer contact with nature.
 """ %}
 
 
-<body>
-  <div class="container-fluid padding">
-    <div class="row text-center">
-      <img src="/static/images/about_us_banner.png" class="page_header_img">
+  <div id="banner" class="carousel slide">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100" src="/static/images/about_banner.jpeg">
+          <div class="carousel-caption d-md-block">
+            <div class="carousel-banner">
+              <div class="w-75 mx-auto dispaly-4">
+              <h4>New Acropolis is an international non-profit organization working in the fields of Philosophy, Culture and Volunteering</h4>
+            </div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>
   <div class="container-fluid padding">
-    <div class="row topic_details_section">
+    <div class="row topic_details_section content-width-lg mx-auto text-center">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
         <div class="about_hotspot">
           <img src="/static/images/pyramid.png" class="img-fluid half_screen_img">
           <script>
             function philosophyText() {
+              document.getElementById("about_us_pyramid_text").scrollTo(0, 0);
               document.getElementById("about_us_pyramid_text").innerHTML = `{{ philosophyText|safe }}`;
             } 
           </script>
-          <a onclick="philosophyText()">
+          <a onmouseover="philosophyText()">
             <div id="spot-1" class="box">
               <div class="spot-text-1">
                 <h5>Philosophy</h5>
@@ -43,10 +62,11 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
 
           <script>
             function volunteeringText() {
+              document.getElementById("about_us_pyramid_text").scrollTo(0, 0);
               document.getElementById("about_us_pyramid_text").innerHTML = `{{ volunteeringText|safe }}`;
             } 
           </script>
-          <a onclick="volunteeringText()">
+          <a onmouseover="volunteeringText()">
             <div id="spot-2" class="box">
               <div class="spot-text-2">
                 <h5>Volunteering</h5>
@@ -56,10 +76,11 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
 
           <script>
             function cultureText() {
+              document.getElementById("about_us_pyramid_text").scrollTo(0, 0);
               document.getElementById("about_us_pyramid_text").innerHTML = `{{ cultureText|safe }}`;
             } 
           </script>
-          <a onclick="cultureText()">
+          <a onmouseover="cultureText()">
             <div id="spot-3" class="box">
               <div class="spot-text-3">
                 <h5>Culture</h5>
@@ -76,40 +97,38 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
     </div>
   </div>
 
-  
-
   <div class="container-fluid padding blue_background about_blue_box_txt">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-lg-12">
         <h3 id="yellow_txt">Today New Acropolis is present in over 60 countries and growing.</h3>
-        <h3>The figures below are taken from our 2019 yearbook.</h3>
-        <p>For more information visit our <a href="https://www.acropolis.org/en/" id="yellow_txt">international website</a></p>
+        <h3>The figures below are taken from our 2020 yearbook.</h3>
+        <p>To view the 2020 yearbook in full, please see <a href="https://www.acropolis.org/en/international-yearbooks" id="yellow_txt">here</a></p>
       </div>
       <div class="col-lg-4 col-md-6">
-        <h1 class="statistics_font">51.013</h1>
+        <h1 class="statistics_font">38,124</h1>
         <p id="yellow_txt">Participants on our courses</p>
       </div>
       <div class="col-lg-4 col-md-6">
-        <h1 class="statistics_font">1.103.252</h1>
+        <h1 class="statistics_font">1,158,415</h1>
         <p id="yellow_txt">Beneficeries & Partners</p>
       </div>
       <div class="col-lg-4 col-md-6">
-        <h1 class="statistics_font">1.948.485</h1>
+        <h1 class="statistics_font">1,991,748</h1>
         <p id="yellow_txt">Training hours</p>
       </div>
       <div class="col-lg-6 col-md-6">
-        <h1 class="statistics_font">2.602.404</h1>
+        <h1 class="statistics_font">10,456</h1>
         <p id="yellow_txt">Volunteering Activities throughout the year</p>
       </div>
       <div class="col-lg-6">
-        <h1 class="statistics_font">223.801</h1>
+        <h1 class="statistics_font">739,467</h1>
         <p id="yellow_txt">Books in our libraries</p>
       </div>
      </div>
   </div>
   
   <div class="container-fluid padding yellow_background">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-lg-12">
         <h2 class="visit_website_section">Visit our <a href="https://www.acropolis.org/en/">International Website</a> to find out more about our activities and International
             Locations</h2>
@@ -125,7 +144,7 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
     </div>
   </div>
   <div class="container-fluid padding">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-xs-12 col-sm-6 col-md-4">
         <img src="/static/images/founding-hands.png" class="founding_img"><br><br>
         <h5 class="founding_headings"> FRATERNITY </h5>
@@ -145,10 +164,10 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
   </div>
 
   <div class="container-fluid padding py-3 cream_backgroundcolour">
-    <div class="card border_about">
+    <div class="card content-width-lg mx-auto">
       <div class="row padding">
-        <div class="col-md-4">
-          <img src="/static/images/man.png" class="card-img_person card-img">
+        <div class="col-md-4 py-0">
+          <img src="/static/images/founder.jpg" class="card-img_person card-img">
         </div>
         <div class="col-md-8 px-3">
           <div class="card-block px-3">
@@ -162,26 +181,50 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
     </div>
   </div>
 
-
   <div class="container-fluid padding blue_background">
     <div class="row text-center padding">
       <div class="col-lg-12">
-        <img src="/static/images/quote_img.png" class="quote_img">
+        <h4>
+        “Today we emphasise financial, economic or technological support and development. <br>
+        But what is needed is the development of the human factor – the unique potential that lies within each individual. <br>
+        Our problems are not due to technological failures but to our human imperfections.” <br>
+        - Jorge A. Livraga Rizzi, Founder of New Acropolis</h4>
       </div>
     </div>
   </div>
 
   <div class="container-fluid padding py-3 cream_backgroundcolour">
-    <div class="card border_about">
+    <div class="card content-width-lg mx-auto">
       <div class="row padding">
-        <div class="col-md-4">
-          <img src="/static/images/lady.png" class="card-img_person card-img">
+        <div class="col-md-4 py-0">
+          <img src="/static/images/international_president.jpg" class="card-img_person card-img">
         </div>
         <div class="col-md-8 px-3">
           <div class="card-block px-3">
             <h3 class="card-title" id="blue_txt">CURRENT INTERNATIONAL PRESIDENT</h3>
+            <h4 class="card-title">Carlos Adelantado Puchal</h4>
+            <p class="card-text">Carlos Adelantado was born in Castellón (Spain) on January 1, 1964.</p>
+            <p class="card-text">At the age of 19, while studying philosophy at university, he began attending classes at the New Acropolis School of Philosophy in Castellón and supporting its many activities. He was later appointed director of the school where, over a period of 23 years, he developed a number of cultural and social volunteering projects under the umbrella of the Castalia Cultural Centre. He was also coordinator of the various New Acropolis centres in the Levante area of Spain. At the same time, he continued to study and teach philosophy and was awarded the degree of "Specialist in Eastern and Western Philosophy” by the International Organization New Acropolis based in Brussels.</p>
+            <p class="card-text">He has been teaching different subjects in the curriculum of the New Acropolis School of Philosophy for more than 30 years, as well as giving lectures and participating in academic conferences. His approach has always emphasized the need to put philosophy into practice and apply it in addressing the problems of today's world.</p>
+            <p class="card-text">In 2013 he moved to Madrid to take over the management of the head office of New Acropolis in Spain and carry out a number of management responsibilities at a national level. In Madrid, he has promoted activities to make the rich historical and artistic heritage of the city known to a wider public, along with other projects for the promotion of culture.</p>
+            <p class="card-text">In 2017 he was appointed Deputy International President of the IONA and in 2020 he took up his current post as International President. READ MORE</p> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid padding py-3 cream_backgroundcolour">
+    <div class="card content-width-lg mx-auto">
+      <div class="row padding">
+        <div class="col-md-4 py-0">
+          <img src="/static/images/honorary_president.jpg" class="card-img_person card-img">
+        </div>
+        <div class="col-md-8 px-3">
+          <div class="card-block px-3">
+            <h3 class="card-title" id="blue_txt">HONORARY PRESIDENT</h3>
             <h4 class="card-title">Delia Steinberg Guzman</h4>
-            <p class="card-text">As the current president of International Organisation New Acropolis, Delia Steinberg Guzmån has continued and developed the legacy of its founder Jorge Angel Livraga (1931-1991). </p>
+            <p class="card-text">As the current honorary president and previously as the International president of International Organisation New Acropolis, Delia Steinberg Guzmån has continued and developed the legacy of its founder Jorge Angel Livraga (1931-1991). </p>
             <p class="card-text">Combining her musical background as a former concert pianist with an eclectic range of university studies in humanities and sciences, she has consistently focused her energies on the cultivation of philosophy as a way of life.
             Guided by the idea that the best form of teaching is by example, she has concentrated on passing her practical understanding of philosophy in the classical tradition through classes and lectures and through her humerous writings. 
               Her most recent works in the field of practical philosophy are <i>The Everday Hero</i> and <i>Philosophy for Living</i>.</p>
@@ -196,9 +239,9 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
   </div>
 
   <div class="container-fluid padding yellow_background">
-    <div class="row text-center padding">
+    <div class="row text-center padding content-width-lg mx-auto">
       <div class="col-lg-12">
-        <h1>New Acropolis UK</h1>
+        <div><img class="img-fluid" src="/static/images/na_logo_white_about.png"></div>
         <h4 class="ourschool_text">Our school in the <b>UK</b> was first established in <b>1974</b> and we have been in <b>Islington</b> since <b>1997</b>.
             We hold classes and talks here on a regular basis, we have our philosophical library available
             for members and we also have our <b>Melissa Bee Sanctuary</b> with two hives at the rear of the school.</h4>
@@ -210,15 +253,13 @@ CULTURE Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque facilis
 
   {% include "components/contact.html" %}
 
-  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-  <script type="text/javascript">
-   $(document).ready(function(){
-     $('.carousel').slick({
-       "autoplay": true,
-       "autoplaySpeed": 5000,
-     });
-   });
+  <script charset="utf-8" type="text/javascript">
+    var urlParams = new URLSearchParams(window.location.search);
+    subject = urlParams.get('subject');
+    if (subject == 'culture') {
+      cultureText();
+    } else if (subject == 'volunteering') {
+      volunteeringText();
+    }
   </script>
-</body>
-
 {% endblock %}

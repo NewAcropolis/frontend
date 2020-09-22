@@ -45,27 +45,30 @@ class BaseAPIClient(object):
             "password": self.secret
         }
 
+        auth_url = urljoin(str(self.base_url), "auth/login")
         try:
-            auth_url = urljoin(str(self.base_url), "auth/login")
             auth_response = requests.request(
                 "POST",
                 auth_url,
                 data=json.dumps(auth_payload),
                 headers={'Content-Type': 'application/json'},
-                allow_redirects=False
+                allow_redirects=False,
+                timeout=60
             )
             auth_response.raise_for_status()
-        except requests.RequestException as e:
+        except (requests.RequestException, requests.Timeout) as e:
             api_error = HTTPError.create(e)
             current_app.logger.error(
-                "Set access token: {} failed with {} '{}'".format(
+                "Set access token: {} failed with {} '{}' - '{}'".format(
                     auth_url,
                     api_error.status_code,
-                    api_error.message
+                    api_error.message,
+                    e.message
                 )
             )
             # raise api_error
-            session["error"] = "Error connecting to API"
+            session["error"] = u"Error connecting to API: " +\
+                str(e).replace(current_app.config['API_BASE_URL'], 'https://API')
             return False
 
         session["access_token"] = auth_response.json()["access_token"]
@@ -74,11 +77,13 @@ class BaseAPIClient(object):
     def request(self, method, url, data=None, params=None):
         current_app.logger.info("API request {} {}".format(method, url))
 
+        # don't set access token for API call to info
+        set_access_token = url != ''
         if not self.base_url:
             current_app.logger.info("No API URL")
             return []
 
-        if not session.get("access_token"):
+        if set_access_token and "access_token" not in session:
             if not self.set_access_token():
                 return []
 
@@ -93,7 +98,7 @@ class BaseAPIClient(object):
                 url,
                 data=payload,
                 params=params,
-                headers={'Authorization': 'Bearer {}'.format(session["access_token"])},
+                headers={'Authorization': 'Bearer {}'.format(session["access_token"])} if set_access_token else {},
                 timeout=30
             )
 
@@ -123,7 +128,10 @@ class BaseAPIClient(object):
                 )
             )
             # raise api_error
-            session['error'] = "Error code: {}, message: {}".format(api_error.status_code, api_error.message)
+            session['error'] = {
+                'code': api_error.status_code,
+                'message': api_error.message or response.json()
+            }
             return []
         finally:
             elapsed_time = time.time() - start_time

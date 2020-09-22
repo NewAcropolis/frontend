@@ -38,6 +38,5 @@ def register_errors(blueprint):
     @blueprint.app_errorhandler(500)
     @blueprint.errorhandler(Exception)
     def internal_server_error(e):
-        print(e)
         current_app.logger.exception(e)
         return jsonify(result='error', message="Internal server error"), 500

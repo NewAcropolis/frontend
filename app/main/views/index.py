@@ -13,14 +13,15 @@ from app.clients.errors import HTTPError
 @main.route('/', methods=['GET', 'POST'])
 def index():
     future_events = api_client.get_events_in_future(approved_only=True)
+
     for event in future_events:
         if event['event_type'] == 'Introductory Course':
             event['carousel_text'] = 'Courses starting {}'.format(event['event_monthyear'])
-
     articles = api_client.get_articles_summary()
     if articles:
         index = randint(0, len(articles) - 1)
         main_article = articles[index]
+        del articles[index]
     else:
         main_article = ''
 
@@ -28,7 +29,7 @@ def index():
     if len(all_events) < 3:
         past_events = api_client.get_events_past_year()
         if past_events:
-            while len(all_events) < 3:
+            while len(all_events) < 3 and past_events:
                 event = past_events.pop(-1)
                 event['past'] = True
                 all_events.append(event)
@@ -37,8 +38,7 @@ def index():
         'views/home.html',
         main_article=main_article,
         articles=articles,
-        all_events=all_events,
-        current_page=''
+        all_events=all_events[:3]
     )
 
 
@@ -50,64 +50,6 @@ def about():
 @main.route('/resources')
 def resources():
     return render_page('views/resources.html')
-
-
-@main.route('/whats-on')
-def whats_on():
-    articles = api_client.get_articles_summary()
-    if articles:
-        index = randint(0, len(articles) - 1)
-
-    future_events = api_client.get_events_in_future(approved_only=True)
-    past_events = []
-    all_past_events = api_client.get_events_past_year()
-    if all_past_events:
-        while len(past_events) < 3:
-            event = all_past_events.pop(-1)
-            past_events.append(event)
-
-    return render_page(
-        'views/whats_on.html',
-        current_page='whats-on',
-        main_article=articles[index] if articles else None,
-        articles=articles,
-        future_events=future_events,
-        past_events=past_events,
-    )
-
-
-@main.route('/what-we-offer')
-def what_we_offer():
-    return render_page('views/what_we_offer.html')
-
-
-@main.route('/e-shop')
-def e_shop():
-    return render_page('views/e-shop.html')
-
-
-@main.route('/course_details')
-def course_details():
-    return render_page('views/course_details.html')
-
-
-@main.route('/event_details/<uuid:event_id>')
-def event_details(event_id, **kwargs):
-    event = api_client.get_event_by_id(event_id)
-    event['is_future_event'] = is_future_event(event)
-
-    return render_page(
-        'views/event_details.html',
-        event=event
-    )
-
-
-def is_future_event(event):
-    is_future = False
-    for date in event['event_dates']:
-        if date['event_datetime'] >= str(datetime.today()):
-            is_future = True
-    return is_future
 
 
 def _unescape_html(items, field_name):

@@ -26,6 +26,6 @@ class WhenAccessingPageWithError:
 
         assert response.status_code == 400
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
-        message = page.select_one('p')
+        message = page.select_one('.m-1')
 
         assert message.text.strip() == 'Something went wrong, please go back and try again.'

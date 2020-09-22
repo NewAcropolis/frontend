@@ -1,13 +1,19 @@
 {% extends "base.html" %}
+{% block first_head %}{% include "components/ga.html" %}{% endblock %}
 {% block title %}Article - {{ article.title }}{% endblock %}
 {% block content %}
   <div class="container-fluid padding cream_backgroundcolour">
     <div class="row">
-      <div class="p-5">
+      <div class="col-sm-12 col-md-6">
         <div class="article_box">
           <h2 class="event_blue">{{ article.title }}</h2>
           <h2 class="event_title">{{ article.author }}</h2><br>
           <p>{{ article.content | safe}}</p>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <div>
+          <img src="{{ IMAGES_URL }}/articles/{{ article.image_filename }}" class="img-fluid article_img">
         </div>
       </div>
     </div>

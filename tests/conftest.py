@@ -1,5 +1,6 @@
 import os
 import sys
+from uuid import uuid4
 
 from bs4 import BeautifulSoup
 
@@ -8,9 +9,10 @@ from mock import Mock
 
 from app import create_app
 
-# Don't import app.settings to avoid importing google.appengine.ext
+# Don't import ndb to avoid importing google.appengine.ext
 sys.modules['app.settings'] = Mock()
 sys.modules['app.gaesession'] = Mock()
+sys.modules['app.cache'] = Mock()
 
 AUTH_USERNAME = 'user'
 AUTH_PASSWORD = 'pass'
@@ -30,6 +32,11 @@ def app():
         'OAUTHLIB_INSECURE_TRANSPORT': True,
         'WTF_CSRF_ENABLED': False,
     })
+
+    # just return the date to make strfdate available in jinja2
+    @_app.template_filter('strfdate')
+    def __jinja2_filter_datetime(date, fmt=None):
+        return date
 
     ctx = _app.app_context()
     ctx.push()
@@ -98,39 +105,47 @@ def invalid_log_in(mocker):
 def sample_future_events(mocker):
     events = [
         {
+            "id": str(uuid4()),
             "title": "Test title 1",
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-30 19:00"
+                "event_datetime": "2018-12-30 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 2",
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-31 19:00"
+                "event_datetime": "2018-12-31 19:00",
+                "end_time": "20:30"
             }],
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 3",
             "event_type": "Introductory Course",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2019-01-01 19:00"
+                "event_datetime": "2019-01-01 19:00",
+                "end_time": None
             }],
             "event_monthyear": "January 2019",
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 4",
             "event_type": "Workshop",
             "image_filename": "",
             "event_dates": [{
-                "event_datetime": "2019-01-02 19:00"
+                "event_datetime": "2019-01-02 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
@@ -150,7 +165,8 @@ def sample_past_events_for_cards():
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-30 19:00"
+                "event_datetime": "2018-12-30 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
@@ -159,7 +175,8 @@ def sample_past_events_for_cards():
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-31 19:00"
+                "event_datetime": "2018-12-31 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
@@ -168,7 +185,8 @@ def sample_past_events_for_cards():
             "event_type": "Introductory Course",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2019-01-01 19:00"
+                "event_datetime": "2019-01-01 19:00",
+                "end_time": None
             }],
             "event_monthyear": "January 2019",
             "event_state": "approved"
@@ -178,29 +196,37 @@ def sample_past_events_for_cards():
             "event_type": "Workshop",
             "image_filename": "",
             "event_dates": [{
-                "event_datetime": "2019-01-02 19:00"
+                "event_datetime": "2019-01-02 19:00",
+                "end_time": None
             }],
             "event_state": "approved"
         },
     ]
 
     return events
+
 
 @pytest.fixture
-def sample_future_event_for_cards():
-    events = [
-        {
-            "title": "Test title 1",
-            "event_type": "Talk",
-            "image_filename": "event.png",
-            "event_dates": [{
-                "event_datetime": "2018-12-30 19:00"
-            }],
-            "event_state": "approved"
-        },
-    ]
+def sample_future_event(mocker):
+    event = {
+        "id": str(uuid4()),
+        "title": "Test title 1",
+        "description": "Test description",
+        "event_type": "Talk",
+        "image_filename": "event.png",
+        "event_dates": [{
+            "event_datetime": "2018-12-30 19:00",
+            "end_time": None
+        }],
+        "event_state": "approved"
+    }
 
-    return events
+    return event
+
+
+@pytest.fixture
+def sample_future_event_for_cards(sample_future_event):
+    return [sample_future_event]
 
 
 @pytest.fixture
@@ -209,22 +235,32 @@ def sample_articles_summary(mocker):
         {
             'title': 'Article title 1',
             'short_content':
-                'some short content 1, some short content 1, some short content 1, some short content 1'
+                'some short content 1, some short content 1, some short content 1, some short content 1',
+            'very_short_content': 'some short content 1'
         },
         {
             'title': 'Article title 2',
             'short_content':
-                'some short content 2, some short content 2, some short content 2, some short content 2'
+                'some short content 2, some short content 2, some short content 2, some short content 2',
+            'very_short_content': 'some short content 2'
         },
         {
             'title': 'Article title 3',
             'short_content':
-                'some short content 3, some short content 3, some short content 3, some short content 3'
+                'some short content 3, some short content 3, some short content 3, some short content 3',
+            'very_short_content': 'some short content 3'
         },
         {
             'title': 'Article title 4',
             'short_content':
-                'some short content 4, some short content 4, some short content 4, some short content 4'
+                'some short content 4, some short content 4, some short content 4, some short content 4',
+            'very_short_content': 'some short content 4'
+        },
+        {
+            'title': 'Article title 5',
+            'short_content':
+                'some short content 5, some short content 5, some short content 5, some short content 5',
+            'very_short_content': 'some short content 5'
         }
     ]
 
@@ -246,6 +282,14 @@ def sample_marketings(mocker):
 
     mocker.patch('app.clients.api_client.ApiClient.get_marketings', return_value=marketings)
     return marketings
+
+
+@pytest.fixture
+def sample_latest_magazine(mocker):
+    magazine = {"filename": "latest_magazine.pdf"}
+
+    mocker.patch('app.clients.api_client.ApiClient.get_latest_magazine', return_value=magazine)
+    return magazine
 
 
 @pytest.fixture

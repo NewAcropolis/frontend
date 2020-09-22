@@ -11,9 +11,10 @@ def is_running_app_engine():
 
 def get_setting(name, default=None):
     if is_running_app_engine():
-        return Settings.get_or_set(name)
+        setting = Settings.get_or_set(name)
+        return setting if setting != 'NOT SET' else default
     else:
-        print('Running with local env vars')
+        print('Running with local env vars:', name)
         return os.environ.get(name, default)
 
 
@@ -32,11 +33,19 @@ class Config(object):
     GOOGLE_OAUTH2_REDIRECT_URI = get_setting('GOOGLE_OAUTH2_REDIRECT_URI')
     OAUTHLIB_INSECURE_TRANSPORT = False
     PAYPAL_ACCOUNT = get_setting('PAYPAL_ACCOUNT')
-    ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'report', 'shop', 'announcement', 'article']
-    SUMMARY_LIMIT = 360
+    ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'cache', 'announcement', 'article']
+    SUMMARY_LIMIT = 190
+    ARTICLE_SUMMARY_LIMIT = 110
+    SESSION_EXPIRY = get_setting('SESSION_EXPIRY', 30)
+    RECAPTCHA_USE_SSL = False
+    RECAPTCHA_PUBLIC_KEY = get_setting('RECAPTCHA_PUBLIC_KEY')
+    RECAPTCHA_PRIVATE_KEY = get_setting('RECAPTCHA_PRIVATE_KEY')
+    RECAPTCHA_OPTIONS = {'theme': 'black'}
+    GA_ID = get_setting('GA_ID')
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
+    WTF_CSRF_SSL_STRICT = False
 
 
 class Development(Config):
