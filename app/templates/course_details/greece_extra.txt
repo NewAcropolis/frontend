@@ -1,12 +1,20 @@
-h3. History Past & Future
+h3. Introduction to Plato’s Republic
 
-lorem ipsum
+The Republic is written as a dialogue which centres around the idea of justice. One of the participants argues that Justice is simply a word with no inherent value and that all that really matters is power. Through the character of Socrates, Plato then expounds a whole philosophical treatise in defence of justice. For Plato, justice exists in itself and is something that human beings have to discover. Far from being a simple set of civic rules, Plato develops an understanding of Justice as connected to the universal laws of life.
 
 ==
-h3. Famous philosophers
+h3. The Allegory of the Cave
 
-lorem ipsum
+In book VII of The Republic you will find Plato’s ‘Allegory of the Cave’, an enduring and influential text, rich in symbolism. It contains key metaphysical ideas about the nature of reality and the purpose of human life. In it Plato proposes different stages or levels of reality, from the darkness of the cave (sensory world) to the ultimate light of the sun (spiritual world). One of the key themes presented is the central importance of education and wisdom for the individual, society and the state.
+
 ==
-h3. Key ideas
+h3. What is Education?
 
-lorem ipsum
+Education comes from the Latin root ‘educere’, meaning ‘to lead or draw out’, and ‘educare’ (to bring up, to train, to teach, to educate). For Plato, the purpose of education is in line with both of these roots: on the one hand to ‘draw out’ the latent potential and to lead the human being out of the ‘cave’ of ignorance into the light of spiritual understanding; and, on the other, to educate people to be good citizens. We will look at these concepts and also at his proposals for the different stages of education, from the education of children to the education of philosopher-kings.
+
+==
+
+h3. What is Justice?
+
+We are probably most familiar with the concept of justice in relation to our courts and legal systems. We might also think of justice in terms of a sense of moral law, of what is right and wrong, and an integral factor in the preservation of peace between peoples and nations. But where does justice come from? And what is more, who decides what is just? Plato’s Republic was at one time referred to as ‘A Defence of Justice’. In it he discusses Justice as a principle of nature which needs to be discovered, understood and applied in life by individuals as well as societies.
+

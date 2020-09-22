@@ -1,12 +1,10 @@
-h3. History Past & Future
+h3. Life of Plotinus
 
-lorem ipsum
-
+Plotinus was born in Lycopolis, Egypt, around 205 CE. Whilst little is known about his early life, we know that he studied in Alexandria under his teacher Ammonius Saccas and later moved to Rome, where he gained wide renown as a highly respected philosopher. He became friends with the emperor and at one time had a plan to found Platonopolis - a “City of Philosophers” based upon Plato’s ideas, though this never came to fruition. However, several students of Plotinus went on to set up Neoplatonic schools in cities across the Mediterranean world and the ideas of this school went on to influence Western and Arabic thought in the following centuries, including the European Renaissance.
 ==
-h3. Famous philosophers
+h3. Central Ideas of Neoplatonism
 
-lorem ipsum
-==
-h3. Key ideas
+Perhaps the central idea of the work of Plotinus is the ‘Theory of Emanation’ – the idea of an underlying, transcendent principle of reality out of which all things come. 
+From this comes the idea that the purpose of life is to return to the original unity through inner work, contemplation and a philosophical way of living.
+Beauty and love also play an important role in Plotinus’s philosophy, as a natural way of ascent towards metaphysical union. 
 
-lorem ipsum

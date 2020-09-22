@@ -1,14 +1,16 @@
-h3. History Past & Future
+h3. The two aspects of time
 
-lorem ipsum
+The ancient Greeks had two Gods to represent time. The first, Chronos, represented the order of time, its quantitative aspect. He also lent his name to the concept of chronology and the chronometer. Alongside Chronos is Kairos, the second god of time, who is the god understood as the opportune moment, time in its qualitative aspect. Throughout history, cultures have recognised that there are different ways of experiencing and talking about time: a chronological and quantitative aspect that situates events like co-ordinates on a map and another qualitative aspect which indicates the nature or quality of the moment. 
 
 ==
-h3. Famous philosophers
 
-lorem ipsum
+h3. Linear vs Cyclical time
+
+The prevailing view of history today is that its movement is linear, in a movement of ceaseless progress towards an ever more scientific and technological future. However, how many cultures and civilisations have risen and fallen in the past and why should ours be the only exception? Events over the last hundred years have given historians pause for thought and the concept of historical cycles is gradually becoming more acceptable.
+
+If we look back at ancient civilisations, we will find that they predominantly took a cyclic view of history. We will look at the example of ancient India where the doctrine of ‘Yugas’ – immense periods of cyclic time – was taught. We find a similar idea in ancient Greece, with Hesiod’s concept of ages of gold, silver, bronze and iron. We will consider what implications the cyclic idea of history would have for us today and how both theories can be combined in a harmonious synthesis.
+
 ==
-h3. Key ideas
+h3. Development of the modern world
 
-lorem ipsum
-
-Test
+In this part of the course we will look at the major political developments which have led to the modern world as we know it today, starting with the fall of the Roman empire, passing through the Middle Ages and Renaissance, and reviewing the development of liberal and directed states in recent centuries. Can philosophy of history help us to make sense of our current times and shine a light on our next steps towards the future? 

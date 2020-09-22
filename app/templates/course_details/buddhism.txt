@@ -1,14 +1,3 @@
 h2. Buddhism
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id luctus lectus. Mauris sem justo, faucibus a sapien sit amet, suscipit egestas quam. Integer a erat sollicitudin velit ornare consectetur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer euismod pulvinar mauris, at elementum lorem elementum at. Pellentesque blandit semper massa, non fermentum nulla tempus mattis. In ut erat augue.
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id luctus lectus. Mauris sem justo, faucibus a sapien sit amet, suscipit egestas quam. Integer a erat sollicitudin velit ornare consectetur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer euismod pulvinar mauris, at elementum lorem elementum at. Pellentesque blandit semper massa, non fermentum nulla tempus mattis. In ut erat augue.
-
-* test
-** test 2
-* test 3
-
-# test 1 
-# test 2
-## test 3
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean id luctus lectus. Mauris sem justo, faucibus a sapien sit amet, suscipit egestas quam. Integer a erat sollicitudin velit ornare consectetur. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer euismod pulvinar mauris, at elementum lorem elementum at. Pellentesque blandit semper massa, non fermentum nulla tempus mattis. In ut erat augue.
+Buddhism has its origins in India around the 5th century BC during a time of revival and rejuvenation of mystical and religious thought. Buddhism is a system of philosophical, spiritual and social teachings based upon the experiences of Siddhartha Gautama (the Buddha) and his central doctrine - ‘the elimination of suffering’. “Just as the sea has one savour − salt − so my teachings have one savour − the elimination of suffering”. Buddhism indicates a path that all human beings can follow in order to ultimately become free from suffering. Known as ‘the Noble Eightfold Path’ or the ‘Middle Way’ with simplicity at its heart, it is a path of effort, meditation, community and compassion. In this part of the course you will learn about the life of the Buddha and the experiences which led him to enlightenment. You will also be introduced to some essential ideas and texts within Buddhist teachings, the ‘Four Noble Truths’, the ‘Noble Eightfold Path’ and The Dhammapada.

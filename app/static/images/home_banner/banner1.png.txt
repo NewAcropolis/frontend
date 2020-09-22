@@ -1,2 +1,2 @@
-Example formatting with textile
-*Some* _text_ __for__ %{color:yellow;}image%
+*Philosophy* 
+Comparative study of the philosophies of East and West and a way of life aligned with our highest values
