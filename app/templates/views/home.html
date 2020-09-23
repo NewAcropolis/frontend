@@ -210,14 +210,14 @@
       <div class="row text-right padding">
         <div class="col-xs-12 col-sm-6 col-md-6">
           <div class="row">
-            <div class="col-md-12 text-right magazine_txt">
+            <div class="col-md-12 text-center text-sm-right magazine_txt">
               <div class="text-dark">New Acropolis </div>
               <div class="font-italic">Magazine</div>
             </div>
           </div>
           <div class="row text-right">
-            <div class="col-md-3"></div>
-            <div class="col-xs-12 col-md-9 text-center pr-2 pt-5 mag_subscribe">
+            <div class="col-md-3 d-none d-sm-block"></div>
+            <div class="col-xs-12 col-md-9 text-center pr-2 pt-sm-5">
               {% if slim_subscription_form %}
               <form action="/" method=post>
                 {{ slim_subscription_form.csrf_token }}
@@ -236,9 +236,9 @@
             </div>
           </div>
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 text-left">
+        <div class="col-xs-12 col-sm-6 col-md-6 text-center text-sm-left">
           <div class="row">
-          <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">
+          <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none  mx-auto mx-sm-3">
             <img class="card-img-top card_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png">
           </a>
          </div>
