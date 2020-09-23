@@ -2,7 +2,6 @@
 from datetime import datetime
 from flask import request
 from HTMLParser import HTMLParser
-from random import randint
 
 from app import api_client
 from app.main import main
@@ -12,8 +11,6 @@ from app.main.views import render_page
 @main.route('/events')
 def events():
     articles = api_client.get_articles_summary()
-    if articles:
-        index = randint(0, len(articles) - 1)
 
     future_events = api_client.get_events_in_future(approved_only=True)
     past_events = []
@@ -25,7 +22,6 @@ def events():
 
     return render_page(
         'views/events.html',
-        main_article=articles[index] if articles else None,
         articles=articles,
         future_events=future_events,
         past_events=past_events,
