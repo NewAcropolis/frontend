@@ -23,6 +23,9 @@
   </head>
   <body>
     <div class='sticky-top p-1 bg-light'>
+      {% if preview %}
+      Preview of {{preview}}<br>
+      {% endif %}
       {% if API_BASE_URL %}
       Welcome to the new New Acropolis website for the UK, 
       the old website is still available for a short while at <a href='https://www.newacropolis.uk'>https://www.newacropolis.uk</a>
