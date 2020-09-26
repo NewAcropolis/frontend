@@ -158,8 +158,8 @@ def _add_speaker():
             return jsonify({'error': e.message})
 
 
-@main.route('/admin/preview_event')
-def preview_event():
+@main.route('/admin/preview_event_detail')
+def preview_event_detail():
     data = json.loads(urlparse.unquote(request.args.get('data')))
 
     current_app.logger.info(u'Preview args: {}'.format(data))
@@ -176,5 +176,26 @@ def preview_event():
 
     return render_page(
         'views/event_details.html',
-        event=data
+        event=data,
+        preview="Events details: {}".format(data['title'])
+    )
+
+
+@main.route('/admin/preview_events')
+def preview_events():
+    data = json.loads(urlparse.unquote(request.args.get('data')))
+
+    current_app.logger.info(u'Preview event banner args: {}'.format(data))
+
+    data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'])
+    data['is_future_event'] = is_future_event(data)
+    data['dates'] = api_client.get_event_dates(data['event_dates'])
+
+    h = HTMLParser()
+    data['_description'] = h.unescape(data['description'].encode('ascii', 'ignore'))
+
+    return render_page(
+        'views/events.html',
+        future_events=[data],
+        preview="Events page: {}".format(data['title'])
     )

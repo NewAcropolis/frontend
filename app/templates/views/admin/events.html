@@ -147,7 +147,8 @@
                 {{ form.cache_switch(class="custom-control-input") }}
                 <label class="custom-control-label" for="cache_switch">Update cache (will remove from event website unless approved)</label>
             </div>
-            <button id="preview" type="submit" class="btn btn-outline-info">Preview</button>
+            <button id="preview_event_detail" type="submit" class="btn btn-outline-info">Preview detail</button>
+            <button id="preview_events" type="submit" class="btn btn-outline-info">Preview events</button>
             <button id="draft" type="submit" class="btn btn-default">Draft</button>
             <button id="ready" type="submit" class="btn btn-outline-warning">Ready</button>
             {% if is_admin_user %}
@@ -201,8 +202,8 @@ $(function() {
         multidate: true,
     });
 
-    $('#preview').on('click', function() {
-        $('#submit_type').val('preview');
+    $('#preview_event_detail').on('click', function() {
+        $('#submit_type').val('preview_event_detail');
         var send = {
             // alt_event_images: $('#alt_event_images').val(),
             event_type: $('#event_type option:selected').text(),
@@ -220,7 +221,33 @@ $(function() {
             end_time: $('#end_time').val()
         }
 
-        var preview = window.open("{{ url_for('main.preview_event') }}?data=" + encodeURIComponent(JSON.stringify(send)));
+        var preview = window.open("{{ url_for('main.preview_event_detail') }}?data=" + encodeURIComponent(JSON.stringify(send)));
+        setTimeout(function() {
+            preview.postMessage(send, '*');
+        }, 1000);
+
+        return false;
+    })
+
+    $('#preview_events').on('click', function() {
+        $('#submit_type').val('preview_events');
+        var send = {
+            event_type: $('#event_type option:selected').text(),
+            title: $('#title').val(),
+            sub_title: $('#sub_title').val(),
+            description: $('#description').val(),
+            image_filename: $('#file_img').attr('src').replace('{{images_url}}/thumbnail', ''),
+            fee: $('#fee').val(),
+            conc_fee: $('#conc_fee').val(),
+            multi_day_fee: $('#multi_day_fee').val(),
+            multi_day_conc_fee: $('#multi_day_conc_fee').val(),
+            venue_id: $('#venue').val(),
+            event_dates: getEventDates(true),
+            start_time: $('#start_time').val(),
+            end_time: $('#end_time').val()
+        }
+
+        var preview = window.open("{{ url_for('main.preview_events') }}?data=" + encodeURIComponent(JSON.stringify(send)));
         setTimeout(function() {
             preview.postMessage(send, '*');
         }, 1000);
