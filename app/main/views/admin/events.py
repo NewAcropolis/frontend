@@ -166,6 +166,7 @@ def preview_event_detail():
 
     venue = api_client.get_venue_by_id(data['venue_id'])
 
+    data['fee'] = int(data['fee'])
     data['venue'] = venue
     data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'])
     data['is_future_event'] = is_future_event(data)
