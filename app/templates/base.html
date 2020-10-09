@@ -26,10 +26,7 @@
       {% if preview %}
       Preview of {{preview}}<br>
       {% endif %}
-      {% if API_BASE_URL %}
-      Welcome to the new New Acropolis website for the UK, 
-      the old website is still available for a short while at <a href='https://www.newacropolis.uk'>https://www.newacropolis.uk</a>
-      {% else %}
+      {% if not API_BASE_URL %}
       This is a prototype website, there are no data connections - for the live website go to <a href='https://www.newacropolisuk.org'>https://www.newacropolisuk.org</a>
       {% endif %}
     </div>
