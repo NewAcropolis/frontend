@@ -31,8 +31,9 @@ def index():
         if past_events:
             while len(all_events) < 3 and past_events:
                 event = past_events.pop(-1)
-                event['past'] = True
-                all_events.append(event)
+                if event['id'] not in [e['id'] for e in future_events]:
+                    event['past'] = True
+                    all_events.append(event)
 
     return render_page(
         'views/home.html',

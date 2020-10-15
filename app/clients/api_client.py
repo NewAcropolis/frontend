@@ -150,7 +150,7 @@ class ApiClient(BaseAPIClient):
 
     @only_show_approved_events
     def get_events_in_future_from_db(self):
-        events = self.get_nice_event_dates(self.get(url='events/future'))
+        events = self.get_nice_event_dates(self.get(url='events/future'), future_dates_only=True)
         return get_events_intro_courses_prioritised(events)
 
     @use_cache(
@@ -230,8 +230,11 @@ class ApiClient(BaseAPIClient):
     def get_marketings(self):
         return self.get(url='marketings')
 
-    def get_nice_event_dates(self, events):
+    def get_nice_event_dates(self, events, future_dates_only=False):
         for event in events:
+            if future_dates_only:
+                event['event_dates'] = self.get_future_event_dates(event['event_dates'])
+
             event = self.get_nice_event_date(event)
         return events
 
@@ -258,11 +261,21 @@ class ApiClient(BaseAPIClient):
 
         return event
 
+    def get_future_event_dates(self, event_dates):
+        future_dates = []
+        for event_date in event_dates:
+            _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
+            if _datetime >= datetime.today():
+                future_dates.append(event_date)
+
+        return future_dates
+
     def get_event_dates(self, event_dates):
         dates = []
         for event_date in event_dates:
             _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
-            dates.append(_datetime.strftime('%Y-%m-%d'))
+            if _datetime > datetime.now():
+                dates.append(_datetime.strftime('%Y-%m-%d'))
 
         return dates
 

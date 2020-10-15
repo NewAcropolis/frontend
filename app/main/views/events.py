@@ -18,7 +18,8 @@ def events():
     if all_past_events:
         while len(past_events) < 3 and all_past_events:
             event = all_past_events.pop(-1)
-            past_events.append(event)
+            if event['id'] not in [e['id'] for e in future_events]:
+                past_events.append(event)
 
     return render_page(
         'views/events.html',
