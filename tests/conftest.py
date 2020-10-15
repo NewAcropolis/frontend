@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import os
 import sys
 from uuid import uuid4
@@ -103,6 +104,10 @@ def invalid_log_in(mocker):
 
 @pytest.fixture
 def sample_future_events(mocker):
+    future_dates = [
+        datetime.strftime(datetime.now() + timedelta(days=n), "%Y-%m-%d 19:00") for n in range(4)
+    ]
+
     events = [
         {
             "id": str(uuid4()),
@@ -110,7 +115,7 @@ def sample_future_events(mocker):
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-30 19:00",
+                "event_datetime": future_dates[0],
                 "end_time": None
             }],
             "event_state": "approved"
@@ -121,7 +126,7 @@ def sample_future_events(mocker):
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2018-12-31 19:00",
+                "event_datetime": future_dates[1],
                 "end_time": "20:30"
             }],
             "event_state": "approved"
@@ -132,7 +137,7 @@ def sample_future_events(mocker):
             "event_type": "Introductory Course",
             "image_filename": "event.png",
             "event_dates": [{
-                "event_datetime": "2019-01-01 19:00",
+                "event_datetime": future_dates[2],
                 "end_time": None
             }],
             "event_monthyear": "January 2019",
@@ -144,7 +149,7 @@ def sample_future_events(mocker):
             "event_type": "Workshop",
             "image_filename": "",
             "event_dates": [{
-                "event_datetime": "2019-01-02 19:00",
+                "event_datetime": future_dates[3],
                 "end_time": None
             }],
             "event_state": "approved"
@@ -161,6 +166,7 @@ def sample_future_events(mocker):
 def sample_past_events_for_cards():
     events = [
         {
+            "id": str(uuid4()),
             "title": "Test title 5",
             "event_type": "Talk",
             "image_filename": "event.png",
@@ -171,6 +177,7 @@ def sample_past_events_for_cards():
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 6",
             "event_type": "Talk",
             "image_filename": "event.png",
@@ -181,6 +188,7 @@ def sample_past_events_for_cards():
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 7",
             "event_type": "Introductory Course",
             "image_filename": "event.png",
@@ -192,6 +200,7 @@ def sample_past_events_for_cards():
             "event_state": "approved"
         },
         {
+            "id": str(uuid4()),
             "title": "Test title 8",
             "event_type": "Workshop",
             "image_filename": "",

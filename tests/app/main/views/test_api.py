@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 import uuid
 from bs4 import BeautifulSoup
 from flask import url_for
@@ -157,6 +158,10 @@ class WhenAccessingEventsPastYearPage(object):
 
 class WhenAccessingFutureEventsPage(object):
     def it_shows_list_of_approved_events(self, client, mocker, logged_in):
+        future_dates = [
+            datetime.strftime(datetime.now() + timedelta(days=n), "%Y-%m-%d 19:00") for n in range(4)
+        ]
+
         mocker.patch(
             "app.clients.api_client.ApiClient.get",
             return_value=[
@@ -168,7 +173,7 @@ class WhenAccessingFutureEventsPage(object):
                     "event_state": 'draft',
                     "event_dates": [
                         {
-                            "event_datetime": "2019-04-15 19:00",
+                            "event_datetime": future_dates[0],
                             "end_time": None,
                             "speakers": []
                         }
@@ -195,7 +200,7 @@ class WhenAccessingFutureEventsPage(object):
                     "event_state": 'approved',
                     "event_dates": [
                         {
-                            "event_datetime": "2019-05-15 19:00",
+                            "event_datetime": future_dates[1],
                             "end_time": None,
                             "speakers": [
                                 {
@@ -205,7 +210,7 @@ class WhenAccessingFutureEventsPage(object):
                             ]
                         },
                         {
-                            "event_datetime": "2019-05-26 19:00",
+                            "event_datetime": future_dates[2],
                             "end_time": None,
                             "speakers": [
                                 {
@@ -215,7 +220,7 @@ class WhenAccessingFutureEventsPage(object):
                             ]
                         },
                         {
-                            "event_datetime": "2019-05-03 19:00",
+                            "event_datetime": future_dates[3],
                             "end_time": None,
                             "speakers": [
                                 {
