@@ -274,8 +274,7 @@ class ApiClient(BaseAPIClient):
         dates = []
         for event_date in event_dates:
             _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
-            if _datetime > datetime.now():
-                dates.append(_datetime.strftime('%Y-%m-%d'))
+            dates.append(_datetime.strftime('%Y-%m-%d'))
 
         return dates
 
