@@ -303,6 +303,11 @@ footer{
   object-fit: cover;
   height: 252px;
 }
+.cardimgtopmulti-book {
+  margin-top:20px; 
+  object-fit: contain;
+  height: 252px;
+}
 .featured_background{
   background-color: rgba(215,215,215,1.0);
   border-style: solid;
@@ -791,4 +796,12 @@ footer{
 
 #banner h5 {
   color: yellow;
+}
+
+/* BOOKS */
+
+.book_img {
+  width: 100%;
+  max-height:400px;
+  object-fit: contain;
 }

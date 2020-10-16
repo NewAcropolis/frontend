@@ -202,6 +202,16 @@ class ApiClient(BaseAPIClient):
     def get_article(self, id):
         return self.get(url='article/{}'.format(id))
 
+    def get_books_from_db(self):
+        return self.get(url='books')
+
+    @use_cache(db_call=get_books_from_db)
+    def get_books(self):
+        return self.get_books_from_db()
+
+    def get_book(self, id):
+        return self.get(url='book/{}'.format(id))
+
     def add_magazine(self, magazine):
         return self.post(url='magazine', data=magazine)
 

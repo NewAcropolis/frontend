@@ -22,7 +22,8 @@
       {% endblock %}
   </head>
   <body>
-    <div class='sticky-top p-1 bg-light'>
+    {% if preview or not API_BASE_URL %}
+    <div class='sticky-top p-1 bg-light d-none'>
       {% if preview %}
       Preview of {{preview}}<br>
       {% endif %}
@@ -30,6 +31,7 @@
       This is a prototype website, there are no data connections - for the live website go to <a href='https://www.newacropolisuk.org'>https://www.newacropolisuk.org</a>
       {% endif %}
     </div>
+    {%endif %}
       {% include "components/header.html" %}
       <div id="content">{% block content %}{% endblock %}</div>
       {% include "components/footer.html" %}

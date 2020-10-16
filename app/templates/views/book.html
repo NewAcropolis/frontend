@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block first_head %}{% include "components/ga.html" %}{% endblock %}
+{% block title %}Book - {{ book.title }}{% endblock %}
+{% block content %}
+  <div class="container-fluid padding cream_backgroundcolour">
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        <div class="article_box">
+          <h2 class="event_blue">{{ book.title }}</h2>
+          <h2 class="event_title">{{ book.author }}</h2><br>
+          <p>{{ book.long_description | safe}}</p>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <div>
+          <img src="{{ IMAGES_URL }}/books/{{ book.image_filename }}" class="img-fluid book_img">
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

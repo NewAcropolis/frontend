@@ -1,26 +1,159 @@
 {% extends "base.html" %}
 {% block title %}Resources{% endblock %}
+{% block extra_head%}
+<link rel="stylesheet" href="/static/css/alt-style.css" />
+{% endblock %}
 
 {% block content %}
 
-<div class="container-fluid padding">
-    <div class="row welcome text-center">
-      <div class="col-12">
-        <h1 class="display-4"> RESOURCES </h1>
-      </div>
-    </div>
+<div id="banner" class="carousel slide">
+          <img class="d-block w-100 fit-image" src="/static/images/resource-banner.png">
   </div>
-</div>
 
-<div class="container-fluid padding yellow_background">
-    <div class="row padding">
-        <div class="col-lg-12">
-        <p class="dark_grey_txt content-width mx-auto text-center"> 
-            This page is under construction, thank you for your patience.
-        </p>
+  <div class="container pt-2">
+    <div class="row">
+        <div class="col-lg-8">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active resources" id="books-tab" data-toggle="tab" href="#books" role="tab" aria-controls="books" aria-selected="true">BOOKS</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link resources" id="gifts-tab" data-toggle="tab" href="#gifts" role="tab" aria-controls="gifts" aria-selected="false">GIFTS</a>
+                </li>
+            </ul>
+            <div class="tab-content pt-2" id="resouce-tab-content">
+                <div class="tab-pane fade show active" id="books" role="tabpanel" aria-labelledby="books-tab">
+                    <div class="row">
+                        <div class="col-md-6 book-image">
+                            <img src="{{ IMAGES_URL }}/books/thebes.jpeg">
+                        </div>
+                        <div class="col-md-6">
+                            <div>THEBES</div>
+                            <div class="blue-text">By Jorge A Livaga</div>
+                            <div class="pt-2">
+                                <p>Thebes is a full color, 163-page book on Ancient Egypt that gives the reader an in-depth understanding of the pyramids, the hieroglyphs and the hidden purpose of mummification.</p>
+                                <p>It offers a unique comparison between the officially accepted history of Egypt and alternative versions, including the connection between Atlantis and Egypt.</p>
+                                <p>Another chapter is dedicated to the mystery of the inner constitution of nature and the human being, on the basis of the Ani papyrus.</p>
+                                <p>It is an invaluable reference work for anyone interested in the esoteric and magical teachings of Ancient Egypt.</p>
+                            </div>
+                            <div class="pt-1 row">
+                                {% if is_not_live() %}
+                                {% set sandbox = '.sandbox' %}
+                                {% endif %}
+                                <div class="col-4">
+                                    <div class="price p-0 text-center">
+                                        &pound;7
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <form id="paypalForm" target="paypal" action="https://www{{sandbox}}.paypal.com/cgi-bin/webscr" method="post">
+                                        <input type="hidden" name="cmd" value="_s-xclick">
+                                        <input type="hidden" name="fee" value="7.0">
+                                        <input type="hidden" name="hosted_button_id" value="XXX">
+                                        <input type="hidden" name="currency_code" value="GBP">
+                                        <input 
+                                            type="image"
+                                            src="/static/images/add_to_cart_orange.png"
+                                            border="0"
+                                            name="submit"
+                                            alt="PayPal � The safer, easier way to pay online."
+                                            style="height:30px;"
+                                        >
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <form target="paypal" action="https://www{{sandbox}}.paypal.com/cgi-bin/webscr" method="post">
+                                            <input type="hidden" name="cmd" value="_cart">
+                                            <input type="hidden" name="business" value="{{ PAYPAL_ACCOUNT }}">
+                                            <input type="hidden" name="display" value="1">
+                                            <input type="image" src="/static/images/cart_orange.png" border="0" name="submit" alt="PayPal � The safer, easier way to pay online." style="height:30px;">
+                                            <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row alt-row-colour">
+                        <div class="col-md-6 book-image">
+                            <img src="{{ IMAGES_URL }}/books/spirits_of_nature.jpeg">
+                        </div>
+                        <div class="col-md-6">
+                            <div>The Spirits of Nature</div>
+                            <div class="blue-text">By Jorge A Livaga</div>
+                            <div class="pt-2">
+                                <p>This concise but wide-ranging work looks at the mystical subject of nature spirits from both a philosophical and practical point of view.</p>
+                                <p>Not content with a mere description of the myriad inhabitants of the invisible planes of nature, the author helps us to understand the logic behind the worldwide belief in such beings.</p>
+                                <p>Combining his personal experiences with his knowledge of the universal traditions of mankind, he opens the reader's mind to the possibility that perhaps, beyond the fairy tales, the many accounts may reflect a living reality.</p>
+                            </div>
+                            <div class="pt-1 row">
+                                {% if is_not_live() %}
+                                {% set sandbox = '.sandbox' %}
+                                {% endif %}
+                                <div class="col-4">
+                                    <div class="price p-0 text-center">
+                                        &pound;7
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <form id="paypalForm" target="paypal" action="https://www{{sandbox}}.paypal.com/cgi-bin/webscr" method="post">
+                                        <input type="hidden" name="cmd" value="_s-xclick">
+                                        <input type="hidden" name="fee" value="7.0">
+                                        <input type="hidden" name="hosted_button_id" value="XXX">
+                                        <input type="hidden" name="currency_code" value="GBP">
+                                        <input 
+                                            type="image"
+                                            src="/static/images/add_to_cart_orange.png"
+                                            border="0"
+                                            name="submit"
+                                            alt="PayPal � The safer, easier way to pay online."
+                                            style="height:30px;"
+                                        >
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <form target="paypal" action="https://www{{sandbox}}.paypal.com/cgi-bin/webscr" method="post">
+                                            <input type="hidden" name="cmd" value="_cart">
+                                            <input type="hidden" name="business" value="{{ PAYPAL_ACCOUNT }}">
+                                            <input type="hidden" name="display" value="1">
+                                            <input type="image" src="/static/images/cart_orange.png" border="0" name="submit" alt="PayPal � The safer, easier way to pay online." style="height:30px;">
+                                            <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="gifts" role="tabpanel" aria-labelledby="gifts-tab">
+                    <div class="row">
+                        <div class="col-12">
+                            Gifts coming soon
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="col-lg-4 mag">
+            <div class="nav nav-tabs mag" role="tablist">
+                <div class="nav-link active resources mag font-weight-bold">Our Latest Magazine</div>
+            </div>
+            <div class="py-2">
+                <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png">
+            </div>
+            <div class="blue-text mag-text">
+                NEW ACROPOLIS MAGAZINE - ISSUE 46
+            </div>
         </div>
     </div>
 </div>
+
 <div class="empty_space_sm"></div>
 
 {% endblock %}
