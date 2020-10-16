@@ -6,6 +6,8 @@ from flask import Flask, current_app, make_response, render_template, request, s
 from flask_wtf.csrf import CSRFProtect, CSRFError
 import textile
 
+from na_common.delivery import statuses as delivery_statuses
+
 from app.clients.api_client import ApiClient
 from app.config import is_running_app_engine
 import requests_toolbelt.adapters.appengine
@@ -204,6 +206,7 @@ def init_app(app):
     app.jinja_env.globals['get_topic_list_elements'] = _get_topic_list_elements
     app.jinja_env.globals['is_not_live'] = is_not_live
     app.jinja_env.globals['config'] = app.config
+    app.jinja_env.globals['delivery_statuses'] = delivery_statuses
 
     @app.before_request
     def before_request():

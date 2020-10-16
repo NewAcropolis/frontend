@@ -1,3 +1,4 @@
+from pytz import country_names
 import re
 
 from flask_wtf import FlaskForm, RecaptchaField
@@ -243,6 +244,35 @@ class EmailForm(FlaskForm):
                 )
         else:
             self.events.choices.append(('', ''))
+
+
+#regex from #https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom
+postcode_re = re.compile(r'^[A-Z]{1,2}[0-9R][0-9A-Z]?\s?[0-9][A-Z]{2}$')
+
+
+def check_postcode(form, field):
+    if not postcode_re.match(field.data):
+        raise ValidationError('{} not valid postcode'.format(field.data))
+
+
+class MissingAddressForm(FlaskForm):
+    street = StringField('House number and street', validators=[DataRequired()])
+    city = StringField('City', validators=[DataRequired()])
+    state = StringField('State')
+    postcode = StringField('Postcode', validators=[DataRequired(), check_postcode])
+    country = SelectField('Country')
+
+    def setup_country(self, do_process):
+        _country_names = dict(country_names)
+        _country_names['GB'] = "United Kingdom"
+        self.country.choices = self.country.choices = [
+            (c, _country_names[c]) for c in sorted(_country_names, key=_country_names.get)
+        ]
+        self.country.default = 'GB'
+
+        if do_process:
+            self.process()
+
 
 
 class UnsubscribeForm(FlaskForm):

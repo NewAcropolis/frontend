@@ -202,6 +202,19 @@ class ApiClient(BaseAPIClient):
     def get_article(self, id):
         return self.get(url='article/{}'.format(id))
 
+    def get_books_from_db(self):
+        return self.get(url='books')
+
+    @use_cache(db_call=get_books_from_db)
+    def get_books(self):
+        return self.get_books_from_db()
+
+    def get_book(self, id):
+        return self.get(url='book/{}'.format(id))
+
+    def get_order(self, txn_code):
+        return self.get(url='order/{}'.format(txn_code))
+
     def add_magazine(self, magazine):
         return self.post(url='magazine', data=magazine)
 
@@ -226,6 +239,17 @@ class ApiClient(BaseAPIClient):
             'email': email
         }
         return self.post(url='member/update/{}'.format(unsubcode), data=data)
+
+    def update_order_address(self, txn_id, street, city, state, postcode, country_code, country_name):
+        data = {
+            'address_street': street,
+            'address_city': city,
+            'address_state': state,
+            'address_postal_code': postcode,
+            'address_country_code': country_code,
+            'address_country': country_name,
+        }
+        return self.post(url='order/update_address/{}'.format(txn_id), data=data)
 
     def get_marketings(self):
         return self.get(url='marketings')

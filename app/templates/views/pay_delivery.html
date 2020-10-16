@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="Content-Language" content="en">
+        <link rel="stylesheet" href="/static/css/style.css" />
+        <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+        <meta name="format-detection" content="telephone=no">
+        <meta name="google" content="notranslate" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />      
+        <link rel="stylesheet" href="/static/css/alt-style.css" />
+    </head>
+    <body>
+        <div class="container pt-2">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="py-2">
+                            <div class="row">
+                                <div class="col-12 pt-0 mt-0">
+                                    To complete your order: {{linked_txn_id}} and begin delivery, 
+                                    please add delivery fees for postage to {% if delivery_zone == 'RoW' %} the rest of the world {% else %} {{ delivery_zone }} {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 pt-0 pb-0">
+
+                                    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                        {% if delivery_zone == 'UK' %}
+                                        UK 
+                                        {% elif delivery_zone == 'Europe' %}
+                                        Europe 
+                                        {% else %}
+                                        Rest of the World 
+                                        {% endif %}
+                                        £{{ delivery_balance }}
+                                        <input type="hidden" name="cmd" value="_xclick">
+                                        <input type="hidden" name="business" value="Z354JXLJ44EBU">
+                                        <input type="hidden" name="lc" value="GB">
+                                        <input type="hidden" name="item_name" value="{{delivery_zone}}">
+                                        <input type="hidden" name="amount" value="{{delivery_balance}}">
+                                        <input type="hidden" name="custom" value="{{ linked_txn_id }}">
+                                        <input type="hidden" name="currency_code" value="GBP">
+                                        <input type="hidden" name="button_subtype" value="services">
+                                        <input type="hidden" name="no_note" value="0">
+                                        <input type="hidden" name="cn" value="Add special instructions to the seller:">
+                                        <input type="hidden" name="return" value="https://test-api.newacropolisuk.org/orders/complete">
+                                        <input type="hidden" name="no_shipping" value="2">
+                                        <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+                                        <input type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-medium.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                        <img alt="" border="0" src="https://www.sandbox.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

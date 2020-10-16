@@ -1,17 +1,16 @@
 {% extends "base.html" %}
 {% block title %}Resources{% endblock %}
+{% block extra_head%}
+<link rel="stylesheet" href="/static/css/alt-style.css" />
+{% endblock %}
 
 {% block content %}
 
-<div class="container-fluid padding">
-    <div class="row welcome text-center">
-      <div class="col-12">
-        <h1 class="display-4"> RESOURCES </h1>
-      </div>
-    </div>
+<div id="banner" class="carousel slide">
+          <img class="d-block w-100 fit-image" src="/static/images/resource-banner.png">
   </div>
-</div>
 
+{% if config.get('SHOW_RESOURCE_MAINTENANCE') == '1' %}
 <div class="container-fluid padding yellow_background">
     <div class="row padding">
         <div class="col-lg-12">
@@ -21,6 +20,166 @@
         </div>
     </div>
 </div>
+{% else %}
+  <div class="container pt-2">
+    <div class="row">
+        <div class="col-lg-8">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active resources" id="books-tab" data-toggle="tab" href="#books" role="tab" aria-controls="books" aria-selected="true">BOOKS</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link resources" id="gifts-tab" data-toggle="tab" href="#gifts" role="tab" aria-controls="gifts" aria-selected="false">GIFTS</a>
+                </li>
+            </ul>
+            <div class="tab-content pt-2" id="resouce-tab-content">
+                <div class="tab-pane fade show active" id="books" role="tabpanel" aria-labelledby="books-tab">
+                    {% for book in books %}
+                    <div class="row{{ loop.cycle('', ' alt-row-colour') }}">
+                        <div class="col-md-6 book-image">
+                            <img src="{{ IMAGES_URL }}/books/{{book.image_filename}}">
+                        </div>
+                        <div class="col-md-6">
+                            <div>{{book.title|upper}}</div>
+                            <div class="blue-text">By {{book.author}}</div>
+                            <div class="pt-2">
+                                {{book.description|safe}}
+                            </div>
+                            <div class="pt-1 row">
+                                {% if is_not_live() %}
+                                {% set sandbox = '.sandbox' %}
+                                {% endif %}
+                                <div class="col-4">
+                                    <div class="price p-0 text-center">
+                                        &pound;{{ book.price }}
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <form id="paypalForm" target="paypal" action="https://www{{sandbox}}.paypal.com/cgi-bin/webscr" method="post">
+                                        <input type="hidden" name="cmd" value="_s-xclick">
+                                        <input type="hidden" name="fee" value="{{book.price}}">
+                                        <input type="hidden" name="hosted_button_id" value="{{book.buy_code}}">
+                                        <input type="hidden" name="currency_code" value="GBP">
+                                        <input 
+                                            type="image"
+                                            src="/static/images/add_to_cart_orange.png"
+                                            border="0"
+                                            name="submit"
+                                            alt="PayPal - The safer, easier way to pay online."
+                                            style="height:30px;"
+                                        >
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div>
+                                        <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" >
+                                            <input type="hidden" name="cmd" value="_s-xclick">
+                                            <input type="hidden" name="encrypted" value="{{config['PAYPAL_ENCRYPTED_1']}}{{config['PAYPAL_ENCRYPTED_2']}}">
+                                            <input type="image" style="height:30px;" src="/static/images/cart_orange.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="gifts" role="tabpanel" aria-labelledby="gifts-tab">
+                    <div class="row">
+                        <div class="col-12">
+                            Gifts coming soon
+                        </div>
+                    </div>
+                </div>
+            </div>            
+        </div>
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-12 pt-0 mt-0">
+                    <div class="nav nav-tabs delivery" role="tablist">
+                        <div class="nav-link active resources delivery font-weight-bold">Postage and package cost</div>
+                    </div>
+                    <div class="py-2">
+                        <div class="row">
+                            <div class="col-12 pt-0 mt-0 mag-text">
+                                Please add P&amp;P for your region
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pt-0 pb-0">
+                                <form style="height:30px;" class="p-0 m-0" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                    <input type="hidden" name="cmd" value="_s-xclick">
+                                    <input type="hidden" name="hosted_button_id" value="{{config['PAYPAL_DELIVERY']}}">
+                                    <input type="hidden" name="on0" value="Postage">
+                                    <input type="hidden" name="currency_code" value="GBP">
+                                    <div class="row">
+                                        <div class="py-0 col-8">
+                                            <select class="form-control" name="os0" class="align-middle" style="margin-top:0px;height:30px;font-size: 0.8em;">
+                                                <option value="UK">UK £2.00</option>
+                                                <option value="Europe">Europe £4.50</option>
+                                                <option value="USA">USA £6.00</option>
+                                                <option value="Rest of the World">Rest of the World £10.00</option>                                                                                        </select>
+                                        </div>
+                                        <div class="py-0 col-2">
+                                            <input class="align-middle" type="image" src="/static/images/add_to_cart_orange.png" style="height:30px;" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+            </div>
+            <div class="row">
+                <div class="col-12 pt-0 mt-0">
+                    <div class="nav nav-tabs mag" role="tablist">
+                        <div class="nav-link active resources mag font-weight-bold">Our Latest Magazine</div>
+                    </div>
+                    <div class="py-2">
+
+                        <div>
+                            <div class="row">
+                                <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none  mx-auto mx-sm-3">
+                                <img class="card-img-top card_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png">
+                                </a>
+                            </div>
+                            <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG" role="dialog" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
+                                    <div class="modal-content modal-content-magazine">
+                                    <div class="modal-body modal-body-magazine mb-0 p-0">
+                                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                                        <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" style="width:100%">
+                                        </a>
+                                    </div>
+                                    <div class="modal-footer modal-footer-magazine">
+                                        <div>
+                                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" target="_blank" download>Download</a>
+                                        </div>
+                                        <div>
+                                        <a href="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" data-dismiss="modal">Close</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="blue-text mag-text">
+                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                        NEW ACROPOLIS MAGAZINE - {{latest_magazine.title|upper}}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <div class="empty_space_sm"></div>
 
 {% endblock %}
