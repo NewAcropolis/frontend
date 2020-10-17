@@ -172,6 +172,9 @@ def preview_event_detail():
     data['is_future_event'] = is_future_event(data)
     data['dates'] = api_client.get_event_dates(data['event_dates'])
 
+    if venue['name'] == 'Online Event':
+        data['event_type'] = 'Online ' + data['event_type']
+
     h = HTMLParser()
     data['_description'] = h.unescape(data['description'].encode('ascii', 'ignore'))
 
@@ -191,6 +194,10 @@ def preview_events():
     data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'])
     data['is_future_event'] = is_future_event(data)
     data['dates'] = api_client.get_event_dates(data['event_dates'])
+
+    venue = api_client.get_venue_by_id(data['venue_id'])
+    if venue['name'] == 'Online Event':
+        data['event_type'] = 'Online ' + data['event_type']
 
     h = HTMLParser()
     data['_description'] = h.unescape(data['description'].encode('ascii', 'ignore'))

@@ -118,7 +118,8 @@ def sample_future_events(mocker):
                 "event_datetime": future_dates[0],
                 "end_time": None
             }],
-            "event_state": "approved"
+            "event_state": "approved",
+            "venue": {"name": "London"}
         },
         {
             "id": str(uuid4()),
@@ -129,7 +130,8 @@ def sample_future_events(mocker):
                 "event_datetime": future_dates[1],
                 "end_time": "20:30"
             }],
-            "event_state": "approved"
+            "event_state": "approved",
+            "venue": {"name": "Bristol"}
         },
         {
             "id": str(uuid4()),
@@ -141,7 +143,8 @@ def sample_future_events(mocker):
                 "end_time": None
             }],
             "event_monthyear": "January 2019",
-            "event_state": "approved"
+            "event_state": "approved",
+            "venue": {"name": "London"}
         },
         {
             "id": str(uuid4()),
@@ -152,7 +155,8 @@ def sample_future_events(mocker):
                 "event_datetime": future_dates[3],
                 "end_time": None
             }],
-            "event_state": "approved"
+            "event_state": "approved",
+            "venue": {"name": "Online Event"}
         },
     ]
 
@@ -174,7 +178,8 @@ def sample_past_events_for_cards():
                 "event_datetime": "2018-12-30 19:00",
                 "end_time": None
             }],
-            "event_state": "approved"
+            "event_state": "approved",
+            "venue": {"name": "Online Event"}
         },
         {
             "id": str(uuid4()),
@@ -185,7 +190,8 @@ def sample_past_events_for_cards():
                 "event_datetime": "2018-12-31 19:00",
                 "end_time": None
             }],
-            "event_state": "approved"
+            "event_state": "approved",
+            "venue": {"name": "Online Event"}
         },
         {
             "id": str(uuid4()),
@@ -197,7 +203,8 @@ def sample_past_events_for_cards():
                 "end_time": None
             }],
             "event_monthyear": "January 2019",
-            "event_state": "approved"
+            "event_state": "approved",
+            "venue": {"name": "Online Event"}
         },
         {
             "id": str(uuid4()),
@@ -208,7 +215,8 @@ def sample_past_events_for_cards():
                 "event_datetime": "2019-01-02 19:00",
                 "end_time": None
             }],
-            "event_state": "approved"
+            "event_state": "approved",
+            "venue": {"name": "Online Event"}
         },
     ]
 
@@ -227,7 +235,8 @@ def sample_future_event(mocker):
             "event_datetime": "2018-12-30 19:00",
             "end_time": None
         }],
-        "event_state": "approved"
+        "event_state": "approved",
+        "venue": {"name": "Online Event"}
     }
 
     return event
