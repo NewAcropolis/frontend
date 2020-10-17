@@ -17,6 +17,8 @@ def index():
     for event in future_events:
         if event['event_type'] == 'Introductory Course':
             event['carousel_text'] = 'Courses starting {}'.format(event['event_monthyear'])
+        if event['venue']['name'] == 'Online Event':
+            event['event_type'] = 'Online ' + event['event_type']
     articles = api_client.get_articles_summary()
     if articles:
         index = randint(0, len(articles) - 1)
@@ -34,12 +36,11 @@ def index():
                 if event['id'] not in [e['id'] for e in future_events]:
                     event['past'] = True
                     all_events.append(event)
-
     return render_page(
         'views/home.html',
         main_article=main_article,
         articles=articles,
-        all_events=all_events[:3]
+        all_events=all_events[:4]
     )
 
 

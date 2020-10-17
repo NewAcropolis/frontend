@@ -13,12 +13,20 @@ def events():
     articles = api_client.get_articles_summary()
 
     future_events = api_client.get_events_in_future(approved_only=True)
+
+    for event in future_events:
+        if event['venue']['name'] == 'Online Event':
+            event['event_type'] = 'Online ' + event['event_type']
+
     past_events = []
     all_past_events = api_client.get_events_past_year()
     if all_past_events:
         while len(past_events) < 3 and all_past_events:
             event = all_past_events.pop(-1)
             if event['id'] not in [e['id'] for e in future_events]:
+                if event['venue']['name'] == 'Online Event':
+                    event['event_type'] = 'Online ' + event['event_type']
+
                 past_events.append(event)
 
     return render_page(
@@ -49,6 +57,8 @@ def event_details(event_id=None, **kwargs):
             'errors/errors.html',
             message=['<h3>No event found</h3>']
         )
+    elif event['venue']['name'] == 'Online Event':
+        event['event_type'] = 'Online ' + event['event_type']
 
     event['is_future_event'] = is_future_event(event)
 
