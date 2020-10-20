@@ -184,6 +184,10 @@ def _get_topic_list_elements(topic):
     return topics
 
 
+def is_not_live():
+    return any(host in request.host_url for host in ['http://localhost', 'https://preview'])
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
@@ -198,6 +202,7 @@ def init_app(app):
     app.jinja_env.globals['get_course_extra'] = _get_course_extra
     app.jinja_env.globals['get_home_banner_files'] = _get_home_banner_files
     app.jinja_env.globals['get_topic_list_elements'] = _get_topic_list_elements
+    app.jinja_env.globals['is_not_live'] = is_not_live
     app.jinja_env.globals['config'] = app.config
 
     @app.before_request

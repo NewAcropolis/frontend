@@ -105,7 +105,7 @@ def invalid_log_in(mocker):
 @pytest.fixture
 def sample_future_events(mocker):
     future_dates = [
-        datetime.strftime(datetime.now() + timedelta(days=n), "%Y-%m-%d 19:00") for n in range(4)
+        datetime.strftime(datetime.now() + timedelta(days=n + 1), "%Y-%m-%d 19:00") for n in range(4)
     ]
 
     events = [
