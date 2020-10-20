@@ -159,7 +159,7 @@ class WhenAccessingEventsPastYearPage(object):
 class WhenAccessingFutureEventsPage(object):
     def it_shows_list_of_approved_events(self, client, mocker, logged_in):
         future_dates = [
-            datetime.strftime(datetime.now() + timedelta(days=n), "%Y-%m-%d 19:00") for n in range(4)
+            datetime.strftime(datetime.now() + timedelta(days=n + 1), "%Y-%m-%d 19:00") for n in range(4)
         ]
 
         mocker.patch(

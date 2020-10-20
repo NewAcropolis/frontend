@@ -7,7 +7,7 @@ class WhenGettingNiceEventDate:
     def it_gets_nice_event_date(self, app, sample_future_events):
         api_client = ApiClient()
         future_dates = [
-            datetime.strftime(datetime.now() + timedelta(days=n), "%a %-d of %B - 7 PM") for n in range(3)
+            datetime.strftime(datetime.now() + timedelta(days=n + 1), "%a %-d of %B - 7 PM") for n in range(3)
         ]
 
         nice_dates = api_client.get_nice_event_dates(sample_future_events)
