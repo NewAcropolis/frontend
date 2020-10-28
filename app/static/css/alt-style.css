@@ -26,12 +26,27 @@
     border-bottom: #e891ea;
 }
 
+.nav-link.delivery {
+    font-size: 0.8em;
+    color: black;
+}
+
+.nav-link.active.delivery {
+    color: black;   
+    background-color: #7ff1e2 !important;
+    border-bottom: #7ff1e2;
+}
+
 .nav-tabs {
     border-bottom: 3px solid #f5d737;
 }
 
 .nav-tabs.mag {
     border-bottom: 3px solid #e891ea;
+}
+
+.nav-tabs.delivery {
+    border-bottom: 3px solid #7ff1e2;
 }
 
 .mag img {

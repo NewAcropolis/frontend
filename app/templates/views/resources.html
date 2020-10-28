@@ -140,15 +140,83 @@
                 </div>
             </div>            
         </div>
-        <div class="col-lg-4 mag">
-            <div class="nav nav-tabs mag" role="tablist">
-                <div class="nav-link active resources mag font-weight-bold">Our Latest Magazine</div>
+        <div class="col-lg-4">
+            <div class="row">
+                <div class="col-12 pt-0 mt-0">
+                    <div class="nav nav-tabs delivery" role="tablist">
+                        <div class="nav-link active resources delivery font-weight-bold">Add International delivery</div>
+                    </div>
+                    <div class="py-2">
+                        <div class="row">
+                            <div class="col-12 pt-0 mt-0 mag-text">
+                                Standard UK delivery, £2 plus
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 pt-0 pb-0">
+                                <form style="height:30px;" class="p-0 m-0" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                                    <input type="hidden" name="cmd" value="_s-xclick">
+                                    <input type="hidden" name="hosted_button_id" value="XXX">
+                                    <input type="hidden" name="on0" value="Additional postage">
+                                    <input type="hidden" name="currency_code" value="GBP">
+                                    <div class="row">
+                                        <div class="py-0 col-7">
+                                            <select class="form-control" name="os0" class="align-middle" style="margin-top:0px;height:30px;font-size: 0.8em;">
+                                                <option value="Europe">Europe £2.50</option>
+                                                <option value="USA">USA £4.00</option>
+                                                <option value="Rest of World">Rest of World £8.00</option>
+                                            </select>
+                                        </div>
+                                        <div class="py-0 col-2">
+                                            <input class="align-middle" type="image" src="/static/images/add_to_cart_orange.png" style="height:30px;" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
             </div>
-            <div class="py-2">
-                <img src="/static/images/bi_monthly_issue_42.pdf.png">
-            </div>
-            <div class="blue-text mag-text">
-                NEW ACROPOLIS MAGAZINE - ISSUE 46
+            <div class="row">
+                <div class="col-12 pt-0 mt-0">
+                    <div class="nav nav-tabs mag" role="tablist">
+                        <div class="nav-link active resources mag font-weight-bold">Our Latest Magazine</div>
+                    </div>
+                    <div class="py-2">
+
+                        <div>
+                            <div class="row">
+                                <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none  mx-auto mx-sm-3">
+                                <img class="card-img-top card_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png">
+                                </a>
+                            </div>
+                            <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG" role="dialog" tabindex="-1">
+                                <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
+                                    <div class="modal-content modal-content-magazine">
+                                    <div class="modal-body modal-body-magazine mb-0 p-0">
+                                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                                        <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" style="width:100%">
+                                        </a>
+                                    </div>
+                                    <div class="modal-footer modal-footer-magazine">
+                                        <div>
+                                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" target="_blank" download>Download</a>
+                                        </div>
+                                        <div>
+                                        <a href="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" data-dismiss="modal">Close</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="blue-text mag-text">
+                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                        NEW ACROPOLIS MAGAZINE - {{latest_magazine.title|upper}}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
