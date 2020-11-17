@@ -1,5 +1,6 @@
 from flask import (
     current_app,
+    request,
     session
 )
 import json
@@ -8,6 +9,7 @@ from urlparse import urljoin
 import time
 
 from app.clients.errors import HTTPError, InvalidResponse
+from app.stats import send_ga_event
 
 
 class BaseAPIClient(object):
@@ -38,6 +40,8 @@ class BaseAPIClient(object):
         if not self.base_url:
             current_app.logger.info("No API URL")
             return False
+
+        send_ga_event('frontend', 'visit', request.remote_addr)
 
         current_app.logger.info("set access token")
         auth_payload = {
