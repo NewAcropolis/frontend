@@ -37,6 +37,7 @@ def events():
     )
 
 
+@main.route('/event/<uuid:event_id>')
 @main.route('/event_details/<uuid:event_id>')
 @main.route('/event_details')
 def event_details(event_id=None, **kwargs):
