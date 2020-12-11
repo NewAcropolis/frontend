@@ -42,6 +42,7 @@ class Config(object):
     RECAPTCHA_PRIVATE_KEY = get_setting('RECAPTCHA_PRIVATE_KEY')
     RECAPTCHA_OPTIONS = {'theme': 'black'}
     GA_ID = get_setting('GA_ID')
+    GA_TM_ID = get_setting('GA_TM_ID')
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
