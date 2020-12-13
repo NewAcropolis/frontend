@@ -13,9 +13,9 @@ def send_ga_event(category, action, label, value=1):
         'el': label,
         'ev': value
     }
-
-    r = requests.post("http://www.google-analytics.com/collect", data=payload)
+    headers = {'User-Agent': 'NA-API-{}'.format(current_app.config.get("API_BASE_URL"))}
+    r = requests.post("http://www.google-analytics.com/collect", data=payload, headers=headers)
     if r.status_code != 200:
-        current_app.logger.info("Failed to track {} - {}".format(category, label))
+        current_app.logger.info("Failed to track stats: {} - {}".format(category, label))
     else:
-        current_app.logger.info("Failed to track {} - {}".format(category, label))
+        current_app.logger.info("Tracking stats: {} - {}".format(category, label))
