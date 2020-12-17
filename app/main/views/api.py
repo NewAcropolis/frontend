@@ -3,6 +3,7 @@ from six.moves.html_parser import HTMLParser
 
 from app.main import main
 from app.main.views import requires_auth
+from app.stats import send_ga_event
 from app import api_client
 
 
@@ -34,6 +35,7 @@ def api_venues():
 
 
 @main.route('/api/past_events')
+@requires_auth
 def api_past_events():
     events = api_client.get_events_past_year()
     return render_template(
@@ -45,6 +47,7 @@ def api_past_events():
 
 
 @main.route('/api/future_events')
+@requires_auth
 def api_future_events():
     events = api_client.get_events_in_future(approved_only=True)
 
@@ -58,6 +61,7 @@ def api_future_events():
 
 
 @main.route('/api/articles/summary')
+@requires_auth
 def api_articles_summary():
     articles = api_client.get_articles_summary()
     return render_template(
@@ -67,12 +71,22 @@ def api_articles_summary():
 
 
 @main.route('/api/article/<uuid:id>')
+@requires_auth
 def api_article(id):
     article = api_client.get_article(id)
     return render_template(
         'views/api_test/article.html',
         article=article
     )
+
+
+@main.route('/test/stats/<string:label>')
+@main.route('/test/stats/<string:action>/<string:label>')
+@main.route('/test/stats/<string:category>/<string:action>/<string:label>')
+@requires_auth
+def send_test_stats(category='test category', action='test action', label='test label'):
+    send_ga_event(category, action, label)
+    return 'sending test stats: {}/{}/{}'.format(category, action, label)
 
 
 def _unescape_html(items, field_name):
