@@ -80,13 +80,13 @@ def api_article(id):
     )
 
 
-@main.route('/test/stats/<string:label>')
-@main.route('/test/stats/<string:action>/<string:label>')
-@main.route('/test/stats/<string:category>/<string:action>/<string:label>')
+@main.route('/test/stats/<string:method>/<string:label>')
+@main.route('/test/stats/<string:method>/<string:action>/<string:label>')
+@main.route('/test/stats/<string:method>/<string:category>/<string:action>/<string:label>')
 @requires_auth
-def send_test_stats(category='test category', action='test action', label='test label'):
-    send_ga_event(category, action, label)
-    return 'sending test stats: {}/{}/{}'.format(category, action, label)
+def send_test_stats(method='post', category='test category', action='test action', label='test label'):
+    send_ga_event(category, action, label, method=method)
+    return 'sending test stats {}: {}/{}/{}'.format(method, category, action, label)
 
 
 def _unescape_html(items, field_name):
