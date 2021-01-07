@@ -12,7 +12,6 @@ class SubscriptionForm(FlaskForm):
     subscription_name = StringField('name')
     subscription_email = StringField('email', validators=[DataRequired(), Email()])
     subscription_marketings = SelectField('marketings')
-    recaptcha = RecaptchaField()
 
     def setup(self, marketings):
         self.subscription_marketings.choices = [

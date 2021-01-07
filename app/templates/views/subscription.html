@@ -1,8 +1,5 @@
 {% extends "base.html" %}
 {% block title %}Subscription{% endblock %}
-{% block extra_head %}
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css" />
-{% endblock %}
 {% block content %}
 
 <div class="container-fluid padding">
@@ -34,7 +31,6 @@
             {% endfor %}
           </p>
           {% endif %}
-          <div class="row pb-2 pl-2">{{ subscription_form.recaptcha }}</div>
           <button type="submit" class="btn btn-outline-success">Subscribe</button>
         </div>
       </form>
