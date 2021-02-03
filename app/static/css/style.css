@@ -70,6 +70,7 @@ Extra (xl) large devices (large desktops, 1200px and up)
 
 html, body {
   width: 100%;
+  font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 
 .top-buffer div {
