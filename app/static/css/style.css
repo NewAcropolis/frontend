@@ -69,9 +69,7 @@ Extra (xl) large devices (large desktops, 1200px and up)
 /* CUSTOM CSS */
 
 html, body {
-  height: 100%;
   width: 100%;
-  font-family: Avenir, Arial, Helvetica, sans-serif;
 }
 
 .top-buffer div {
@@ -87,12 +85,19 @@ html, body {
 }
 
 /* HEADER */
-
 .navbar{
   font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
-  padding: .8rem;
+  color: rgb(1,75,68);
+  background-color: rgb(255, 255, 255);
+  padding-top: 0;
+  padding-bottom: 0;
+
+}
+.navbar-menu{
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   background-color: rgb(10,134,101);
-  border-bottom: solid 19px rgb(238,191,109);
+  border-bottom: solid 10px rgb(238,191,109);
+  overflow: hidden;
 }
 .navbar-nav li {
   padding-right: 15px;
@@ -104,9 +109,13 @@ html, body {
 
 .navbar-brand img {
   width: 400px;
-  padding: 5px;
+  padding: 0px;
 }
-
+.sticky-top {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 /* FOOTER */
 
 footer{
@@ -245,7 +254,7 @@ footer{
   font-family: 'AvenirNext-Bold',Avenir;
 }
 .introtext {
-  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   padding: 2% 9% 2% 9%;
   font-size: 1.4em;
   color: rgb(157,157,157);
@@ -530,6 +539,7 @@ footer{
   padding: 0% 3% 0% 3%;  
 }
 .courses_fee_section_padding{
+  height: 100%;
   /* padding: 0% 3% 0% 3%; */
 }
 .courses_footer_img{
