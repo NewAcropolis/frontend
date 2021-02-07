@@ -109,13 +109,16 @@ html, body {
 }
 
 .navbar-brand img {
-  width: 400px;
+  width: 350px;
   padding: 0px;
 }
 .sticky-top {
   position: fixed;
   top: 0;
   width: 100%;
+}
+#id {
+  text-align: center;
 }
 /* FOOTER */
 
@@ -255,7 +258,7 @@ footer{
   font-family: 'AvenirNext-Bold',Avenir;
 }
 .introtext {
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   padding: 2% 9% 2% 9%;
   font-size: 1.4em;
   color: rgb(157,157,157);
