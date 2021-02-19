@@ -140,6 +140,7 @@ $(document).ready(function() {
       _data = $('#contact_form').serialize();
       $('#contact_errors').html('');
       console.log(_data);
+      $('#send_message').prop('disabled', true);
       $.ajax({
           type: "POST",
           url: url,
@@ -161,7 +162,6 @@ $(document).ready(function() {
                     $('#send_message_response').text(data['error']);
                   } else {
                     $('#send_message_response').text("Your message has been sent");
-                    $('#send_message').prop('disabled', true);
                     setTimeout(function() { $('#sendMessageModal').modal('hide'); }, 5000);
                   }
                 }
