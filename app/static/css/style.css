@@ -172,10 +172,11 @@ footer{
 }
 .submit_button {
   background-color: white;
-  color: black;
+  color: rgb(68, 68, 68);
   border: 2px solid #e7e7e7;
   padding: 8px;
   border-radius: 5px;
+  font-size: 0.8em;
 }
 
 .submit_button:hover {
@@ -183,6 +184,13 @@ footer{
 }
 #yellow_txt {
   color: rgb(240,200,129);
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  
+}
+#white_txt {
+  color: rgb(255, 255, 255);
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-size: 1.2em;
 }
 #bright_yellow_txt {
   color: rgba(247,231,27,1.0);
@@ -243,10 +251,12 @@ footer{
 .carousel-banner {
   border-width: 1px;
   border-color: rgba(150,150,150,1.0);
-  background: rgba(80, 80, 80, 0.6);
+  background: rgba(116, 116, 116, 0.45);
   font-family: 'Avenir',Helvetica,Arial,serif;
+  color: rgb(255, 255, 255);
   padding-bottom: 5px !important;
   padding-top: 10px !important;
+
 }
 .carousel-caption h5 a {
   color: yellow;
@@ -258,10 +268,10 @@ footer{
   font-family: 'AvenirNext-Bold',Avenir;
 }
 .introtext {
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   padding: 2% 9% 2% 9%;
-  font-size: 1.4em;
-  color: rgb(157,157,157);
+  font-size: 1.2em;
+  color: rgb(167, 167, 167);
 }
 .cream_backgroundcolour{
   background-color: rgb(245,242,234);
@@ -271,8 +281,9 @@ footer{
   height: 260px;
   background-color: white;
   width: 100%;
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
-  color: rgb(157,157,157); 
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  
+  color: rgb(167,167,167); 
 }
 
 .pcv_block hr {
@@ -292,9 +303,9 @@ footer{
   color: white;
 }
 .display-4 {
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   padding-top: 2%;
-  font-size: 40px !important;
+  font-size: 35px !important;
 }
 .cardmulti {
   background-color: rgba(215,215,215,1.0);
@@ -323,7 +334,7 @@ footer{
   border-color: rgba(150,150,150,1.0);
 }
 .light_text {
-  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   color: rgb(157,157,157);
 }
 .subscribe_section{
@@ -335,10 +346,25 @@ footer{
   line-height: 27.0px;
   padding: 1%;
 }
-.magazine_txt {
-  font-size: 2em;
+.subscribe_sectiontxt{
+  background-color: rgb(63,96,144);
+  height: auto;
+  width: 100%;
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  color: white;
+  line-height: 27.0px;
+  padding: 1%;
+}
+.magazine_head {
+  font-size: 1.8em;
   font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
-  color: rgb(105,152,219);
+  color: rgb(115, 156, 228);
+  text-align: right;
+}
+.magazine_txt {
+  font-size: 1.2em;
+  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  color: rgb(0, 0, 0);
   text-align: right;
 }
 .magazine_email {
@@ -404,6 +430,7 @@ footer{
 .contactus_text{
   line-height: 16px;
   font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
+  color:rgb(115, 156, 228);
 }
 .contactus_padding {
   padding: 0% 5% 5% 5%;
