@@ -33,8 +33,8 @@ def admin_users():
                 access_area += 'email,'
             if user.magazine.data:
                 access_area += 'magazine,'
-            if user.shop.data:
-                access_area += 'shop,'
+            if user.cache.data:
+                access_area += 'cache,'
             if user.announcement.data:
                 access_area += 'announcement,'
             if user.article.data:
