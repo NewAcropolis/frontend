@@ -47,6 +47,7 @@ class Config(object):
     GA_ID = get_setting('GA_ID')
     GA_TM_ID = get_setting('GA_TM_ID')
     MAX_IMAGE_SIZE = 2 * 1024 * 1024
+    ENABLE_STATS = get_setting('ENABLE_STATS') == 'true'
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None

@@ -13,11 +13,15 @@ def send_ga_event(category, action, label, value=1):
         'el': label,
         'ev': value
     }
-    headers = {'User-Agent': 'NA-API-Stats'}
 
-    r = requests.post("https://www.google-analytics.com/collect", data=payload, headers=headers)
+    if current_app.config['ENABLE_STATS']:
+        headers = {'User-Agent': 'NA-API-Stats'}
 
-    if r.status_code != 200:
-        current_app.logger.info("Failed to track stats: {}".format(payload))
+        r = requests.post("https://www.google-analytics.com/collect", data=payload, headers=headers)
+
+        if r.status_code != 200:
+            current_app.logger.info("Failed to track stats: {}".format(payload))
+        else:
+            current_app.logger.info("Tracking stats: {}".format(payload))
     else:
-        current_app.logger.info("Tracking stats: {}".format(payload))
+        current_app.logger.info("Stats disabled, would have tracked: {}".format(payload))
