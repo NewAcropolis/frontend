@@ -4,6 +4,12 @@
       <a class="navbar-brand" href="/">
         <img alt="New Acropolis UK" src="/static/images/NA_Logo.png" class="img-fluid">
       </a>
+      <div>
+        {% if get_email() %}
+        <a style='color:rgb(10,134,101);' href='/admin'>Admin home</a><br>
+        <a style='color:rgb(10,134,101);' href='/logout'>Logout</a> {{ get_email() }}
+        {% endif %}
+      </div>
       <div>United Kingdom</div>
   </div>
 </nav>
@@ -14,12 +20,6 @@
   <button class="navbar-toggler ml-auto hidden-sm-up float-xs-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <span style="color:white;font-family:'AvenirNext-Medium',Helvetica,Arial,serif">
-    {% if get_email() %}
-    <a style='color:white' href='/admin'>Admin home</a><br>
-    <a style='color:white' href='/logout'>Logout</a> {{ get_email() }}
-    {% endif %}
-  </span>
   <div class="collapse navbar-collapse" id="navbarNav">
     <ul class="navbar-nav ml-auto">
       <li {% if request.endpoint == "main.about" %} class="nav-item active"{% endif %}>
