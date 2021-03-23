@@ -268,7 +268,7 @@ class WhenPostingUsers:
                 'magazine': {
                     'data': 'y'
                 },
-                'shop': {},
+                'cache': {},
                 'announcement': {},
                 'article': {},
             },
@@ -284,7 +284,7 @@ class WhenPostingUsers:
                 'magazine': {
                     'data': 'y'
                 },
-                'shop': {},
+                'cache': {},
                 'announcement': {},
                 'article': {},
             }

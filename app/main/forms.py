@@ -75,8 +75,7 @@ class UserForm(FlaskForm):
     event = BooleanField('event')
     email = BooleanField('email')
     magazine = BooleanField('magazine')
-    report = BooleanField('report')
-    shop = BooleanField('shop')
+    cache = BooleanField('cache')
     announcement = BooleanField('announcement')
     article = BooleanField('article')
 
@@ -96,7 +95,7 @@ class UserListForm(FlaskForm):
                 user_form.email = _has_access_area('email', user['access_area'])
                 user_form.magazine = _has_access_area('magazine', user['access_area'])
                 user_form.report = _has_access_area('report', user['access_area'])
-                user_form.shop = _has_access_area('shop', user['access_area'])
+                user_form.cache = _has_access_area('cache', user['access_area'])
                 user_form.announcement = _has_access_area('announcement', user['access_area'])
                 user_form.article = _has_access_area('article', user['access_area'])
 
