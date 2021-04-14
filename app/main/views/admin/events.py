@@ -21,6 +21,10 @@ def is_admin_user():
     return 'admin' in user.get('access_area') or user.get('access_area') == 'admin'
 
 
+def size_from_b64(b64string):
+    return float(len(b64string) * 3) / 4 - b64string.count('=', -2)
+
+
 @main.route('/admin/events', methods=['GET', 'POST'])
 @main.route('/admin/events/<uuid:selected_event_id>', methods=['GET', 'POST'])
 @main.route('/admin/events/<uuid:selected_event_id>/<api_message>', methods=['GET', 'POST'])
@@ -77,47 +81,53 @@ def admin_events(selected_event_id=None, api_message=None):
         from cgi import escape
         adjusted_event['description'] = escape(event['description'])
         adjusted_event['event_dates'] = json.loads(str(event['event_dates']))
-
         file_request = request.files.get('image_filename')
         if file_request:
             file_data = file_request.read()
             file_data_encoded = base64.b64encode(file_data)
+            _file_size = size_from_b64(file_data_encoded)
+            if _file_size > current_app.config['MAX_IMAGE_SIZE']:
+                _file_size_mb = round(_file_size/(1024*1024), 1)
+                _max_size_mb = current_app.config['MAX_IMAGE_SIZE']/(1024*1024)
+                errors.append("Image {} file size ({} mb) is larger than max ({} mb)".format(
+                    file_request.filename, _file_size_mb, _max_size_mb))
+            else:
+                adjusted_event['image_data'] = file_data_encoded
 
-            adjusted_event['image_data'] = file_data_encoded
+        if not errors:
+            # remove empty values
+            for key, value in event.iteritems():
+                if value != 0 and not value:
+                    del adjusted_event[key]
 
-        # remove empty values
-        for key, value in event.iteritems():
-            if value != 0 and not value:
-                del adjusted_event[key]
+            try:
+                message = None
+                if event.get('event_id'):
+                    response = api_client.update_event(event['event_id'], adjusted_event)
+                    message = 'event updated'
 
-        try:
-            message = None
-            if event.get('event_id'):
-                response = api_client.update_event(event['event_id'], adjusted_event)
-                message = 'event updated'
-
-                if event['event_state'] != "approved" and not form.cache_switch.data:
-                    Cache.set_review_entity('get_events_in_future', event.get('event_id'))
+                    if event['event_state'] != "approved" and not form.cache_switch.data:
+                        Cache.set_review_entity('get_events_in_future', event.get('event_id'))
+                    else:
+                        Cache.delete_review_entity('get_events_in_future', event.get('event_id'))
+                        update_cache(
+                            func=api_client.get_events_in_future_from_db,
+                            decorator=only_show_approved_events, approved_only=True)
                 else:
-                    Cache.delete_review_entity('get_events_in_future', event.get('event_id'))
-                    update_cache(
-                        func=api_client.get_events_in_future_from_db,
-                        decorator=only_show_approved_events, approved_only=True)
-            else:
-                # do not need to update the cache here as an event is never in approved state when first created
-                response = api_client.add_event(adjusted_event)
+                    # do not need to update the cache here as an event is never in approved state when first created
+                    response = api_client.add_event(adjusted_event)
 
-            if 'error' in session:
-                raise HTTPError(response, message=session.pop('error'))
+                if 'error' in session:
+                    raise HTTPError(response, message=session.pop('error'))
 
-            return redirect(url_for('main.admin_events', selected_event_id=response.get('id'), api_message=message))
-        except HTTPError as e:
-            current_app.logger.error(e)
-            temp_event = json.dumps(event)
-            if "message" in e.message:
-                errors = e.message['message']
-            else:
-                errors = json.dumps(e.message)
+                return redirect(url_for('main.admin_events', selected_event_id=response.get('id'), api_message=message))
+            except HTTPError as e:
+                current_app.logger.error(e)
+                temp_event = json.dumps(event)
+                if "message" in e.message:
+                    errors = e.message['message']
+                else:
+                    errors = json.dumps(e.message)
 
     return render_template(
         'views/admin/events.html',
@@ -126,7 +136,7 @@ def admin_events(selected_event_id=None, api_message=None):
         selected_event_id=selected_event_id,
         message=api_message,
         temp_event=temp_event,
-        errors=errors
+        errors=json.dumps(errors)
     )
 
 
