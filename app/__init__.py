@@ -15,7 +15,7 @@ import requests_toolbelt.adapters.appengine
 requests_toolbelt.adapters.appengine.monkeypatch()
 
 
-__version__ = '0.0.1'
+__version__ = '1.11.0'
 
 api_client = ApiClient()
 csrf = CSRFProtect()

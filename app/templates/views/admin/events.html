@@ -189,7 +189,9 @@ var speakerCounter = 1;
 
 $(function() {
     {% if temp_event %}
-    temp_event = {{temp_event|safe}};
+    var temp_event = {{temp_event|safe}};
+    {% else %}
+    var temp_event = null;
     {% endif %}
 
     {% if errors %}
@@ -393,8 +395,6 @@ $(function() {
 
         $('#pubish').prop('disabled', false);
         try {
-            var temp_event;
-
             if (errors) {
                 if (Array.isArray(errors)) {
                     for (i=0; i<errors.length; i++) {
@@ -408,27 +408,27 @@ $(function() {
                 }
                 errors = null;
             }
+            if (temp_event) {
+                elements._title.val(temp_event['title']);
+                elements._sub_title.val(temp_event['sub_title']);
+                elements._description.val(temp_event['description']);
+                elements._booking_code.val(temp_event['booking_code']);
+    //            elements._file_img.val('');
+    //            elements._file_img.attr('style', 'display:none;');
+                elements._fee.val(temp_event['fee']);
+                elements._conc_fee.val(temp_event['con_fee']);
+                elements._multi_day_fee.val(temp_event['multi_day_fee']);
+                elements._multi_day_conc_fee.val(temp_event['multi_day_conc_fee']);
+                elements._event_type.val(temp_event['event_type_id']);
+                elements._venue.val(temp_event['venue_id']);
+                elements._reject_reasons.html('');
 
-            console.log(temp_event);
-            elements._title.val(temp_event['title']);
-            elements._sub_title.val(temp_event['sub_title']);
-            elements._description.val(temp_event['description']);
-            elements._booking_code.val(temp_event['booking_code']);
-//            elements._file_img.val('');
-//            elements._file_img.attr('style', 'display:none;');
-            elements._fee.val(temp_event['fee']);
-            elements._conc_fee.val(temp_event['con_fee']);
-            elements._multi_day_fee.val(temp_event['multi_day_fee']);
-            elements._multi_day_conc_fee.val(temp_event['multi_day_conc_fee']);
-            elements._event_type.val(temp_event['event_type_id']);
-            elements._venue.val(temp_event['venue_id']);
-            elements._reject_reasons.html('');
+                set_event_dates(temp_event['event_dates']);
+                set_start_time(temp_event['start_time']);
+                set_end_time(temp_event['end_time']);
 
-            set_event_dates(temp_event['event_dates']);
-            set_start_time(temp_event['start_time']);
-            set_end_time(temp_event['end_time']);
-
-            delete temp_event;
+                delete temp_event;
+            }
         }
         catch(e) {
             elements._title.val('');
