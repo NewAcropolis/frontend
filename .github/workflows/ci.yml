@@ -31,8 +31,7 @@ jobs:
         make test
 
     - name: Initialize Google Cloud SDK preview
-      # if: github.ref == 'refs/heads/master'
-      if: github.event.pull_request.merged == true
+      if: github.ref == 'refs/heads/master'
       uses: zxyle/publish-gae-action@master
       with:
         service_account_email: ${{ secrets.GCP_SA_EMAIL_PREVIEW }}
@@ -42,8 +41,7 @@ jobs:
         # gae_variables: ${{ secrets.GAE_VARIABLES }}
 
     - name: Publish app to preview
-      # if: github.ref == 'refs/heads/master'
-      if: github.event.pull_request.merged == true
+      if: github.ref == 'refs/heads/master'
       run: |
         # Reduce the pack size
         git repack -Ad --max-pack-size=20m
@@ -60,7 +58,7 @@ jobs:
         # gcloud -q app deploy cron.yaml
 
     - name: Initialize Google Cloud SDK live
-      if: startsWith( github.ref, 'refs/tags/releases/')
+      if: startsWith(github.ref, 'refs/tags/releases/')
       uses: zxyle/publish-gae-action@master
       with:
         service_account_email: ${{ secrets.GCP_SA_EMAIL_LIVE }}
@@ -70,7 +68,7 @@ jobs:
         # gae_variables: ${{ secrets.GAE_VARIABLES }}
 
     - name: Publish app to live
-      if: startsWith( github.ref, 'refs/tags/releases/')
+      if: startsWith(github.ref, 'refs/tags/releases/')
       run: |
         # Reduce the pack size
         git repack -Ad --max-pack-size=20m
