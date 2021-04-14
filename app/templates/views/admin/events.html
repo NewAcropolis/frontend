@@ -193,8 +193,8 @@ $(function() {
     {% endif %}
 
     {% if errors %}
-    console.log('error: {{ errors }}');
-    var errors = "{{ errors }}";
+    console.log('error: {{ errors|safe }}');
+    var errors = '{{ errors|safe }}';
     {% endif %}
 
     $('#datepicker').datepicker({
@@ -392,9 +392,8 @@ $(function() {
         };
 
         $('#pubish').prop('disabled', false);
-
         try {
-            temp_event; 
+            var temp_event;
 
             if (errors) {
                 if (Array.isArray(errors)) {
@@ -402,8 +401,10 @@ $(function() {
                         addErrorRow(errors[i]['error'], errors[i]['message']);
                     }
                 } else {
-                    console.log("error list");
-                    addErrorRow('Error', errors);
+                    var errs = JSON.parse(errors);
+                    for (i=0; i<errs.length; i++) {
+                        addErrorRow('Error', errs[i]);
+                    }
                 }
                 errors = null;
             }

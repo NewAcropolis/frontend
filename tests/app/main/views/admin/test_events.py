@@ -203,7 +203,6 @@ class WhenSubmittingEventsForm:
         )
 
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
-        print(page)
         href = page.select_one('a')['href']
 
         assert mock_api_client.add_event.call_args[0][0]['event_dates'] == json.loads(
