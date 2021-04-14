@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 2.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 2.7
+    - name: Run tests
+      run: |
+        pip install --upgrade 'pip==20.3.4'
+        pip install virtualenv==16.7.8 flake8==3.7.4 pytest==3.5.0
+        virtualenv venv
+        source ./venv/bin/activate
+        pip install -r requirements.txt
+
+        echo "running tests...."
+        make test
+
+    - name: Initialize Google Cloud SDK preview
+      # if: github.ref == 'refs/heads/master'
+      if: github.event.pull_request.merged == true
+      uses: zxyle/publish-gae-action@master
+      with:
+        service_account_email: ${{ secrets.GCP_SA_EMAIL_PREVIEW }}
+        service_account_key: ${{ secrets.GCP_SA_KEY_PREVIEW }}
+        project_id: ${{ secrets.PROJECT_ID_PREVIEW }}
+        # An optional variables parameter can be used
+        # gae_variables: ${{ secrets.GAE_VARIABLES }}
+
+    - name: Publish app to preview
+      # if: github.ref == 'refs/heads/master'
+      if: github.event.pull_request.merged == true
+      run: |
+        # Reduce the pack size
+        git repack -Ad --max-pack-size=20m
+        
+        # install dependencies in lib folder
+        pip install -t lib -r requirements.txt
+
+        # This client-secret.json is converted by GCP_SA_KEY.
+        gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL_PREVIEW }} --key-file=client-secret.json
+        gcloud config set project ${{ secrets.PROJECT_ID_PREVIEW }}
+        gcloud -q app deploy app.yaml --promote
+        
+        # Suppose you need a cron task.
+        # gcloud -q app deploy cron.yaml
+
+    - name: Initialize Google Cloud SDK live
+      if: startsWith( github.ref, 'refs/tags/releases/')
+      uses: zxyle/publish-gae-action@master
+      with:
+        service_account_email: ${{ secrets.GCP_SA_EMAIL_LIVE }}
+        service_account_key: ${{ secrets.GCP_SA_KEY_LIVE }}
+        project_id: ${{ secrets.PROJECT_ID_LIVE }}
+        # An optional variables parameter can be used
+        # gae_variables: ${{ secrets.GAE_VARIABLES }}
+
+    - name: Publish app to live
+      if: startsWith( github.ref, 'refs/tags/releases/')
+      run: |
+        # Reduce the pack size
+        git repack -Ad --max-pack-size=20m
+        
+        # install dependencies in lib folder
+        pip install -t lib -r requirements.txt
+
+        # This client-secret.json is converted by GCP_SA_KEY.
+        gcloud auth activate-service-account ${{ secrets.GCP_SA_EMAIL_LIVE }} --key-file=client-secret.json
+        gcloud config set project ${{ secrets.PROJECT_ID_LIVE }}
+        gcloud -q app deploy app.yaml --promote
+        
+        # Suppose you need a cron task.
+        # gcloud -q app deploy cron.yaml
