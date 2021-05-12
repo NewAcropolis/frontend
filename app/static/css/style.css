@@ -196,7 +196,18 @@ footer{
   color: rgba(247,231,27,1.0);
 }
 #blue_txt {
-  color: rgb(63,96,144);
+  color: rgb(115, 156, 228);
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-size: 20px;
+}
+#blue_txt_foundation {
+  color: rgb(115, 156, 228);
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-size: 20px;
+}
+#light_grey_txt {
+color:rgb(167, 167, 167);
+font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 }
 #footer_title_txt {
   color: rgba(175,154,89);
@@ -204,7 +215,7 @@ footer{
 .dark_grey_txt {
   font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: rgb(74,74,74) !important;
-  font-size: 20px;
+  font-size: 16px;
 }
 .footer_magazine{
   height: 215px;
@@ -298,14 +309,21 @@ footer{
 }
 .blue_background {
   background-color: rgb(63,96,144);
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  letter-spacing: 1px;
   height: auto;
   padding: 3%;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 .display-4 {
   font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   padding-top: 2%;
   font-size: 35px !important;
+}
+.display-5 {
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  padding-top: 2%;
+  font-size: 25px !important;
 }
 .cardmulti {
   background-color: rgba(215,215,215,1.0);
@@ -337,6 +355,14 @@ footer{
   font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   color: rgb(157,157,157);
 }
+.light_text a {
+  font-size: 0.7em;
+  position: absolute;
+  bottom:15px;
+  left: 20px;
+
+
+}
 .subscribe_section{
   background-color: rgb(63,96,144);
   height: auto;
@@ -351,7 +377,7 @@ footer{
   height: auto;
   width: 100%;
   font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
-  color: white;
+  color: rgb(255, 255, 255);
   line-height: 27.0px;
   padding: 1%;
 }
@@ -515,6 +541,7 @@ footer{
   display: block;
 }
 #about_us_pyramid_text {
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   overflow:scroll;
   height:355px;
 }
@@ -524,8 +551,8 @@ footer{
   border: solid 2px rgba(121, 121, 121, 0.5);
 }
 .statistics_font {
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
-  font-size: 4em;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-size: 3em;
 }
 .quote_img {
   width: 100%;
@@ -537,7 +564,7 @@ footer{
 .visit_website_section{
   height: auto;
   width: 100%;
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   padding: 2% 5% 2% 5%;
 }
 .card-img_person {
@@ -546,7 +573,8 @@ footer{
 }
 .ourschool_text{
   font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
-  padding: 2% 7% 2% 7%;
+ 
+  padding: 2% 7%;
   width: 100%;
 }
 /* SUBSCIPTION */
@@ -620,6 +648,7 @@ footer{
 .foundation_courses_banner{
   background-color:rgb(63,96,144);
   width: 100%;
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   color: yellow;
   padding-top: 10px;
 }
@@ -642,12 +671,13 @@ footer{
 
 .list-horizontal a {
   color:black;
-  text-decoration: none;
+  text-decoration: underline;
+  
 }
 
 .list-horizontal a:hover {
   color: yellow;
-  text-decoration: none;
+  
 }
 
 /* COURSE DETAILS */
@@ -674,12 +704,12 @@ footer{
   width: 100%;
 }
 .blue_text {
-  color: rgb(72, 146, 227);
+  color: rgb(10,134,101);
 }
 .topics_header {
   font-size: 24px;
   font-family: Avenir;
-  color: rgb(72, 146, 227);
+  color: rgb(10,134,101);
   padding-top:10px;
 }
 .topic_details_section {
@@ -706,6 +736,7 @@ footer{
   left: 8%;
   transform: translateY(-50%);
   white-space: nowrap;
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   color: #D8D8D8;
 }
 .box:hover > .spot-text-1 h5 {
@@ -724,6 +755,7 @@ footer{
   top: 120%;
   transform: translateY(-50%);
   white-space: nowrap;
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   color: #D8D8D8;
 }
 .box:hover > .spot-text-2 h5 {
@@ -742,6 +774,7 @@ footer{
   transform: translateY(-50%);
   left: 14%;
   white-space: nowrap;
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   color: #D8D8D8;
 }
 .box:hover > .spot-text-3 h5 {

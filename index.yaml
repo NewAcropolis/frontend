@@ -4,4 +4,4 @@ indexes:
   properties:
   - name: name
   - name: updated_on
-  direction: desc
+  #direction: desc
