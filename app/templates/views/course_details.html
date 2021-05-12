@@ -1,7 +1,11 @@
 {% extends "public_base.html" %}
 {% block title %}Course details{% endblock %}
 {% block content %}
-  <div class="container-fluid padding cream_backgroundcolour">
+  
+
+{% include "components/topics.html" %}
+
+<div class="container-fluid padding cream_backgroundcolour">
     <div class="row topic_details_section">
       <div class="col-xs-12 col-lg-6 ">
         <div class="course_details_text">
@@ -16,7 +20,6 @@
     </div>
   </div>
 
-  {% include "components/topics.html" %}
 
   {% set extra = get_course_extra(topic) %}
   <div class="course_details_key_padding">
