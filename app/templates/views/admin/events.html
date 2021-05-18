@@ -394,6 +394,9 @@ $(function() {
         };
 
         $('#pubish').prop('disabled', false);
+        if (!elements._events.val()) {
+            resetFields();
+        }
         try {
             if (errors) {
                 if (Array.isArray(errors)) {
@@ -431,27 +434,7 @@ $(function() {
             }
         }
         catch(e) {
-            elements._title.val('');
-            elements._sub_title.val('');
-            elements._description.val('');
-            elements._booking_code.val('');
-            elements._file_img.val('');
-            elements._file_img.attr('style', 'display:none;');
-            elements._fee.val('');
-            elements._conc_fee.val('');
-            elements._multi_day_fee.val('');
-            elements._multi_day_conc_fee.val('');
-            elements._dates.val('');
-            elements._event_type.prop('selectedIndex', $('#default_event_type').val());
-            elements._venue.prop('selectedIndex', 0);
-            elements._reject_reasons.html('');
-
-            $('#datepicker').datepicker("setDate", '');
-            set_start_time('19:00');
-            set_end_time('00:00');
-
-            $('#speaker_section').empty();
-            speakerCounter = 1;
+            resetFields();
         }
 
         addSpeakerRow(speakerCounter);
@@ -491,6 +474,30 @@ $(function() {
                 setRejectReasons(data['reject_reasons']);
             }
         });
+    }
+
+    function resetFields() {
+        elements._title.val('');
+        elements._sub_title.val('');
+        elements._description.val('');
+        elements._booking_code.val('');
+        elements._file_img.val('');
+        elements._file_img.attr('style', 'display:none;');
+        elements._fee.val('');
+        elements._conc_fee.val('');
+        elements._multi_day_fee.val('');
+        elements._multi_day_conc_fee.val('');
+        elements._dates.val('');
+        elements._event_type.prop('selectedIndex', $('#default_event_type').val());
+        elements._venue.prop('selectedIndex', 0);
+        elements._reject_reasons.html('');
+
+        $('#datepicker').datepicker("setDate", '');
+        set_start_time('19:00');
+        set_end_time('00:00');
+
+        $('#speaker_section').empty();
+        speakerCounter = 1;
     }
 
     function updateAltEventImage() {
@@ -539,6 +546,7 @@ $(function() {
         for (d_i=0; d_i < event_dates.length; d_i++) {
             var item = event_dates[d_i];
 
+            if (!item.hasOwnProperty('speakers')) continue;
             for (l=0; l < item['speakers'].length; l++) {
                 var speaker = item['speakers'][l];
 
@@ -807,7 +815,6 @@ $(function() {
             $('#message').attr('style', 'display:none;');
         }
         showMessage = false;
-
         setupEvents();
     });
     {% else %}
