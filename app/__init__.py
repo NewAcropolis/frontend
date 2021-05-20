@@ -185,6 +185,7 @@ def _get_topic_list_elements(topic):
 
 
 def is_not_live():
+    current_app.logger.info("Request host url %r", request.host_url)
     return any(host in request.host_url for host in ['http://localhost', 'https://preview'])
 
 
