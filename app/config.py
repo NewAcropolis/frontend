@@ -33,6 +33,7 @@ class Config(object):
     GOOGLE_OAUTH2_REDIRECT_URI = get_setting('GOOGLE_OAUTH2_REDIRECT_URI')
     OAUTHLIB_INSECURE_TRANSPORT = False
     PAYPAL_ACCOUNT = get_setting('PAYPAL_ACCOUNT')
+    PAYPAL_ENCRYPTED = get_setting('PAYPAL_ENCRYPTED_1', '') + get_setting('PAYPAL_ENCRYPTED_2', '')
     ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'cache', 'announcement', 'article']
     SUMMARY_LIMIT = 190
     ARTICLE_SUMMARY_LIMIT = 110

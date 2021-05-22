@@ -30,6 +30,8 @@ def app():
         'SECRET_KEY': 'secret_key',
         'AUTH_USERNAME': AUTH_USERNAME,
         'AUTH_PASSWORD': AUTH_PASSWORD,
+        'PAYPAL_ENCRYPTED_1': 'encrypted1',
+        'PAYPAL_ENCRYPTED_2': 'encrypted2',
         'OAUTHLIB_INSECURE_TRANSPORT': True,
         'WTF_CSRF_ENABLED': False,
     })
