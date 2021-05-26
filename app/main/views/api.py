@@ -55,8 +55,7 @@ def api_future_events():
         'views/api_test/events.html',
         images_url=current_app.config['IMAGES_URL'],
         events=_unescape_html(events, 'description'),
-        api_base_url=api_client.base_url,
-        paypal_account=current_app.config['PAYPAL_ACCOUNT']
+        api_base_url=api_client.base_url
     )
 
 

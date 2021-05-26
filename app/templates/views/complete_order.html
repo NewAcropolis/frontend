@@ -96,7 +96,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 pt-0 pb-0">
-                                    <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="paypal">
+                                    <form action="{{ get_paypal_url() }}" method="post" target="paypal">
                                         <input type="hidden" name="cmd" value="_xclick">
                                         <input type="hidden" name="business" value="{{config['PAYPAL_ACCOUNT_ID']}}">
                                         <input type="hidden" name="lc" value="GB">
