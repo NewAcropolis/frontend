@@ -14,7 +14,10 @@ def cache():
 
 @main.route('/admin/_reload_cache')
 def _reload_cache():
-    current_app.logger.info("Reloading cache: {}".format(session["user_profile"]["name"]))
+    if "user_profile" in session:
+        current_app.logger.info("Reloading cache: {}".format(session["user_profile"]["name"]))
+    else:
+        current_app.logger.info("Reloading cache")
 
     update_cache(
         func=api_client.get_events_in_future_from_db,
