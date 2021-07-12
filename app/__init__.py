@@ -187,7 +187,8 @@ def _get_topic_list_elements(topic):
 
 
 def is_not_live():
-    return any(host in current_app.config['API_BASE_URL'] for host in ['http://localhost', 'https://preview'])
+    return any(host in current_app.config['API_BASE_URL'] for host in [
+        'http://localhost', 'https://preview', 'https://test'])
 
 
 def _get_paypal_url():
