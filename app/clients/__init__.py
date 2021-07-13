@@ -111,7 +111,7 @@ class BaseAPIClient(object):
 
                 session['error'] = {
                     'code': 404,
-                    'response': { 'error': response.json()}
+                    'response': {'error': response.json()}
                 }
 
                 return
