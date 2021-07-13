@@ -246,7 +246,7 @@ class EmailForm(FlaskForm):
             self.events.choices.append(('', ''))
 
 
-#regex from #https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom
+#  regex from https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom
 postcode_re = re.compile(r'^[A-Z]{1,2}[0-9R][0-9A-Z]?\s?[0-9][A-Z]{2}$')
 
 
@@ -272,7 +272,6 @@ class MissingAddressForm(FlaskForm):
 
         if do_process:
             self.process()
-
 
 
 class UnsubscribeForm(FlaskForm):
