@@ -76,7 +76,7 @@
                                     <div>
                                         <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" >
                                             <input type="hidden" name="cmd" value="_s-xclick">
-                                            <input type="hidden" name="encrypted" value="{{config['PAYPAL_ENCRYPTED_1']}}{{config['PAYPAL_ENCRYPTED_2']}}">
+                                            <input type="hidden" name="encrypted" value="{{config['PAYPAL_ENCRYPTED']}}">
                                             <input type="image" style="height:30px;" src="/static/images/cart_orange.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
                                             <img alt="" border="0" src="https://www.sandbox.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
                                         </form>
@@ -121,7 +121,7 @@
                                             <select class="form-control" name="os0" class="align-middle" style="margin-top:0px;height:30px;font-size: 0.8em;">
                                                 <option value="UK">UK £2.00</option>
                                                 <option value="Europe">Europe £4.50</option>
-                                                <option value="RoW">Rest of the World £10.00</option>
+                                                <option value="RoW">Rest of the World £6.00</option>
                                             </select>
                                         </div>
                                         <div class="py-0 col-2">
