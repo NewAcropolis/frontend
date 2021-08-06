@@ -1,6 +1,5 @@
 export SECRET_KEY=<your secret>
 export API_BASE_URL=<api url, can be local or remmote>
-export FRONTEND_BASE_URL=<frontend url>
 export ADMIN_CLIENT_ID=<must match api client id>
 export ADMIN_CLIENT_SECRET=<must match api client secret>
 export AUTH_USERNAME=<basic auth username for protected endpoints>
