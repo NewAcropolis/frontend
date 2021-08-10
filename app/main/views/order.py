@@ -1,4 +1,4 @@
-from flask import request, session, current_app
+from flask import request, session, current_app  # noqa
 
 from app import api_client
 from app.main import main
@@ -6,39 +6,25 @@ from app.main.forms import MissingAddressForm
 from app.main.views import render_page
 from na_common.delivery import statuses
 
-# ?amt=9.00&cc=GBP&cm=111&st=Completed&tx=14972970SV980564E
-@main.route('/order')
-def order():
+
+@main.route('/order/end')
+def order_end():
+    current_app.logger.info("Order end: %r" % request.args)
     status = request.args.get('st')
     txn_code = request.args.get('tx')
-    linked_txn_code = request.args.get('cm')
-
-    # order = api_client.get_order(txn_code)
-    print(statuses.DELIVERY_STATUSES)
-    errors = []
-    if 'error' in session:
-        err = session.pop('error')
-        print(err)
-        errors.append(err['response']['error']['message'])
-
-    linked_order = None
-    # if linked_txn_code:
-    #     linked_order = api_client.get_order(linked_txn_code)
-
-    #     if 'error' in session:
-    #         err = session.pop('error')
-    #         errors.append(err['response']['error']['message'])
 
     return render_page(
-        'views/order.html',
-        order=order,
-        linked_order=linked_order,
-        errors=errors
+        'views/order_end.html',
+        status=status,
+        txn_code=txn_code
     )
 
 
 @main.route('/order/<string:status>/<string:linked_txn_id>', methods=['GET', 'POST'])
-@main.route('/order/<string:status>/<string:linked_txn_id>/<string:delivery_zone>/<string:delivery_balance>', methods=['GET', 'POST'])
+@main.route(
+    '/order/<string:status>/<string:linked_txn_id>/<string:delivery_zone>/<string:delivery_balance>',
+    methods=['GET', 'POST']
+)
 def complete_order(status, linked_txn_id, delivery_zone='UK', delivery_balance=0):
     missing_address_form = None
 
@@ -82,14 +68,14 @@ def complete_order(status, linked_txn_id, delivery_zone='UK', delivery_balance=0
                     for e in missing_address_form.errors[field]:
                         errors.append(e)
     elif status == statuses.DELIVERY_EXTRA:
-            return render_page(
-                'views/complete_order.html',
-                linked_txn_id=linked_txn_id,
-                status=statuses.DELIVERY_EXTRA,
-                delivery_zone=delivery_zone,
-                delivery_balance=delivery_balance,
-                errors=errors
-            )
+        return render_page(
+            'views/complete_order.html',
+            linked_txn_id=linked_txn_id,
+            status=statuses.DELIVERY_EXTRA,
+            delivery_zone=delivery_zone,
+            delivery_balance=delivery_balance,
+            errors=errors
+        )
 
     return render_page(
         'views/complete_order.html',
@@ -98,10 +84,3 @@ def complete_order(status, linked_txn_id, delivery_zone='UK', delivery_balance=0
         status='missing_address',
         errors=errors
     )
-
-
-# orders/complete?PayerID=V6ZFRH4FB7MJY&st=Completed&tx=5WW76722PN111923U&cc=GBP&amt=1.50
-# orders/complete?old_txn=112233&PayerID=V6ZFRH4FB7MJY&st=Completed&tx=6S3650837T497554X&cc=GBP&amt=1.50
-@main.route('/order/end')
-def order_end():
-    pass
