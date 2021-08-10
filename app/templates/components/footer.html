@@ -117,6 +117,10 @@ $.urlParam = function (name) {
 $(document).ready(function() {
   if ($.urlParam('send_message') == 'true') {
     $('#sendMessageModal').modal('show');
+    if ($.urlParam('txn_code')) {
+      $('#contact_reasons').val("order");
+      $('#contact_message').val('Transaction ID: ' + $.urlParam('txn_code') + '\n');
+    }
   }
 
     $('#sendMessageModal').on('shown.bs.modal', function () {
