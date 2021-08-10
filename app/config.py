@@ -52,7 +52,7 @@ class Config(object):
     WTF_CSRF_TIME_LIMIT = None
     WTF_CSRF_SSL_STRICT = False
 
-    SHOW_RESOURCE_MAINTENANCE = get_setting('SHOW_RESOURCE_MAINTENANCE')
+    SHOW_RESOURCE_MAINTENANCE = get_setting('SHOW_RESOURCE_MAINTENANCE', '')
 
 
 class Development(Config):
