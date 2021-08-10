@@ -39,6 +39,7 @@ class ContactForm(FlaskForm):
             ('bug', 'Report a problem on the website'),
             ('course', 'Ask about a course'),
             ('talk', 'Ask about a talk'),
+            ('order', 'Order enquiry'),
             ('other', 'Other')
         ]
 
