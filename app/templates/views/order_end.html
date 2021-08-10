@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Payment Complete{% endblock %}
+{% block extra_head%}
+<link rel="stylesheet" href="/static/css/style.css" />
+{% endblock %}
+
+{% block content %}
+
+<div id="banner" class="carousel slide">
+          <img class="d-block w-100 fit-image" src="/static/images/resource-banner.png">
+  </div>
+
+{% if config.get('SHOW_RESOURCE_MAINTENANCE') == '1' %}
+<div class="container-fluid padding yellow_background">
+    <div class="row padding">
+        <div class="col-lg-12">
+        <p class="dark_grey_txt content-width mx-auto text-center"> 
+            This page is under construction, thank you for your patience.
+        </p>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container pt-2">
+    {% if status == 'Completed' %}
+        Thank you for your order, you will shortly receive confirmation of your order with details. <br>
+        If you need to change your order please <a href='/?send_message=true&txn_code={{txn_code}}'>contact us</a>.
+    {% else %}
+        There was a problem with your order, please
+        {% if txn_code %}
+         <a href='/?send_message=true&txn_code={{txn_code}}'>contact us</a> to discuss it.
+        {% else %}
+         try again.
+        {% endif %}
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="empty_space_sm"></div>
+
+{% endblock %}
