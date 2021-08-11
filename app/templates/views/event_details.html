@@ -52,10 +52,6 @@
         <h2 class="event_blue">BUY YOUR TICKETS NOW</h2>
         <p class="important">
             <div class="pt-3">
-              {% if is_not_live() %}
-                {% set sandbox = '.sandbox' %}
-              {% endif %}
-
               {% if event.is_paypal_ready %}
               <form id="paypalForm" target="paypal" action="{{ get_paypal_url() }}" method="post">
                 <input type="hidden" name="cmd" value="_s-xclick">
@@ -96,16 +92,16 @@
                         onclick="return false;"
                     {% endif %}
                 >
-                <img alt="" border="0" src="https://www{{sandbox}}.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
               </form>
               {% else %}
               Paypal button pending creation
               {% endif %}
-              <form target="paypal" action="https://www{{sandbox}}.paypal.com/cgi-bin/webscr" method="post" style='margin-top:5px;'>
+              <form target="paypal" action="{{ get_paypal_url() }}" method="post" style='margin-top:5px;'>
                 <input type="hidden" name="cmd" value="_s-xclick">
                 <input type="hidden" name="encrypted" value="{{config['PAYPAL_ENCRYPTED']}}">
                 <input type="image" style="height:30px;" src="/static/images/cart_orange.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
-                <img alt="" border="0" src="https://www{{sandbox}}.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
               </form>
             </div>
         </p>

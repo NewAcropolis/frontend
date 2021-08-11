@@ -20,7 +20,6 @@ def order_end():
     )
 
 
-@main.route('/order/<string:status>/<string:linked_txn_id>', methods=['GET', 'POST'])
 @main.route(
     '/order/<string:status>/<string:linked_txn_id>/<string:delivery_zone>/<string:delivery_balance>',
     methods=['GET', 'POST']
