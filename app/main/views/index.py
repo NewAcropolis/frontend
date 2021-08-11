@@ -49,11 +49,6 @@ def about():
     return render_page('views/about.html')
 
 
-@main.route('/resources')
-def resources():
-    return render_page('views/resources.html')
-
-
 def _unescape_html(items, field_name):
     h = HTMLParser()
     for item in items:

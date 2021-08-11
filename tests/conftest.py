@@ -114,6 +114,7 @@ def sample_future_events(mocker):
         {
             "id": str(uuid4()),
             "title": "Test title 1",
+            "booking_code": "111222333",
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
@@ -126,6 +127,7 @@ def sample_future_events(mocker):
         {
             "id": str(uuid4()),
             "title": "Test title 2",
+            "booking_code": "222333444",
             "event_type": "Talk",
             "image_filename": "event.png",
             "event_dates": [{
@@ -138,6 +140,7 @@ def sample_future_events(mocker):
         {
             "id": str(uuid4()),
             "title": "Test title 3",
+            "booking_code": "333444555",
             "event_type": "Introductory Course",
             "image_filename": "event.png",
             "event_dates": [{
@@ -151,6 +154,7 @@ def sample_future_events(mocker):
         {
             "id": str(uuid4()),
             "title": "Test title 4",
+            "booking_code": "333444555666",
             "event_type": "Workshop",
             "image_filename": "",
             "event_dates": [{
@@ -230,6 +234,7 @@ def sample_future_event(mocker):
     event = {
         "id": str(uuid4()),
         "title": "Test title 1",
+        "booking_code": "111222333",
         "description": "Test description",
         "event_type": "Talk",
         "image_filename": "event.png",

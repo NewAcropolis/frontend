@@ -24,10 +24,13 @@ def _reload_cache():
         decorator=only_show_approved_events, approved_only=True)
     update_cache(func=api_client.get_events_past_year_from_db)
     update_cache(func=api_client.get_articles_summary_from_db)
+    update_cache(func=api_client.get_books_from_db)
 
     Cache.purge_older_versions()
 
-    return jsonify({'response': 'get_events_in_future, get_events_past_year, get_articles_summary reloaded'})
+    return jsonify(
+        {'response': 'get_events_in_future, get_events_past_year, get_articles_summary, get_books reloaded'}
+    )
 
 
 @main.route('/admin/_purge_cache')

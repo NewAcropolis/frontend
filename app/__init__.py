@@ -6,6 +6,8 @@ from flask import Flask, current_app, make_response, render_template, request, s
 from flask_wtf.csrf import CSRFProtect, CSRFError
 import textile
 
+from na_common.delivery import statuses as delivery_statuses
+
 from app.clients.api_client import ApiClient
 from app.config import is_running_app_engine
 import requests_toolbelt.adapters.appengine
@@ -185,13 +187,21 @@ def _get_topic_list_elements(topic):
 
 
 def is_not_live():
-    return any(host in current_app.config['API_BASE_URL'] for host in ['http://localhost', 'https://preview'])
+    return any(host in current_app.config['API_BASE_URL'] for host in [
+        'http://localhost', 'https://preview', 'https://test'])
+
+
+def _get_paypal_url():
+    if is_not_live():
+        return "https://www.sandbox.paypal.com/cgi-bin/webscr"
+    return "https://www.paypal.com/cgi-bin/webscr"
 
 
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
     app.jinja_env.globals['PAYPAL_ACCOUNT'] = app.config.get('PAYPAL_ACCOUNT')
+    app.jinja_env.globals['get_paypal_url'] = _get_paypal_url
     app.jinja_env.globals['get_email'] = _get_email
     app.jinja_env.globals['get_users_need_access'] = _get_users_need_access
     app.jinja_env.globals['is_admin_user'] = _is_admin_user
@@ -204,6 +214,7 @@ def init_app(app):
     app.jinja_env.globals['get_topic_list_elements'] = _get_topic_list_elements
     app.jinja_env.globals['is_not_live'] = is_not_live
     app.jinja_env.globals['config'] = app.config
+    app.jinja_env.globals['delivery_statuses'] = delivery_statuses
 
     @app.before_request
     def before_request():

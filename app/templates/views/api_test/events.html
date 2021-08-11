@@ -30,9 +30,9 @@
                 </div>
                 {% endif %}
 
-                {% if paypal_account %}
+                {% if config['PAYPAL_ACCOUNT'] %}
                 <div class="pt-3">
-                <form id="paypalForm{{ item.id }}" target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+                <form id="paypalForm{{ item.id }}" target="paypal" action="{{ get_paypal_url() }}" method="post">
                     <input type="hidden" name="cmd" value="_s-xclick">
                     <input type="hidden" name="fee" value="{{ item.fee }}">
                     <input type="hidden" name="concfee" value="{{ item.conc_fee }}">
@@ -53,7 +53,7 @@
                     <input type="hidden" name="currency_code" value="GBP">
                     <input 
                         type="image"
-                        src="https://www.sandbox.paypal.com/en_GB/i/btn/btn_cart_SM.gif"
+                        src="https://www.paypal.com/en_GB/i/btn/btn_cart_SM.gif"
                         border="0"
                         name="submit"
                         alt="PayPal � The safer, easier way to pay online."
@@ -61,12 +61,12 @@
                             onclick="return false;"
                         {% endif %}
                     >
-                    <img alt="" border="0" src="https://www.sandbox.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                    <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
                     </form>
                     
-                    <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" style='margin-top:5px;'>
+                    <form target="paypal" action="{{ get_paypal_url() }}" method="post" style='margin-top:5px;'>
                         <input type="hidden" name="cmd" value="_cart">
-                        <input type="hidden" name="business" value="{{ paypal_account }}">
+                        <input type="hidden" name="business" value="{{ config['PAYPAL_ACCOUNT_ID'] }}">
                         <input type="hidden" name="display" value="1">
                         <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_viewcart_SM.gif" border="0" name="submit" alt="PayPal � The safer, easier way to pay online.">
                         <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">

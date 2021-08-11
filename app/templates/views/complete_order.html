@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% block title %}Complete your order{% endblock %}
+{% block extra_head%}
+<link rel="stylesheet" href="/static/css/alt-style.css" />
+{% endblock %}
+
+{% block content %}
+
+<div id="banner" class="carousel slide">
+          <img class="d-block w-100 fit-image" src="/static/images/resource-banner.png">
+  </div>
+
+{% if config.get('SHOW_RESOURCE_MAINTENANCE') == '1' %}
+<div class="container-fluid padding yellow_background">
+    <div class="row padding">
+        <div class="col-lg-12">
+        <p class="dark_grey_txt content-width mx-auto text-center"> 
+            This page is under construction, thank you for your patience.
+        </p>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="container pt-2">
+    {% for error in errors %}
+    <div class="row">
+        <div class="ml-2 col-lg-11">
+            <div class="row text-danger">
+                {{ error }}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% if status == 'updated' %}
+    <div class="row mt-1">
+        <div class="col-lg-12">
+            <div class="row">
+                The order address has been updated
+            </div>
+        </div>
+    </div>
+    {% else %}
+        {% if status == delivery_statuses.DELIVERY_MISSING_ADDRESS %}
+        <div class="row mt-1">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="font-weight-bold">Your address could not be found for order - {{linked_txn_id}}, please enter your details here</div>
+                        <form class="m-0" id="missing_address_form" method="post">{{ form.csrf_token }}
+                            <div class="row">
+                                <div class="col-8">
+                                    {{form.street(placeholder='Flat/House no. and street name', value=form.street.data if form.street.data else '', size=80)}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    {{form.city(placeholder='City', value=form.city.data if form.city.data else '', size=80)}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-5">
+                                    {{form.state(placeholder='State', size=40)}}
+                                </div>
+                                <div class="ml-1 col-md-12 col-lg-2">
+                                    {{form.postcode(placeholder='Postcode', size=20)}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-8">
+                                    {{form.country}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="py-0 col-2 float-right">
+                                    <input class="align-middle" type="submit" style="height:30px;">
+                                </div>
+                            </div>            
+                        </form>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        {% elif status == delivery_statuses.DELIVERY_EXTRA %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+
+                        <div class="py-2">
+                            <div class="row">
+                                <div class="col-12 pt-0 mt-0 mag-text">
+                                    To complete your order: {{linked_txn_id}} and begin delivery, <br>
+                                    please add delivery fees for postage to 
+                                    {% if delivery_zone == 'RoW' %} the rest of the world {% else %} {{ delivery_zone }} {% endif %} 
+                                    for £{{delivery_balance}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 pt-0 pb-0">
+                                    <form action="{{ get_paypal_url() }}" method="post" target="paypal">
+                                        <input type="hidden" name="cmd" value="_xclick">
+                                        <input type="hidden" name="business" value="{{config['PAYPAL_ACCOUNT_ID']}}">
+                                        <input type="hidden" name="lc" value="GB">
+                                        <input type="hidden" name="rm" value="0">
+                                        <input type="hidden" name="item_name" value="{{delivery_zone}}">
+                                        <input type="hidden" name="amount" value="{{delivery_balance}}">
+                                        <input type="hidden" name="custom" value="{{linked_txn_id}}">
+                                        <input type="hidden" name="currency_code" value="GBP">
+                                        <input type="hidden" name="button_subtype" value="services">
+                                        <input type="hidden" name="no_note" value="0">
+                                        <input type="hidden" name="cn" value="Add special instructions to the seller:">
+                                        <input type="hidden" name="return" value="https://test-api.newacropolisuk.org/orders/complete?linked_txn_id={{linked_txn_id}}">
+                                        <input type="hidden" name="no_shipping" value="2">
+                                        <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+                                        <input id="submitBtn" type="image" src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-medium.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                        <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                                    </form>
+                                </div>
+                            </div>
+                            <div id='redirect_msg' class="row d-none">
+                                Complete you order on the paypal web page, redirecting you to the home page
+                            </div>
+                        </div>
+
+                        <script charset="utf-8" type="text/javascript">
+                            $(function() {
+                                $('#submitBtn').on('click', function() {
+                                    $('#redirect_msg').removeClass('d-none').addClass('d-block');
+                                    setTimeout(function(){ window.location = '/'; }, 5000);
+                                    // $('#submitBtn').prop('disabled', true);
+                                });
+                            });
+                        </script>                        
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-12 pt-0 mt-0">
+                        <div class="nav nav-tabs delivery" role="tablist">
+                            <div class="nav-link active resources delivery font-weight-bold">Postage and package cost</div>
+                        </div>
+                        <div class="py-2">
+                            <div class="row">
+                                <div class="col-12 pt-0 mt-0 mag-text">
+                                    Please add P&amp;P for your region
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 pt-0 pb-0">
+                                    <form style="height:30px;" class="p-0 m-0" target="paypal" action="{{ get_paypal_url() }}" method="post">
+                                        <input type="hidden" name="cmd" value="_s-xclick">
+                                        <input type="hidden" name="hosted_button_id" value="JXD7H2TMV6S66">
+                                        <input type="hidden" name="on0" value="Additional postage">
+                                        <input type="hidden" name="custom" value="111">
+                                        <input type="hidden" name="currency_code" value="GBP">
+                                        <div class="row">
+                                            <div class="py-0 col-8">
+                                                <select class="form-control" name="os0" class="align-middle" style="margin-top:0px;height:30px;font-size: 0.8em;">
+                                                    <option value="UK">UK £2.00</option>
+                                                    <option value="Europe">Europe £4.50</option>
+                                                    <option value="Rest of the World">Rest of the World £6.00</option>
+                                                </select>
+                                            </div>
+                                            <div class="py-0 col-2">
+                                                <input class="align-middle" type="image" src="/static/images/add_to_cart_orange.png" style="height:30px;" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="empty_space_sm"></div>
+
+{% endblock %}

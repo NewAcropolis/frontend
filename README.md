@@ -36,7 +36,6 @@ Make a copy of `app.yaml` to `app-dev.yaml` and add secrets as environment vars 
 env_variables:
   SECRET_KEY: <secret key>
   API_BASE_URL: <new acropolis api url>
-  FRONTEND_BASE_URL: <frontend base url>
   ADMIN_CLIENT_ID: <admin client id - should match api>
   ADMIN_CLIENT_SECRET: <admin secret - should match api>
   AUTH_USERNAME: <basic auth username>
@@ -45,6 +44,19 @@ env_variables:
   GOOGLE_OAUTH2_CLIENT_ID: <google oauth2 client id>
   GOOGLE_OAUTH2_CLIENT_SECRET: <google oauth2 client secret>
   GOOGLE_OAUTH2_REDIRECT_URI: <google auth redirect>
+
+  PAYPAL_ACCOUNT: <paypal account>
+  PAYPAL_ACCOUNT_ID: <paypal account id>
+  PAYPAL_ENCRYPTED_1: <paypal view cart encryption up to 1100 chars long>
+  PAYPAL_ENCRYPTED_2: <paypal view cart encryption remaining part>
+  PAYPAL_DELIVERY = <paypal delivery id>
+  SESSION_EXPIRY = <session expiry length in minutes>
+  RECAPTCHA_PUBLIC_KEY = <recaptcha public key>
+  RECAPTCHA_PRIVATE_KEY = <recaptcha private key>
+  GA_ID = <google analytics id>
+  GA_TM_ID = <google analytics tag manager id>
+  ENABLE_STATS = <set to `true` to enable stats push >
+
 ```
 
 To update a secret you will need to log into the datastore and edit the value there or remove the value and deploy the changes.

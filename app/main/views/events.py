@@ -62,6 +62,7 @@ def event_details(event_id=None, **kwargs):
         event['event_type'] = 'Online ' + event['event_type']
 
     event['is_future_event'] = is_future_event(event)
+    event['is_paypal_ready'] = is_paypal_ready(event)
 
     h = HTMLParser()
     event['_description'] = h.unescape(event['description'].encode('ascii', 'ignore'))
@@ -77,3 +78,7 @@ def is_future_event(event):
         if date['event_datetime'] >= str(datetime.today()):
             return True
     return False
+
+
+def is_paypal_ready(event):
+    return event['booking_code'] and not event['booking_code'].startswith('pending:')

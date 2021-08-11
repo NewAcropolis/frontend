@@ -22,7 +22,6 @@ class Config(object):
     DEBUG = False
     API_BASE_URL = get_setting('API_BASE_URL')
     IMAGES_URL = get_setting('IMAGES_URL')
-    FRONTEND_BASE_URL = get_setting('FRONTEND_BASE_URL')
     ADMIN_CLIENT_ID = get_setting('ADMIN_CLIENT_ID')
     ADMIN_CLIENT_SECRET = get_setting('ADMIN_CLIENT_SECRET')
     SECRET_KEY = get_setting('SECRET_KEY', 'not_secret')
@@ -33,7 +32,9 @@ class Config(object):
     GOOGLE_OAUTH2_REDIRECT_URI = get_setting('GOOGLE_OAUTH2_REDIRECT_URI')
     OAUTHLIB_INSECURE_TRANSPORT = False
     PAYPAL_ACCOUNT = get_setting('PAYPAL_ACCOUNT')
+    PAYPAL_ACCOUNT_ID = get_setting('PAYPAL_ACCOUNT_ID')
     PAYPAL_ENCRYPTED = get_setting('PAYPAL_ENCRYPTED_1', '') + get_setting('PAYPAL_ENCRYPTED_2', '')
+    PAYPAL_DELIVERY = get_setting('PAYPAL_DELIVERY')
     ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'cache', 'announcement', 'article']
     SUMMARY_LIMIT = 190
     ARTICLE_SUMMARY_LIMIT = 110
@@ -45,10 +46,13 @@ class Config(object):
     GA_ID = get_setting('GA_ID')
     GA_TM_ID = get_setting('GA_TM_ID')
     MAX_IMAGE_SIZE = 2 * 1024 * 1024
+    ENABLE_STATS = get_setting('ENABLE_STATS') == 'true'
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
     WTF_CSRF_SSL_STRICT = False
+
+    SHOW_RESOURCE_MAINTENANCE = get_setting('SHOW_RESOURCE_MAINTENANCE', '')
 
 
 class Development(Config):
