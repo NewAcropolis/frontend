@@ -215,6 +215,19 @@ class ApiClient(BaseAPIClient):
     def get_order(self, txn_code):
         return self.get(url='order/{}'.format(txn_code))
 
+    def update_order(self, txn_id, delivery_sent, notes):
+        data = {
+            'delivery_sent': delivery_sent,
+            'notes': notes,
+        }
+
+        return self.post(url='order/{}'.format(txn_id), data=data)
+
+    def get_orders(self, year=None):
+        if not year:
+            year = datetime.now().year
+        return self.get(url='orders/{}'.format(year))
+
     def add_magazine(self, magazine):
         return self.post(url='magazine', data=magazine)
 
