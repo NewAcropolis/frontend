@@ -27,16 +27,15 @@ def order_end():
 def complete_order(status, linked_txn_id, delivery_zone='UK', delivery_balance=0):
     missing_address_form = None
 
-    if status == statuses.DELIVERY_MISSING_ADDRESS:
-        missing_address_form = MissingAddressForm()
-        missing_address_form.setup_country(missing_address_form.data['state'] is None)
-
     errors = []
     if 'error' in session:
         err = session.pop('error')
         errors.append(err['response']['error']['message'])
 
     if status == statuses.DELIVERY_MISSING_ADDRESS:
+        missing_address_form = MissingAddressForm()
+        missing_address_form.setup_country(missing_address_form.data['state'] is None)
+
         if missing_address_form.validate_on_submit():
             selected_country = [
                 c for c in missing_address_form.country.choices if c[0] == missing_address_form.country.data

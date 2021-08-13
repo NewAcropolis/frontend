@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if user_has_permissions('order') %}
+<div class="container pb-3 text-right">
+    <form class="form" id="users_form" method="post">{{ form.csrf_token }}
+        <div class="row pt-1 pb-1 text-left">
+            <div class='col' style='padding-top:0;'>Orders in the year:  {{ form.order_year(onchange="submit()") }}</div>
+        </div>
+        {% if orders %}
+        <hr>
+        {% for order in orders %}
+        <div class="row">
+            <div class='col text-left' style='padding-top:0;'>
+                {{ order.created_at }}
+            </div>
+            <div class='col'>
+                <a href='{{ get_paypal_base() }}/activity/payment/{{ order.txn_id }}'>{{ order.txn_id }}</a>
+            </div>
+            <div class='col'>
+                {{ order.buyer_name }}
+            </div>
+            <div class='col'>
+                &pound;{{ order.payment_total }}
+            </div>
+            <div class='col'>
+                {{ order.delivery_status }}
+            </div>
+            <div class='col'>
+                {% if order.delivery_sent %}Sent{% else %}Not sent{% endif %}
+            </div>
+            <div>
+                <a href='/admin/order/{{ order.txn_id }}'>update</a>
+            </div>
+        </div>
+        <details class='text-left'>
+            <summary>Order details</summary>
+            {% if order.tickets %}
+                {% for ticket in order.tickets %}
+                <div class="row">
+                    <div class='col'>
+                        {{ ticket.event_date.event_datetime }} - {{ ticket.event.title }} - {{ ticket.status }}
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+            {% if order.books %}
+                {% for book in order.books %}
+                <div class="row">
+                    <div class='col'>
+                        {{ book.quantity}} of {{ book.title }}
+                    </div>
+                </div>
+                {% endfor  %}
+                <hr>
+                <div class="row">
+                    <div class='col'>
+                    Deliver to: 
+                    </div>
+                    <div class='col-9'>
+                    {{ order.buyer_name }} <br>
+                    {{ order.address_street }} <br>
+                    {{ order.address_city }} <br>
+                    {{ order.address_postal_code }} <br>
+                    {{ order.address_country }}
+                    </div>
+                </div>
+            {% endif %}
+            {% if order.notes %}
+                <div class="row col">
+                    <strong>Notes: </strong> {{ order.notes }}
+                </div>
+            {% endif %}
+        </details>
+        <hr>
+        {% endfor %}
+        {% else %}
+        <div class="text-left pb-2">No orders found</div>
+        {% endif %}
+        <div class="justify-content-end">
+            <button type="submit" class="btn btn-outline-success">Submit</button>
+            <a href="/admin" id="return" name="return" class="btn btn-outline-secondary">Return</a>
+        </div>
+    </form>
+</div>
+{% endif %}
+{% endblock %}

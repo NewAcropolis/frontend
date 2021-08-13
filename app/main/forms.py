@@ -1,3 +1,4 @@
+from datetime import datetime
 from pytz import country_names
 import re
 
@@ -76,6 +77,7 @@ class UserForm(FlaskForm):
     admin = BooleanField('admin')
     event = BooleanField('event')
     email = BooleanField('email')
+    order = BooleanField('order')
     magazine = BooleanField('magazine')
     cache = BooleanField('cache')
     announcement = BooleanField('announcement')
@@ -95,6 +97,7 @@ class UserListForm(FlaskForm):
                 user_form.admin = _has_access_area('admin', user['access_area'])
                 user_form.event = _has_access_area('event', user['access_area'])
                 user_form.email = _has_access_area('email', user['access_area'])
+                user_form.order = _has_access_area('order', user['access_area'])
                 user_form.magazine = _has_access_area('magazine', user['access_area'])
                 user_form.report = _has_access_area('report', user['access_area'])
                 user_form.cache = _has_access_area('cache', user['access_area'])
@@ -266,7 +269,7 @@ class MissingAddressForm(FlaskForm):
     def setup_country(self, do_process):
         _country_names = dict(country_names)
         _country_names['GB'] = "United Kingdom"
-        self.country.choices = self.country.choices = [
+        self.country.choices = [
             (c, _country_names[c]) for c in sorted(_country_names, key=_country_names.get)
         ]
         self.country.default = 'GB'
@@ -285,3 +288,61 @@ class UpdateMemberForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
     verify_email = StringField('Verify Email', validators=[DataRequired()])
     recaptcha = RecaptchaField()
+
+
+class OrderForm(FlaskForm):
+    created_at = StringField()
+    transaction_id = StringField()
+    txn_id = StringField()
+    buyer_name = StringField()
+    payment_total = StringField()
+    delivery_status = StringField()
+    delivery_sent = BooleanField()
+    notes = TextAreaField()
+    books = []
+    tickets = []
+
+    def populate_order_form(self, order):
+        self.created_at = order['created_at']
+        self.transaction_id = order['txn_id']
+        self.txn_id = order['txn_id']
+        self.buyer_name = order['buyer_name']
+        self.payment_total = order['payment_total']
+        self.delivery_status = order['delivery_status'] if order['delivery_status'] else 'Not applicable'
+        self.delivery_sent.data = order['delivery_sent'] is True
+        self.notes.data = order['notes']
+
+
+START_YEAR = 2018
+
+
+class OrderListForm(FlaskForm):
+    order_year = SelectField('order_year')
+
+    orders = FieldList(FormField(OrderForm), min_entries=0)
+
+    def setup_order_year(self, year=None):
+        self.order_year.choices = []
+        for _year in range(datetime.now().year, START_YEAR, -1):
+            self.order_year.choices.append((_year, _year))
+        self.order_year.choices.append((START_YEAR, START_YEAR))
+
+        if year:
+            self.order_year.default = year
+            self.process()
+
+    def populate_order_list_form(self, orders):
+        if not self.orders:
+            for order in orders:
+                order_form = OrderForm()
+                order_form.created_at = order['created_at']
+                order_form.transaction_id = order['txn_id']
+                order_form.txn_id = order['txn_id']
+                order_form.buyer_name = order['buyer_name']
+                order_form.payment_total = order['payment_total']
+                order_form.delivery_status = order['delivery_status'] if order['delivery_status'] else 'Not applicable'
+                order_form.delivery_sent = order['delivery_sent'] == 'True'
+                order_form.notes.data = order['notes']
+                # order_form.books = order.books
+
+                self.orders.append_entry(order_form)

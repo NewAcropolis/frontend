@@ -29,6 +29,11 @@
             <a href='/admin/cache'>Caches</a>
         </div>
         {% endif %}
+        {% if user_has_permissions('order') %}
+        <div class='col-sm'>
+            <a href='/admin/orders'>Orders</a>
+        </div>
+        {% endif %}
         {% if user_has_permissions('announcement') %}
         <div class='col-sm'>
             Announcements

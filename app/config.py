@@ -35,7 +35,7 @@ class Config(object):
     PAYPAL_ACCOUNT_ID = get_setting('PAYPAL_ACCOUNT_ID')
     PAYPAL_ENCRYPTED = get_setting('PAYPAL_ENCRYPTED_1', '') + get_setting('PAYPAL_ENCRYPTED_2', '')
     PAYPAL_DELIVERY = get_setting('PAYPAL_DELIVERY')
-    ACCESS_AREAS = ['admin', 'event', 'email', 'magazine', 'cache', 'announcement', 'article']
+    ACCESS_AREAS = ['admin', 'event', 'email', 'order', 'magazine', 'cache', 'announcement', 'article']
     SUMMARY_LIMIT = 190
     ARTICLE_SUMMARY_LIMIT = 110
     SESSION_EXPIRY = get_setting('SESSION_EXPIRY', 30)
