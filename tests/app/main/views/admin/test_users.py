@@ -261,6 +261,9 @@ class WhenPostingUsers:
                 'email': {
                     'data': 'y'
                 },
+                'order': {
+                    'data': 'y'
+                },
                 'event': {
                     'data': 'y'
                 },
@@ -279,6 +282,7 @@ class WhenPostingUsers:
                 'email': {
                     'data': 'y'
                 },
+                'order': {},
                 'admin': {},
                 'event': {},
                 'magazine': {
@@ -301,7 +305,7 @@ class WhenPostingUsers:
             'main.admin_users'
         ))
 
-        mock_api_client.assert_called_once_with(users[1]['id'], 'event,email,magazine,')
+        mock_api_client.assert_called_once_with(users[1]['id'], 'event,email,order,magazine,')
 
     def it_does_not_update_if_unchanged(self, client, mocker):
         session_dict = {
