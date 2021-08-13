@@ -31,6 +31,8 @@ def admin_users():
                 access_area += 'event,'
             if user.email.data:
                 access_area += 'email,'
+            if user.order.data:
+                access_area += 'order,'
             if user.magazine.data:
                 access_area += 'magazine,'
             if user.cache.data:
