@@ -197,11 +197,18 @@ def _get_paypal_url():
     return "https://www.paypal.com/cgi-bin/webscr"
 
 
+def _get_paypal_base():
+    if is_not_live():
+        return "https://www.sandbox.paypal.com"
+    return "https://www.paypal.com"
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
     app.jinja_env.globals['PAYPAL_ACCOUNT'] = app.config.get('PAYPAL_ACCOUNT')
     app.jinja_env.globals['get_paypal_url'] = _get_paypal_url
+    app.jinja_env.globals['get_paypal_base'] = _get_paypal_base
     app.jinja_env.globals['get_email'] = _get_email
     app.jinja_env.globals['get_users_need_access'] = _get_users_need_access
     app.jinja_env.globals['is_admin_user'] = _is_admin_user
