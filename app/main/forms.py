@@ -143,6 +143,8 @@ class EventForm(FlaskForm):
     submit_type = HiddenField()
     reject_reason = TextAreaField('Reject reason')
     reject_reasons_json = HiddenField()
+    remote_access = StringField('Remote access')
+    remote_pw = StringField('Remote password')
     cache_switch = BooleanField('cache_switch')
 
     def set_events_form(self, events, event_types, speakers, venues):

@@ -73,7 +73,9 @@ def admin_events(selected_event_id=None, api_message=None):
             'start_time': form.start_time.data,
             'end_time': form.end_time.data,
             'event_state': form.submit_type.data,
-            'reject_reasons': reject_reasons
+            'reject_reasons': reject_reasons,
+            'remote_access': form.remote_access.data,
+            'remote_pw': form.remote_pw.data,
         }
 
         adjusted_event = event.copy()
