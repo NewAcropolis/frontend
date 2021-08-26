@@ -21,6 +21,7 @@ def get_setting(name, default=None):
 class Config(object):
     DEBUG = False
     API_BASE_URL = get_setting('API_BASE_URL')
+    FRONTEND_BASE_URL = get_setting('FRONTEND_BASE_URL')
     IMAGES_URL = get_setting('IMAGES_URL')
     ADMIN_CLIENT_ID = get_setting('ADMIN_CLIENT_ID')
     ADMIN_CLIENT_SECRET = get_setting('ADMIN_CLIENT_SECRET')
