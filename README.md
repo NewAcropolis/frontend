@@ -36,6 +36,7 @@ Make a copy of `app.yaml` to `app-dev.yaml` and add secrets as environment vars 
 env_variables:
   SECRET_KEY: <secret key>
   API_BASE_URL: <new acropolis api url>
+  FRONTEND_BASE_URL: <new acropolis frontend url>
   ADMIN_CLIENT_ID: <admin client id - should match api>
   ADMIN_CLIENT_SECRET: <admin secret - should match api>
   AUTH_USERNAME: <basic auth username>

@@ -8,6 +8,13 @@
     background-color: rgb(157, 163, 162) !important;
 }
 
+.navbar-menu{
+    font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+    background-color: rgb(157, 163, 162);
+    border-bottom: solid 10px rgb(238,191,109);
+    overflow: hidden;
+}
+
 .nav-link.resources {
     font-size: 0.8em;
     color: black;
