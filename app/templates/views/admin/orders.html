@@ -66,6 +66,11 @@
                     </div>
                 </div>
             {% endif %}
+            {% if order.linked_txn_id %}
+                <div class="row col">
+                    Linked to transaction {{ order.linked_txn_id }}
+                </div>
+            {% endif %}
             {% if order.notes %}
                 <div class="row col">
                     <strong>Notes: </strong> {{ order.notes }}
