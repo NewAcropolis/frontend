@@ -22,12 +22,12 @@
       {% endblock %}
   </head>
   <body>
+    {% if is_not_live %}
+    <div class="corner-ribbon bottom-left sticky turquoise">Testing</div>
+    {% endif %}
     {% block first_body %}{% endblock %}
-    {% if preview or not API_BASE_URL %}
+    {% if is_not_live() or not API_BASE_URL %}
     <div class='sticky-top p-1 bg-light d-none'>
-      {% if preview %}
-      Preview of {{preview}}<br>
-      {% endif %}
       {% if not API_BASE_URL %}
       This is a prototype website, there are no data connections - for the live website go to <a href='https://www.newacropolisuk.org'>https://www.newacropolisuk.org</a>
       {% endif %}
