@@ -66,9 +66,21 @@
                     </div>
                 </div>
             {% endif %}
-            {% if order.linked_txn_id %}
+            {% if order.linked_transactions %}
                 <div class="row col">
-                    Linked to transaction {{ order.linked_txn_id }}
+                    {% for o in order.linked_transactions%}
+                    <div class="row">
+                        <div class='col text-left' style='padding-top:0;'>
+                            {{ o.created_at }}
+                        </div>
+                        <div class='col'>
+                            <a href='{{ get_paypal_base() }}/activity/payment/{{ o.txn_id }}'>{{ o.txn_id }}</a>
+                        </div>
+                        <div class='col'>
+                            {{ o.delivery_zone }}
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
             {% endif %}
             {% if order.notes %}
