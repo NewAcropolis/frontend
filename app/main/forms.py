@@ -300,6 +300,7 @@ class OrderForm(FlaskForm):
     payment_total = StringField()
     delivery_status = StringField()
     delivery_sent = BooleanField()
+    refund_issued = BooleanField()
     notes = TextAreaField()
     books = []
     tickets = []
@@ -312,6 +313,7 @@ class OrderForm(FlaskForm):
         self.payment_total = order['payment_total']
         self.delivery_status = order['delivery_status'] if order['delivery_status'] else 'Not applicable'
         self.delivery_sent.data = order['delivery_sent'] is True
+        self.refund_issued.data = order['refund_issued'] is True
         self.notes.data = order['notes']
 
 
@@ -344,6 +346,7 @@ class OrderListForm(FlaskForm):
                 order_form.payment_total = order['payment_total']
                 order_form.delivery_status = order['delivery_status'] if order['delivery_status'] else 'Not applicable'
                 order_form.delivery_sent = order['delivery_sent'] == 'True'
+                order_form.refund_issued = order['refund_issued'] == 'True'
                 order_form.notes.data = order['notes']
                 # order_form.books = order.books
 
