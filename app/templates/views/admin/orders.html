@@ -24,10 +24,17 @@
                 &pound;{{ order.payment_total }}
             </div>
             <div class='col'>
-                {{ order.delivery_status }}
+                {% if order.books %}
+                    {{ order.delivery_status }}
+                    {% if order.delivery_status == 'refund' %}
+                    {% if order.refund_issued %} complete{% else %} due{% endif %}
+                    {% endif %}    
+                {% endif %}
             </div>
             <div class='col'>
-                {% if order.delivery_sent %}Sent{% else %}Not sent{% endif %}
+                {% if order.books %}
+                    {% if order.delivery_sent %}Sent{% else %}Not sent{% endif %}
+                {% endif %}
             </div>
             <div>
                 <a href='/admin/order/{{ order.txn_id }}'>update</a>
@@ -66,26 +73,29 @@
                     </div>
                 </div>
             {% endif %}
-            {% if order.linked_transactions %}
-                <div class="row col">
-                    {% for o in order.linked_transactions%}
-                    <div class="row">
-                        <div class='col text-left' style='padding-top:0;'>
-                            {{ o.created_at }}
-                        </div>
-                        <div class='col'>
-                            <a href='{{ get_paypal_base() }}/activity/payment/{{ o.txn_id }}'>{{ o.txn_id }}</a>
-                        </div>
-                        <div class='col'>
-                            {{ o.delivery_zone }}
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
             {% if order.notes %}
                 <div class="row col">
-                    <strong>Notes: </strong> {{ order.notes }}
+                    <strong>Notes: </strong> {{ order.notes|safe }}
+                </div>
+            {% endif %}
+            {% if order.linked_transactions %}
+                <div class="row bg-light pt-2">
+                    <div class="col">
+                    {% for o in order.linked_transactions%}
+                        <div class="row">
+                            <div class='col text-left' style='padding-top:0;'>
+                                {{ o.created_at }}
+                            </div>
+                            <div class='col'>
+                                <a href='{{ get_paypal_base() }}/activity/payment/{{ o.txn_id }}'>{{ o.txn_id }}</a>
+                            </div>
+                            <div class='col'>
+                                {{ o.delivery_zone }}
+                            </div>
+                            <div class='col-5'></div>
+                        </div>
+                    {% endfor %}
+                    </div>
                 </div>
             {% endif %}
         </details>

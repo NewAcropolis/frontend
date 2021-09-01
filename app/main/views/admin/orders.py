@@ -17,6 +17,10 @@ def admin_orders(year=None):
         form.setup_order_year(year)
         orders = api_client.get_orders(year)
 
+    for o in orders:
+        if o.get('notes'):
+            o['notes'] = o['notes'].replace('\r', '<br>')
+
     form.populate_order_list_form(orders)
 
     return render_template(
@@ -34,7 +38,7 @@ def admin_order_update(txn_code):
     errors = None
 
     if form.validate_on_submit():
-        response = api_client.update_order(txn_code, form.delivery_sent.data, form.notes.data)
+        response = api_client.update_order(txn_code, form.delivery_sent.data, form.refund_issued.data, form.notes.data)
         current_app.logger.info(response)
 
         if 'error' in session:

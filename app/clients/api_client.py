@@ -215,9 +215,10 @@ class ApiClient(BaseAPIClient):
     def get_order(self, txn_code):
         return self.get(url='order/{}'.format(txn_code))
 
-    def update_order(self, txn_id, delivery_sent, notes):
+    def update_order(self, txn_id, delivery_sent, refund_issued, notes):
         data = {
             'delivery_sent': delivery_sent,
+            'refund_issued': refund_issued,
             'notes': notes,
         }
 
