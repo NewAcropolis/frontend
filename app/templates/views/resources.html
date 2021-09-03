@@ -5,6 +5,7 @@
 {% endblock %}
 
 {% block post_header %}
+{% if config.get('SHOW_RESOURCE_MAINTENANCE') != '1' %}
 <div id="banner" class="carousel slide">
     <img class="d-block w-100 fit-image" src="/static/images/resource-banner.png">
 </div>
@@ -30,6 +31,7 @@
     </form>
     </div>
 </div>
+{% endif %}
 {% endblock %}
 
 {% block content %}
