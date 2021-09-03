@@ -22,7 +22,7 @@
       {% endblock %}
   </head>
   <body>
-    {% if is_not_live %}
+    {% if is_not_live() %}
     <div class="corner-ribbon bottom-left sticky turquoise">Testing</div>
     {% endif %}
     {% block first_body %}{% endblock %}
