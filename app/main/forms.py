@@ -45,6 +45,12 @@ class ContactForm(FlaskForm):
         ]
 
 
+class ReservePlaceForm(FlaskForm):
+    reserve_place_name = StringField('name', validators=[DataRequired()])
+    reserve_place_email = StringField('email', validators=[DataRequired(), Email()])
+    reserve_place_date_id = HiddenField()
+
+
 class MagazineForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     magazines = SelectField('Magazines')

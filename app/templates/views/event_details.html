@@ -2,9 +2,12 @@
 {% block title %}Event details{% endblock %}
 {% block extra_head %}
 <script>
-  function UpdatePayType() {
-    var date_selected = document.getElementById("dateSel");
+  var date_ids = {{ event.date_ids | safe }};
+
+  function UpdateDateSelected() {
     var PaypalForm = document.getElementById("paypalForm");
+    var date_id = document.getElementById("reserve_place_date_id");
+    var date_span = document.getElementById("date_span");
     var dateSel = PaypalForm.os1;
     var pay_type = PaypalForm.os0;
 
@@ -19,6 +22,9 @@
       pay_type.options[0].value = "Full";
       pay_type.options[1].text = "Concesssion £"+ PaypalForm.concfee.value + " GBP";
       pay_type.options[1].value = "Concession";
+
+      date_span.innerText = dateSel.options[dateSel.selectedIndex].text;
+      date_id.value = date_ids[dateSel.selectedIndex];
     }
   }
 </script>
@@ -63,7 +69,7 @@
                 <table>
                   <input type="hidden" name="on0" value="Type">
                   <input type="hidden" name="on1" value="Date">
-                  <select id="dateSel" onchange="UpdatePayType();" name="os1">
+                  <select id="dateSel" onchange="UpdateDateSelected();" name="os1">
                     {% for date in event.dates %}
                     <option value="{{loop.index}}">{{ date|strfdate }}</option>
                     {% endfor %}
@@ -78,8 +84,15 @@
                           <option value="Concession">Concession &pound;{{ event.conc_fee }} GBP</option>
                       </select> 
                     </td>
-                  </tr>     
+                  </tr>
                 </table>
+                {% if reserve_place_form %}
+                <br>
+                <a data-toggle="modal" data-target="#reservePlaceModal" href="#email" class="btn btn-warning text-info font-weight-bold">
+                Reserve the first evening for FREE
+                </a>
+                <br>
+                {% endif %}
                 <br>
                 <input type="hidden" name="currency_code" value="GBP">
                 <input 
@@ -103,6 +116,109 @@
                 <input type="image" style="height:30px;" src="/static/images/cart_orange.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
                 <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
               </form>
+              {% if reserve_place_form %}
+              <div class="modal fade" id="reservePlaceModal" tabindex="-1" role="dialog" aria-labelledby="reservePlaceModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="reservePlaceModalLabel">Reserve first evening: <span id="date_span"></span></h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body pb-0">
+                        <form id='_reserve_place_form' action="/" method="post">
+                          {{ reserve_place_form.csrf_token }}
+                          {{ reserve_place_form.reserve_place_date_id(value=event.date_ids[0]) }}
+                          <div class="form-group">
+                            {{ reserve_place_form.reserve_place_name(placeholder='Your name', class="w-100") }}
+                          </div>
+                          <div class="form-group">
+                              {{ reserve_place_form.reserve_place_email(placeholder='Your email address', class="w-100") }}
+                          </div>
+                          <div id='reserve_errors' class='d-none' style='line-height:normal;'></div>
+                          <div id='reserve_response' class='d-none'></div>
+                        </form>
+                    </div>
+                    <div class="modal-footer pt-2">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button id="reserve_place" type="submit" class="btn btn-outline-success">Reserve a place</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <script>
+$(document).ready(function() {
+  UpdateDateSelected();
+
+  $('#reservePlaceModal').on('shown.bs.modal', function () {
+    $('#name').focus();
+  })
+
+  $('#reservePlaceModal').on('hide.bs.modal', function () {
+    $('#reserve_response').addClass('d-none');
+    $('#reserve_response').text("");
+    $('#reserve_errors').addClass('d-none');
+    $('#name').val('');
+    $('#email').val('');
+    $('#reserve_place').prop('disabled', false);
+  })
+
+  $('#reserve_place_name').on('input', function(e) {
+    $('#reserve_place').prop('disabled', false);
+  })
+
+  $('#reserve_place_email').on('input', function(e) {
+    $('#reserve_place').prop('disabled', false);
+  })
+
+  $('#reserve_place').on('click', function(e) {
+    var url = "{{ url_for('main._reserve_place') }}"; // send the form data here.
+    _data = $('#_reserve_place_form').serialize();
+    $('#reserve_errors').html('');
+    $('#reserve_place').prop('disabled', true);
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: _data, // serializes the form's elements.
+      success: function (data) {
+        if (data) {
+          if (data['errors']) {
+            console.log('errors: ' + Object.keys(data['errors']));
+            $('#reserve_errors').removeClass('d-none');
+            $('#reserve_errors').html('');
+            for (i=0; i<Object.keys(data['errors']).length; i++){
+              $('#reserve_errors').append('<div>' + Object.keys(data['errors'])[i].substring(8) + ': ' + data['errors'][Object.keys(data['errors'])[i]][0] + '</div>');
+            }
+          }
+          else {
+            $('#reserve_response').removeClass('d-none');
+            if (data['error']) {
+              $('#reserve_response').text(data['error']);
+            } else {
+              $('#reserve_response').text("Your place has been reserved");
+              setTimeout(function() { $('#reservePlaceModal').modal('hide'); }, 5000);
+            }
+          }
+        }
+      }
+  });
+  e.preventDefault(); // block the traditional submission of the form.
+});
+
+{% if reserve_place_form.csrf_token %}
+  // Inject our CSRF token into our AJAX request.
+  $.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+      if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+        xhr.setRequestHeader("X-CSRFToken", "{{ reserve_place_form.csrf_token._value() }}")
+      }
+    }
+  })
+{% endif %}
+});
+          </script>
+          {% endif %}
             </div>
         </p>
       {% endif %}

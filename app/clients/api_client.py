@@ -352,3 +352,12 @@ class ApiClient(BaseAPIClient):
         }
 
         return self.post(url='send_message', data=data)
+
+    def reserve_place(self, name, email, eventdate_id):
+        data = {
+            'name': name,
+            'email': email,
+            'eventdate_id': eventdate_id
+        }
+
+        return self.post(url='event/reserve', data=data)
