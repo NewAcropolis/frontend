@@ -141,6 +141,14 @@ class ApiClient(BaseAPIClient):
     def get_limited_events(self):
         return self.get_nice_event_dates(self.get(url='events/limit/30'))
 
+    def get_events_in_year(self, year=None):
+        if not year:
+            year = int(datetime.today().strftime("%Y"))
+        return self.get_nice_event_dates(self.get(url='events/year/{}'.format(year)))
+
+    def get_event_attendance(self, eventdate_id):
+        return self.get(url='event/tickets_and_reserved/' + eventdate_id)
+
     def get_latest_magazine_from_db(self):
         return self.get(url='magazine/latest')
 
