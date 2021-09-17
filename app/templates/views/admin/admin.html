@@ -9,7 +9,8 @@
         {% endif %}
         {% if user_has_permissions('event') %}
         <div class='col-sm'>
-            <a href='/admin/events'>Events</a>
+            <a href='/admin/events'>Events</a> /
+            <a href='/admin/events/attendance'>Attendance</a>
         </div>
         {% endif %}
         {% if user_has_permissions('email') %}
