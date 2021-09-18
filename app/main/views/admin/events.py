@@ -150,7 +150,7 @@ def events_attendance(eventdate_id=None, year=None):
     attendance_form = EventAttendanceForm()
 
     attendance_form.setup_form(year, events, eventdate_id)
- 
+
     if not eventdate_id and events:
         eventdate_id = events[0]['event_dates'][0]['id']
     event_attendance = api_client.get_event_attendance(str(eventdate_id)) if eventdate_id else []
