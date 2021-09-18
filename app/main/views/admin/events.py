@@ -10,7 +10,7 @@ from app.cache import Cache
 from app.clients.api_client import only_show_approved_events, update_cache
 from app.clients.errors import HTTPError
 from app.main import main
-from app.main.forms import EventForm
+from app.main.forms import EventAttendanceForm, EventForm
 from app.main.views import render_page
 from app.main.views.events import is_future_event
 
@@ -139,6 +139,26 @@ def admin_events(selected_event_id=None, api_message=None):
         message=api_message,
         temp_event=temp_event,
         errors=json.dumps(errors)
+    )
+
+
+@main.route('/admin/events/attendance/<int:year>/<uuid:eventdate_id>', methods=['GET', 'POST'])
+@main.route('/admin/events/attendance/<int:year>', methods=['GET', 'POST'])
+@main.route('/admin/events/attendance', methods=['GET', 'POST'])
+def events_attendance(eventdate_id=None, year=None):
+    events = api_client.get_events_in_year(year)
+    attendance_form = EventAttendanceForm()
+
+    attendance_form.setup_form(year, events, eventdate_id)
+
+    if not eventdate_id and events:
+        eventdate_id = events[0]['event_dates'][0]['id']
+    event_attendance = api_client.get_event_attendance(str(eventdate_id)) if eventdate_id else []
+
+    return render_template(
+        'views/admin/events_attendance.html',
+        attendance_form=attendance_form,
+        event_attendance=event_attendance,
     )
 
 

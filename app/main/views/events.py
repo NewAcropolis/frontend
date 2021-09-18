@@ -1,12 +1,14 @@
 # coding: utf-8
 from datetime import datetime
-from flask import request
+from flask import current_app, jsonify, request, session
 from HTMLParser import HTMLParser
+import pytz
 
 from app import api_client
+from app.clients.errors import HTTPError
 from app.main import main
+from app.main.forms import ReservePlaceForm
 from app.main.views import render_page
-
 
 @main.route('/events')
 def events():
@@ -63,13 +65,17 @@ def event_details(event_id=None, **kwargs):
 
     event['is_future_event'] = is_future_event(event)
     event['is_paypal_ready'] = is_paypal_ready(event)
+    event['date_ids'] = [str(e['id']) for e in event['event_dates']]
 
     h = HTMLParser()
     event['_description'] = h.unescape(event['description'].encode('ascii', 'ignore'))
 
+    reserve_place_form = ReservePlaceForm() if event['event_type'] == 'Introductory Course' else None
+
     return render_page(
         'views/event_details.html',
-        event=event
+        event=event,
+        reserve_place_form=reserve_place_form
     )
 
 
@@ -82,3 +88,37 @@ def is_future_event(event):
 
 def is_paypal_ready(event):
     return event['booking_code'] and not event['booking_code'].startswith('pending:')
+
+
+@main.route('/_reserve_place', methods=['GET', 'POST'])
+def _reserve_place():
+    reserve_place_form = ReservePlaceForm()
+
+    reserve_place_form.validate()
+
+    if reserve_place_form.validate_on_submit():
+        current_app.logger.info(
+            'reserve_place: %s, %s, %s',
+            reserve_place_form.reserve_place_name.data,
+            reserve_place_form.reserve_place_email.data,
+            reserve_place_form.reserve_place_date_id.data,
+        )
+        try:
+            resp = api_client.reserve_place(
+                name=reserve_place_form.reserve_place_name.data,
+                email=reserve_place_form.reserve_place_email.data,
+                eventdate_id=reserve_place_form.reserve_place_date_id.data,
+            )
+            if 'error' in session:
+                error = session.pop('error')
+                current_app.logger.error(error)
+                tz = pytz.timezone("Europe/London")
+                return jsonify(
+                    {'error': 'Problem reserving a place at {}, please try again later'.format(
+                        datetime.now(tz).strftime('%H:%M:%S %d/%m/%y'))}
+                )
+            else:
+                return jsonify(resp)
+        except HTTPError as e:
+            return jsonify({'error': e.message})
+    return jsonify({'errors': reserve_place_form.errors})

@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block extra_head %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/admin.css"/>
+    <script charset="utf-8" type="text/javascript">
+        function updateYear() {
+            var year = document.getElementById("event_year");
+            window.location.replace("/admin/events/attendance/" + year.options[year.selectedIndex].text);
+        }
+        function updateEventdate() {
+            var year = document.getElementById("event_year");
+            var events = document.getElementById("events");
+            window.location.replace(
+                "/admin/events/attendance/" + year.options[year.selectedIndex].text
+                + '/' + events.options[events.selectedIndex].value
+            );
+        }
+    </script>
+{% endblock %}
+
+{% block content %}
+
+{% if user_has_permissions('event') %}
+
+<div class="container pb-3 text-right">
+    <form class="form" id="attendance_form" method="post">{{ attendance_form.csrf_token }}
+        <div class='text-left'>
+            <div class="row justify-content-center">
+                <div class='col-11'>
+                    <div class='row'>
+                        <div class='col-11'>
+                            {{ attendance_form.event_year(onchange="updateYear()") }}
+                            {{ attendance_form.events(onchange="updateEventdate()") }}
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </form>
+    <div>
+    {% if not event_attendance['reserved_places'] and not event_attendance['tickets'] %}
+    <div class="row justify-content-center">            
+        <div class='col-11 mt-0 pt-0 text-left'>
+            <div class="row">
+                <div class="mt-0 pt-0 col-11 text-left display-5">No reserved places or tickets</div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    {% if event_attendance['reserved_places'] %}
+        <div class="row justify-content-center">            
+            <div class='col-11 mt-0 pt-0 text-left'>
+                <div class="row">
+                    <div class="mt-0 pt-0 col-11 text-left display-5">Reserved places</div>
+                </div>
+        {% for person in event_attendance['reserved_places'] %}
+                <div class='row'>
+                    <div class='col-1 mt-0 pt-0'>{{ person.name }}</div>
+                    <div class='col-2 mt-0 pt-0'>{{ person.email }}</div>
+                </div>
+        {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% if event_attendance['tickets'] %}
+        <div class="row justify-content-center">
+            <div class='col-11 mt-0 pt-0 text-left'>
+                <div class="row">
+                    <div class="mt-0 pt-0 col-11 text-left display-5">Ticket holders</div>
+                </div>
+    {% for ticket in event_attendance['tickets'] %}
+                <div class='row'>
+                    <div class='col-2 mt-0 pt-0'>{{ ticket.created_at }}</div>
+                    <div class='col-5 mt-0 pt-0'>{{ ticket.id }}</div>
+                    <div class='col-1 mt-0 pt-0'>{{ ticket.ticket_number }}</div>
+                    <div class='col-2 mt-0 pt-0'>{{ ticket.name }}</div>
+                    <div class='col-2 mt-0 pt-0'>{{ ticket.status }}</div>
+                </div>
+    {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% endif %}
+    </div>
+    <a href="{{ url_for('main.admin') }}" id="return" name="return" class="btn btn-outline-secondary">Return</a>
+</div>
+
+{% endif %}
+
+{% endblock %}

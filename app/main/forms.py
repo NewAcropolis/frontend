@@ -6,6 +6,8 @@ from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import BooleanField, FormField, FieldList, FileField, HiddenField, SelectField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Email, ValidationError
 
+START_YEAR = 2021
+
 
 class SlimSubscriptionForm(FlaskForm):
     slim_subscription_email = StringField('email', validators=[DataRequired(), Email()])
@@ -43,6 +45,49 @@ class ContactForm(FlaskForm):
             ('order', 'Order enquiry'),
             ('other', 'Other')
         ]
+
+
+class ReservePlaceForm(FlaskForm):
+    reserve_place_name = StringField('name', validators=[DataRequired()])
+    reserve_place_email = StringField('email', validators=[DataRequired(), Email()])
+    reserve_place_date_id = HiddenField()
+
+
+class EventAttendanceForm(FlaskForm):
+    event_year = SelectField('event_year')
+    events = SelectField('events')
+
+    def setup_form(self, year, events, eventdate_id):
+        self.event_year.choices = []
+        for _year in range(datetime.now().year, START_YEAR, -1):
+            self.event_year.choices.append((str(_year), str(_year)))
+        self.event_year.choices.append((str(START_YEAR), str(START_YEAR)))
+
+        if year:
+            self.event_year.default = year
+            self.process()
+
+        self.events.choices = []
+
+        if events:
+            for event in events:
+                for eventdate in event['event_dates']:
+                    self.events.choices.append(
+                        (
+                            eventdate['id'],
+                            u'{} - {} - {}'.format(
+                                eventdate['event_datetime'], event['event_type'], event['title'])
+                        )
+                    )
+            if eventdate_id:
+                self.events.default = str(eventdate_id)
+                self.process()
+        else:
+            self.events.choices.append(('', 'No events found'))
+
+    def set_eventdate_id(self, eventdate_id):
+        self.events.default = str(eventdate_id)
+        self.process()
 
 
 class MagazineForm(FlaskForm):
@@ -315,9 +360,6 @@ class OrderForm(FlaskForm):
         self.delivery_sent.data = order['delivery_sent'] is True
         self.refund_issued.data = order['refund_issued'] is True
         self.notes.data = order['notes']
-
-
-START_YEAR = 2018
 
 
 class OrderListForm(FlaskForm):
