@@ -84,7 +84,6 @@ class WhenAccessingEventsDetailsPage(object):
             eventid=sample_future_event['id']
         ))
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
-        print(page)
         title = page.select_one('.event_title')
 
         assert title.text == sample_future_event['title']

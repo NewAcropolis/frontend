@@ -239,6 +239,7 @@ def sample_future_event(mocker):
         "event_type": "Talk",
         "image_filename": "event.png",
         "event_dates": [{
+            "id": "1",
             "event_datetime": "2018-12-30 19:00",
             "end_time": None
         }],

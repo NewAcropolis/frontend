@@ -40,8 +40,11 @@ def mock_oauth2session(mocker, auth_url, email=None):
 
 @pytest.fixture
 def access_areas():
-    access_areas = ['{}{}'.format(a.capitalize(), 's' if a != 'shop' else '')
-                    for a in Config.ACCESS_AREAS if a != 'admin']
+    access_areas = [
+        '{}{}'.format(
+            'Events / Attendance' if a == 'event' else a.capitalize(), 's' if a not in ['shop', 'event'] else '')
+        for a in Config.ACCESS_AREAS if a != 'admin'
+    ]
     access_areas.append('Users')
     return access_areas
 
@@ -174,7 +177,10 @@ class WhenAccessingAdminPagesAfterLogin(object):
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
 
         _areas = page.select('#content .row div')
-        areas = ["{}s".format(a.capitalize()) for a in areas.split(',') if a]
+        areas = [
+            "{}".format("Events / Attendance" if a == 'event' else a.capitalize() + 's')
+            for a in areas.split(',') if a
+        ]
         assert len(_areas) == len(areas)
 
         area_strs = [a.text.strip() for a in _areas]
