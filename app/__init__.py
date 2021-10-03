@@ -226,8 +226,18 @@ def init_app(app):
     @app.before_request
     def before_request():
         if '/admin' in request.url and not session.get('user'):
-            from app.main.views import google_login
-            return google_login()
+            if current_app.config['NO_ADMIN_AUTH']:
+                session['user_profile'] = {
+                    'name': 'Test User',
+                    'email': 'test@user',
+                }
+                session['user'] = {
+                    'id': 'fake-id',
+                    'access_area': 'admin',
+                }
+            else:
+                from app.main.views import google_login
+                return google_login()
 
     @app.after_request
     def after_request(response):
