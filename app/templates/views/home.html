@@ -23,6 +23,7 @@
             {% else %}
           <div class="carousel-item {% if loop.index == 1 %} active{% endif %}"></div>
           {% endif %}
+            {% if event.has_banner_text %}
             <img class="d-block w-100" src="{{ IMAGES_URL }}/standard/{{ event.image_filename }}">
             <div class="carousel-caption d-md-block">
               <div class="carousel-title">{{ event.title }}</div>
@@ -31,6 +32,11 @@
                 <h5><a href="{{ url_for('main.event_details', event_id=event.id) }}">FIND OUT MORE</a></h5>
               </div>
             </div>
+            {% else %}
+            <a href="{{ url_for('main.event_details', event_id=event.id) }}">
+              <img class="d-block w-100" src="{{ IMAGES_URL }}/standard/{{ event.image_filename }}">
+            </a>  
+            {% endif %}
           </div>
         {% endif %}
       {% endfor %}

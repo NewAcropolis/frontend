@@ -34,6 +34,7 @@ def app():
         'PAYPAL_ENCRYPTED_2': 'encrypted2',
         'OAUTHLIB_INSECURE_TRANSPORT': True,
         'WTF_CSRF_ENABLED': False,
+        'NO_ADMIN_AUTH': False,
     })
 
     # just return the date to make strfdate available in jinja2
@@ -122,7 +123,8 @@ def sample_future_events(mocker):
                 "end_time": None
             }],
             "event_state": "approved",
-            "venue": {"name": "London"}
+            "venue": {"name": "London"},
+            "has_banner_text": True
         },
         {
             "id": str(uuid4()),
@@ -135,7 +137,8 @@ def sample_future_events(mocker):
                 "end_time": "20:30"
             }],
             "event_state": "approved",
-            "venue": {"name": "Bristol"}
+            "venue": {"name": "Bristol"},
+            "has_banner_text": True
         },
         {
             "id": str(uuid4()),
@@ -149,7 +152,8 @@ def sample_future_events(mocker):
             }],
             "event_monthyear": "January 2019",
             "event_state": "approved",
-            "venue": {"name": "London"}
+            "venue": {"name": "London"},
+            "has_banner_text": True
         },
         {
             "id": str(uuid4()),
@@ -162,7 +166,8 @@ def sample_future_events(mocker):
                 "end_time": None
             }],
             "event_state": "approved",
-            "venue": {"name": "Online Event"}
+            "venue": {"name": "Online Event"},
+            "has_banner_text": True
         },
     ]
 
