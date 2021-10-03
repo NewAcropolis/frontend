@@ -70,12 +70,14 @@ class Preview(Config):
     SESSION_COOKIE_SECURE = False
     SESSION_PROTECTION = None
     OAUTHLIB_INSECURE_TRANSPORT = True
+    NO_ADMIN_AUTH = False
 
 
 class Live(Config):
     DEBUG = True
     SESSION_COOKIE_SECURE = False
     SESSION_PROTECTION = None
+    NO_ADMIN_AUTH = False
 
 
 configs = {
