@@ -26,6 +26,10 @@
                     <div class='col-xs-4'>
                         {{value(rows=rows, cols=cols)}}
                     </div>
+                {% elif type=='checkbox' %}
+                    <div class='col-xs-4'>
+                        {{value}}
+                    </div>
                 {% elif type=='file' %}
                     <div class='col-xs-4'>
                         <img id='file_img'>
@@ -136,6 +140,7 @@
             {{ admin_row(form.booking_code, readonly=true, size=20) }}
             {{ admin_row(form.remote_access, size=20, placeholder='zoom id or url') }}
             {{ admin_row(form.remote_pw, size=20, placeholder='meeting password') }}
+            {{ admin_row(form.has_banner_text, type='checkbox') }}
             {{ form.event_dates }}
             {{ form.reject_reasons_json }}
         </div>
@@ -248,7 +253,8 @@ $(function() {
             venue_id: $('#venue').val(),
             event_dates: getEventDates(true),
             start_time: $('#start_time').val(),
-            end_time: $('#end_time').val()
+            end_time: $('#end_time').val(),
+            has_banner_text: document.getElementById('has_banner_text').checked
         }
 
         var preview = window.open("{{ url_for('main.preview_events') }}?data=" + encodeURIComponent(JSON.stringify(send)));
@@ -431,6 +437,7 @@ $(function() {
                 elements._reject_reasons.html('');
                 elements._remote_access.val(temp_event['remote_access']);
                 elements._remote_pw.val(temp_event['remote_pw']);
+                document.getElementById('has_banner_text').checked = temp_event['has_banner_text'] === true;
 
                 set_event_dates(temp_event['event_dates']);
                 set_start_time(temp_event['start_time']);
@@ -471,6 +478,7 @@ $(function() {
                 elements._venue.val(data['venue']['id']);
                 elements._remote_access.val(data['remote_access']);
                 elements._remote_pw.val(data['remote_pw']);
+                document.getElementById('has_banner_text').checked = data['has_banner_text'] === true;
 
                 set_event_dates(data['event_dates']);
 
@@ -501,6 +509,7 @@ $(function() {
         elements._reject_reasons.html('');
         elements._remote_access.val('');
         elements._remote_pw.val('');
+        document.getElementById('has_banner_text').checked = true;
 
         $('#datepicker').datepicker("setDate", '');
         set_start_time('19:00');

@@ -143,11 +143,12 @@ def logout():
     if session.get('user_profile'):
         del session['user_profile']
         del session['user']
-        requests.post(
-            revoke_token_url,
-            params={'token': session.pop('oauth_token')},
-            headers={'content-type': 'application/x-www-form-urlencoded'}
-        )
+        if not current_app.config['NO_ADMIN_AUTH']:
+            requests.post(
+                revoke_token_url,
+                params={'token': session.pop('oauth_token')},
+                headers={'content-type': 'application/x-www-form-urlencoded'}
+            )
 
     return redirect(url_for('.index'))
 
