@@ -27,7 +27,8 @@ def create_app(**kwargs):
     application = Flask(__name__)
     from app.config import configs
 
-    environment_state = get_env(application)
+    environment_state = get_env()
+    application.logger.info("Running with {} settings".format(environment_state))
 
     csrf.init_app(application)
     application.config.from_object(configs[environment_state])
@@ -220,24 +221,25 @@ def init_app(app):
     app.jinja_env.globals['get_home_banner_files'] = _get_home_banner_files
     app.jinja_env.globals['get_topic_list_elements'] = _get_topic_list_elements
     app.jinja_env.globals['is_not_live'] = is_not_live
+    app.jinja_env.globals['get_env'] = get_env
     app.jinja_env.globals['config'] = app.config
     app.jinja_env.globals['delivery_statuses'] = delivery_statuses
 
     @app.before_request
     def before_request():
         if '/admin' in request.url and not session.get('user'):
-            # if current_app.config['NO_ADMIN_AUTH']:
-            #     session['user_profile'] = {
-            #         'name': 'Test User',
-            #         'email': 'test@user',
-            #     }
-            #     session['user'] = {
-            #         'id': 'fake-id',
-            #         'access_area': 'admin',
-            #     }
-            # else:
-            from app.main.views import google_login
-            return google_login()
+            if current_app.config['NO_ADMIN_AUTH']:
+                session['user_profile'] = {
+                    'name': 'Test User',
+                    'email': 'test@user',
+                }
+                session['user'] = {
+                    'id': 'fake-id',
+                    'access_area': 'admin',
+                }
+            else:
+                from app.main.views import google_login
+                return google_login()
 
     @app.after_request
     def after_request(response):
@@ -278,13 +280,9 @@ def setup_config(application, config_class):
     application.config.from_object(config_class)
 
 
-def get_env(app):
-    if 'www-preview' in get_root_path(app):
-        return 'preview'
-    elif 'www-live' in get_root_path(app):
-        return 'live'
-    else:
-        return os.environ.get('ENVIRONMENT', 'development')
+def get_env():
+    from app.config import get_setting
+    return get_setting('ENVIRONMENT', 'development')
 
 
 def get_root_path(application):
