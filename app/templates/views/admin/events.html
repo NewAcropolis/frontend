@@ -128,6 +128,7 @@
             {{ admin_row(form.description, rows=5, cols=100) }}
             {{ admin_row(form.image_filename, type='file') }}
             {{ form.existing_image_filename }}
+            {{ admin_row(form.show_banner_text, type='checkbox') }}
             {{ admin_row(form.fee, size=10) }}
             <div class="row">
                 <div class="col-2"></div>
@@ -140,7 +141,6 @@
             {{ admin_row(form.booking_code, readonly=true, size=20) }}
             {{ admin_row(form.remote_access, size=20, placeholder='zoom id or url') }}
             {{ admin_row(form.remote_pw, size=20, placeholder='meeting password') }}
-            {{ admin_row(form.show_banner_text, type='checkbox') }}
             {{ form.event_dates }}
             {{ form.reject_reasons_json }}
         </div>
