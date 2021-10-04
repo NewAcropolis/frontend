@@ -23,7 +23,7 @@
             {% else %}
           <div class="carousel-item {% if loop.index == 1 %} active{% endif %}"></div>
           {% endif %}
-            {% if event.has_banner_text %}
+            {% if event.show_banner_text %}
             <img class="d-block w-100" src="{{ IMAGES_URL }}/standard/{{ event.image_filename }}">
             <div class="carousel-caption d-md-block">
               <div class="carousel-title">{{ event.title }}</div>
