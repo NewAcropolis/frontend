@@ -8,11 +8,11 @@ def is_running_app_engine():
 
 
 def get_setting(name, default=None):
+    from google.cloud import ndb
     if is_running_app_engine():
         try:
             setting = Settings.get_or_set(name)
-        except:
-            from google.cloud import ndb
+        except ndb.exceptions.ContextError:
             client = ndb.Client()
             with client.context():
                 setting = Settings.get_or_set(name)
