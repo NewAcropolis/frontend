@@ -60,12 +60,6 @@ def create_app(**kwargs):
 
     environment_state = get_env()
 
-    # from google.auth import app_engine
-    # credentials = app_engine.Credentials()
-    import google.auth
-    credentials, project_id = google.auth.default()
-    print('Credentials:', credentials.__dict__, project_id)
-
     application.logger.info("Running with {} settings".format(environment_state))
     csrf.init_app(application)
     application.config.from_object(configs[environment_state])
@@ -74,6 +68,12 @@ def create_app(**kwargs):
     application.config.update(kwargs)
 
     if not application.config['TESTING']:
+        # from google.auth import app_engine
+        # credentials = app_engine.Credentials()
+        import google.auth
+        credentials, project_id = google.auth.default()
+        print('Credentials:', credentials.__dict__, project_id)
+
         use_gaesession(application)
 
     init_app(application)
