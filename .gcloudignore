@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # C extensions
-*.so
+; *.so
 
 # Distribution / packaging
 .Python
@@ -48,8 +48,8 @@ coverage.xml
 .pytest_cache/
 
 # Translations
-*.mo
-*.pot
+; *.mo
+; *.pot
 
 # Django stuff:
 *.log
