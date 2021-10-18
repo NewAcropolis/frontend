@@ -174,7 +174,7 @@ def render_page(template, **kwargs):
         try:
             kwargs['error'] = error['message']['error'] if isinstance(error, dict) else\
                 error['message'] if 'message' in error else\
-                error if isinstance(error, basestring) else "Unhandled error"
+                error if isinstance(error, str) else "Unhandled error"
         except TypeError:
             current_app.logger.error("Unhandled error %r", error)
             kwargs['error'] = "Unhandled error"
