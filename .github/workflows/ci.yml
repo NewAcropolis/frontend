@@ -28,6 +28,7 @@ jobs:
         pip install -r requirements.txt
 
         echo "running tests...."
+        echo "github.ref = " + github.ref
         make test
 
     - name: Initialize Google Cloud SDK preview
