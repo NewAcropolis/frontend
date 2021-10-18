@@ -11,14 +11,14 @@ from flask.sessions import SessionInterface as FlaskSessionInterface
 from flask.sessions import SessionMixin
 from werkzeug.datastructures import CallbackDict
 from itsdangerous import Signer, BadSignature, want_bytes
-from google.appengine.ext import ndb
+from google.cloud import ndb
 
 
 class SessionModel(ndb.Model):
     created_on = ndb.DateTimeProperty(auto_now_add=True, indexed=False)
     updated_on = ndb.DateTimeProperty(auto_now=True, indexed=False)
     expires_on = ndb.DateTimeProperty(indexed=True)
-    data = ndb.StringProperty(indexed=False)
+    data = ndb.TextProperty(indexed=False)
 
     def delete(self):
         self.key.delete()
