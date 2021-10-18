@@ -4,9 +4,10 @@ on:
   push:
     branches:
       - master
+      - python3
     tags:
       - 'v*'
-  pull_request:
+  # pull_request:
 
 jobs:
   build_test_deploy:
