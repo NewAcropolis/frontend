@@ -1,39 +1,35 @@
 runtime: python37
-# api_version: 1
-# threadsafe: true
 entrypoint: gunicorn -b :$PORT main:app
-# entrypoint: python main.py runserver
 handlers:
 - url: /static
   static_dir: app/static
-  # application_readable: true
 - url: /robots.txt
   static_files: app/static/robots.txt
   upload: app/static/robots.txt
 - url: /.*
   script: main.app
 
-# libraries:
-# - name: flask
-#   version: 0.12
-# - name: ssl
-#   version: latest
-# - name: numpy
-#   version: "1.6.1"
-
-# skip_files:
-# - app-dev.yaml
-
 # copy this file and create app-dev.yaml, then uncomment env_variables section 
 #
 # env_variables:
-#   SECRET_KEY: "secret_key"
 #   # localhost
+#   SECRET_KEY: "secret_key"
 #   API_BASE_URL: "http://localhost:5000"
+#   IMAGES_URL:<image url>
 #   ADMIN_CLIENT_ID: "admin"
 #   ADMIN_CLIENT_SECRET: "secret"
-#   IMAGES_URL: "http://images"
+#   # recaptcha settings for public web forms
+#   RECAPTCHA_PUBLIC_KEY:<recaptcha public key>
+#   RECAPTCHA_PRIVATE_KEY:<recaptcha private key>
+#   # paypal settings
+#   PAYPAL_ACCOUNT_ID:<paypal account ID>
+#   PAYPAL_DELIVERY:<paypal delivery id>
+#   PAYPAL_ENCRYPTED_1:<paypal cart encryption 1>
+#   PAYPAL_ENCRYPTED_2:<paypal cart encryption 2>
 #   # get google creds
-#   GOOGLE_OAUTH2_CLIENT_ID: "client id"
-#   GOOGLE_OAUTH2_CLIENT_SECRET: "client secret"
-#   GOOGLE_OAUTH2_REDIRECT_URI: "http://localhost:8080/oauth2callback"
+#   GOOGLE_OAUTH2_CLIENT_ID:<google oauth2 client id>
+#   GOOGLE_OAUTH2_CLIENT_SECRET:<google oauth2 client secret>
+#   GOOGLE_OAUTH2_REDIRECT_URI:<google oauth2 redirect uri>
+#   # google analytics 
+#   GA_ID:<google analytics id for stats>
+#   ENABLE_STATS:false
