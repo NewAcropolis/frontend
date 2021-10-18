@@ -1,8 +1,9 @@
 from flask import current_app
 import json
-try:
-    from google.appengine.ext import ndb
-except Exception:
+
+IS_DEV = __name__ == '__main__'
+
+if IS_DEV:
     from mock import Mock
 
     class MockCache(Mock):
@@ -13,7 +14,8 @@ except Exception:
             pass
 
     ndb = MockCache()
-    print('Problem importing google.appengine.ext.ndb')
+else:
+    from google.cloud import ndb
 
 
 class Cache(ndb.Model):
