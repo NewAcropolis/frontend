@@ -4,14 +4,18 @@ from app.settings import Settings
 
 
 def is_running_app_engine():
-    return 'SERVER_SOFTWARE' in os.environ and \
-        ('Google App Engine' in os.environ.get('SERVER_SOFTWARE') or
-         'Development' in os.environ.get('SERVER_SOFTWARE'))
+    return os.environ.get('IS_APP_ENGINE')
 
 
 def get_setting(name, default=None):
     if is_running_app_engine():
-        setting = Settings.get_or_set(name)
+        try:
+            setting = Settings.get_or_set(name)
+        except:
+            from google.cloud import ndb
+            client = ndb.Client()
+            with client.context():
+                setting = Settings.get_or_set(name)
         return setting if setting != 'NOT SET' else default
     else:
         print('Running with local env vars:', name)
@@ -49,6 +53,7 @@ class Config(object):
     GA_TM_ID = get_setting('GA_TM_ID')
     MAX_IMAGE_SIZE = 2 * 1024 * 1024
     ENABLE_STATS = get_setting('ENABLE_STATS') == 'true'
+    TESTING = False
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
