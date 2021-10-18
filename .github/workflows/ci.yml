@@ -57,7 +57,7 @@ jobs:
         # Suppose you need a cron task.
         # gcloud -q app deploy cron.yaml
 
-      - name: Initialize Google Cloud SDK test
+    - name: Initialize Google Cloud SDK test
       if: github.ref == 'refs/heads/python3'
       uses: zxyle/publish-gae-action@master
       with:
