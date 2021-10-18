@@ -1,27 +1,28 @@
-runtime: python27
-api_version: 1
-threadsafe: true
-
+runtime: python37
+# api_version: 1
+# threadsafe: true
+# entrypoint: gunicorn -b :$PORT main:app
+entrypoint: python main.py runserver
 handlers:
 - url: /static
   static_dir: app/static
-  application_readable: true
+  # application_readable: true
 - url: /robots.txt
   static_files: app/static/robots.txt
   upload: app/static/robots.txt
 - url: /.*
-  script: main.application
+  script: main.app
 
-libraries:
-- name: flask
-  version: 0.12
-- name: ssl
-  version: latest
-- name: numpy
-  version: "1.6.1"
+# libraries:
+# - name: flask
+#   version: 0.12
+# - name: ssl
+#   version: latest
+# - name: numpy
+#   version: "1.6.1"
 
-skip_files:
-- app-dev.yaml
+# skip_files:
+# - app-dev.yaml
 
 # copy this file and create app-dev.yaml, then uncomment env_variables section 
 #
