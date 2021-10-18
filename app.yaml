@@ -1,8 +1,8 @@
 runtime: python37
 # api_version: 1
 # threadsafe: true
-# entrypoint: gunicorn -b :$PORT main:app
-entrypoint: python main.py runserver
+entrypoint: gunicorn -b :$PORT main:app
+# entrypoint: python main.py runserver
 handlers:
 - url: /static
   static_dir: app/static
