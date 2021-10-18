@@ -2,12 +2,7 @@ import os
 
 import logging
 
-try:
-    from google.appengine.ext import ndb
-except Exception:
-    from mock import Mock
-    ndb = Mock()
-    print('Problem importing google.appengine.ext.ndb')
+from google.cloud import ndb
 
 
 class Settings(ndb.Model):
