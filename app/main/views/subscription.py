@@ -29,7 +29,7 @@ def subscription():
                 'views/subscription.html',
                 subscription_form=subscription_form,
                 email=subscription_form.subscription_email.data,
-                error=e.message
+                error=str(e)
             )
     elif subscription_form.errors:
         return render_page(
