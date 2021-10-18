@@ -9,12 +9,6 @@ import textile
 from na_common.delivery import statuses as delivery_statuses
 
 from app.clients.api_client import ApiClient
-from app.config import is_running_app_engine
-import requests_toolbelt.adapters.appengine
-
-# Use the App Engine Requests adapter. This makes sure that Requests uses
-# URLFetch.
-requests_toolbelt.adapters.appengine.monkeypatch()
 
 
 __version__ = '1.11.0'
@@ -24,6 +18,25 @@ csrf = CSRFProtect()
 
 
 def create_app(**kwargs):
+    class NDBMiddleware:
+        def __init__(self, app):
+            self.app = app
+            from google.cloud import ndb
+
+            if os.environ.get('IS_APP_ENGINE'):
+                self.client = ndb.Client()
+            else:
+                import mock
+                from google.auth.credentials import Credentials
+
+                credentials = mock.Mock(spec=Credentials)
+
+                self.client = ndb.Client(project="test", credentials=credentials, namespace='ns1')
+
+        def __call__(self, environ, start_response):
+            with self.client.context():
+                return self.app(environ, start_response)
+
     application = Flask(__name__)
     from app.config import configs
 
@@ -36,7 +49,7 @@ def create_app(**kwargs):
 
     application.config.update(kwargs)
 
-    if is_running_app_engine():
+    if not application.config['TESTING']:
         use_gaesession(application)
 
     init_app(application)
