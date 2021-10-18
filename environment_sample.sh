@@ -1,6 +1,25 @@
+export ENVIRONMENT=development
 export SECRET_KEY=<your secret>
 export API_BASE_URL=<api url, can be local or remmote>
 export ADMIN_CLIENT_ID=<must match api client id>
 export ADMIN_CLIENT_SECRET=<must match api client secret>
 export AUTH_USERNAME=<basic auth username for protected endpoints>
 export AUTH_PASSWORD=<basic auth password for protected endpoints>
+export IMAGES_URL=<image url>
+export RECAPTCHA_PUBLIC_KEY=<recaptcha public key used for web forms>
+export RECAPTCHA_PRIVATE_KEY=<recaptcha private key>
+export GA_ID=<google analytics id for stats>
+export PAYPAL_ACCOUNT_ID=<paypal account ID>
+export PAYPAL_DELIVERY=<paypal delivery id>
+export PAYPAL_ENCRYPTED_1=<paypal cart encryption 1>
+export PAYPAL_ENCRYPTED_2=<paypal cart encryption 2>
+export GOOGLE_OAUTH2_CLIENT_ID=<google oauth2 client id>
+export GOOGLE_OAUTH2_CLIENT_SECRET=<google oauth2 client secret>
+export GOOGLE_OAUTH2_REDIRECT_URI=<google oauth2 redirect uri>
+export ENABLE_STATS=false
+# for local datastore (don't change this unless you have changed the datastore run settings)
+export DATASTORE_DATASET=test
+export DATASTORE_EMULATOR_HOST=0.0.0.0:8002
+export DATASTORE_EMULATOR_HOST_PATH=0.0.0.0:8002/datastore
+export DATASTORE_HOST=http://0.0.0.0:8002
+export DATASTORE_PROJECT_ID=test
