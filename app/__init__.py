@@ -38,11 +38,12 @@ def create_app(**kwargs):
                 return self.app(environ, start_response)
 
     application = Flask(__name__)
+    application.wsgi_app = NDBMiddleware(application.wsgi_app)
     from app.config import configs
 
     environment_state = get_env()
-    application.logger.info("Running with {} settings".format(environment_state))
 
+    application.logger.info("Running with {} settings".format(environment_state))
     csrf.init_app(application)
     application.config.from_object(configs[environment_state])
     setup_config(application, configs[environment_state])
@@ -103,10 +104,10 @@ def _get_summary_course_details(topic):
     with open("app/templates/course_details/" + topic + ".txt", "rb") as f:
         details = f.read(current_app.config['SUMMARY_LIMIT'] + buffer_for_header)
 
-    header_length = len(details.split('\n')[1])
+    header_length = len(details.decode('utf-8').split('\n')[1])
 
     # ignore the first line as its the header
-    details = ' '.join(details.split('\n')[1:])
+    details = ' '.join(details.decode('utf-8').split('\n')[1:])
 
     # adjust details for header length
     details = details[header_length:current_app.config['SUMMARY_LIMIT'] + header_length]
@@ -140,7 +141,7 @@ def _get_home_banner_files():
         if os.path.exists(HOME_BANNER_PATH + img_f + ".txt"):
             with io.open(HOME_BANNER_PATH + img_f + ".txt", "rb") as f:
                 banner_text = f.read()
-            banner_text = textile.textile(banner_text)
+            banner_text = textile.textile(banner_text.decode('utf-8'))
             banner_files.append({'filename': img_f, 'text': banner_text})
         else:
             banner_files.append({'filename': img_f, 'text': ''})
@@ -220,7 +221,6 @@ def _get_paypal_base():
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
-    app.jinja_env.globals['PAYPAL_ACCOUNT'] = app.config.get('PAYPAL_ACCOUNT')
     app.jinja_env.globals['get_paypal_url'] = _get_paypal_url
     app.jinja_env.globals['get_paypal_base'] = _get_paypal_base
     app.jinja_env.globals['get_email'] = _get_email
@@ -303,7 +303,7 @@ def get_root_path(application):
 
 
 def use_gaesession(application):
-    import gaesession
+    from app import gaesession
     application.session_interface = gaesession.GaeNdbSessionInterface(application)
 
 
