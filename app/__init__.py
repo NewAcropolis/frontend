@@ -10,11 +10,10 @@ from na_common.delivery import statuses as delivery_statuses
 
 from app.clients.api_client import ApiClient
 from app.config import is_running_app_engine
-import requests_toolbelt.adapters.appengine
 
 # Use the App Engine Requests adapter. This makes sure that Requests uses
 # URLFetch.
-requests_toolbelt.adapters.appengine.monkeypatch()
+# requests_toolbelt.adapters.appengine.monkeypatch()
 
 
 __version__ = '1.11.0'
@@ -24,19 +23,57 @@ csrf = CSRFProtect()
 
 
 def create_app(**kwargs):
+    class NDBMiddleware:
+        def __init__(self, app):
+            self.app = app
+            from google.cloud import ndb
+
+            if is_running_app_engine():
+                # self.client = ndb.Client(credentials=credentials)
+                self.client = ndb.Client()
+            else:
+                import mock
+                from google.auth.credentials import Credentials
+
+                credentials = mock.Mock(spec=Credentials)
+
+                self.client = ndb.Client(project="test", credentials=credentials, namespace='ns1')
+
+        def __call__(self, environ, start_response):
+            with self.client.context():
+                # import contextvars
+                # # context = contextvars.ContextVar("_context", default=None)
+                # context = contextvars.copy_context()
+                # # import pdb; pdb.set_trace()
+                # print(list(context.items()))
+                # print(context.values().next())
+                # print('***', context.get(contextvars.ContextVar("_context", default=None)))
+                # context = contextvars.ContextVar("_context", default=None)
+                # # print(context.var)
+                # # print(contextvars.ContextVar("_toplevel_context", default=None).get())
+
+                return self.app(environ, start_response)
+
     application = Flask(__name__)
+    application.wsgi_app = NDBMiddleware(application.wsgi_app)
     from app.config import configs
 
     environment_state = get_env()
-    application.logger.info("Running with {} settings".format(environment_state))
 
+    # from google.auth import app_engine
+    # credentials = app_engine.Credentials()
+    import google.auth
+    credentials, project_id = google.auth.default()
+    print('Credentials:', credentials.__dict__, project_id)
+
+    application.logger.info("Running with {} settings".format(environment_state))
     csrf.init_app(application)
     application.config.from_object(configs[environment_state])
     setup_config(application, configs[environment_state])
 
     application.config.update(kwargs)
 
-    if is_running_app_engine():
+    if not application.config['TESTING']:
         use_gaesession(application)
 
     init_app(application)
@@ -90,10 +127,10 @@ def _get_summary_course_details(topic):
     with open("app/templates/course_details/" + topic + ".txt", "rb") as f:
         details = f.read(current_app.config['SUMMARY_LIMIT'] + buffer_for_header)
 
-    header_length = len(details.split('\n')[1])
+    header_length = len(details.decode('utf-8').split('\n')[1])
 
     # ignore the first line as its the header
-    details = ' '.join(details.split('\n')[1:])
+    details = ' '.join(details.decode('utf-8').split('\n')[1:])
 
     # adjust details for header length
     details = details[header_length:current_app.config['SUMMARY_LIMIT'] + header_length]
@@ -127,7 +164,7 @@ def _get_home_banner_files():
         if os.path.exists(HOME_BANNER_PATH + img_f + ".txt"):
             with io.open(HOME_BANNER_PATH + img_f + ".txt", "rb") as f:
                 banner_text = f.read()
-            banner_text = textile.textile(banner_text)
+            banner_text = textile.textile(banner_text.decode('utf-8'))
             banner_files.append({'filename': img_f, 'text': banner_text})
         else:
             banner_files.append({'filename': img_f, 'text': ''})
@@ -290,7 +327,7 @@ def get_root_path(application):
 
 
 def use_gaesession(application):
-    import gaesession
+    from app import gaesession
     application.session_interface = gaesession.GaeNdbSessionInterface(application)
 
 
