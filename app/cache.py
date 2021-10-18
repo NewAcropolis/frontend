@@ -1,21 +1,6 @@
 from flask import current_app
+from google.cloud import ndb
 import json
-
-IS_DEV = __name__ == '__main__'
-
-if IS_DEV:
-    from mock import Mock
-
-    class MockCache(Mock):
-        def get_data(*args):
-            pass
-
-        def set_data(*args):
-            pass
-
-    ndb = MockCache()
-else:
-    from google.cloud import ndb
 
 
 class Cache(ndb.Model):
