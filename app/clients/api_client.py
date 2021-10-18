@@ -34,21 +34,30 @@ def use_cache(**dkwargs):
     def use_cache_inner(f):
         @wraps(f)
         def decorated(*args, **kwargs):
+            if current_app.config['TESTING']:
+                if 'db_call' in dkwargs:
+                    data = dkwargs['db_call'](*args, **kwargs)
+                else:
+                    data = f(*args, **kwargs)
+                return data
+
+            data = None
             if 'from_cache' in dkwargs:
                 for cache_name in dkwargs['from_cache'].split(','):
                     data_cache = Cache.get_data(cache_name)
-                    if len(args) == 2:
-                        data = [d for d in data_cache if d[dkwargs['key']] == str(args[1])]
-                        if len(data) > 0:
-                            data = data[0]
-                            break
-                    else:
-                        current_app.logger.info("from_cache not 2 args")
+                    if data_cache:
+                        if len(args) == 2:
+                            data = [d for d in data_cache if d[dkwargs['key']] == str(args[1])]
+                            if len(data) > 0:
+                                data = data[0]
+                                break
+                        else:
+                            current_app.logger.info("from_cache not 2 args")
             else:
-                data = Cache.get_data(f.func_name)
+                data = Cache.get_data(f.__name__)
 
                 if data and dkwargs.get('update_daily'):
-                    updated_on = Cache.get_updated_on(f.func_name)
+                    updated_on = Cache.get_updated_on(f.__name__)
                     kwargs['func'] = f
                     if 'decorator' in dkwargs:
                         kwargs['decorator'] = dkwargs['decorator']
@@ -63,7 +72,7 @@ def use_cache(**dkwargs):
                 else:
                     data = f(*args, **kwargs)
                 if 'from_cache' not in dkwargs:
-                    Cache.set_data(f.func_name, data)
+                    Cache.set_data(f.__name__, data)
             return data
         return decorated
     return use_cache_inner
@@ -71,14 +80,14 @@ def use_cache(**dkwargs):
 
 def update_cache(*args, **kwargs):
     func = kwargs.pop('func')
-    cache_func_name = func.func_name.replace("_from_db", "")
-    cached_data = Cache.get_data(cache_func_name)
+    cache___name__ = func.__name__.replace("_from_db", "")
+    cached_data = Cache.get_data(cache___name__)
     if 'decorator' in kwargs:
         func = kwargs['decorator'](func)
 
     data = func(*args, **kwargs)
 
-    review_data = Cache.get_review_entities(func.func_name)
+    review_data = Cache.get_review_entities(func.__name__)
 
     if review_data and 'sort_by' in kwargs:
         sort_by = kwargs.pop('sort_by')
@@ -86,11 +95,11 @@ def update_cache(*args, **kwargs):
 
     if cached_data != data:
         current_app.logger.info('Cache updated from db')
-        Cache.set_data(cache_func_name, data)
+        Cache.set_data(cache___name__, data)
     else:
-        current_app.logger.info('Cache does not need updating for {}'.format(func.func_name))
+        current_app.logger.info('Cache does not need updating for {}'.format(func.__name__))
 
-    Cache.purge_older_versions(func.func_name)
+    Cache.purge_older_versions(func.__name__)
 
 
 class ApiClient(BaseAPIClient):

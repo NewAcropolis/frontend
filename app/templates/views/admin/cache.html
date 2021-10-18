@@ -9,7 +9,7 @@
                 <div class="col-6 font-weight-bold">Name</div>
                 <div class="col-6 font-weight-bold">Number cached</div>
             </div>
-        {% for _, c in cache.iteritems() %}
+        {% for _, c in cache.items() %}
             <div class="row">
                 <div class="col-6">{{c.name}}</div>
                 <div class="col-6">{{c.count}}</div>
