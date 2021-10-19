@@ -13,12 +13,14 @@ handlers:
 #
 # env_variables:
 #   # localhost
-#   ENVIRONMENT: "development",
+#   ENVIRONMENT: "development"
 #   SECRET_KEY: "secret_key"
+#   SESSION_EXPIRT: 30
 #   API_BASE_URL: "http://localhost:5000"
 #   IMAGES_URL:<image url>
 #   ADMIN_CLIENT_ID: "admin"
 #   ADMIN_CLIENT_SECRET: "secret"
+#   SHOW_RESOURCE_MAINTENANCE: false
 #   # recaptcha settings for public web forms
 #   RECAPTCHA_PUBLIC_KEY:<recaptcha public key>
 #   RECAPTCHA_PRIVATE_KEY:<recaptcha private key>
