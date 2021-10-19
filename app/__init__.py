@@ -9,7 +9,7 @@ import textile
 from na_common.delivery import statuses as delivery_statuses
 
 from app.clients.api_client import ApiClient
-from app.config import is_running_app_engine
+# from app.config import is_running_app_engine
 
 # Use the App Engine Requests adapter. This makes sure that Requests uses
 # URLFetch.
@@ -28,7 +28,7 @@ def create_app(**kwargs):
             self.app = app
             from google.cloud import ndb
 
-            if is_running_app_engine():
+            if os.environ.get('IS_APP_ENGINE'):
                 self.client = ndb.Client()
             else:
                 import mock
@@ -56,12 +56,6 @@ def create_app(**kwargs):
     application.config.update(kwargs)
 
     if not application.config['TESTING']:
-        # from google.auth import app_engine
-        # credentials = app_engine.Credentials()
-        import google.auth
-        credentials, project_id = google.auth.default()
-        print('Credentials:', credentials.__dict__, project_id)
-
         use_gaesession(application)
 
     init_app(application)

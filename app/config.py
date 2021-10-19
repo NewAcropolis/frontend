@@ -3,8 +3,8 @@ import os
 # from app.settings import Settings
 
 
-def is_running_app_engine():
-    return os.environ.get('IS_APP_ENGINE')
+# def is_running_app_engine():
+#     return os.environ.get('IS_APP_ENGINE')
 
 
 # def get_setting(name, default=None):
