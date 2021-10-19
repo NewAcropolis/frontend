@@ -9,11 +9,6 @@ import textile
 from na_common.delivery import statuses as delivery_statuses
 
 from app.clients.api_client import ApiClient
-# from app.config import is_running_app_engine
-
-# Use the App Engine Requests adapter. This makes sure that Requests uses
-# URLFetch.
-# requests_toolbelt.adapters.appengine.monkeypatch()
 
 
 __version__ = '1.11.0'

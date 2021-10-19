@@ -1,25 +1,5 @@
 #!/usr/bin/python
 import os
-# from app.settings import Settings
-
-
-# def is_running_app_engine():
-#     return os.environ.get('IS_APP_ENGINE')
-
-
-# def get_setting(name, default=None):
-#     from google.cloud import ndb
-#     if is_running_app_engine():
-#         try:
-#             setting = Settings.get_or_set(name)
-#         except ndb.exceptions.ContextError:
-#             client = ndb.Client()
-#             with client.context():
-#                 setting = Settings.get_or_set(name)
-#         return setting if setting != 'NOT SET' else default
-#     else:
-#         print('Running with local env vars:', name)
-#         return os.environ.get(name, default)
 
 
 class Config(object):
@@ -58,7 +38,7 @@ class Config(object):
     WTF_CSRF_TIME_LIMIT = None
     WTF_CSRF_SSL_STRICT = False
 
-    SHOW_RESOURCE_MAINTENANCE = os.environ.get('SHOW_RESOURCE_MAINTENANCE', '')
+    SHOW_RESOURCE_MAINTENANCE = os.environ.get('SHOW_RESOURCE_MAINTENANCE', '') == 'true'
 
 
 class Development(Config):
