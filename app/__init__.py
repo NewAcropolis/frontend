@@ -29,7 +29,6 @@ def create_app(**kwargs):
             from google.cloud import ndb
 
             if is_running_app_engine():
-                # self.client = ndb.Client(credentials=credentials)
                 self.client = ndb.Client()
             else:
                 import mock
@@ -41,17 +40,6 @@ def create_app(**kwargs):
 
         def __call__(self, environ, start_response):
             with self.client.context():
-                # import contextvars
-                # # context = contextvars.ContextVar("_context", default=None)
-                # context = contextvars.copy_context()
-                # # import pdb; pdb.set_trace()
-                # print(list(context.items()))
-                # print(context.values().next())
-                # print('***', context.get(contextvars.ContextVar("_context", default=None)))
-                # context = contextvars.ContextVar("_context", default=None)
-                # # print(context.var)
-                # # print(contextvars.ContextVar("_toplevel_context", default=None).get())
-
                 return self.app(environ, start_response)
 
     application = Flask(__name__)
@@ -244,7 +232,6 @@ def _get_paypal_base():
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
-    app.jinja_env.globals['PAYPAL_ACCOUNT'] = app.config.get('PAYPAL_ACCOUNT')
     app.jinja_env.globals['get_paypal_url'] = _get_paypal_url
     app.jinja_env.globals['get_paypal_base'] = _get_paypal_base
     app.jinja_env.globals['get_email'] = _get_email
