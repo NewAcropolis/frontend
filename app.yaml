@@ -13,6 +13,7 @@ handlers:
 #
 # env_variables:
 #   # localhost
+#   ENVIRONMENT: "development",
 #   SECRET_KEY: "secret_key"
 #   API_BASE_URL: "http://localhost:5000"
 #   IMAGES_URL:<image url>
