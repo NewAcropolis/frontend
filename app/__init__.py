@@ -294,8 +294,7 @@ def setup_config(application, config_class):
 
 
 def get_env():
-    from app.config import get_setting
-    return get_setting('ENVIRONMENT', 'development')
+    return os.environ.get('ENVIRONMENT', 'development')
 
 
 def get_root_path(application):

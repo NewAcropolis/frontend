@@ -1,6 +1,9 @@
 export ENVIRONMENT=development
 export SECRET_KEY=<your secret>
 export API_BASE_URL=<api url, can be local or remmote>
+export FRONTEND_BASE_URL=<frontend base url>
+export SESSION_EXPIRY=<session expiry time>
+export SECRET_KEY=<secret key for CSRF>
 export ADMIN_CLIENT_ID=<must match api client id>
 export ADMIN_CLIENT_SECRET=<must match api client secret>
 export AUTH_USERNAME=<basic auth username for protected endpoints>
@@ -9,6 +12,7 @@ export IMAGES_URL=<image url>
 export RECAPTCHA_PUBLIC_KEY=<recaptcha public key used for web forms>
 export RECAPTCHA_PRIVATE_KEY=<recaptcha private key>
 export GA_ID=<google analytics id for stats>
+export GA_TM_ID=<google analytics tag manager id>
 export PAYPAL_ACCOUNT_ID=<paypal account ID>
 export PAYPAL_DELIVERY=<paypal delivery id>
 export PAYPAL_ENCRYPTED_1=<paypal cart encryption 1>
