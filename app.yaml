@@ -17,6 +17,7 @@ handlers:
 #   SECRET_KEY: "secret_key"
 #   SESSION_EXPIRT: 30
 #   API_BASE_URL: "http://localhost:5000"
+#   FRONTEND_BASE_URL: "http://localhost:8080"
 #   IMAGES_URL:<image url>
 #   ADMIN_CLIENT_ID: "admin"
 #   ADMIN_CLIENT_SECRET: "secret"
