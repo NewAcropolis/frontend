@@ -9,11 +9,12 @@ handlers:
 - url: /.*
   script: main.app
 
+# to test out deployments of secrets manually
 # copy this file and create app-dev.yaml, then uncomment env_variables section 
+# then run `make deploy`
 #
 # env_variables:
-#   # localhost
-#   ENVIRONMENT: "development"
+#   ENVIRONMENT: <development (local and is default) | preview | live>
 #   SECRET_KEY: "secret_key"
 #   SESSION_EXPIRT: 30
 #   API_BASE_URL: "http://localhost:5000"
@@ -36,4 +37,5 @@ handlers:
 #   GOOGLE_OAUTH2_REDIRECT_URI:<google oauth2 redirect uri>
 #   # google analytics 
 #   GA_ID:<google analytics id for stats>
+#   GA_TM_ID:<google analytics tag manager id>
 #   ENABLE_STATS:false
