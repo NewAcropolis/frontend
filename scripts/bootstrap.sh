@@ -8,4 +8,4 @@ if [ -z "$VIRTUAL_ENV" ] && [ -d venv ]; then
   source ./venv/bin/activate
 fi
 
-pip3 install -r requirements.txt  -t lib/
+pip3 install -r requirements.txt
