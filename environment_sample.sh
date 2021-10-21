@@ -21,7 +21,7 @@ export GOOGLE_OAUTH2_CLIENT_ID=<google oauth2 client id>
 export GOOGLE_OAUTH2_CLIENT_SECRET=<google oauth2 client secret>
 export GOOGLE_OAUTH2_REDIRECT_URI=<google oauth2 redirect uri>
 export ENABLE_STATS=false
-# for local datastore
+# for local datastore (don't change this unless you have changed the datastore run settings)
 export DATASTORE_DATASET=test
 export DATASTORE_EMULATOR_HOST=0.0.0.0:8002
 export DATASTORE_EMULATOR_HOST_PATH=0.0.0.0:8002/datastore
