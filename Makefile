@@ -13,6 +13,10 @@ lib-dependencies: ## Create the lib for dependencies
 test: ## Run all tests
 	./scripts/run_tests.sh
 
+.PHONY: bootstrap
+bootstrap: ## Bootstrap the dependencies and venv
+	./scripts/bootstrap.sh
+
 .PHONY: datastore
 datastore: ## Run the datastore
 	./scripts/run_datastore.sh
