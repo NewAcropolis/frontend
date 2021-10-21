@@ -1,75 +1,101 @@
-# New Acropolis UK frontend  [![Build Status](https://travis-ci.org/NewAcropolis/frontend.svg?branch=master)](https://travis-ci.org/NewAcropolis/frontend)
+# New Acropolis UK frontend  ![Build Status](https://github.com/NewAcropolis/frontend/actions/workflows/ci.yml/badge.svg?branch=master)
 
 ## Pre-requisites
 
-Before starting, ensure you are using python 2.7 and that you have (gcloud sdk)[https://cloud.google.com/sdk/docs/] and follow the instructions to install it.
+Before starting, ensure you are using python 3.7 and that you have (gcloud sdk version 357.0.0)[https://cloud.google.com/sdk/docs/] and follow the instructions to install it.
 
-Then install google app engine
+If you have another version of gcloud installed, you can set it to 357.0.0 -
 
-`gcloud components install app-engine-python`
+`gcloud components update --version 357.0.0`
 
-To get the frontend running you may need to update the `PYTHONPATH` to pick up the `google_appengine` SDK:
+Also install the gcloud datastore emulator - 
+
+`gcloud components install cloud-datastore-emulator`
+
+You should have these components installed, `gcloud version` - 
 
 ```
-export PYTHONPATH="$PYTHONPATH:<location of google-cloud-sdk>/platform/google_appengine:<location of google-cloud-sdk>/platform/google_appengine/lib/:<location of google-cloud-sdk>/platform/google_appengine/lib/yaml/"
+Google Cloud SDK 357.0.0
+beta 2021.10.04
+bq 2.0.71
+cloud-datastore-emulator 2.1.0
+core 2021.09.10
+gsutil 4.67
 ```
 
-## Create virtualenv
+### Quickstart
 
-A Virtual Environment is an isolated working copy of Python which
-allows you to work on a specific project without worry of affecting other projects
+1. Clone this repo and then run the bootstrap script to set things up:
+  - only needs to be run once for setup.
 
-Follow this guide to set up your virtualenv for this project;
-https://virtualenvwrapper.readthedocs.io/en/latest/
+  `./scripts/bootstrap.sh`
+
+2. Run the datastore in another terminal window:
+  - this needs to be kept running in another terminal for the duration of the local app life.
+
+  `make datastore`
+
+3. Copy the environment_sample.sh to environment.sh, populate the env vars and then source it:
+  - `environment.sh` should also be sourced whenever you want to change an environment variable before running the app.
+
+  `. ./environment.sh`
+
+4. Finally get the app running:
+
+  `make run`
+
+5. Visit the website in your browser - http://localhost:8080/
+  - first run might be a bit slow as the cache builds up from API requests
+  - subsequent runs should be much faster
+
+## Running tests
+
+In order to test changes locally run `make test`, this will help catch test errors before they appear in github actions.
+- test coverage is quite low at the moment, in the future this will be improved so that cover at least 80% of the codebase.
 
 ## Using Makefile
 
-Before executing `make run`, execute `make dependencies` to build the `lib` directory.
+Run `Make` to list other available commands
 
-Run `Make` to list available commands
+## Updating deployed secrets
 
-## Adding secrets
-
-Make a copy of `app.yaml` to `app-dev.yaml` and add secrets as environment vars to `app-dev.yaml`
+1. Update the following JSON block with env var settings:
 
 ```
-env_variables:
-  SECRET_KEY: <secret key>
-  API_BASE_URL: <new acropolis api url>
-  FRONTEND_BASE_URL: <new acropolis frontend url>
-  ADMIN_CLIENT_ID: <admin client id - should match api>
-  ADMIN_CLIENT_SECRET: <admin secret - should match api>
-  AUTH_USERNAME: <basic auth username>
-  AUTH_PASSWORD: <basic auth password>
-  IMAGES_URL: <image url for events>
-  GOOGLE_OAUTH2_CLIENT_ID: <google oauth2 client id>
-  GOOGLE_OAUTH2_CLIENT_SECRET: <google oauth2 client secret>
-  GOOGLE_OAUTH2_REDIRECT_URI: <google auth redirect>
-
-  PAYPAL_ACCOUNT: <paypal account>
-  PAYPAL_ACCOUNT_ID: <paypal account id>
-  PAYPAL_ENCRYPTED_1: <paypal view cart encryption up to 1100 chars long>
-  PAYPAL_ENCRYPTED_2: <paypal view cart encryption remaining part>
-  PAYPAL_DELIVERY = <paypal delivery id>
-  SESSION_EXPIRY = <session expiry length in minutes>
-  RECAPTCHA_PUBLIC_KEY = <recaptcha public key>
-  RECAPTCHA_PRIVATE_KEY = <recaptcha private key>
-  GA_ID = <google analytics id>
-  GA_TM_ID = <google analytics tag manager id>
-  ENABLE_STATS = <set to `true` to enable stats push >
-
+{
+  "env_variables": {
+    "ENVIRONMENT": <environment, defaults to development>,
+    "API_BASE_URL": <API URL>,
+    "FRONTEND_BASE_URL": <Frontend URL>,
+    "ADMIN_CLIENT_ID": <API client ID>,
+    "ADMIN_CLIENT_SECRET": <API client secret>,
+    "SESSION_EXPIRY": 30,
+    "SECRET_KEY": "secret-key",
+    "AUTH_USERNAME": <Basic auth username>,
+    "AUTH_PASSWORD": <Basic auth password>,
+    "IMAGES_URL": <Image path>,
+    "RECAPTCHA_PUBLIC_KEY": <Recaptcha public key>,
+    "RECAPTCHA_PRIVATE_KEY": <Recaptcha private key>,
+    "GA_ID": <Google analytics ID>,
+    "GA_TM_ID": <Google Tag Manager ID>,
+    "PAYPAL_DELIVERY": <Paypal hosted button ID>,
+    "PAYPAL_ENCRYPTED_1": <Part 1 of Paypal encrypted code for shopping cart>,
+    "PAYPAL_ENCRYPTED_2": <Part 2 of Paypal encrypted code for shopping cart>,
+    "GOOGLE_OAUTH2_CLIENT_ID": <Oauth2 ID>,
+    "GOOGLE_OAUTH2_CLIENT_SECRET": <Oauth2 secret>,
+    "GOOGLE_OAUTH2_REDIRECT_URI": <Oauth2 redirect after authentication>,
+    "PAYPAL_ACCOUNT_ID": <Paypal account ID>,
+    "ENABLE_STATS": false,
+    "SHOW_RESOURCE_MAINTENANCE": false,
+    "IS_APP_ENGINE": true
+  }
+}
 ```
 
-To update a secret you will need to log into the datastore and edit the value there or remove the value and deploy the changes.
+2. Save the JSON block as `secrets.json`and then convert it to base 64:
 
-Then run `make deploy`, this will add the env vars to the datastore.
+  `base64 -i secrets.json > secrets.b64`
 
-Pushing changes to the github repo will trigger an automatic deployment onto app engine.
+3. In Github settings under secret, update the appropriate environment secret with the base 64 string.
 
-## Viewing the frontend
-
-Run `make dev-server` and visit `http://localhost:8080/`
-
-## Switching between API environments
-
-Remember to remove all sessions, otherwise new keys will not be reloaded
+4. To deploy new settings re-run the last merge (for preview deployment) or tag (for live deployments) in Github actions.
