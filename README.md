@@ -8,7 +8,7 @@ Also install the gcloud datastore emulator -
 
 `gcloud components install cloud-datastore-emulator`
 
-You should have these components installed - 
+You should have these components installed after running `gcloud version`- 
 
 ```
 beta 2021.10.04
@@ -23,7 +23,7 @@ gsutil 4.67
 1. Clone this repo and then run the bootstrap script to set things up:
   - only needs to be run once for setup.
 
-  `./scripts/bootstrap.sh`
+  `make bootstrap`
 
 2. Run the datastore in another terminal window:
   - this needs to be kept running in another terminal for the duration of the local app life.
