@@ -2,7 +2,7 @@
 
 ## Pre-requisites
 
-Before starting, ensure you are using python 3.7 and that you have (gcloud sdk version 357.0.0)[https://cloud.google.com/sdk/docs/] and follow the instructions to install it.
+Before starting, ensure you are using python 3.7 and that you have [gcloud sdk version 357.0.0](https://cloud.google.com/sdk/docs/) and follow the instructions to install it.
 
 Also install the gcloud datastore emulator - 
 
