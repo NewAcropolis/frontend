@@ -107,10 +107,11 @@ logs
 # locals
 
 .DS_Store
+.vscode
 
 # local settings
 
-environment.sh
+*environment.sh*
 app-dev.yaml
 client-secret.json
 google_init.sh
