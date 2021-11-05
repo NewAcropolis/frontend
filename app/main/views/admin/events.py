@@ -42,6 +42,7 @@ def admin_events(selected_event_id=None, api_message=None):
     form.set_events_form(events, event_types, speakers, venues)
 
     if form.validate_on_submit():
+        print('validating')
         if form.image_filename.data:
             filename = form.image_filename.data.filename
         else:
@@ -81,7 +82,7 @@ def admin_events(selected_event_id=None, api_message=None):
 
         adjusted_event = event.copy()
 
-        from cgi import escape
+        from html import escape
         adjusted_event['description'] = escape(event['description'])
         adjusted_event['event_dates'] = json.loads(str(event['event_dates']))
         file_request = request.files.get('image_filename')
@@ -167,7 +168,6 @@ def events_attendance(eventdate_id=None, year=None):
 def _get_event():
     event = [e for e in session['events'] if e['id'] == request.args.get('event')]
     if event:
-        from six.moves.html_parser import HTMLParser
         h = HTMLParser()
         event[0]['description'] = h.unescape(event[0]['description'])
         return jsonify(event[0])
