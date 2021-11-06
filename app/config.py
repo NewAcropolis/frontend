@@ -78,6 +78,7 @@ class Live(Config):
     SESSION_COOKIE_SECURE = False
     SESSION_PROTECTION = None
     NO_ADMIN_AUTH = False
+    OAUTHLIB_INSECURE_TRANSPORT = True
 
 
 configs = {
