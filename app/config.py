@@ -69,7 +69,7 @@ class Preview(Config):
     DEBUG = True
     SESSION_COOKIE_SECURE = False
     SESSION_PROTECTION = None
-    OAUTHLIB_INSECURE_TRANSPORT = True
+    # OAUTHLIB_INSECURE_TRANSPORT = True
     NO_ADMIN_AUTH = False
 
 
