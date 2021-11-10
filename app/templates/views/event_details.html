@@ -54,7 +54,7 @@
         <h2 class="event_blue">Fee to be decided</h2>
       {% elif event.fee == -2 %}
         <h2 class="event_blue">See external site for fees</h2>
-      {% elif config['PAYPAL_ACCOUNT_ID'] and event.is_future_event %}
+      {% elif event.is_future_event %}
         <h2 class="event_blue">BUY YOUR TICKETS NOW</h2>
         <p class="important">
             <div class="pt-3">
