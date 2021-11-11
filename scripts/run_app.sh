@@ -1,28 +1,11 @@
 #!/bin/bash
 set +e
 
-echo "Deprecated -- use make dev-server instead"
+port=8080
 
-ENV=development
-www_dir="www-$ENV"
-
-port=5050
-
-if [ ! -z "$1" ]; then
-    www_dir="www-$1"
-    cd $www_dir
-    port="$(python app/config.py -e $1)"
-
-    ENV=$1
+if [ -z "$VIRTUAL_ENV" ] && [ -d venv ]; then
+  echo 'activate venv'
+  source ./venv/bin/activate
 fi
 
-# kill any existing services running on port
-# fuser -k -n tcp $port
-
-echo "hosting on $www_dir"
-
-python main.py runserver --port $port
-
-if [ $www_dir != "www" ]; then
-    exit 0
-fi
+python3 main.py runserver --port $port

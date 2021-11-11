@@ -199,11 +199,11 @@ class MockData:
 class MockUserField:
     @classmethod
     def set_fields(self, data):
-        for k, v in data.iteritems():
+        for k, v in data.items():
             setattr(self, k, None)
 
     def set_values(self, data):
-        for k, v in data.iteritems():
+        for k, v in data.items():
             setattr(self, k, MockData(v.get('data')))
 
 class MockForm:

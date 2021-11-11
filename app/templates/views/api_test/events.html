@@ -30,7 +30,7 @@
                 </div>
                 {% endif %}
 
-                {% if config['PAYPAL_ACCOUNT'] %}
+                {% if config['PAYPAL_ACCOUNT_ID'] %}
                 <div class="pt-3">
                 <form id="paypalForm{{ item.id }}" target="paypal" action="{{ get_paypal_url() }}" method="post">
                     <input type="hidden" name="cmd" value="_s-xclick">

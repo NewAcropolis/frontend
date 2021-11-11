@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # C extensions
-*.so
+; *.so
 
 # Distribution / packaging
 .Python
@@ -48,8 +48,8 @@ coverage.xml
 .pytest_cache/
 
 # Translations
-*.mo
-*.pot
+; *.mo
+; *.pot
 
 # Django stuff:
 *.log
@@ -60,46 +60,6 @@ db.sqlite3
 instance/
 .webassets-cache
 
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-
 # logs
 
 logs
@@ -107,12 +67,3 @@ logs
 # locals
 
 .DS_Store
-.vscode
-
-# local settings
-
-*environment.sh*
-app-dev.yaml
-client-secret.json
-google_init.sh
-secrets

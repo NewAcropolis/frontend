@@ -1,0 +1,1 @@
+gcloud beta emulators datastore start --project test --host-port 0.0.0.0:8002 --consistency=1

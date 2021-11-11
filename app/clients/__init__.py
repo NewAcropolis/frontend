@@ -5,7 +5,7 @@ from flask import (
 )
 import json
 import requests
-from urlparse import urljoin
+from urllib.parse import urljoin
 import time
 
 from app.clients.errors import HTTPError, InvalidResponse

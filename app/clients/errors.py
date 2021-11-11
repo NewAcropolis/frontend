@@ -15,7 +15,7 @@ class APIError(Exception):
     @property
     def message(self):
         try:
-            if isinstance(self.response, basestring):
+            if isinstance(self.response, str):
                 return self.response.replace(current_app.config['API_BASE_URL'], 'https://API')
             return self.response.json().get('message', self.response.json().get('errors'))
         except (TypeError, ValueError, AttributeError, KeyError):

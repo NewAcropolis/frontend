@@ -1,38 +1,41 @@
-runtime: python27
-api_version: 1
-threadsafe: true
-
+runtime: python37
+entrypoint: gunicorn -b :$PORT main:app
 handlers:
 - url: /static
   static_dir: app/static
-  application_readable: true
 - url: /robots.txt
   static_files: app/static/robots.txt
   upload: app/static/robots.txt
 - url: /.*
-  script: main.application
+  script: main.app
 
-libraries:
-- name: flask
-  version: 0.12
-- name: ssl
-  version: latest
-- name: numpy
-  version: "1.6.1"
-
-skip_files:
-- app-dev.yaml
-
+# to test out deployments of secrets manually
 # copy this file and create app-dev.yaml, then uncomment env_variables section 
+# then run `make deploy`
 #
 # env_variables:
+#   ENVIRONMENT: <development (local and is default) | preview | live>
 #   SECRET_KEY: "secret_key"
-#   # localhost
+#   SESSION_EXPIRT: 30
 #   API_BASE_URL: "http://localhost:5000"
+#   FRONTEND_BASE_URL: "http://localhost:8080"
+#   IMAGES_URL:<image url>
 #   ADMIN_CLIENT_ID: "admin"
 #   ADMIN_CLIENT_SECRET: "secret"
-#   IMAGES_URL: "http://images"
+#   SHOW_RESOURCE_MAINTENANCE: false
+#   # recaptcha settings for public web forms
+#   RECAPTCHA_PUBLIC_KEY:<recaptcha public key>
+#   RECAPTCHA_PRIVATE_KEY:<recaptcha private key>
+#   # paypal settings
+#   PAYPAL_ACCOUNT_ID:<paypal account ID>
+#   PAYPAL_DELIVERY:<paypal delivery id>
+#   PAYPAL_ENCRYPTED_1:<paypal cart encryption 1>
+#   PAYPAL_ENCRYPTED_2:<paypal cart encryption 2>
 #   # get google creds
-#   GOOGLE_OAUTH2_CLIENT_ID: "client id"
-#   GOOGLE_OAUTH2_CLIENT_SECRET: "client secret"
-#   GOOGLE_OAUTH2_REDIRECT_URI: "http://localhost:8080/oauth2callback"
+#   GOOGLE_OAUTH2_CLIENT_ID:<google oauth2 client id>
+#   GOOGLE_OAUTH2_CLIENT_SECRET:<google oauth2 client secret>
+#   GOOGLE_OAUTH2_REDIRECT_URI:<google oauth2 redirect uri>
+#   # google analytics 
+#   GA_ID:<google analytics id for stats>
+#   GA_TM_ID:<google analytics tag manager id>
+#   ENABLE_STATS:false

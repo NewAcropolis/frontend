@@ -1,19 +1,6 @@
 from flask import current_app
+from google.cloud import ndb
 import json
-try:
-    from google.appengine.ext import ndb
-except Exception:
-    from mock import Mock
-
-    class MockCache(Mock):
-        def get_data(*args):
-            pass
-
-        def set_data(*args):
-            pass
-
-    ndb = MockCache()
-    print('Problem importing google.appengine.ext.ndb')
 
 
 class Cache(ndb.Model):

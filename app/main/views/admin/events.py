@@ -1,8 +1,8 @@
 import base64
 from flask import current_app, jsonify, redirect, render_template, request, session, url_for
-from HTMLParser import HTMLParser
+from six.moves.html_parser import HTMLParser
 import json
-import urlparse
+import urllib.parse as urlparse
 # from werkzeug import secure_filename
 
 from app import api_client
@@ -42,6 +42,7 @@ def admin_events(selected_event_id=None, api_message=None):
     form.set_events_form(events, event_types, speakers, venues)
 
     if form.validate_on_submit():
+        print('validating')
         if form.image_filename.data:
             filename = form.image_filename.data.filename
         else:
@@ -81,14 +82,14 @@ def admin_events(selected_event_id=None, api_message=None):
 
         adjusted_event = event.copy()
 
-        from cgi import escape
+        from html import escape
         adjusted_event['description'] = escape(event['description'])
         adjusted_event['event_dates'] = json.loads(str(event['event_dates']))
         file_request = request.files.get('image_filename')
         if file_request:
             file_data = file_request.read()
-            file_data_encoded = base64.b64encode(file_data)
-            _file_size = size_from_b64(file_data_encoded)
+            file_data_encoded = base64.b64encode(file_data.encode('ascii'))
+            _file_size = size_from_b64(str(file_data_encoded))
             if _file_size > current_app.config['MAX_IMAGE_SIZE']:
                 _file_size_mb = round(_file_size/(1024*1024), 1)
                 _max_size_mb = current_app.config['MAX_IMAGE_SIZE']/(1024*1024)
@@ -99,7 +100,7 @@ def admin_events(selected_event_id=None, api_message=None):
 
         if not errors:
             # remove empty values
-            for key, value in event.iteritems():
+            for key, value in event.items():
                 if value != 0 and not value:
                     del adjusted_event[key]
 
@@ -167,7 +168,6 @@ def events_attendance(eventdate_id=None, year=None):
 def _get_event():
     event = [e for e in session['events'] if e['id'] == request.args.get('event')]
     if event:
-        from HTMLParser import HTMLParser
         h = HTMLParser()
         event[0]['description'] = h.unescape(event[0]['description'])
         return jsonify(event[0])

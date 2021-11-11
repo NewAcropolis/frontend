@@ -207,7 +207,7 @@ class WhenSubmittingEventsForm:
 
         assert mock_api_client.add_event.call_args[0][0]['event_dates'] == json.loads(
             '[{"event_date": "2019-03-23 19:00", "end_time": "21:00"}]')
-        assert mock_api_client.add_event.call_args[0][0]['image_data'] == base64.b64encode('test data')
+        assert mock_api_client.add_event.call_args[0][0]['image_data'] == base64.b64encode(b'test data')
         assert mock_api_client.add_event.call_args[0][0]['description'] == '&lt;test&gt;'
         assert href == '{}/{}'.format(url_for('main.admin_events'), 'test_id')
 
