@@ -5,3 +5,7 @@ indexes:
     direction: asc
   - name: updated_on
     direction: desc
+- kind: Queue
+  properties:
+  - name: status
+  - name: updated
