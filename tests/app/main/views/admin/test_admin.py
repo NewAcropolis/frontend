@@ -42,7 +42,8 @@ def mock_oauth2session(mocker, auth_url, email=None):
 def access_areas():
     access_areas = [
         '{}{}'.format(
-            'Events / Attendance' if a == 'event' else a.capitalize(), 's' if a not in ['shop', 'event'] else '')
+            'Events / Attendance' if a == 'event' else ('Caches / Queue' if a == 'cache' else a.capitalize()),
+            's' if a not in ['cache', 'shop', 'event'] else '')
         for a in Config.ACCESS_AREAS if a != 'admin'
     ]
     access_areas.append('Users')

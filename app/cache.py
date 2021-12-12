@@ -5,7 +5,6 @@ import json
 
 class Cache(ndb.Model):
     name = ndb.StringProperty()
-    # data = ndb.JsonProperty()
     data = ndb.TextProperty(indexed=False)
     updated_on = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
 

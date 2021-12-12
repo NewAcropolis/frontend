@@ -1,8 +1,10 @@
 from datetime import datetime
-from flask import current_app
+from flask import current_app, session
 from functools import wraps
+import json
 
 from app.cache import Cache
+from app.queue import Queue
 from app.clients import BaseAPIClient
 from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
@@ -105,6 +107,30 @@ def update_cache(*args, **kwargs):
 class ApiClient(BaseAPIClient):
     def init_app(self, app):
         super(ApiClient, self).init_app(app)
+
+    def process(self, q_item):
+        if q_item.method == 'post':
+            _method = self.post
+        else:
+            _method = self.get
+        json_resp = _method(url=q_item.url, data=json.loads(q_item.payload))
+
+        if 'error' in session:
+            q_item.status = "error"
+            error = session.pop('error')
+            q_item.response = json.dumps(error)
+            if q_item.retry_count is None:
+                q_item.retry_count = 0
+            else:
+                q_item.retry_count += 1
+            Queue.update(q_item)
+            return error
+        else:
+            q_item.status = "ok"
+            q_item.response = json.dumps(json_resp)
+
+        Queue.update(q_item)
+        return json_resp
 
     def get_speakers(self):
         return self.get(url='speakers')
@@ -358,7 +384,9 @@ class ApiClient(BaseAPIClient):
             'email': email,
             'marketing_id': marketing_id
         }
-        return self.post(url='member/subscribe', data=data)
+
+        Queue.add(f'subscribe {name}', url='member/subscribe', method='post', payload=data)
+        return json.dumps({'message': 'Your subscription will be processed'})
 
     def send_message(self, name, email, reason, message):
         data = {
@@ -368,7 +396,8 @@ class ApiClient(BaseAPIClient):
             'message': message,
         }
 
-        return self.post(url='send_message', data=data)
+        Queue.add('send message from web form', url='send_message', method='post', payload=data)
+        return json.dumps({'message': 'Your message will be sent'})
 
     def reserve_place(self, name, email, eventdate_id):
         data = {
@@ -377,4 +406,5 @@ class ApiClient(BaseAPIClient):
             'eventdate_id': eventdate_id
         }
 
-        return self.post(url='event/reserve', data=data)
+        Queue.add(f'reserve place for {name}', url='event/reserve', method='post', payload=data)
+        return json.dumps({'message': 'Your place will be reserved'})

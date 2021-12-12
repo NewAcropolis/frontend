@@ -42,7 +42,6 @@ def admin_events(selected_event_id=None, api_message=None):
     form.set_events_form(events, event_types, speakers, venues)
 
     if form.validate_on_submit():
-        print('validating')
         if form.image_filename.data:
             filename = form.image_filename.data.filename
         else:

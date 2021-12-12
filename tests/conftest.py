@@ -10,9 +10,9 @@ from mock import Mock
 
 from app import create_app
 
-sys.modules['app.settings'] = Mock()
 sys.modules['app.gaesession'] = Mock()
 sys.modules['app.cache'] = Mock()
+sys.modules['app.queue'] = Mock()
 
 AUTH_USERNAME = 'user'
 AUTH_PASSWORD = 'pass'
