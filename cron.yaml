@@ -3,6 +3,10 @@ cron:
   url: /queue/process
   schedule: every 10 mins from 9:00 to 23:00
 
-- description: "suspend error items"
+- description: "purge queue"
+  url: /queue/purge
+  schedule: every 24 hours synchronized
+
+  - description: "suspend error items"
   url: /queue/suspend_error_items
   schedule: every 60 mins from 9:00 to 23:00
