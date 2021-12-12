@@ -6,7 +6,6 @@ from app.main.views import requires_auth
 from app.queue import Queue
 
 @main.route('/queue/process', methods=['GET'])
-@requires_auth
 def process_queue():
     ok = 0
     error = 0
@@ -21,13 +20,11 @@ def process_queue():
 
 
 @main.route('/queue/purge', methods=['GET'])
-@requires_auth
 def purge_queue():
     return jsonify({"deleted": Queue.purge_expired_items()})
 
 
 @main.route('/queue/suspend_error_items', methods=['GET'])
-@requires_auth
 def suspend_error_items():
     return jsonify({"suspended": Queue.suspend_error_items()})
 
