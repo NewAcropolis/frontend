@@ -338,6 +338,13 @@ class UpdateMemberForm(FlaskForm):
     recaptcha = RecaptchaField()
 
 
+class QueueForm(FlaskForm):
+    status_filter = SelectField('status_filter')
+
+    def setup_status_filter(self):
+        self.status_filter.choices = [("new", "new"), ("ok", "ok"), ("error", "error"), ("suspend", "suspend")]
+
+
 class OrderForm(FlaskForm):
     created_at = StringField()
     transaction_id = StringField()
