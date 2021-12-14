@@ -18,7 +18,8 @@ def admin():
 
 @main.route('/admin/users', methods=['GET', 'POST'])
 def admin_users():
-    users = [u for u in api_client.get_users() if u.get('access_area') != 'admin']
+    _users = api_client.get_users()
+    users = [u for u in _users if u.get('access_area') != 'admin']
     form = UserListForm()
     update_count = 0
 

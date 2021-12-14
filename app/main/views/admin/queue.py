@@ -1,8 +1,6 @@
 from flask import jsonify, render_template
-import json
 
 from app import api_client
-from app.cache import Cache
 from app.queue import Queue
 from app.main import main
 from app.main.forms import QueueForm
@@ -28,8 +26,6 @@ def process(action, hash_item):
     elif action == 'play':
         q_item = Queue.get(hash_item)
         response = api_client.process(q_item)
-        if q_item.cache_name:
-            Cache.set_data(q_item.cache_name, json.dumps(response))
 
         return jsonify(response)
 

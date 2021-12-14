@@ -73,7 +73,7 @@ class Queue(ndb.Model):
         return suspended
 
     @staticmethod
-    def add(description, url, method, payload):
+    def add(description, url, method, payload=None, cache_name=None):
         payload_str = json.dumps(payload)
         hash_item = hashlib.md5(f"{description}-{url}-{method}-{payload_str}".encode()).hexdigest()
         queue = Queue(
@@ -82,7 +82,8 @@ class Queue(ndb.Model):
             method=method,
             payload=payload_str,
             hash_item=hash_item,
-            status='new'
+            status='new',
+            cache_name=cache_name
         )
         queue.put()
 

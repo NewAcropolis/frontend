@@ -110,10 +110,9 @@ class ApiClient(BaseAPIClient):
 
     def process(self, q_item):
         if q_item.method == 'post':
-            _method = self.post
+            json_resp = self.post(url=q_item.url, data=json.loads(q_item.payload))
         else:
-            _method = self.get
-        json_resp = _method(url=q_item.url, data=json.loads(q_item.payload))
+            json_resp = self.get(url=q_item.url)
 
         if 'error' in session:
             q_item.status = "error"
@@ -126,6 +125,9 @@ class ApiClient(BaseAPIClient):
             Queue.update(q_item)
             return error
         else:
+            if q_item.cache_name:
+                Cache.set_data(q_item.cache_name, json.dumps(json_resp))
+
             q_item.status = "ok"
             q_item.response = json.dumps(json_resp)
 
@@ -363,7 +365,8 @@ class ApiClient(BaseAPIClient):
         return self.get(url='user/{}'.format(email))
 
     def get_users(self):
-        return self.get(url='users')
+        Queue.add(f'get users', url='users', method='get', cache_name="get_users")
+        return json.loads(Cache.get_data('get_users', default=[]))
 
     def create_user(self, profile):
         data = {
