@@ -70,8 +70,10 @@ def _get_email():
 
 
 def _get_users_need_access():
-    users = [u for u in api_client.get_users() if not u['access_area']]
-    return users
+    _users = api_client.get_users()
+    if _users:
+        users = [u for u in _users if not u['access_area']]
+        return users
 
 
 def _user_has_permissions(area):
