@@ -57,10 +57,14 @@ class Cache(ndb.Model):
                     _purge_older_versions(c.name)
 
     @staticmethod
-    def purge_cache():
+    def purge_cache(name=None):
+        deleted = 0
         for result in Cache.query().fetch():
-            current_app.logger.info("Deleted: %s - %s", result.name, result.updated_on)
-            result.key.delete()
+            if not name or result.name == name:
+                result.key.delete()
+                current_app.logger.info("Deleted: %s - %s", result.name, result.updated_on)
+                deleted += 1
+        return {"deleted": deleted}
 
     @staticmethod
     def set_review_entity(name, value, key='id'):

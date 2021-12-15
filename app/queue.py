@@ -76,16 +76,18 @@ class Queue(ndb.Model):
     def add(description, url, method, payload=None, cache_name=None):
         payload_str = json.dumps(payload)
         hash_item = hashlib.md5(f"{description}-{url}-{method}-{payload_str}".encode()).hexdigest()
-        queue = Queue(
-            description=description,
-            url=url,
-            method=method,
-            payload=payload_str,
-            hash_item=hash_item,
-            status='new',
-            cache_name=cache_name
-        )
-        queue.put()
+        item = Queue.query(Queue.hash_item == hash_item).get()
+        if not item:
+            queue = Queue(
+                description=description,
+                url=url,
+                method=method,
+                payload=payload_str,
+                hash_item=hash_item,
+                status='new',
+                cache_name=cache_name
+            )
+            queue.put()
 
     @staticmethod
     def delete(hash_item):
