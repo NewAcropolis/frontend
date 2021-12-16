@@ -366,7 +366,7 @@ class ApiClient(BaseAPIClient):
 
     def get_users(self):
         Queue.add(
-            f'get users', url='users', method='get', backoff_duration=2,
+            f'get users', url='users', method='get', backoff_duration=30,
             cache_name="get_users", cache_is_unique=True)
         return Cache.get_data('get_users', default=[])
 
