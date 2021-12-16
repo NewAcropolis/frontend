@@ -36,7 +36,10 @@ class Cache(ndb.Model):
             return retval.updated_on
 
     @staticmethod
-    def set_data(name, data):
+    def set_data(name, data, is_unique=False):
+        if is_unique and Cache.query(Cache.name == name).get():
+            return
+
         cache = Cache(name=name, data=json.dumps(data))
         cache.put()
 

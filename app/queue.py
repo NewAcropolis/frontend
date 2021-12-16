@@ -13,10 +13,12 @@ class Queue(ndb.Model):
     hash_item = ndb.StringProperty()
     status = ndb.StringProperty()
     cache_name = ndb.StringProperty()
+    cache_is_unique = ndb.BooleanProperty()
     created = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
     updated = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
-    response = ndb.StringProperty()
+    response = ndb.TextProperty(indexed=False)
     retry_count = ndb.IntegerProperty(default=0)
+    backoff_duration = ndb.IntegerProperty()
 
     @staticmethod
     def list_queue(status="all", return_as_string=True):
@@ -40,9 +42,14 @@ class Queue(ndb.Model):
                     queue[res.hash_item]['created'] = res.created
                     queue[res.hash_item]['updated'] = res.updated
                     queue[res.hash_item]['cache_name'] = res.cache_name
+                    queue[res.hash_item]['cache_is_unique'] = res.cache_is_unique
                     queue[res.hash_item]['status'] = res.status
                     queue[res.hash_item]['response'] = res.response
                     queue[res.hash_item]['retry_count'] = res.retry_count
+                    queue[res.hash_item]['backoff_duration'] = res.backoff_duration
+                    queue[res.hash_item]['count'] = 1
+                else:
+                    queue[res.hash_item]['count'] += 1
             return queue
         else:
             return query.order(Queue.updated).fetch()
@@ -50,12 +57,15 @@ class Queue(ndb.Model):
     @staticmethod
     def purge_expired_items():
         deleted = 0
+        datetime_now = datetime.utcnow()
         for q in Queue.query().filter(
-            Queue.status == "ok",
-            Queue.updated > datetime.utcnow() + timedelta(minutes=current_app.config['QUEUE_EXPIRY'])
+            Queue.status == "ok"
         ):
-            q.key.delete()
-            deleted += 1
+            if datetime_now > q.updated + timedelta(
+                minutes=q.backoff_duration if q.backoff_duration else current_app.config["QUEUE_EXPIRY"]
+            ):
+                q.key.delete()
+                deleted += 1
 
         return deleted
 
@@ -73,7 +83,7 @@ class Queue(ndb.Model):
         return suspended
 
     @staticmethod
-    def add(description, url, method, payload=None, cache_name=None):
+    def add(description, url, method, payload=None, cache_name=None, cache_is_unique=False, backoff_duration=None):
         payload_str = json.dumps(payload)
         hash_item = hashlib.md5(f"{description}-{url}-{method}-{payload_str}".encode()).hexdigest()
         item = Queue.query(Queue.hash_item == hash_item).get()
@@ -85,7 +95,9 @@ class Queue(ndb.Model):
                 payload=payload_str,
                 hash_item=hash_item,
                 status='new',
-                cache_name=cache_name
+                cache_name=cache_name,
+                cache_is_unique=cache_is_unique,
+                backoff_duration=backoff_duration if backoff_duration else current_app.config['QUEUE_EXPIRY']
             )
             queue.put()
 

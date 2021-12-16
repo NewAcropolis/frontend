@@ -126,7 +126,7 @@ class ApiClient(BaseAPIClient):
             return error
         else:
             if q_item.cache_name:
-                Cache.set_data(q_item.cache_name, json_resp)
+                Cache.set_data(q_item.cache_name, json_resp, is_unique=q_item.cache_is_unique)
 
             q_item.status = "ok"
             q_item.response = json.dumps(json_resp)
@@ -365,7 +365,9 @@ class ApiClient(BaseAPIClient):
         return self.get(url='user/{}'.format(email))
 
     def get_users(self):
-        Queue.add(f'get users', url='users', method='get', cache_name="get_users")
+        Queue.add(
+            f'get users', url='users', method='get', backoff_duration=2,
+            cache_name="get_users", cache_is_unique=True)
         return Cache.get_data('get_users', default=[])
 
     def create_user(self, profile):
