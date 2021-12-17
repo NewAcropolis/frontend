@@ -362,7 +362,18 @@ class ApiClient(BaseAPIClient):
         return dates
 
     def get_user(self, email):
-        return self.get(url='user/{}'.format(email))
+        users = Cache.get_data('get_users', default=[])
+
+        for user in users:
+            if user['email'] == email:
+                return user
+
+        user = self.get(url='user/{}'.format(email))
+        users.append(user)
+
+        Cache.set_data('get_users', users, is_unique=True)
+
+        return user
 
     def get_users(self):
         Queue.add(
