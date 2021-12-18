@@ -54,12 +54,11 @@ def add_queue2():
     return show_queue("add2")
 
 
-@main.route('/queue/delete', methods=['GET'])
+@main.route('/queue/delete/<string:hash_item>', methods=['GET'])
 @requires_auth
-def delete_from_queue():
-    Queue.delete("3c88a8355a696f2b6fd2173811c7b1c2")
-    Queue.delete("f6b00f8c73a6b0859c71836e3d960d33")
-    Queue.delete("27f1daa58b456bb0702bae8575a9ec1e")
+def delete_from_queue(hash_item):
+    Queue.delete(hash_item)
+
     return show_queue("delete")
 
 
