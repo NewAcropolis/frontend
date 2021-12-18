@@ -1,12 +1,17 @@
-from flask import jsonify
+from flask import current_app, jsonify
+import logging
 
 from app import api_client
 from app.main import main
 from app.main.views import requires_auth
 from app.queue import Queue
 
+logging.getLogger().setLevel(logging.DEBUG)
+
+
 @main.route('/queue/process', methods=['GET'])
 def process_queue():
+    current_app.logger.info('Processing queue')
     ok = 0
     error = 0
     for q in Queue.list_queue(["new", "error"], return_as_string=False):
@@ -21,11 +26,13 @@ def process_queue():
 
 @main.route('/queue/purge', methods=['GET'])
 def purge_queue():
+    current_app.logger.info('Purging queue')
     return jsonify({"deleted": Queue.purge_expired_items()})
 
 
 @main.route('/queue/suspend_error_items', methods=['GET'])
 def suspend_error_items():
+    logging.info('Suspending queue')
     return jsonify({"suspended": Queue.suspend_error_items()})
 
 
