@@ -103,9 +103,10 @@ class Queue(ndb.Model):
 
     @staticmethod
     def delete(hash_item):
-        item = Queue.query(Queue.hash_item == hash_item).get()
-        if item:
-            item.key.delete()
+        items = Queue.query(Queue.hash_item == hash_item).fetch()
+        if items:
+            for item in items:
+                item.key.delete()
 
     @staticmethod
     def get(hash_item):
