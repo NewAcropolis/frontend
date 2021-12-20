@@ -4,6 +4,7 @@ import re
 
 from flask import Flask, current_app, make_response, render_template, request, session, url_for
 from flask_wtf.csrf import CSRFProtect, CSRFError
+
 import textile
 
 from na_common.delivery import statuses as delivery_statuses
@@ -12,6 +13,12 @@ from app.clients.api_client import ApiClient
 
 
 __version__ = '1.11.0'
+
+if os.environ.get('IS_APP_ENGINE'):
+    import google.cloud.logging
+
+    client = google.cloud.logging.Client()
+    client.setup_logging()
 
 api_client = ApiClient()
 csrf = CSRFProtect()
