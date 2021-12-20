@@ -14,7 +14,7 @@ from app.clients.api_client import ApiClient
 
 __version__ = '1.11.0'
 
-if os.environ.get('IS_APP_ENGINE'):
+if os.environ.get('IS_APP_ENGINE') == "true":
     import google.cloud.logging
 
     client = google.cloud.logging.Client()
@@ -30,7 +30,7 @@ def create_app(**kwargs):
             self.app = app
             from google.cloud import ndb
 
-            if os.environ.get('IS_APP_ENGINE'):
+            if os.environ.get('IS_APP_ENGINE') == "true":
                 self.client = ndb.Client()
             else:
                 import mock
