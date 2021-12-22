@@ -31,4 +31,4 @@ tail-logs: ## Tail logs
 
 .PHONY: deploy
 deploy: ## Deploy
-	gcloud app deploy
+	gcloud app deploy app-preview.yaml
