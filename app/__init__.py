@@ -30,7 +30,7 @@ def create_app(**kwargs):
             self.app = app
             from google.cloud import ndb
 
-            if os.environ.get('IS_APP_ENGINE') == "true":
+            if os.environ.get('IS_APP_ENGINE') == 'True':
                 self.client = ndb.Client()
             else:
                 import mock
@@ -47,6 +47,16 @@ def create_app(**kwargs):
     application = Flask(__name__)
     application.wsgi_app = NDBMiddleware(application.wsgi_app)
     from app.config import configs
+
+    if os.environ.get('IS_APP_ENGINE') == 'True':
+        import google.cloud.logging
+
+        client = google.cloud.logging.Client()
+        client.setup_logging()
+
+        import logging
+
+        application.logger.setLevel(logging.INFO)
 
     environment_state = get_env()
 
