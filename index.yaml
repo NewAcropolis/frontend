@@ -9,3 +9,4 @@ indexes:
   properties:
   - name: status
   - name: updated
+  - name: retry_count
