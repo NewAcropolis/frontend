@@ -53,8 +53,11 @@ jobs:
         gcloud config set project ${{ secrets.PROJECT_ID_PREVIEW }}
         gcloud -q app deploy app.yaml --promote
         
-        # Suppose you need a cron task.
-        # gcloud -q app deploy cron.yaml
+        # Create indexes
+        gcloud -q datastore indexes create index.yaml
+
+        # update cron jobs
+        gcloud -q app deploy cron.yaml
 
     - name: Initialize Google Cloud SDK test
       if: github.ref == 'refs/heads/test_deploy'
