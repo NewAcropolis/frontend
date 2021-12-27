@@ -5,7 +5,9 @@ Flask-Script==2.0.5
 flake8==3.7.4
 Flask-WTF==0.14.2
 freezegun>=0.3.5
-google-auth==1.35.0
+google-api-core==1.31.5
+google-cloud-core==1.7.2
+google-cloud-datastore==1.15.3
 google-cloud-logging==2.7.0
 google-cloud-ndb==1.10.5
 gunicorn==19.9.0
