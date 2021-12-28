@@ -10,3 +10,7 @@ indexes:
   - name: status
   - name: updated
   - name: retry_count
+- kind: Queue
+  properties:
+  - name: status
+  - name: retry_count

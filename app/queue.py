@@ -17,7 +17,7 @@ class Queue(ndb.Model):
     created = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
     updated = ndb.DateTimeProperty(auto_now_add=True, indexed=True)
     response = ndb.TextProperty(indexed=False)
-    retry_count = ndb.IntegerProperty(default=0)
+    retry_count = ndb.IntegerProperty(default=0, indexed=True)
     backoff_duration = ndb.IntegerProperty()
 
     @staticmethod
