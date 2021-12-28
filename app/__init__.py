@@ -14,12 +14,6 @@ from app.clients.api_client import ApiClient
 
 __version__ = '1.11.0'
 
-if os.environ.get('IS_APP_ENGINE') == "true":
-    import google.cloud.logging
-
-    client = google.cloud.logging.Client()
-    client.setup_logging()
-
 api_client = ApiClient()
 csrf = CSRFProtect()
 
