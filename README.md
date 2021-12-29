@@ -85,9 +85,9 @@ Run `Make` to list other available commands
     "GOOGLE_OAUTH2_CLIENT_SECRET": <Oauth2 secret>,
     "GOOGLE_OAUTH2_REDIRECT_URI": <Oauth2 redirect after authentication>,
     "PAYPAL_ACCOUNT_ID": <Paypal account ID>,
-    "ENABLE_STATS": false,
-    "SHOW_RESOURCE_MAINTENANCE": false,
-    "IS_APP_ENGINE": true
+    "ENABLE_STATS": "False",
+    "SHOW_RESOURCE_MAINTENANCE": "False",
+    "IS_APP_ENGINE": "True"
   }
 }
 ```
