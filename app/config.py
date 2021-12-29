@@ -33,14 +33,14 @@ class Config(object):
     MAX_IMAGE_SIZE = 2 * 1024 * 1024
     QUEUE_EXPIRY = 60 * 24 * 7
     QUEUE_RETRY_LIMIT = 10
-    ENABLE_STATS = os.environ.get('ENABLE_STATS') == 'true'
+    ENABLE_STATS = os.environ.get('ENABLE_STATS', '') == 'True'
     TESTING = False
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
     WTF_CSRF_SSL_STRICT = False
 
-    SHOW_RESOURCE_MAINTENANCE = os.environ.get('SHOW_RESOURCE_MAINTENANCE', '') == 'true'
+    SHOW_RESOURCE_MAINTENANCE = os.environ.get('SHOW_RESOURCE_MAINTENANCE', '') == 'True'
 
 
 class Development(Config):
