@@ -2,11 +2,20 @@ cron:
 - description: "process queue"
   url: /queue/process
   schedule: every 10 mins from 9:00 to 23:00
+  retry_parameters:
+    min_backoff_seconds: 5
+    max_doublings: 5
 
 - description: "purge queue"
   url: /queue/purge
   schedule: every 24 hours synchronized
+  retry_parameters:
+    min_backoff_seconds: 5
+    max_doublings: 5
 
 - description: "suspend error items"
   url: /queue/suspend_error_items
   schedule: every 60 mins from 9:00 to 23:00
+  retry_parameters:
+    min_backoff_seconds: 5
+    max_doublings: 5
