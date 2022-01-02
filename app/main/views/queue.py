@@ -1,5 +1,7 @@
-from flask import current_app, jsonify
+from flask import current_app, jsonify, request
+from functools import wraps
 import logging
+import os
 
 from app import api_client
 from app.main import main
@@ -9,9 +11,19 @@ from app.queue import Queue
 logging.getLogger().setLevel(logging.DEBUG)
 
 
+def app_engine_only(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if os.environ.get('ENVIRONMENT', 'development') != 'development':
+            if not request.headers.get('X-Appengine-Cron') == 'true':
+                return 'Only App Engine can call', 403
+        return f(*args, **kwargs)
+    return decorated
+
+
 @main.route('/queue/process', methods=['GET'])
+@app_engine_only
 def process_queue():
-    current_app.logger.info('Processing queue')
     ok = 0
     error = 0
     for q in Queue.list_queue(["new", "error"], return_as_string=False):
@@ -25,12 +37,14 @@ def process_queue():
 
 
 @main.route('/queue/purge', methods=['GET'])
+@app_engine_only
 def purge_queue():
     current_app.logger.info('Purging queue')
     return jsonify({"deleted": Queue.purge_expired_items()})
 
 
 @main.route('/queue/suspend_error_items', methods=['GET'])
+@app_engine_only
 def suspend_error_items():
     logging.info('Suspending queue')
     return jsonify({"suspended": Queue.suspend_error_items()})
