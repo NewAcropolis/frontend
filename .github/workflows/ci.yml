@@ -82,6 +82,12 @@ jobs:
         gcloud config set project ${{ secrets.PROJECT_ID_TEST }}
         gcloud -q app deploy app.yaml --promote
 
+        # Create indexes
+        gcloud -q datastore indexes create index.yaml
+
+        # update cron jobs
+        gcloud -q app deploy cron.yaml
+
     - name: Initialize Google Cloud SDK live
       if: startsWith(github.ref, 'refs/tags/')
       uses: zxyle/publish-gae-action@master
@@ -105,5 +111,8 @@ jobs:
         gcloud config set project ${{ secrets.PROJECT_ID_LIVE }}
         gcloud -q app deploy app.yaml --promote
         
-        # Suppose you need a cron task.
-        # gcloud -q app deploy cron.yaml
+        # Create indexes
+        gcloud -q datastore indexes create index.yaml
+
+        # update cron jobs
+        gcloud -q app deploy cron.yaml
