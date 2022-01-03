@@ -386,13 +386,21 @@ class ApiClient(BaseAPIClient):
             'email': profile['email'],
             'name': profile['name'],
         }
-        return self.post(url='user', data=data)
+        resp = self.post(url='user', data=data)
+        Queue.add(
+            f'get users', url='users', method='get', backoff_duration=30,
+            cache_name="get_users", cache_is_unique=True, replace=True)
+        return resp
 
     def update_user_access_area(self, user_id, access_area):
         data = {
             'access_area': access_area
         }
-        return self.post(url='user/{}'.format(user_id), data=data)
+        resp = self.post(url='user/{}'.format(user_id), data=data)
+        Queue.add(
+            f'get users', url='users', method='get', backoff_duration=30,
+            cache_name="get_users", cache_is_unique=True, replace=True)
+        return resp
 
     def add_subscription_email(self, name, email, marketing_id):
         data = {
