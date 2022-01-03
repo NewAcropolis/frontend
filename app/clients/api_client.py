@@ -364,9 +364,10 @@ class ApiClient(BaseAPIClient):
     def get_user(self, email):
         users = Cache.get_data('get_users', default=[])
 
-        for user in users:
-            if user['email'] == email:
-                return user
+        if users:
+            for user in users:
+                if user['email'] == email:
+                    return user
 
         user = self.get(url='user/{}'.format(email))
         users.append(user)
