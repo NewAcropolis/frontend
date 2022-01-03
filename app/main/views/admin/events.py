@@ -208,7 +208,7 @@ def preview_event_detail():
         data['event_type'] = 'Online ' + data['event_type']
 
     h = HTMLParser()
-    data['_description'] = h.unescape(data['description'].encode('ascii', 'ignore'))
+    data['_description'] = h.unescape(data['description'])
 
     return render_page(
         'views/event_details.html',
@@ -232,7 +232,7 @@ def preview_events():
         data['event_type'] = 'Online ' + data['event_type']
 
     h = HTMLParser()
-    data['_description'] = h.unescape(data['description'].encode('ascii', 'ignore'))
+    data['_description'] = h.unescape(data['description'])
 
     return render_page(
         'views/events.html',
