@@ -83,11 +83,18 @@ class Queue(ndb.Model):
         return suspended
 
     @staticmethod
-    def add(description, url, method, payload=None, cache_name=None, cache_is_unique=False, backoff_duration=None):
+    def add(
+        description, url, method,
+        payload=None, cache_name=None, cache_is_unique=False, backoff_duration=None,
+        replace=False
+    ):
         payload_str = json.dumps(payload)
         hash_item = hashlib.md5(f"{description}-{url}-{method}-{payload_str}".encode()).hexdigest()
         item = Queue.query(Queue.hash_item == hash_item).get()
-        if not item:
+        if not item or replace:
+            if replace and item:
+                Queue.delete(hash_item)
+
             queue = Queue(
                 description=description,
                 url=url,
