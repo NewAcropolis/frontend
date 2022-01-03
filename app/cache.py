@@ -26,8 +26,7 @@ class Cache(ndb.Model):
         retval = Cache.query(Cache.name == name).order(-Cache.updated_on).fetch(1, offset=index)
         if retval:
             return json.loads(retval[0].data)
-        elif default:
-            return default
+        return default
 
     @staticmethod
     def get_updated_on(name):
