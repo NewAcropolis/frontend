@@ -432,3 +432,6 @@ class ApiClient(BaseAPIClient):
 
         Queue.add(f'reserve place for {name}', url='event/reserve', method='post', payload=data)
         return json.dumps({'message': 'Your place will be reserved'})
+
+    def test_api(self):
+        return self.get(url="/")
