@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="main" class="container" style="display: none;">
+    <div class="row">
+        <div class='col-sm'>
+            Please wait for the API to be ready: 
+            <span id='api-status'></span>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block extra_head %}
+<script charset="utf-8" type="text/javascript">
+    function get(name){
+        if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+            return decodeURIComponent(name[1]);
+    }
+
+    var counter = 0;
+
+    function test_api() {
+        var request = new XMLHttpRequest();
+
+        request.open("GET", "/admin/_test_api");
+        request.onreadystatechange = function() {
+            if (this.readyState === 4) {
+                resp = JSON.parse(this.responseText);
+                if  (resp['status'] === 'ok') {
+                    window.location = "/admin/" + get("target");
+                }
+                else {
+                    document.getElementById("main").style = "display: block;"
+                    document.getElementById("api-status").innerHTML = "API not ready: " + resp['status'];
+                    counter++;
+                    if (counter < 11) {
+                        document.getElementById("api-status").innerHTML += ", retrying api: " + counter;
+                        setTimeout(test_api, 10000);
+                    }
+                    else {
+                        document.getElementById("api-status").innerHTML += ", API still unavailable after " + (counter - 1) + " retries";
+                    }
+                }
+            } 
+        };
+        request.send();
+    }
+
+    window.onload = test_api();
+</script>
+{% endblock %}

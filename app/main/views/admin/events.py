@@ -3,7 +3,6 @@ from flask import current_app, jsonify, redirect, render_template, request, sess
 from six.moves.html_parser import HTMLParser
 import json
 import urllib.parse as urlparse
-# from werkzeug import secure_filename
 
 from app import api_client
 from app.cache import Cache
@@ -15,6 +14,7 @@ from app.main.views import render_page
 from app.main.views.events import is_future_event
 
 from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
+
 
 def is_admin_user():
     user = session['user']

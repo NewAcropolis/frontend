@@ -4,22 +4,22 @@
     <div class="row">
         {% if user_has_permissions('admin') %}
         <div class='col-sm'>
-            <a href='/admin/users'>Users {% if get_users_need_access() %} ({{ get_users_need_access()|length }}) {% endif %}</a>
+            <a href='/admin/api_interstitial?target=users'>Users {% if get_users_need_access() %} ({{ get_users_need_access()|length }}) {% endif %}</a>
         </div>
         {% endif %}
         {% if user_has_permissions('event') %}
         <div class='col-sm'>
-            <a href='/admin/events'>Events</a> / <a href='/admin/events/attendance'>Attendance</a>
+            <a href='/admin/api_interstitial?target=events'>Events</a> / <a href='/admin/api_interstitial?target=events/attendance'>Attendance</a>
         </div>
         {% endif %}
         {% if user_has_permissions('email') %}
         <div class='col-sm'>
-            <a href='/admin/emails'>Emails</a>
+            <a href='/admin/api_interstitial?target=emails'>Emails</a>
         </div>
         {% endif %}
         {% if user_has_permissions('magazine') %}
         <div class='col-sm'>
-            <a href='/admin/magazines'>Magazines</a>
+            <a href='/admin/api_interstitial?target=magazines'>Magazines</a>
         </div>
         {% endif %}
     </div>
@@ -31,7 +31,7 @@
         {% endif %}
         {% if user_has_permissions('order') %}
         <div class='col-sm'>
-            <a href='/admin/orders'>Orders</a>
+            <a href='/admin/api_interstitial?target=orders'>Orders</a>
         </div>
         {% endif %}
         {% if user_has_permissions('announcement') %}
