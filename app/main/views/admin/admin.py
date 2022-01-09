@@ -16,6 +16,23 @@ def admin():
     )
 
 
+@main.route('/admin/api_interstitial')
+def api_interstitial():
+    return render_template(
+        'views/admin/api_interstitial.html'
+    )
+
+
+@main.route('/admin/_test_api')
+def _test_api():
+    api_client.test_api()
+
+    if 'error' in session:
+        return jsonify({'status': session['error']['code']})
+
+    return jsonify({'status': 'ok'})
+
+
 @main.route('/admin/users', methods=['GET', 'POST'])
 def admin_users():
     _users = api_client.get_users()
