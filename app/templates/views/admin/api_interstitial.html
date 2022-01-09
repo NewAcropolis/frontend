@@ -25,7 +25,12 @@
         request.onreadystatechange = function() {
             if (this.readyState === 4) {
                 console.log(this.responseText);
-                resp = JSON.parse(this.responseText);
+                try {
+                    resp = JSON.parse(this.responseText);
+                }
+                catch(err) {
+                    resp['status'] = 'error';
+                }
                 if  (resp['status'] === 'ok') {
                     var target = get("target");
                     window.location = "/admin/" + target;
