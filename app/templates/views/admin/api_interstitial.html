@@ -24,9 +24,13 @@
         request.open("GET", "/admin/_test_api");
         request.onreadystatechange = function() {
             if (this.readyState === 4) {
+                console.log(this.responseText);
                 resp = JSON.parse(this.responseText);
                 if  (resp['status'] === 'ok') {
-                    window.location = "/admin/" + get("target");
+                    var target = get("target");
+                    window.location = "/admin/" + target;
+                    document.getElementById("main").style = "display: block;"
+                    document.getElementById("api-status").innerHTML = "Redirecting to " + target;
                 }
                 else {
                     document.getElementById("main").style = "display: block;"
