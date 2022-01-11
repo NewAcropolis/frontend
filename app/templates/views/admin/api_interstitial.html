@@ -29,7 +29,7 @@
                     resp = JSON.parse(this.responseText);
                 }
                 catch(err) {
-                    resp['status'] = 'error';
+                    resp = {"status":"error"};
                 }
                 if  (resp['status'] === 'ok') {
                     var target = get("target");
