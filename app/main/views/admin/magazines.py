@@ -38,7 +38,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
             file_data = file_request.read()
             file_data_encoded = base64.b64encode(file_data)
 
-            magazine['pdf_data'] = str(file_data_encoded)
+            magazine['pdf_data'] = base64.b64encode(file_data_encoded).decode('utf-8')
 
         try:
             message = None
