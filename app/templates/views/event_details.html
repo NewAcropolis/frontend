@@ -55,58 +55,99 @@
       {% elif event.fee == -2 %}
         <h2 class="event_blue">See external site for fees</h2>
       {% elif event.is_future_event %}
+        {% if event.show_buy_now %}
         <h2 class="event_blue">BUY YOUR TICKETS NOW</h2>
+        {% endif %}
         <p class="important">
             <div class="pt-3">
               {% if event.is_paypal_ready %}
-              <form id="paypalForm" target="paypal" action="{{ get_paypal_url() }}" method="post">
-                <input type="hidden" name="cmd" value="_s-xclick">
-                <input type="hidden" name="fee" value="{{ event.fee }}">
-                <input type="hidden" name="concfee" value="{{ event.conc_fee }}">
-                <input type="hidden" name="m_fee" value="{{ event.multi_day_fee }}">
-                <input type="hidden" name="m_concfee" value="{{ event.multi_day_conc_fee }}">
-                <input type="hidden" name="hosted_button_id" value="{{ event.booking_code }}">
-                <table>
-                  <input type="hidden" name="on0" value="Type">
-                  <input type="hidden" name="on1" value="Date">
-                  <select id="dateSel" onchange="UpdateDateSelected();" name="os1">
-                    {% for date in event.dates %}
-                    <option value="{{loop.index}}">{{ date|strfdate }}</option>
-                    {% endfor %}
-                    {% if event.multi_day_fee %}
-                      <option value="all">All dates</option>
+                {% if event.accept_donation %}
+                  <script>
+                    function update_amount() {
+                      var amount = document.getElementById("amount").value;
+                      var quantity = document.getElementById("quantity").value;
+                      document.getElementById("amount").value = amount / parseInt(quantity);
+                    }
+                  </script>
+                  <div id="donate-button-container">
+                    <form action="{{ get_paypal_url() }}" method="post" target="paypal">
+                      <input type="hidden" name="cmd" value="_xclick">
+                      <input type="hidden" name="business" value="{{config['PAYPAL_ACCOUNT_ID']}}">
+                      <input type="hidden" name="lc" value="GB">
+                      <input type="hidden" name="rm" value="0">
+                      <input type="hidden" name="item_name" value="Donation: {{event.title}}">
+                      <input type="hidden" name="item_number" value="{{event.id}}">
+                      <div>
+                        <input type="text" id="amount" name="amount" value="" size="5" placeholder="£">
+                        for
+                        <select id="quantity" name="quantity">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                        </select> tickets
+                      </div>
+                      <input type="hidden" name="custom" value="Donation">
+                      <input type="hidden" name="currency_code" value="GBP">
+                      <input type="hidden" name="button_subtype" value="services">
+                      <input type="hidden" name="no_note" value="0">
+                      <input type="hidden" name="cn" value="Add special instructions to the seller:">
+                      <input type="hidden" name="return" value="{{config['FRONTEND_BASE_URL']}}/">
+                      <input type="hidden" name="no_shipping" value="1">
+                      <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHosted">
+                      <div class="mt-2">
+                        <input id="submitBtn" onclick="update_amount();" type="image" style="padding-top: 2px;" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+                      </div>
+                      <img class="m-0 p-0" alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                  </form>
+                {% else %}  
+                  <form id="paypalForm" target="paypal" action="{{ get_paypal_url() }}" method="post">
+                    <input type="hidden" name="cmd" value="_s-xclick">
+                    <input type="hidden" name="fee" value="{{ event.fee }}">
+                    <input type="hidden" name="concfee" value="{{ event.conc_fee }}">
+                    <input type="hidden" name="m_fee" value="{{ event.multi_day_fee }}">
+                    <input type="hidden" name="m_concfee" value="{{ event.multi_day_conc_fee }}">
+                    <input type="hidden" name="hosted_button_id" value="{{ event.booking_code }}">
+                    <table>
+                      <input type="hidden" name="on0" value="Type">
+                      <input type="hidden" name="on1" value="Date">
+                      <select id="dateSel" onchange="UpdateDateSelected();" name="os1">
+                        {% for date in event.dates %}
+                        <option value="{{loop.index}}">{{ date|strfdate }}</option>
+                        {% endfor %}
+                        {% if event.multi_day_fee %}
+                          <option value="all">All dates</option>
+                        {% endif %}
+                      </select>
+                      <tr>
+                        <td>
+                          <select id='PayType' name="os0">
+                              <option value="Full">Full &pound;{{ event.fee }} GBP</option>
+                              <option value="Concession">Concession &pound;{{ event.conc_fee }} GBP</option>
+                          </select> 
+                        </td>
+                      </tr>
+                    </table>
+                    {% if reserve_place_form %}
+                    <br>
+                    <a data-toggle="modal" data-target="#reservePlaceModal" href="#email" class="btn btn-warning text-info font-weight-bold">
+                    Reserve the first evening for FREE
+                    </a>
+                    <br>
                     {% endif %}
-                  </select>
-                  <tr>
-                    <td>
-                      <select id='PayType' name="os0">
-                          <option value="Full">Full &pound;{{ event.fee }} GBP</option>
-                          <option value="Concession">Concession &pound;{{ event.conc_fee }} GBP</option>
-                      </select> 
-                    </td>
-                  </tr>
-                </table>
-                {% if reserve_place_form %}
-                <br>
-                <a data-toggle="modal" data-target="#reservePlaceModal" href="#email" class="btn btn-warning text-info font-weight-bold">
-                Reserve the first evening for FREE
-                </a>
-                <br>
+                    <br>
+                    <input type="hidden" name="currency_code" value="GBP">
+                    <input 
+                        type="image"
+                        src="/static/images/add_to_cart_orange.png"
+                        border="0"
+                        name="submit"
+                        alt="PayPal � The safer, easier way to pay online."
+                        {% if not event.booking_code %}
+                            onclick="return false;"
+                        {% endif %}
+                    >
+                    <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                  </form>
                 {% endif %}
-                <br>
-                <input type="hidden" name="currency_code" value="GBP">
-                <input 
-                    type="image"
-                    src="/static/images/add_to_cart_orange.png"
-                    border="0"
-                    name="submit"
-                    alt="PayPal � The safer, easier way to pay online."
-                    {% if not event.booking_code %}
-                        onclick="return false;"
-                    {% endif %}
-                >
-                <img alt="" border="0" src="https://www.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-              </form>
               {% else %}
               Paypal button pending creation
               {% endif %}
