@@ -108,12 +108,10 @@
                     }
                     elements._topics.val(data['topics']);
                     elements._topics.attr('disabled', false);
+                    tagify.removeAllTags();
                     if (data['tags']) {
                         $("#old_tags").val(data['tags']);
                         tagify.addTags(data['tags']);
-                    }
-                    else {
-                        tagify.removeAllTags();
                     }
                     $('#email_link').attr('style', 'display:block');
                     $('#email_link').attr('href', '/admin/emails/magazine/' + data['id'])
