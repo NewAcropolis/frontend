@@ -13,3 +13,7 @@ indexes:
   properties:
   - name: status
   - name: retry_count
+- kind: Tag
+  properties:
+  - name: item_id
+  - name: tag

@@ -1,6 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
 
+{% block extra_head %}
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify@3.1.0/dist/tagify.polyfills.min.js"></script>
+<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+<style>
+.tagify__input {  
+    text-align: left; 
+} 
+</style>
+{% endblock %}
+
 {% if user_has_permissions('magazine') %}
 <div class="container pb-3 text-right" style="width: 800px;">
     <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
@@ -26,10 +37,15 @@
                 </div>
                 <div class="row">{{form.magazine_filename}}</div>
                 {{form.existing_magazine_filename}}
-                <div class="row"><a id='email_link' href=''>Magazine email</a></div>
+                <div class="row">
+                    {{form.tags}}
+                    {{form.old_tags}}
+                    <input id="tagify" placeholder="tags">
+                </div>
+                <div class="row mt-2"><a id='email_link' href=''>Magazine email</a></div>
             </div>
         </div>
-        
+
         <div id='form_errors' class='text-danger' style='display:{% if form.errors %}block{% else %}none{% endif%}'>{{ form.errors }}</div>
         <div id='message' class='text-success pb-3' style='display:{% if message %}block{% else %}none{% endif%}'>{{message}}</div>
         <hr>
@@ -39,6 +55,19 @@
         </div>
     </form>
 </div>
+<script>
+    var input = document.querySelector('#tagify')
+    var tagify = new Tagify(input, {
+      originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
+      dropdown : {
+            enabled       : 0,              // show the dropdown immediately on focus
+            maxItems      : 5,
+            closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
+            // highlightFirst: true
+      },
+        whitelist: "{{tags}}".split(",")
+    });
+</script>    
 <script charset="utf-8" type="text/javascript">
     var magazine_id = '';
     $(function() {
@@ -47,7 +76,8 @@
             _title: $('#title'),
             _next_issue: $('#next_issue'),
             _magazine_image: $('#magazine_img'),
-            _topics: $('#topics')
+            _topics: $('#topics'),
+            _tags: $('#tagify')
         };
 
         updateMagazine();
@@ -63,6 +93,7 @@
                 elements._magazine_image.attr('src', '');
                 elements._topics.attr('disabled', true);
                 elements._topics.val('');
+                tagify.removeAllTags();
                 $('#email_link').attr('style', 'display:none');
                 return;
             }
@@ -77,6 +108,11 @@
                     }
                     elements._topics.val(data['topics']);
                     elements._topics.attr('disabled', false);
+                    tagify.removeAllTags();
+                    if (data['tags']) {
+                        $("#old_tags").val(data['tags']);
+                        tagify.addTags(data['tags']);
+                    }
                     $('#email_link').attr('style', 'display:block');
                     $('#email_link').attr('href', '/admin/emails/magazine/' + data['id'])
                 }
@@ -106,6 +142,7 @@
             if ($('#magazine_img').attr('src'))
                 $('#existing_magazine_filename').val($('#magazine_img').attr('src').replace('{{images_url}}/thumbnail/pdfs/', ''));
             $('#save').prop('disabled', true);
+            $('#tags').val(elements._tags.val());
         }
     });
 </script>

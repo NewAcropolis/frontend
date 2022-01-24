@@ -35,6 +35,16 @@ def authenticate():
     )
 
 
+def app_engine_only(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if os.environ.get('ENVIRONMENT', 'development') != 'development':
+            if not request.headers.get('X-Appengine-Cron') == 'true':
+                return 'Only App Engine can call', 403
+        return f(*args, **kwargs)
+    return decorated
+
+
 def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
