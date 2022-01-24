@@ -1,6 +1,4 @@
-from flask import current_app, jsonify, request
-from functools import wraps
-import os
+from flask import current_app, jsonify
 
 from app import api_client
 from app.main import main

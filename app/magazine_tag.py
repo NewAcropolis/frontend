@@ -1,6 +1,4 @@
-from flask import current_app
 from google.cloud import ndb
-import json
 
 from app import api_client
 
