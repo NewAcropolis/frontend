@@ -3,7 +3,7 @@ from flask import current_app, jsonify, redirect, render_template, request, sess
 import json
 
 from app import api_client
-from app.magazine_tag import MagazineTag
+from app.tag import Tag
 from app.clients.api_client import update_cache
 from app.clients.errors import HTTPError
 from app.main import main
@@ -21,7 +21,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
 
     form.set_magazine_form(magazines)
 
-    tags = MagazineTag.get_tags()
+    tags = Tag.get_tags()
 
     if form.validate_on_submit():
         if form.magazine_filename.data:
@@ -53,7 +53,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
                     if form.old_tags.data != form.tags.data:
                         for t in form.tags.data.split(","):
                             if t not in tags:
-                                MagazineTag.add_magazine_tag(magazine['magazine_id'], t)
+                                Tag.add_tag(magazine['magazine_id'], t)
                 else:
                     api_message = ''
             else:
