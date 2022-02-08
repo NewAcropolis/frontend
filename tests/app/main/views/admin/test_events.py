@@ -181,7 +181,7 @@ class WhenSubmittingEventsForm:
 
         mock_request = Mock()
         mock_request.files.get.return_value = Mock()
-        mock_request.files.get.return_value.read.return_value = 'test data'
+        mock_request.files.get.return_value.read.return_value = b'test data'
 
         mocker.patch('app.main.views.admin.events.request', mock_request)
 
@@ -204,10 +204,13 @@ class WhenSubmittingEventsForm:
 
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
         href = page.select_one('a')['href']
-
         assert mock_api_client.add_event.call_args[0][0]['event_dates'] == json.loads(
             '[{"event_date": "2019-03-23 19:00", "end_time": "21:00"}]')
-        assert mock_api_client.add_event.call_args[0][0]['image_data'] == base64.b64encode(b'test data')
+
+        file_data_encoded = base64.b64encode(b'test data')
+        file_data_encoded = base64.b64encode(file_data_encoded).decode('utf-8')
+
+        assert mock_api_client.add_event.call_args[0][0]['image_data'] == file_data_encoded
         assert mock_api_client.add_event.call_args[0][0]['description'] == '&lt;test&gt;'
         assert href == '{}/{}'.format(url_for('main.admin_events'), 'test_id')
 
