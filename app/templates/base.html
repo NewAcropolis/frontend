@@ -16,9 +16,9 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
       <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.css" />    
-      <meta name="facebook-domain-verification" content="THIS IS WHERE THE PIXEL-STRING COMES" />
+      <meta name="facebook-domain-verification" content="{{config['FACEBOOK_VERIFICATION']}}" />
       {% endblock %}
-      title>{% block title %}{% endblock %}</title>
+      <title>{% block title %}{% endblock %}</title>
       {% endblock %}
       {% block extra_head %}
       {% endblock %}
