@@ -87,7 +87,8 @@ def admin_events(selected_event_id=None, api_message=None):
         file_request = request.files.get('image_filename')
         if file_request:
             file_data = file_request.read()
-            file_data_encoded = base64.b64encode(file_data.encode('ascii'))
+            file_data_encoded = base64.b64encode(file_data)
+            file_data_encoded = base64.b64encode(file_data_encoded).decode('utf-8')
             _file_size = size_from_b64(str(file_data_encoded))
             if _file_size > current_app.config['MAX_IMAGE_SIZE']:
                 _file_size_mb = round(_file_size/(1024*1024), 1)
