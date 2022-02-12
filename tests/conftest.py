@@ -123,7 +123,8 @@ def sample_future_events(mocker):
             }],
             "event_state": "approved",
             "venue": {"name": "London"},
-            "show_banner_text": True
+            "show_banner_text": True,
+            "fee": 5
         },
         {
             "id": str(uuid4()),
@@ -137,7 +138,8 @@ def sample_future_events(mocker):
             }],
             "event_state": "approved",
             "venue": {"name": "Bristol"},
-            "show_banner_text": True
+            "show_banner_text": True,
+            "fee": 5
         },
         {
             "id": str(uuid4()),
@@ -152,7 +154,8 @@ def sample_future_events(mocker):
             "event_monthyear": "January 2019",
             "event_state": "approved",
             "venue": {"name": "London"},
-            "show_banner_text": True
+            "show_banner_text": True,
+            "fee": 5
         },
         {
             "id": str(uuid4()),
@@ -166,7 +169,8 @@ def sample_future_events(mocker):
             }],
             "event_state": "approved",
             "venue": {"name": "Online Event"},
-            "show_banner_text": True
+            "show_banner_text": True,
+            "fee": 5
         },
     ]
 
@@ -248,7 +252,8 @@ def sample_future_event(mocker):
             "end_time": None
         }],
         "event_state": "approved",
-        "venue": {"name": "Online Event"}
+        "venue": {"name": "Online Event"},
+        "fee": 5
     }
 
     return event
