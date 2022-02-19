@@ -6,7 +6,7 @@ import json
 from app.cache import Cache
 from app.queue import Queue
 from app.clients import BaseAPIClient
-from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
+from app.clients.utils import get_nice_event_dates, get_nice_event_date
 
 
 def only_show_approved_events(func):
@@ -168,7 +168,7 @@ class ApiClient(BaseAPIClient):
         self.get(url='event/sync_paypal/{}'.format(event_id))
 
     def get_event_by_id_from_db(self, event_id):
-        return self.get_nice_event_date(self.get(url='event/{}'.format(event_id)))
+        return get_nice_event_date(self.get(url='event/{}'.format(event_id)))
 
     @use_cache(
         db_call=get_event_by_id_from_db,
@@ -186,12 +186,12 @@ class ApiClient(BaseAPIClient):
         return self.get(url='event_types')
 
     def get_limited_events(self):
-        return self.get_nice_event_dates(self.get(url='events/limit/30'))
+        return get_nice_event_dates(self.get(url='events/limit/30'))
 
     def get_events_in_year(self, year=None):
         if not year:
             year = int(datetime.today().strftime("%Y"))
-        return self.get_nice_event_dates(self.get(url='events/year/{}'.format(year)))
+        return get_nice_event_dates(self.get(url='events/year/{}'.format(year)))
 
     def get_event_attendance(self, eventdate_id):
         return self.get(url='event/tickets_and_reserved/' + eventdate_id)
@@ -205,7 +205,7 @@ class ApiClient(BaseAPIClient):
 
     @only_show_approved_events
     def get_events_in_future_from_db(self):
-        events = self.get_nice_event_dates(self.get(url='events/future'), future_dates_only=True)
+        events = get_nice_event_dates(self.get(url='events/future'), future_dates_only=True)
         return get_events_intro_courses_prioritised(events)
 
     @use_cache(
@@ -220,7 +220,7 @@ class ApiClient(BaseAPIClient):
 
     @only_show_approved_events
     def get_events_past_year_from_db(self):
-        return self.get_nice_event_dates(self.get(url='events/past_year'))
+        return get_nice_event_dates(self.get(url='events/past_year'))
 
     @use_cache(update_daily=True, db_call=get_events_past_year_from_db)
     def get_events_past_year(self):
@@ -322,54 +322,6 @@ class ApiClient(BaseAPIClient):
 
     def get_marketings(self):
         return self.get(url='marketings')
-
-    def get_nice_event_dates(self, events, future_dates_only=False):
-        for event in events:
-            if future_dates_only:
-                event['event_dates'] = self.get_future_event_dates(event['event_dates'])
-
-            event = self.get_nice_event_date(event)
-        return events
-
-    def get_nice_event_date(self, event):
-        event['formatted_event_datetimes'] = common_get_nice_event_dates(event['event_dates'])
-        event['dates'] = self.get_event_dates(event['event_dates'])
-
-        event_date = event["event_dates"][0]
-        _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
-        if event['event_type'] == 'Introductory Course':
-            event['event_monthyear'] = _datetime.strftime('%B %Y')
-
-        event_date['event_time'] = _datetime.strftime('%H:%M')
-        if not event.get('event_time'):
-            event['event_time'] = event_date['event_time']
-        else:
-            if _datetime.minute > 0:
-                time = _datetime.strftime('%-I:%M %p')
-            else:
-                time = _datetime.strftime('%-I %p')
-            event['event_time'] = time
-        if not event.get('end_time'):
-            event['end_time'] = event_date["end_time"]
-
-        return event
-
-    def get_future_event_dates(self, event_dates):
-        future_dates = []
-        for event_date in event_dates:
-            _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
-            if _datetime >= datetime.today():
-                future_dates.append(event_date)
-
-        return future_dates
-
-    def get_event_dates(self, event_dates):
-        dates = []
-        for event_date in event_dates:
-            _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
-            dates.append(_datetime.strftime('%Y-%m-%d'))
-
-        return dates
 
     def get_user(self, email):
         users = Cache.get_data('get_users', default=[])

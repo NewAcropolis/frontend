@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
-from app.clients.api_client import ApiClient
+from app.clients.utils import get_nice_event_dates
 
 
 class WhenGettingNiceEventDate:
 
     def it_gets_nice_event_date(self, app, sample_future_events):
-        api_client = ApiClient()
         future_dates = []
         for n in range(3):
             d = datetime.strftime(datetime.now() + timedelta(days=n + 1), "%a %-d of %B - 7 PM")
@@ -15,7 +14,7 @@ class WhenGettingNiceEventDate:
                 d = d.replace('Thu', 'Thurs')
             future_dates.append(d)
 
-        nice_dates = api_client.get_nice_event_dates(sample_future_events)
+        nice_dates = get_nice_event_dates(sample_future_events)
         assert nice_dates[0]['formatted_event_datetimes'] == future_dates[0]
         assert not nice_dates[0]['end_time']
         assert nice_dates[0]['event_time'] == '19:00'

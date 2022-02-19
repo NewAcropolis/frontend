@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
 from flask import current_app
+
+from app.clients.utils import get_nice_event_date
 
 
 INTRO_COURSE = {
@@ -81,6 +84,13 @@ def get_intro_course(external=False):
     _intro_course = INTRO_COURSE.copy()
     _intro_course['image_filename'] = current_app.config['TEST_INTRO_IMAGE']
     _intro_course['booking_code'] = current_app.config['TEST_INTRO_BOOKING']
+
+    n = 0
+    for d in _intro_course['event_dates']:
+        d['event_datetime'] = datetime.strftime(datetime.now() + timedelta(days=n + 1), "%Y-%m-%d 19:00")
+        n += 1
+
+    _intro_course = get_nice_event_date(_intro_course)
 
     if external:
         _intro_course = INTRO_COURSE.copy()

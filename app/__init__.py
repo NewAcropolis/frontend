@@ -60,7 +60,6 @@ def create_app(**kwargs):
     setup_config(application, configs[environment_state])
 
     application.config.update(kwargs)
-
     if not application.config['TESTING']:
         use_gaesession(application)
 
@@ -307,7 +306,10 @@ def setup_config(application, config_class):
 
 
 def get_env():
-    return os.environ.get('ENVIRONMENT', 'development')
+    if request and 'test' in request.args:
+        return 'test'
+    else:
+        return os.environ.get('ENVIRONMENT', 'development')
 
 
 def get_root_path(application):
