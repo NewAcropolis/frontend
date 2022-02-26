@@ -8,6 +8,10 @@
     }
   ],
   "env": {
+    "ENVIRONMENT": {
+      "description": "Environment",
+      "value": "review"
+    }
   },
   "formation": {
     "web": {
