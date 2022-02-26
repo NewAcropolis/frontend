@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import current_app, request, session
 from functools import wraps
 import json
+import os
 
 from app.cache import Cache
 from app.queue import Queue
@@ -43,6 +44,11 @@ def use_cache(**dkwargs):
                         return get_intro_course()
                     elif request.args.get('test') == 'intro_external':
                         return get_intro_course(external=True)
+            elif os.environ.get('ENVIRONMENT', 'development') == 'review':
+                import importlib
+                mod = importlib.import_module('app.clients.sim_data')
+                func = getattr(mod, 'sim_' + f.__name__)
+                return func(*args, **kwargs)
             elif current_app.config['TESTING']:
                 if 'db_call' in dkwargs:
                     data = dkwargs['db_call'](*args, **kwargs)
