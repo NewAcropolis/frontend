@@ -60,7 +60,7 @@ def create_app(**kwargs):
     setup_config(application, configs[environment_state])
 
     application.config.update(kwargs)
-    print("*** environment", application.config['ENVIRONMENT'])
+    print("*** environment", os.environ['ENVIRONMENT'])
     print("*** testing", application.config['TESTING'])
     if not application.config['TESTING']:
         use_gaesession(application)
