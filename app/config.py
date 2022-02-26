@@ -4,7 +4,7 @@ import os
 
 class Config(object):
     DEBUG = False
-    API_BASE_URL = os.environ.get('API_BASE_URL')
+    API_BASE_URL = os.environ.get('API_BASE_URL', 'http://localhost')
     FRONTEND_BASE_URL = os.environ.get('FRONTEND_BASE_URL')
     IMAGES_URL = os.environ.get('IMAGES_URL')
     ADMIN_CLIENT_ID = os.environ.get('ADMIN_CLIENT_ID')
@@ -71,11 +71,18 @@ class Live(Config):
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
 
 
+class Review(Config):
+    TESTING = True
+    DEBUG = True
+    SESSION_COOKIE_SECURE = False
+    SESSION_PROTECTION = None
+    NO_ADMIN_AUTH = False
+    IMAGES_URL = "/static/images/review"
+
+
 configs = {
     'development': Development,
-    # 'test': Test,
     'preview': Preview,
-    # 'staging': Staging,
     'live': Live,
-    # 'production': Live
+    'review': Review,
 }
