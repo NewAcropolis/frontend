@@ -18,6 +18,10 @@ def sim_get_events_in_future(*args, **kwargs):
         datetime.strftime(datetime.now() + timedelta(days=n + 1), "%Y-%m-%d 19:00") for n in range(4)
     ]
 
+    dates = [
+        datetime.strftime(datetime.now() + timedelta(days=n + 1), "%Y-%m-%d") for n in range(4)
+    ]
+
     simulated_data = [
         {
             "id": uuids[0],
@@ -26,6 +30,7 @@ def sim_get_events_in_future(*args, **kwargs):
             "booking_code": "111222333",
             "event_type": "Talk",
             "image_filename": "event.png",
+            "dates": dates,
             "event_dates": [{
                 "id": "920c7ae0-38c0-4411-9301-7cf14744efdf",
                 "event_datetime": future_dates[0],
@@ -44,6 +49,7 @@ def sim_get_events_in_future(*args, **kwargs):
             "booking_code": "222333444",
             "event_type": "Talk",
             "image_filename": "event.png",
+            "dates": dates,
             "event_dates": [{
                 "id": "920c7ae0-38c0-4411-9301-7cf14744efdf",
                 "event_datetime": future_dates[1],
@@ -61,6 +67,7 @@ def sim_get_events_in_future(*args, **kwargs):
             "booking_code": "333444555",
             "event_type": "Introductory Course",
             "image_filename": "event.png",
+            "dates": dates,
             "event_dates": [{
                 "id": "920c7ae0-38c0-4411-9301-7cf14744efdf",
                 "event_datetime": future_dates[2],
@@ -80,6 +87,7 @@ def sim_get_events_in_future(*args, **kwargs):
             "booking_code": "333444555666",
             "event_type": "Workshop",
             "image_filename": "event.png",
+            "dates": dates,
             "event_dates": [{
                 "id": "920c7ae0-38c0-4411-9301-7cf14744efdf",
                 "event_datetime": future_dates[3],
