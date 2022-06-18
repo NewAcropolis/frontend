@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import current_app, session
+from flask import current_app, request, session
 from functools import wraps
 import json
 
@@ -36,7 +36,15 @@ def use_cache(**dkwargs):
     def use_cache_inner(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            if current_app.config['TESTING']:
+            if 'test' in request.args:
+                if f.__name__ == 'get_event_by_id':
+                    if request.args.get('test') == 'intro':
+                        from app.clients.test_data import get_intro_course
+                        return get_intro_course()
+                    elif request.args.get('test') == 'intro_external':
+                        from app.clients.test_data import get_intro_course
+                        return get_intro_course(external=True)
+            elif current_app.config['TESTING']:
                 if 'db_call' in dkwargs:
                     data = dkwargs['db_call'](*args, **kwargs)
                 else:
