@@ -38,11 +38,10 @@ def use_cache(**dkwargs):
         def decorated(*args, **kwargs):
             if 'test' in request.args:
                 if f.__name__ == 'get_event_by_id':
+                    from app.clients.test_data import get_intro_course
                     if request.args.get('test') == 'intro':
-                        from app.clients.test_data import get_intro_course
                         return get_intro_course()
                     elif request.args.get('test') == 'intro_external':
-                        from app.clients.test_data import get_intro_course
                         return get_intro_course(external=True)
             elif current_app.config['TESTING']:
                 if 'db_call' in dkwargs:

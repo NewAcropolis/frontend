@@ -2,4 +2,4 @@
 exclude = venv*,__pycache__,node_modules,cache,migrations,build,lib
 ignore = E226,E302,E41,W503
 max-line-length = 120
-max-complexity = 20
+max-complexity = 22
