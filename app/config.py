@@ -42,6 +42,9 @@ class Config(object):
 
     SHOW_RESOURCE_MAINTENANCE = os.environ.get('SHOW_RESOURCE_MAINTENANCE', '') == 'True'
 
+    TEST_INTRO_IMAGE = os.environ.get('TEST_INTRO_IMAGE')
+    TEST_INTRO_BOOKING = os.environ.get('TEST_INTRO_BOOKING')
+
 
 class Development(Config):
     DEBUG = True
