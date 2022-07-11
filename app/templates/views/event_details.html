@@ -1,7 +1,7 @@
 {% extends "public_base.html" %}
 {% block title %}Event details{% endblock %}
 {% block extra_head %}
-{% if event.accept_donation %}
+{% if reserve_place_form %}
 <script>
   var date_ids = {{ event.date_ids | safe }};
 
@@ -172,13 +172,6 @@
                           </td>
                         </tr>
                       </table>
-                      {% if reserve_place_form %}
-                      <br>
-                      <a data-toggle="modal" data-target="#reservePlaceModal" href="#email" class="btn btn-warning text-info font-weight-bold">
-                      Reserve the first evening for FREE
-                      </a>
-                      <br>
-                      {% endif %}
                       <br>
                       <input type="hidden" name="currency_code" value="GBP">
                       <input type="hidden" name="button_subtype" value="services">
@@ -298,9 +291,7 @@
                 </div>
             <script>
 $(document).ready(function() {
-  {% if event.fee > 0 %}
   UpdateDateSelected();
-  {% endif %}
 
   $('#reservePlaceModal').on('shown.bs.modal', function () {
     $('#name').focus();
