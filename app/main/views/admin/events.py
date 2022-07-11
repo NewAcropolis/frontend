@@ -174,6 +174,12 @@ def _get_event():
     return ''
 
 
+@main.route('/admin/_sync_paypal/<uuid:event_id>')
+def _sync_paypal(event_id):
+    api_client.sync_paypal(event_id)
+    return ''
+
+
 @main.route('/admin/_delete_event/<uuid:event_id>')
 def _delete_event(event_id):
     api_client.delete_event(event_id)

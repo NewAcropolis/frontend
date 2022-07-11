@@ -164,6 +164,9 @@ class ApiClient(BaseAPIClient):
     def update_event(self, event_id, event):
         return self.post(url='event/{}'.format(event_id), data=event)
 
+    def sync_paypal(self, event_id):
+        self.get(url='event/sync_paypal/{}'.format(event_id))
+
     def get_event_by_id_from_db(self, event_id):
         return self.get_nice_event_date(self.get(url='event/{}'.format(event_id)))
 
