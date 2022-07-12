@@ -134,7 +134,7 @@
                 <div class="col-2"></div>
                 <div class="px-3 pt-0 pb-3">(0 = free admission, -2 = external fees, -3 = donations, blank or -1 = to be decided)</div>
             </div>
-            <div class="row">
+            <div class="row d-flex" id="sync_paypal_row">
                 <div class="col-2"></div>
                 <div class="px-3 pt-0 pb-3">
                     <button id="sync_paypal" class="btn btn-default">sync paypal</button>
@@ -473,7 +473,9 @@ $(function() {
             resetFields();
         }
 
-        addSpeakerRow(speakerCounter);
+        if (speakerCounter > 1 && $('#speaker' + speakerCounter).val() != "") {
+            addSpeakerRow(speakerCounter);
+        }
 
         if (!elements._events.val()) {
             update_for_event_state('new');
@@ -511,6 +513,8 @@ $(function() {
 
                 update_for_event_state(data['event_state']);
                 setRejectReasons(data['reject_reasons']);
+
+                $('#sync_paypal_row').attr('class', data['booking_code'] != '' ? 'row d-flex' : 'row d-none');
             }
         });
     }
