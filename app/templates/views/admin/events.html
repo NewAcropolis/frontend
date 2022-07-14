@@ -138,7 +138,7 @@
                 <div class="col-2"></div>
                 <div class="px-3 pt-0 pb-3">
                     <button id="sync_paypal" class="btn btn-default">sync paypal</button>
-                    <span id="sync_paypal_text" class="pl-1"></span>
+                    <span id="sync_paypal_text" class="pl-1">only sync if paypal price doesn't match event pricing</span>
                 </div>
             </div>
             {{ admin_row(form.conc_fee, size=10) }}
@@ -221,13 +221,12 @@ $(function() {
     $('#sync_paypal').on('click', function() {
         d = new Date ();
         d.setMinutes ( d.getMinutes() + 10 );
-        $('#sync_paypal_text').text('attempting to sync paypal, check at ' + d)
 
         $.ajax({
             type: "GET",
             url: "/admin/_sync_paypal/" + $('#events').val(),
             success: function (data) {
-                alert("/admin/_sync_paypal/" + $('#events').val());
+                $('#sync_paypal_text').text('attempting to sync paypal, check at ' + d)
             }
         });
 
@@ -473,7 +472,8 @@ $(function() {
             resetFields();
         }
 
-        if (speakerCounter > 1 && $('#speaker' + speakerCounter).val() != "") {
+        // NOTE: should probably change speakers to use strings rather than drop down lists
+        if ($('#speaker' + speakerCounter).val() != "") {
             addSpeakerRow(speakerCounter);
         }
 
@@ -514,7 +514,8 @@ $(function() {
                 update_for_event_state(data['event_state']);
                 setRejectReasons(data['reject_reasons']);
 
-                $('#sync_paypal_row').attr('class', data['booking_code'] != '' ? 'row d-flex' : 'row d-none');
+                enable_sync_paypal = (data['booking_code'] != ''  && data['fee'] > 0 ? 'row d-flex' : 'row d-none');
+                $('#sync_paypal_row').attr('class', enable_sync_paypal);
             }
         });
     }
