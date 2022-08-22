@@ -72,7 +72,8 @@ def event_details(event_id=None, **kwargs):
     h = HTMLParser()
     event['_description'] = h.unescape(event['description'])
 
-    reserve_place_form = ReservePlaceForm() if event['event_type'] == 'Introductory Course' else None
+    reserve_place_form = ReservePlaceForm() if event['is_future_event'] and\
+        event['event_type'] == 'Introductory Course' else None
 
     return render_page(
         'views/event_details.html',
