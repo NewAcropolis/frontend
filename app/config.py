@@ -63,6 +63,14 @@ class Live(Config):
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
 
 
+class Preview(Config):
+    DEBUG = True
+    SESSION_COOKIE_SECURE = False
+    SESSION_PROTECTION = None
+    NO_ADMIN_AUTH = False
+    FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
+
+
 class Review(Config):
     TESTING = True
     DEBUG = True
@@ -74,6 +82,7 @@ class Review(Config):
 
 configs = {
     'development': Development,
+    'preview': Preview,
     'review': Review,
     'live': Live,
 }
