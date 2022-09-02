@@ -514,7 +514,7 @@ $(function() {
                 update_for_event_state(data['event_state']);
                 setRejectReasons(data['reject_reasons']);
 
-                enable_sync_paypal = (data['booking_code'] != ''  && data['fee'] > 0 ? 'row d-flex' : 'row d-none');
+                enable_sync_paypal = (data['fee'] > 0 ? 'row d-flex' : 'row d-none');
                 $('#sync_paypal_row').attr('class', enable_sync_paypal);
             }
         });
