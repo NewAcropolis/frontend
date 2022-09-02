@@ -42,6 +42,11 @@
         </div>
         <details class='text-left'>
             <summary>Order details</summary>
+                <div class="row">
+                    <div class="col">
+                        <strong>Payment status:</strong> {{ order.payment_status }}
+                    </div>
+                </div>
             {% if order.tickets %}
                 {% for ticket in order.tickets %}
                 <div class="row">
