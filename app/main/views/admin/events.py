@@ -8,6 +8,7 @@ from app import api_client
 from app.cache import Cache
 from app.clients.api_client import only_show_approved_events, update_cache
 from app.clients.errors import HTTPError
+from app.clients.utils import get_event_dates
 from app.main import main
 from app.main.forms import EventAttendanceForm, EventForm
 from app.main.views import render_page
@@ -209,7 +210,7 @@ def preview_event_detail():
     data['venue'] = venue
     data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'])
     data['is_future_event'] = is_future_event(data)
-    data['dates'] = api_client.get_event_dates(data['event_dates'])
+    data['dates'] = get_event_dates(data['event_dates'])
 
     if venue['name'] == 'Online Event':
         data['event_type'] = 'Online ' + data['event_type']
@@ -232,7 +233,7 @@ def preview_events():
 
     data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'])
     data['is_future_event'] = is_future_event(data)
-    data['dates'] = api_client.get_event_dates(data['event_dates'])
+    data['dates'] = get_event_dates(data['event_dates'])
 
     venue = api_client.get_venue_by_id(data['venue_id'])
     if venue['name'] == 'Online Event':
