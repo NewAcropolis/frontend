@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% block title %}Resources{% endblock %}
-{% block extra_head%}
+{% block title %}Shop{% endblock %}
+{% block extra_head %}
 <link rel="stylesheet" href="/static/css/alt-style.css" />
 {% endblock %}
 
@@ -8,29 +8,6 @@
 {% if not config.get('SHOW_RESOURCE_MAINTENANCE') %}
 <div id="banner" class="carousel slide">
     <img class="d-block w-100 fit-image" src="/static/images/resource-banner.png">
-</div>
-
-<div class="sticky-top" style="top: 3.3em; width:100%; min-width: 500px; height:60px; border: 1px rgb(157, 163, 162) solid; background-color: rgb(157, 163, 162);">
-    <div class="text-center" style="margin-top: 10px;">
-    <div style="float: left; margin-left:100px; margin-top:2px;">Please add postage and packing to your book order</div>
-    <form target="paypal" action="{{ get_paypal_url() }}" method="post">
-        <input type="hidden" name="cmd" value="_s-xclick">
-        <input type="hidden" name="hosted_button_id" value="{{config['PAYPAL_DELIVERY']}}">
-        <input type="hidden" name="on0" value="Postage">
-        <input type="hidden" name="currency_code" value="GBP">
-        <input type="hidden" name="shopping_url" value="{{ config['FRONTEND_BASE_URL'] }}/resources">
-        <div class="col">
-            <select class="form-control" name="os0" style="height:30px;width:200px;font-size: 0.8em; float: left; margin-left:10px;">
-                <option value="UK">UK £2.00</option>
-                <option value="Europe">Europe £4.50</option>
-                <option value="RoW">Rest of the World £6.00</option>
-            </select>
-        </div>
-        <div class="col">
-            <input type="image" src="/static/images/add_to_cart_orange.png" style="height:30px; float:left; margin-left:10px;" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
-        </div>
-    </form>
-    </div>
 </div>
 {% endif %}
 {% endblock %}
@@ -53,13 +30,13 @@
         <div class="col-lg-8">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link active resources" id="books-tab" data-toggle="tab" href="#books" role="tab" aria-controls="books" aria-selected="true">BOOKS</a>
+                  <a class="nav-link active shop" id="books-tab" data-toggle="tab" href="#books" role="tab" aria-controls="books" aria-selected="true">BOOKS</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link resources" id="magazine-tab" data-toggle="tab" href="#magazines" role="tab" aria-controls="magazines" aria-selected="false">MAGAZINES</a>
+                  <a class="nav-link shop" id="magazine-tab" data-toggle="tab" href="#magazines" role="tab" aria-controls="magazines" aria-selected="false">MAGAZINES</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link resources" id="gifts-tab" data-toggle="tab" href="#gifts" role="tab" aria-controls="gifts" aria-selected="false">GIFTS</a>
+                  <a class="nav-link shop" id="gifts-tab" data-toggle="tab" href="#gifts" role="tab" aria-controls="gifts" aria-selected="false">GIFTS</a>
                 </li>
             </ul>
             <div class="tab-content pt-2" id="resouce-tab-content">
@@ -89,7 +66,7 @@
                                         <form id="paypalForm" target="paypal" action="{{ get_paypal_url() }}" method="post">
                                         <input type="hidden" name="cmd" value="_s-xclick">
                                         <input type="hidden" name="cn" value="Add special instructions to the seller:">
-                                        <input type="hidden" name="shopping_url" value="{{ config['FRONTEND_BASE_URL'] }}/resources">
+                                        <input type="hidden" name="shopping_url" value="{{ config['FRONTEND_BASE_URL'] }}/shop">
                                         <input type="hidden" name="fee" value="{{book.price}}">
                                         <input type="hidden" name="hosted_button_id" value="{{book.buy_code}}">
                                         <input type="hidden" name="currency_code" value="GBP">
@@ -140,7 +117,7 @@
             <div class="row">
                 <div class="col-12 pt-0 mt-0">
                     <div class="nav nav-tabs mag" role="tablist">
-                        <div class="nav-link active resources mag font-weight-bold">Our Latest Magazine</div>
+                        <div class="nav-link active shop mag font-weight-bold">Our Latest Magazine</div>
                     </div>
                     <div class="py-2">
 
@@ -184,5 +161,35 @@
 {% endif %}
 
 <div class="empty_space_sm"></div>
+
+{% block block_footer %}
+
+{% if not config.get('SHOW_RESOURCE_MAINTENANCE') %}
+<!-- <div class="footer bg-dark w-100 py-3 position-absolute bottom-0 start-50 translate-middle-x" style="top: 3.3em; width:100%; min-width: 500px; height:60px; border: 1px rgb(157, 163, 162) solid; background-color: rgb(157, 163, 162);"></div> -->
+<div class="bg-dark w-100" style="position: sticky; bottom: 100;">
+    <div class="text-center" style="margin-top: 10px;">
+    <div style="float: left; margin-left:100px; margin-top:2px;">Please add postage and packing to your book order</div>
+    <form target="paypal" action="{{ get_paypal_url() }}" method="post">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="{{config['PAYPAL_DELIVERY']}}">
+        <input type="hidden" name="on0" value="Postage">
+        <input type="hidden" name="currency_code" value="GBP">
+        <input type="hidden" name="shopping_url" value="{{ config['FRONTEND_BASE_URL'] }}/shop">
+        <div class="col">
+            <select class="form-control" name="os0" style="height:30px;width:200px;font-size: 0.8em; float: left; margin-left:10px;">
+                <option value="UK">UK £2.00</option>
+                <option value="Europe">Europe £4.50</option>
+                <option value="RoW">Rest of the World £6.00</option>
+            </select>
+        </div>
+        <div class="col">
+            <input type="image" src="/static/images/add_to_cart_orange.png" style="height:30px; float:left; margin-left:10px;" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
+        </div>
+    </form>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
 
 {% endblock %}

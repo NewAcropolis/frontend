@@ -115,9 +115,16 @@ html, body {
   width: auto;
   padding: 0px;
 }
+
 .sticky-top {
   position: fixed;
   top: 0;
+  width: 100%;
+}
+
+.sticky-bottom {
+  position: fixed;
+  bottom: 0;
   width: 100%;
 }
 /* FOOTER */
