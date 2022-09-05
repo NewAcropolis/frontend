@@ -1,6 +1,6 @@
 <div class="container-fluid padding {% if request.path == '/course_details' %}course_details_background{% else %}yellow_background{% endif %}">
     {% if request.path == '/course_details' %}
-    <div class="topics_header text-center">16-week course topics:</div>
+    <div class="topics_header text-center">18-week course topics:</div>
     {% endif %}
     {% set topics = get_topic_list_elements(request.args.get('topic')) %}
 
