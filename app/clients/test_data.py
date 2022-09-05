@@ -12,7 +12,7 @@ INTRO_COURSE = {
                    "and with the intuition that there are answers to be found.\r\nEvery civilization has passed on to "
                    "us its experience and understanding of life.However, most of us have had little opportunity to "
                    "learn about the vast heritage of ideas that have inspired and guided humanity throughout history."
-                   "&lt;/p&gt;\r\n&lt;p&gt;This 16-week course will introduce you to the major concepts of Eastern and "
+                   "&lt;/p&gt;\r\n&lt;p&gt;This 18-week course will introduce you to the major concepts of Eastern and "
                    "Western Philosophy and explore their relevance and practical application for our lives.&lt;/p&gt;"
                    "\r\n\r\n&lt;h2&gt;Course Framework&lt;/h2&gt;&lt;br&gt;\r\n\r\n&lt;strong&gt;Ethics: Understanding "
                    "yourself&lt;/strong&gt;&lt;br&gt;\r\n\r\nEthics enquires about moral principles and the impact of "
