@@ -33,9 +33,6 @@
                   <a class="nav-link active shop" id="books-tab" data-toggle="tab" href="#books" role="tab" aria-controls="books" aria-selected="true">BOOKS</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link shop" id="magazine-tab" data-toggle="tab" href="#magazines" role="tab" aria-controls="magazines" aria-selected="false">MAGAZINES</a>
-                </li>
-                <li class="nav-item">
                   <a class="nav-link shop" id="gifts-tab" data-toggle="tab" href="#gifts" role="tab" aria-controls="gifts" aria-selected="false">GIFTS</a>
                 </li>
             </ul>
@@ -96,13 +93,6 @@
                     </div>
                     {% endfor %}
                     </form>
-                </div>
-                <div class="tab-pane fade" id="magazines" role="tabpanel" aria-labelledby="magazines-tab">
-                    <div class="row">
-                        <div class="col-12">
-                            Magazines will be listed here soon
-                        </div>
-                    </div>
                 </div>
                 <div class="tab-pane fade" id="gifts" role="tabpanel" aria-labelledby="gifts-tab">
                     <div class="row">
@@ -166,9 +156,10 @@
 
 {% if not config.get('SHOW_RESOURCE_MAINTENANCE') %}
 <!-- <div class="footer bg-dark w-100 py-3 position-absolute bottom-0 start-50 translate-middle-x" style="top: 3.3em; width:100%; min-width: 500px; height:60px; border: 1px rgb(157, 163, 162) solid; background-color: rgb(157, 163, 162);"></div> -->
-<div class="bg-dark w-100" style="position: sticky; bottom: 100;">
+<!-- <div class="bg-dark w-100" style="position: absolute; height:100px; bottom:100px;"> -->
+<div class="bottom-band bottom sticky">
     <div class="text-center" style="margin-top: 10px;">
-    <div style="float: left; margin-left:100px; margin-top:2px;">Please add postage and packing to your book order</div>
+    <div style="float: left; margin-left:100px; margin-top:-10px;">Please add postage and packing to your book order</div>
     <form target="paypal" action="{{ get_paypal_url() }}" method="post">
         <input type="hidden" name="cmd" value="_s-xclick">
         <input type="hidden" name="hosted_button_id" value="{{config['PAYPAL_DELIVERY']}}">
