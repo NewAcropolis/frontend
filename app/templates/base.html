@@ -26,8 +26,6 @@
   <body>
     {% if is_not_live() %}
     <div class="corner-ribbon bottom-left sticky turquoise">{{ get_env() }}</div>
-    <div class="bottom-band bottom sticky">Test</div>
-
     {% endif %}
     {% block first_body %}{% endblock %}
     {% if is_not_live() or not API_BASE_URL %}
@@ -45,23 +43,5 @@
       {% block body_footer %}
       {% endblock %}
       {% if error %}<div class='m-1'>{{ error }}</div>{% endif %}
-      <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
-      <script>
-      window.cookieconsent.initialise({
-        "palette": {
-          "popup": {
-            "background": "#216942",
-            "text": "#b2d192"
-          },
-          "button": {
-            "background": "#afed71"
-          }
-        },
-        "theme": "edgeless",
-        "content": {
-          "href": "/static/pdfs/Website_Privacy_Notice.pdf"
-        }
-      });
-      </script>
   </body>
 </html>
