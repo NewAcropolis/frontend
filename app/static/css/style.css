@@ -909,7 +909,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   color: #eaee14;
   z-index: 10;
   position: fixed;
-  border-top: 1px solid black;
+  border-top: solid 5px rgb(238,191,109);
 }
 
 /* Custom styles */
