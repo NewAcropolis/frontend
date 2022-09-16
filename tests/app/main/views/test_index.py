@@ -84,7 +84,7 @@ class WhenAccessingHomePage(object):
     def it_shows_list_of_available_pages_on_header_and_footer(
         self, client, sample_future_events, sample_articles_summary, div_class
     ):
-        expected_link_text = ['About', 'Courses', 'Events', 'Shop', 'E-shop']
+        expected_link_text = ['About', 'Courses', 'Events', 'Shop', 'Magazines']
         response = client.get(url_for(
             'main.index'
         ))
