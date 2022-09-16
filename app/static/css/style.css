@@ -493,6 +493,10 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   max-height: 310px;
   max-width: 220px;
 }
+.magazine_img_size {
+  max-height: 710px;
+  max-width: 520px;
+}
 .modal-dialog-magazine{
   position: relative;
   display: table;

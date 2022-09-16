@@ -299,8 +299,12 @@ class ApiClient(BaseAPIClient):
     def get_magazine(self, id):
         return self.get(url='magazine/{}'.format(id))
 
-    def get_magazines(self):
+    def get_magazines_from_db(self):
         return self.get(url='magazines')
+
+    @use_cache(update_daily=True, db_call=get_magazines_from_db)
+    def get_magazines(self):
+        return self.get_magazines_from_db()
 
     def get_member_from_unsubcode(self, unsubcode):
         return self.get(url='member/{}'.format(unsubcode))

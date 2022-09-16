@@ -1,166 +1,100 @@
-{% extends "base.html" %}
-{% block title %}E-shop{% endblock %}
-
-{% block extra_head %}
-<style>
-.rotateimg10 {
-  -webkit-transform:rotate(10deg);
-  -moz-transform: rotate(10deg);
-  -ms-transform: rotate(10deg);
-  -o-transform: rotate(10deg);
-  transform: rotate(10deg);
-}
-.rotateimg350 {
-  -webkit-transform:rotate(350deg);
-  -moz-transform: rotate(350deg);
-  -ms-transform: rotate(350deg);
-  -o-transform: rotate(350deg);
-  transform: rotate(350deg);
-}
-</style>
-{% endblock %}
+{% extends "public_base.html" %}
+{% block title %}Magazines{% endblock %}
 
 {% block content %}
 
-<body>
-    <div class="text-center" style="object-fit: contain; overflow:hidden; min-width:500px;">
-        <img src="/static/images/magazines_banner.png">
-    </div>
-    <div id="content">
-        <div class="cream_backgroundcolour pb-1">
-            <div class="container-fluid padding text-center col-sm h-1 display-4">
-                <span class="text-info">NEW ACROPOLIS</span> MAGAZINE
+<div id="content">
+    <div class="main">
+        <div class="container">
+
+            {% for magazine in magazines %}
+            <div class="post text-center pb-2">
+                <div>{{ magazine.title }}</div>
+                <a href="/download/{{magazine.filename}}" download target="_blank">
+                    <img class="magazine_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{magazine.filename}}.png">
+                </a>
             </div>
-            <div class="container-fluid padding">
-                <div class="row text-center">
-                    <div class="col-md-4 p-3 mb-1">
-                        <div class="row shadow-lg border-1">
-                            <img class="img-fluid p-2" src="/static/images/home-image-magazine.png">
-                        </div>
-                        <div class="row col-md-12 text-left">
-                            <h3>Contents</h3>
-                            <ul>
-                                <li>Cras justo odio</li>
-                                <li>Dapibus ac facilisis in</li>
-                                <li>Morbi leo risus</li>
-                                <li>Porta ac consectetur ac</li>
-                                <li>Vestibulum at eros</li>
-                            </ul>
-                        </div>        
-                    </div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-12 h2">
-                            Issue 33a
-                            </div>
-                            <div class="col-md-12">
-                                <a data-target="#modalIMG" data-toggle="modal" href="#"
-                                    class="color-gray-darker td-hover-none">
-                                    <button type="button" class="btn btn-warning">Free download</button>
-                                </a>
-                            </div>
-                            <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG"
-                                role="dialog" tabindex="-1">
-                                <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
-                                    <div class="modal-content modal-content-magazine">
-                                        <div class="modal-body modal-body-magazine mb-0 p-0">
-                                            <a href="/static/images/home-image-magazine.png" download>
-                                                <img src="/static/images/home-image-magazine.png" style="width:100%"></a>
-                                        </div>
-                                        <div class="modal-footer modal-footer-magazine">
-                                            <div>
-                                                <a href="/static/images/home-image-magazine.png" target="_blank"
-                                                    download>Download</a>
-                                            </div>
-                                            <div>
-                                                <a href="/static/images/home-image-magazine.png"
-                                                    data-dismiss="modal">Close</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 border-left">
-                        <div class="row col-md-12 text-center pl-5">
-                            <div class="p-3 border border-dark rounded" style="background-color: #f5d737;">
-                                <div>
-                                    <img src="/static/images/subscribe_magazines.png">
-                                </div>
-                                <div class="font-weight-bold">
-                                    SUBSCRIBE TO<br> OUR<br><span class="text-danger">MAGAZINE</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>            
-        </div>
-        <div class="bg-white p-3">
-            <h3>Browse All Issues...</h3>
-            <div class="float-left p-3 text-center mr-2">
-                <div class="row">
-                    <div class="p-3 mb-1 row">
-                        <img style="max-height:300px;" class="img-fluid shadow-sm" src="/static/images/home-image-magazine.png">
-                    </div>
-                </div>  
-                <div class="text-center">
-                    Issue 33
-                </div>
-                <div class="col-md-4 row center-block text-center p-3" style="width: 120px;">
-                    <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">
-                    <button type="button" class="btn btn-warning">Free download</button>
-                    </a>
-                </div>
-            </div>
-            <div class="float-left p-3 text-center mr-2">
-                <div class="row">
-                    <div class="p-3 mb-1 row">
-                        <img style="max-height:300px;" class="img-fluid" src="/static/images/home-image-magazine.png">
-                    </div>
-                </div>  
-                <div class="text-center">
-                    Issue 34
-                </div>
-                <div class="col-md-4 row center-block" style="width: 120px;">
-                    <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">
-                    <button type="button" class="btn btn-warning">Free download</button>
-                    </a>
-                </div>
-            </div>
-            <div class="float-left p-3 text-center mr-2">
-                <div class="row">
-                    <div class="p-3 mb-1 row">
-                        <img style="max-height:300px;" class="img-fluid" src="/static/images/home-image-magazine.png">
-                    </div>
-                </div>  
-                <div class="text-center">
-                    Issue 35
-                </div>
-                <div class="col-md-4 row center-block" style="width: 120px;">
-                    <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">
-                    <button type="button" class="btn btn-warning">Free download</button>
-                    </a>
-                </div>
-            </div>
-            <div class="float-left p-3 text-center mr-2">
-                <div class="row">
-                    <div class="p-3 mb-1 row">
-                        <img style="max-height:300px;" class="img-fluid" src="/static/images/home-image-magazine.png">
-                    </div>
-                </div>  
-                <div class="text-center">
-                    Issue 36
-                </div>
-                <div class="col-md-4 row center-block" style="width: 120px;">
-                    <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none">
-                    <button type="button" class="btn btn-warning">Free download</button>
-                    </a>
-                </div>
-            </div>
-            <div class="clearfix"></div>
+            {% endfor %}
+            <p class="pagination">
+                <a class="pagination__next" href="/magazines/{{page}}"></a>
+            </p>
         </div>
     </div>
-</body>
+</div>
+{% endblock %}
+
+{% block body_footer %}
+<script src="https://unpkg.com/infinite-scroll@4/dist/infinite-scroll.pkgd.min.js"></script>
+<script>
+    let infScroll = new InfiniteScroll( '.container', {
+    // defaults listed
+  
+    path: '.pagination__next',  
+    append: '.container',  
+    checkLastPage: true,
+    // Checks if page has path selector element
+    // Set to string if path is not set as selector string:
+    //   checkLastPage: '.pagination__next'
+  
+    prefill: false,
+    // Loads and appends pages on intialization until scroll requirement is met.
+  
+    responseBody: 'text',
+    // Sets the method used on the response.
+    // Set to 'json' to load JSON.
+  
+    domParseResponse: true,
+    // enables parsing response body into a DOM
+    // disable to load flat text
+  
+    fetchOptions: undefined,
+    // sets custom settings for the fetch() request
+    // for setting headers, cors, or POST method
+    // can be set to an object, or a function that returns an object
+  
+    outlayer: false,
+    // Integrates Masonry, Isotope or Packery
+    // Appended items will be added to the layout
+  
+    scrollThreshold: 400,
+    // Sets the distance between the viewport to scroll area
+    // for scrollThreshold event to be triggered.
+  
+    elementScroll: false,
+    // Sets scroller to an element for overflow element scrolling
+  
+    loadOnScroll: true,
+    // Loads next page when scroll crosses over scrollThreshold
+  
+    history: 'replace',
+    // Changes the browser history and URL.
+    // Set to 'push' to use history.pushState()
+    //    to create new history entries for each page change.
+  
+    historyTitle: true,
+    // Updates the window title. Requires history enabled.
+  
+    hideNav: undefined,
+    // Hides navigation element
+  
+    status: '.page-load-status',
+    // Displays status elements indicating state of page loading:
+    // .infinite-scroll-request, .infinite-scroll-load, .infinite-scroll-error
+    // status: '.page-load-status'
+  
+    button: undefined,
+    // Enables a button to load pages on click
+    // button: '.load-next-button'
+  
+    onInit: undefined,
+    // called on initialization
+    // useful for binding events on init
+    // onInit: function() {
+    //   this.on( 'append', function() {...})
+    // }
+  
+    debug: false,
+    // Logs events and state changes to the console.
+  })
+</script>
 {% endblock %}
