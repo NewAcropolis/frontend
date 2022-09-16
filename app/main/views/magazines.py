@@ -4,15 +4,12 @@ from app.main.views import render_page
 
 
 @main.route('/magazines')
-@main.route('/magazines/<int:page>')
-def magazines(page=0):
+@main.route('/magazines/<int:offset>')
+def magazines(offset=0):
     magazines = api_client.get_magazines()
-
-    start = page * 5
-    end = (page + 1) * 5
 
     return render_page(
         'views/magazines.html',
         magazines=magazines[start:end],
-        page=page
+        offset=offset
     )
