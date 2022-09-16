@@ -15,5 +15,5 @@ def magazines(offset=0):
     return render_page(
         'views/magazines.html',
         magazines=magazines[start:end],
-        offset=offset
+        next=end
     )
