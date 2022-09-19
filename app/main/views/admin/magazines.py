@@ -15,7 +15,7 @@ from app.main.forms import MagazineForm
 @main.route('/admin/magazines/<uuid:selected_magazine_id>/<api_message>', methods=['GET', 'POST'])
 def admin_magazines(selected_magazine_id=None, api_message=None):
     errors = []
-    magazines = api_client.get_magazines()
+    magazines = api_client.get_magazines_from_db()
 
     form = MagazineForm()
 
@@ -64,6 +64,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
             if 'error' in session:
                 errors = session.pop('error')
             else:
+                print(response)
                 return redirect(
                     url_for('main.admin_magazines', selected_magazine_id=response['id'], api_message=message))
         except HTTPError as e:

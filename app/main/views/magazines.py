@@ -14,5 +14,5 @@ def magazines(page=0):
     return render_page(
         'views/magazines.html',
         magazines=magazines[start:end],
-        page=page
+        next_page=page + 1
     )
