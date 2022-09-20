@@ -6,6 +6,7 @@ class Config(object):
     DEBUG = False
     API_BASE_URL = os.environ.get('API_BASE_URL', 'http://localhost')
     FRONTEND_BASE_URL = os.environ.get('FRONTEND_BASE_URL')
+    DOWNLOADS_URL = "/download"
     IMAGES_URL = os.environ.get('IMAGES_URL')
     ADMIN_CLIENT_ID = os.environ.get('ADMIN_CLIENT_ID')
     ADMIN_CLIENT_SECRET = os.environ.get('ADMIN_CLIENT_SECRET')
@@ -78,6 +79,7 @@ class Review(Config):
     SESSION_PROTECTION = None
     NO_ADMIN_AUTH = False
     IMAGES_URL = "/static/images/review"
+    DOWNLOADS_URL = "/static/download"
 
 
 configs = {
