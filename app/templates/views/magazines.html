@@ -10,14 +10,16 @@
             {% for magazine in magazines %}
             <div class="post text-center pb-2">
                 <div>{{ magazine.title }}</div>
-                <a href="/download/{{magazine.filename}}" download target="_blank">
+                <a href="{{ config.DOWNLOADS_URL }}/{{magazine.filename}}" download target="_blank">
                     <img class="magazine_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{magazine.filename}}.png">
                 </a>
             </div>
             {% endfor %}
+            {% if next_page %}
             <p class="pagination">
                 <a class="pagination__next" href="/magazines/{{next_page}}"></a>
             </p>
+            {% endif %}
         </div>
     </div>
 </div>

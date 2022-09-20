@@ -210,3 +210,48 @@ def sim_get_books(*args, **kwargs):
             'image_filename': 'alchemist.jpeg'
         }
     ]
+
+
+def sim_get_magazines(*args, **kwargs):
+    return [
+        {
+            "title": "issue 10",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 9",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 8",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 7",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 6",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 5",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 4",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 3",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 2",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 1",
+            "filename": "latest_magazine.pdf"
+        }
+    ]

@@ -10,9 +10,13 @@ def magazines(page=0):
 
     start = page * 5
     end = (page + 1) * 5
+    next_page = page + 1
+
+    if end > len(magazines):
+        next_page = None
 
     return render_page(
         'views/magazines.html',
         magazines=magazines[start:end],
-        next_page=page + 1
+        next_page=next_page
     )
