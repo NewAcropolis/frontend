@@ -493,10 +493,20 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   max-height: 310px;
   max-width: 220px;
 }
-.magazine_img_size {
-  max-width: 400px;
-  min-width: 400px;
+
+@media screen and (min-width: 300px) {
+  .magazine_img_size {
+    max-width: 300px;
+    min-width: 300px;
+  }
 }
+@media screen and (min-width: 600px) {
+  .magazine_img_size {
+    max-width: 400px;
+    min-width: 400px;
+  }
+}
+
 .modal-dialog-magazine{
   position: relative;
   display: table;
