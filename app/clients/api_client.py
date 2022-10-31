@@ -257,6 +257,9 @@ class ApiClient(BaseAPIClient):
     def get_latest_emails(self):
         return self.get(url='emails/latest')
 
+    def get_articles_from_db(self):
+        return self.get(url='articles')
+
     def get_articles_summary_from_db(self):
         return self.get(url='articles/summary')
 

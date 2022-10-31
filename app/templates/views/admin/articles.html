@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% block extra_head %}
+<script src="https://unpkg.com/@yaireo/tagify"></script>
+<script src="https://unpkg.com/@yaireo/tagify@3.1.0/dist/tagify.polyfills.min.js"></script>
+<link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.tiny.cloud/1/bwryoteipkgy9x3knot4y2whgzf5a4r0s290tu574qvn6xay/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
+
+{% if user_has_permissions('article') %}
+<div class="container pb-3 text-right" style="width: 800px;">
+    <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
+    <form class="form" id="articles_form" method="post" enctype="multipart/form-data">{{ form.csrf_token }}
+        <div class="row">
+            <div class='ml-3 col-12'>
+                <div class='row'>
+                    {{form.articles}}
+                </div>
+            </div>
+        </div>
+        <div class='row text-left'>
+            <div id='status_bar' class='col-7 rounded mb-1 ml-3 pl-4 w-70 bg-primary text-white'>new</div>
+        </div>
+        <div class="row">
+            <div class='ml-3 col-12'>
+                <div class='row'>
+                    {{form.magazines}}
+                </div>
+                <div class='row'>
+                    {{form.title(placeholder='Title', size=60)}}
+                </div>
+                <div class='row'>
+                    {{form.author(placeholder='Author', size=60)}}
+                </div>
+                <div class='row mt-2'>
+                    <img id='article_img'>
+                </div>
+                <div class="row">{{form.image_filename}}</div>
+                {{form.existing_image_filename}}
+                <div class='row'>
+                    {{form.article_content(placeholder='Content', rows=10, cols=80)}}
+                </div>
+                <div class="row">
+                    {{form.tags}}
+                    {{form.old_tags}}
+                    <input id="tagify" placeholder="tags">
+                </div>
+            </div>
+        </div>
+
+        <div id='form_errors' class='text-danger' style='display:{% if form.errors %}block{% else %}none{% endif%}'>{{ form.errors }}</div>
+        <div id='message' class='text-success pb-3' style='display:{% if message %}block{% else %}none{% endif%}'>{{message}}</div>
+        <hr>
+        <div class="justify-content-end">
+            {{ form.article_state }}
+            <button id="draft" type="submit" class="btn btn-default">Draft</button>
+            <button id="ready" type="submit" class="btn btn-outline-warning">Ready</button>
+            {% if is_admin_user %}
+                <button id="publish" type="submit" class="btn btn-outline-success">Publish</button>
+                <button id="rejectBtn" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#rejectModal">Reject</button>
+
+                <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="rejectModalLabel" style='white-space:pre;'>Enter rejection reason:</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                            <div class="form-group">
+                                {{ form.reject_reason(class_="form-control") }}
+                            </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button id="reject" type="submit" class="btn btn-outline-danger">Reject</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <a href="{{ url_for('main.admin') }}" id="return" name="return" class="btn btn-outline-secondary">Return</a>
+        </div>
+    </form>
+</div>
+<script>
+    var input = document.querySelector('#tagify')
+    var tagify = new Tagify(input, {
+      originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
+      dropdown : {
+            enabled       : 0,              // show the dropdown immediately on focus
+            maxItems      : 5,
+            closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
+            // highlightFirst: true
+      },
+        whitelist: "{{tags}}".split(",")
+    });
+</script>    
+<script charset="utf-8" type="text/javascript">
+    tinymce.init({
+      selector: 'textarea#article_content',
+      plugins: 'code'
+    });
+
+    var article_id = '';
+    var selected = false;
+    $(function() {
+        var elements = {
+            _articles: $('#articles'),
+            _title: $('#title'),
+            _author: $('#author'),
+            _content: $('#article_content'),
+            _article_image: $('#article_img'),
+            _tags: $('#tagify')
+        };
+
+        updateArticle();
+
+        function updateArticle() {
+            var send = {
+                article_id: elements._articles.val()
+            };
+
+            if (!send.article_id) {
+                elements._title.val('');
+                elements._article_image.attr('style', 'display:none;width:100px;');
+                elements._article_image.attr('src', '');
+                elements._author.val('');
+                tinymce.activeEditor.setContent('');
+                tagify.removeAllTags();
+                update_for_article_state('new');
+                return;
+            }
+
+            $.getJSON("{{ url_for('main._get_article') }}", send, function(data) {
+                if (data) {
+                    elements._articles.val(data['id']);
+                    elements._title.val(data['title']);
+                    elements._author.val(data['author']);
+                    if (data['image_filename']) {
+                        elements._article_image.attr('style', 'display:block;width:100px;');
+                        elements._article_image.attr('src', '{{IMAGES_URL}}/thumbnail/articles/' + data['image_filename']);
+                    } else {
+                        elements._article_image.attr('style', 'display:none;');
+                    }
+
+                    if (selected) {
+                        tinymce.activeEditor.on('init', function(e){
+                            e.target.setContent(data['content']); 
+                            selected = false;
+                        });
+                    }
+                    else {
+                        tinymce.activeEditor.setContent(data['content']);
+                    }
+
+                    tagify.removeAllTags();
+                    if (data['tags']) {
+                        $("#old_tags").val(data['tags']);
+                        tagify.addTags(data['tags']);
+                    }
+
+                    update_for_article_state(data['article_state']);
+                }
+            });
+        }
+
+        function update_for_article_state(article_state) {
+            var base_css = 'rounded col-7 mb-1 ml-3 pl-4 w-70 ';
+            var css = '';
+
+            switch(article_state) {
+                case 'new': css = 'bg-primary text-white'; break;
+                case 'draft': css = 'bg-default'; break;
+                case 'ready': css = 'bg-warning'; break;
+                case 'rejected': css = 'bg-danger text-white'; break;
+                case 'approved': css = 'bg-success text-white'; break;
+            }
+            $('#status_bar').attr('class', base_css + css);
+            $('#status_bar').text(article_state);
+            {% if is_admin_user() %}
+                $('#copy-event').prop('disabled', article_state == 'new');
+                $('#delete-event').prop('disabled', article_state == 'new');
+                $('#rejectBtn').prop('disabled', $.inArray( article_state, [ "draft", "new" ] ) >= 0);
+                $('#publish').prop('disabled', article_state != 'ready');
+            {% endif %}
+        }
+
+        var showMessage={% if selected_article_id %}true{% else %}false{% endif %};
+        $('#articles').on('change', function() {
+            if (!showMessage) {
+                $('#message').attr('style', 'display:none;');
+                $('#errors').attr('style', 'display:none;');
+                $('#form_errors').attr('style', 'display:none;');
+            }
+            showMessage = false;
+            updateArticle();
+        });
+
+        $( "#articles_form" ).submit(function() {
+            prepSubmit();
+        });
+
+        $('#draft').on('click', function() {
+            $('#article_state').val('draft');
+        })
+
+        $('#ready').on('click', function() {
+            $('#article_state').val('ready');
+        })
+
+        $('#reject').on('click', function() {
+            $('#rejectModal').modal('toggle');
+            $('#rejectBtn').prop('disabled', true);
+            $('#article_state').val('rejected');
+        })
+
+        $('#publish').on('click', function() {
+            $('#article_state').val('approved');
+        })
+
+
+        {% if selected_article_id %}
+        $("#articles").val("{{selected_article_id}}").change();
+        selected = true;
+        {% endif %}
+
+        function prepSubmit() {
+            if ($('#article_img').attr('src'))
+                $('#existing_image_filename').val($('#article_img').attr('src').replace('{{IMAGES_URL}}/thumbnail/articles/', ''));
+            $('#publish').prop('disabled', true);
+            $('#tags').val(elements._tags.val());
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

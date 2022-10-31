@@ -118,6 +118,30 @@ class MagazineForm(FlaskForm):
             )
 
 
+class ArticleForm(FlaskForm):
+    title = StringField('title', validators=[DataRequired()])
+    author = StringField('author', validators=[DataRequired()])
+    articles = SelectField('Articles')
+    magazines = SelectField('Magazines')
+    image_filename = FileField('Image filename')
+    existing_image_filename = HiddenField('Existing image filename')
+    content = TextAreaField('Content')
+    tags = HiddenField()
+    old_tags = HiddenField()
+
+    def set_article_form(self, articles, magazines):
+        self.magazines.choices = [('', 'No magazine link')]
+        self.articles.choices = [('', 'New article')]
+
+        for article in articles:
+            self.articles.choices.append(
+                (
+                    article['id'],
+                    article['title']
+                )
+            )
+
+
 class UserForm(FlaskForm):
     str_email = StringField()
     user_id = HiddenField()
