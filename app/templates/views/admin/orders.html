@@ -46,6 +46,9 @@
                     <div class="col">
                         <strong>Payment status:</strong> {{ order.payment_status }}
                     </div>
+                    <div class="col">
+                        <strong>Confirmation email:</strong> {{ order.email_status }}
+                    </div>
                 </div>
             {% if order.tickets %}
                 {% for ticket in order.tickets %}
