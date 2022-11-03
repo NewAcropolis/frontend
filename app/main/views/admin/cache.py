@@ -25,6 +25,7 @@ def _reload_cache():
     update_cache(func=api_client.get_events_past_year_from_db)
     update_cache(func=api_client.get_articles_summary_from_db)
     update_cache(func=api_client.get_books_from_db)
+    update_cache(func=api_client.get_magazines_from_db)
 
     Cache.purge_older_versions()
 
