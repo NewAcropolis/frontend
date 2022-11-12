@@ -22,7 +22,7 @@ def admin_orders(year=None):
             o['notes'] = o['notes'].replace('\r', '<br>')
         if o['email_status'] is None:
             o['email_status'] = "Not available"
-        elif o['email_status'] == "200":
+        elif o['email_status'].startswith("2"):
             o['email_status'] = "Sent"
 
     form.populate_order_list_form(orders)
