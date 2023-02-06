@@ -43,6 +43,7 @@
           <h2 class="event_blue">{{ event.event_type }} : {{ event.formatted_event_datetimes }}</h2>
           <h2 class="event_title">{{ event.title }}</h2><br>
           <p>{{ event._description | safe}}</p>
+          <p><strong>Location:</strong> {{ event.venue.address }}</p>
         </div>
       </div>
       <div class="col-xs-12 col-sm-12 col-md-6 ">
