@@ -1,7 +1,6 @@
 {% extends "public_base.html" %}
 {% block title %}Event details{% endblock %}
 {% block extra_head %}
-{% if reserve_place_form %}
 <script>
   var date_ids = {{ event.date_ids | safe }};
 
@@ -35,7 +34,6 @@
     {% endif %}
   }
 </script>
-{% endif %}
 {% endblock %}
 {% block content %}
   <div class="container-fluid padding cream_backgroundcolour">
