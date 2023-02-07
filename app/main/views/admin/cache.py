@@ -30,7 +30,10 @@ def _reload_cache():
     Cache.purge_older_versions()
 
     return jsonify(
-        {'response': 'get_events_in_future, get_events_past_year, get_articles_summary, get_books reloaded'}
+        {
+            'response':
+            'get_events_in_future, get_events_past_year, get_articles_summary, get_books, get_magazines reloaded'
+        }
     )
 
 
