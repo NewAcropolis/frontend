@@ -1,10 +1,12 @@
-from flask import current_app, render_template
+from flask import current_app, render_template, request
+import requests
 from six.moves.html_parser import HTMLParser
 
 from app.main import main
 from app.main.views import requires_auth
+from app.queue import Queue
 from app.stats import send_ga_event
-from app import api_client
+from app import api_client, csrf
 
 
 @main.route('/api')
@@ -88,6 +90,29 @@ def send_test_stats(category='test category', action='test action', label='test 
     send_ga_event(category, action, label, value=value)
     return 'sending test stats: {}/{}/{}/{}'.format(category, action, label, value)
 
+
+@main.route('/ipn/queue', methods=['GET', 'POST'])
+@csrf.exempt
+def register_ipn():
+    params = request.form.to_dict(flat=False)
+
+    params['cmd'] = '_notify-validate'
+    headers = {
+        'content-type': 'application/x-www-form-urlencoded',
+        'user-agent': 'Python-IPN-Verification-Script'
+    }
+    current_app.logger.info("IPN params: %r", params)  # debug
+
+    r = requests.post(current_app.config['PAYPAL_VERIFY_URL'], params=params, headers=headers, verify=True)
+    r.raise_for_status()
+    if r.text == 'VERIFIED':
+        # add to queue
+        current_app.logger.info(f"Verified IPN {params['txn_id']}")
+        Queue.add("paypal", f"{current_app.config.get('API_BASE_URL')}/orders/paypal/ipn", "POST", params)
+    else:
+        current_app.logger.info(f"Unverified IPN {params['txn_id']} - {r.text}")
+
+    return 'ok'
 
 def _unescape_html(items, field_name):
     h = HTMLParser()
