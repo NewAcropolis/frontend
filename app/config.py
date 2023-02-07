@@ -54,6 +54,7 @@ class Development(Config):
     OAUTHLIB_INSECURE_TRANSPORT = "True"
     NO_ADMIN_AUTH = True
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
+    PAYPAL_VERIFY_URL = "http://localhost:5005"
 
 
 class Live(Config):
@@ -62,6 +63,7 @@ class Live(Config):
     SESSION_PROTECTION = None
     NO_ADMIN_AUTH = False
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
+    PAYPAL_VERIFY_URL = "https://ipnpb.paypal.com/cgi-bin/webscr"
 
 
 class Preview(Config):
@@ -70,6 +72,7 @@ class Preview(Config):
     SESSION_PROTECTION = None
     NO_ADMIN_AUTH = False
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
+    PAYPAL_VERIFY_URL = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr'
 
 
 class Review(Config):
