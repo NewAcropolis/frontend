@@ -122,7 +122,7 @@ class ApiClient(BaseAPIClient):
         super(ApiClient, self).init_app(app)
 
     def process(self, q_item):
-        if q_item.method == 'post':
+        if q_item.method.lower() == 'post':
             json_resp = self.post(url=q_item.url, data=json.loads(q_item.payload))
         else:
             json_resp = self.get(url=q_item.url)
