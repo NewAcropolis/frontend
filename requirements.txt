@@ -26,7 +26,7 @@ requests_oauthlib==1.2.0
 requests_toolbelt==0.8.0
 textile==3.0.4
 virtualenv==16.0.0
-Werkzeug==0.16.0
+Werkzeug==2.2.3
 WTForms==2.2.1
 
 git+https://github.com/NewAcropolis/na-common.git@4efb1dabcaa55e0c24562f7dcb56f429e90b45c1#egg=na-common
