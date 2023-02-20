@@ -18,8 +18,8 @@ class BaseAPIClient(object):
         self.client_id = app.config['ADMIN_CLIENT_ID']
         self.secret = app.config['ADMIN_CLIENT_SECRET']
 
-    def post(self, url, data):
-        return self.request("POST", url, data=data)
+    def post(self, url, data, headers=None):
+        return self.request("POST", url, data=data, headers=headers)
 
     def delete(self, url):
         return self.request("DELETE", url)
@@ -78,7 +78,7 @@ class BaseAPIClient(object):
         session["access_token"] = auth_response.json()["access_token"]
         return True
 
-    def request(self, method, url, data=None, params=None):
+    def request(self, method, url, data=None, params=None, headers=None):
         current_app.logger.info("API request {} {}".format(method, url))
 
         # don't set access token for API call to info
@@ -91,10 +91,12 @@ class BaseAPIClient(object):
             if not self.set_access_token():
                 return []
 
-        payload = json.dumps(data)
+        payload = data if not isinstance(data, dict) else json.dumps(data)
 
         url = urljoin(str(self.base_url), str(url))
-
+        _headers = {'Authorization': 'Bearer {}'.format(session["access_token"])} if set_access_token else {}
+        if headers:
+            _headers.update(headers)
         start_time = time.time()
         try:
             response = requests.request(
@@ -102,7 +104,7 @@ class BaseAPIClient(object):
                 url,
                 data=payload,
                 params=params,
-                headers={'Authorization': 'Bearer {}'.format(session["access_token"])} if set_access_token else {},
+                headers=_headers,
                 timeout=30
             )
 

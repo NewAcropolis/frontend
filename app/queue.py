@@ -10,6 +10,7 @@ class Queue(ndb.Model):
     method = ndb.StringProperty()
     url = ndb.StringProperty()
     payload = ndb.TextProperty(indexed=False)
+    headers = ndb.StringProperty()
     hash_item = ndb.StringProperty()
     status = ndb.StringProperty()
     cache_name = ndb.StringProperty()
@@ -39,6 +40,7 @@ class Queue(ndb.Model):
                     queue[res.hash_item]['method'] = res.method
                     queue[res.hash_item]['url'] = res.url
                     queue[res.hash_item]['payload'] = res.payload
+                    queue[res.hash_item]['headers'] = res.headers
                     queue[res.hash_item]['created'] = res.created
                     queue[res.hash_item]['updated'] = res.updated
                     queue[res.hash_item]['cache_name'] = res.cache_name
@@ -85,10 +87,11 @@ class Queue(ndb.Model):
     @staticmethod
     def add(
         description, url, method,
-        payload=None, cache_name=None, cache_is_unique=False, backoff_duration=None,
-        replace=False
+        payload=None, headers=None, cache_name=None, cache_is_unique=False, backoff_duration=None,
+        replace=False, is_json=True
     ):
-        payload_str = json.dumps(payload)
+        payload_str = json.dumps(payload) if is_json else payload
+        headers_str = json.dumps(headers)
         hash_item = hashlib.md5(f"{description}-{url}-{method}-{payload_str}".encode()).hexdigest()
         item = Queue.query(Queue.hash_item == hash_item).get()
         if not item or replace:
@@ -100,6 +103,7 @@ class Queue(ndb.Model):
                 url=url,
                 method=method,
                 payload=payload_str,
+                headers=headers_str,
                 hash_item=hash_item,
                 status='new',
                 cache_name=cache_name,
