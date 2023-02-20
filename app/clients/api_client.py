@@ -123,7 +123,11 @@ class ApiClient(BaseAPIClient):
 
     def process(self, q_item):
         if q_item.method.lower() == 'post':
-            json_resp = self.post(url=q_item.url, data=json.loads(q_item.payload))
+            json_resp = self.post(
+                url=q_item.url,
+                data=json.loads(q_item.payload) if q_item.payload.startswith('{') else q_item.payload,
+                headers=json.loads(q_item.headers) if q_item.headers else None
+            )
         else:
             json_resp = self.get(url=q_item.url)
 

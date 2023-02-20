@@ -94,7 +94,9 @@ def send_test_stats(category='test category', action='test action', label='test 
 @main.route('/ipn/queue', methods=['GET', 'POST'])
 @csrf.exempt
 def register_ipn():
+    data = request.get_data()
     params = request.form.to_dict(flat=False)
+    # headers=dict(request.headers)
 
     params['cmd'] = '_notify-validate'
     headers = {
@@ -108,7 +110,14 @@ def register_ipn():
     if r.text == 'VERIFIED':
         # add to queue
         current_app.logger.info(f"Verified IPN {params['txn_id']}")
-        Queue.add("paypal", f"{current_app.config.get('API_BASE_URL')}/orders/paypal/ipn", "POST", params)
+        Queue.add(
+            "paypal",
+            f"{current_app.config.get('API_BASE_URL')}/orders/paypal/ipn/queued",
+            "POST",
+            data,
+            headers=headers,
+            is_json=False
+        )
     else:
         current_app.logger.info(f"Unverified IPN {params['txn_id']} - {r.text}")
 
