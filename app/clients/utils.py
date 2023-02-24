@@ -5,16 +5,18 @@ from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
 def get_nice_event_dates(events, future_dates_only=False):
     for event in events:
+        event['original_event_dates'] = event['event_dates']
         if future_dates_only:
             event['event_dates'] = get_future_event_dates(event['event_dates'])
-        print(event)
         event = get_nice_event_date(event)
     return events
 
 
 def get_nice_event_date(event):
+    event_date_count = len(event['original_event_dates'])
     event['formatted_event_datetimes'] = common_get_nice_event_dates(event['event_dates'])
     event['dates'] = get_event_dates(event['event_dates'])
+    event['date_offset'] = event_date_count - len(event['dates'])
 
     event_date = event["event_dates"][0]
     _datetime = datetime.strptime(event_date["event_datetime"], '%Y-%m-%d %H:%M')
