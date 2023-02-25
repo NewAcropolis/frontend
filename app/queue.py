@@ -111,6 +111,8 @@ class Queue(ndb.Model):
                 backoff_duration=backoff_duration if backoff_duration else current_app.config['QUEUE_EXPIRY']
             )
             queue.put()
+        else:
+            current_app.logger.info(f"Item {hash_item}, already queued")
 
     @staticmethod
     def delete(hash_item):
