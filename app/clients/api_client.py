@@ -341,11 +341,12 @@ class ApiClient(BaseAPIClient):
         users = Cache.get_data('get_users', default=[])
 
         for user in users:
-            if user['email'] == email:
+            if 'email' in user and user['email'] == email:
                 return user
 
         user = self.get(url='user/{}'.format(email))
-        users.append(user)
+        if user:  # in case there was an error response from the API
+            users.append(user)
 
         Cache.set_data('get_users', users, is_unique=True)
 
