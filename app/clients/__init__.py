@@ -131,20 +131,30 @@ class BaseAPIClient(object):
             response.raise_for_status()
         except requests.RequestException as e:
             api_error = HTTPError.create(e)
-            current_app.logger.error(
-                "API {} request on {} failed with {} '{}'".format(
-                    method,
-                    url,
-                    api_error.status_code,
-                    api_error.message
+            if api_error.status_code in [400, 409] and "Duplicate" in api_error.message:
+                current_app.logger.error(
+                    "API {} request on {} duplicate with {} '{}'".format(
+                        method,
+                        url,
+                        api_error.status_code,
+                        api_error.message
+                    )
                 )
-            )
-            # raise api_error
-            session['error'] = {
-                'code': api_error.status_code,
-                'message': api_error.message or response.json()
-            }
-            return []
+            else:
+                current_app.logger.error(
+                    "API {} request on {} failed with {} '{}'".format(
+                        method,
+                        url,
+                        api_error.status_code,
+                        api_error.message
+                    )
+                )
+                # raise api_error
+                session['error'] = {
+                    'code': api_error.status_code,
+                    'message': api_error.message or response.json()
+                }
+                return []
         finally:
             elapsed_time = time.time() - start_time
             current_app.logger.debug("API {} request on {} finished in {}".format(method, url, elapsed_time))
