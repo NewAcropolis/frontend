@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container ">
+    {% if not api_workers_running() %}
+    <div class="row">
+        <div class='col-sm text-danger'>
+            No workers running
+        </div>
+    </div>
+    {% endif %}
     <div class="row">
         {% if user_has_permissions('admin') %}
         <div class='col-sm'>

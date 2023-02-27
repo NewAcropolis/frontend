@@ -19,3 +19,10 @@ cron:
   retry_parameters:
     min_backoff_seconds: 5
     max_doublings: 5
+
+- description: "check api workers"
+  url: /api/check_workers
+  schedule: every 6 hours from 11:00 to 23:00
+  retry_parameters:
+    min_backoff_seconds: 5
+    max_doublings: 5
