@@ -133,6 +133,7 @@ class WhenAccessingAdminPagesAfterLogin(object):
         ]
         mock_sessions(mocker, session_dict)
         mocker.patch('app.api_client.get_users', return_value=users)
+        mocker.patch('app.Cache.get_data', return_value=True)
 
         response = client.get(url_for(
             'main.admin'
@@ -168,6 +169,7 @@ class WhenAccessingAdminPagesAfterLogin(object):
         ]
         mock_sessions(mocker, session_dict)
         mocker.patch('app.api_client.get_users', return_value=users)
+        mocker.patch('app.Cache.get_data', return_value=True)
 
         response = client.get(url_for(
             'main.admin'

@@ -9,6 +9,7 @@ import textile
 
 from na_common.delivery import statuses as delivery_statuses
 
+from app.cache import Cache
 from app.clients.api_client import ApiClient
 
 
@@ -230,6 +231,10 @@ def _get_paypal_base():
     return "https://www.paypal.com"
 
 
+def _api_workers_running():
+    return Cache.get_data('api_check_workers', default=None)
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
@@ -245,6 +250,7 @@ def init_app(app):
     app.jinja_env.globals['get_course_extra'] = _get_course_extra
     app.jinja_env.globals['get_home_banner_files'] = _get_home_banner_files
     app.jinja_env.globals['get_topic_list_elements'] = _get_topic_list_elements
+    app.jinja_env.globals['api_workers_running'] = _api_workers_running
     app.jinja_env.globals['is_not_live'] = is_not_live
     app.jinja_env.globals['get_env'] = get_env
     app.jinja_env.globals['config'] = app.config

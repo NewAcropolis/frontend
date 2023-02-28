@@ -2,8 +2,9 @@ from flask import current_app, render_template, request
 import requests
 from six.moves.html_parser import HTMLParser
 
+from app.cache import Cache
 from app.main import main
-from app.main.views import requires_auth
+from app.main.views import requires_auth, app_engine_only
 from app.queue import Queue
 from app.stats import send_ga_event
 from app import api_client, csrf
@@ -122,6 +123,21 @@ def register_ipn():
         current_app.logger.info(f"Unverified IPN {params['txn_id']} - {r.text}")
 
     return 'ok'
+
+
+@main.route('/api/check_workers', methods=['GET'])
+@app_engine_only
+def api_check_workers():
+    response = requests.get(current_app.config['API_BASE_URL']).json()
+    workers_running = 'workers' in response and response['workers'] == "Running"
+
+    Cache.set_data('api_check_workers', workers_running, is_unique=True)
+
+    if not workers_running:
+        return 'no workers', 500
+
+    return 'workers running'
+
 
 def _unescape_html(items, field_name):
     h = HTMLParser()
