@@ -131,7 +131,8 @@ class BaseAPIClient(object):
             response.raise_for_status()
         except requests.RequestException as e:
             api_error = HTTPError.create(e)
-            if api_error.status_code in [400, 409] and "Duplicate" in api_error.message:
+            if api_error.status_code and api_error.status_code in [400, 409] and \ 
+              api_error.message and "Duplicate" in api_error.message:
                 current_app.logger.error(
                     "API {} request on {} duplicate with {} '{}'".format(
                         method,
