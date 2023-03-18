@@ -8,7 +8,7 @@ from app import api_client
 from app.cache import Cache
 from app.clients.api_client import only_show_approved_events, update_cache
 from app.clients.errors import HTTPError
-from app.clients.utils import get_event_dates
+from app.clients.utils import get_event_dates, size_from_b64
 from app.main import main
 from app.main.forms import EventAttendanceForm, EventForm
 from app.main.views import render_page
@@ -20,10 +20,6 @@ from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 def is_admin_user():
     user = session['user']
     return 'admin' in user.get('access_area') or user.get('access_area') == 'admin'
-
-
-def size_from_b64(b64string):
-    return float(len(b64string) * 3) / 4 - b64string.count('=', -2)
 
 
 @main.route('/admin/events', methods=['GET', 'POST'])
