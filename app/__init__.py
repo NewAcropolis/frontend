@@ -260,12 +260,16 @@ def init_app(app):
     def before_request():
         if '/admin' in request.url and not session.get('user'):
             if current_app.config['NO_ADMIN_AUTH']:
+                _users = api_client.get_users()
+                user = _users[0] if _users \
+                    else {'id': '7b0ceea5-a10d-4256-bf84-1830a5093b43', 'name': 'Test User', 'email': 'test@localhost'}
+
                 session['user_profile'] = {
-                    'name': 'Test User',
-                    'email': 'test@user',
+                    'name': user['name'] ,
+                    'email': user['email'],
                 }
                 session['user'] = {
-                    'id': 'fake-id',
+                    'id': user['id'],  # just use the first user as admin
                     'access_area': 'admin',
                 }
             else:
