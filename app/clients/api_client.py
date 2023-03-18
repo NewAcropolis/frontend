@@ -270,6 +270,10 @@ class ApiClient(BaseAPIClient):
     def get_article(self, id):
         return self.get(url='article/{}'.format(id))
 
+    def update_article(self, id, article):
+        article.pop('article_id')
+        return self.post(url='article/{}'.format(id), data=article)
+
     def get_books_from_db(self):
         return self.get(url='books')
 
