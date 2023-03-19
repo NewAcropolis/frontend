@@ -265,7 +265,7 @@ def init_app(app):
                     else {'id': '7b0ceea5-a10d-4256-bf84-1830a5093b43', 'name': 'Test User', 'email': 'test@localhost'}
 
                 session['user_profile'] = {
-                    'name': user['name'] ,
+                    'name': user['name'],
                     'email': user['email'],
                 }
                 session['user'] = {

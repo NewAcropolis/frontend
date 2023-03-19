@@ -34,7 +34,8 @@ def _reload_cache():
     return jsonify(
         {
             'response':
-            'get_events_in_future, get_events_past_year, get_articles_summary, get_books, get_magazines, api_check_workers reloaded'
+            'get_events_in_future, get_events_past_year, '
+            'get_articles_summary, get_books, get_magazines, api_check_workers reloaded'
         }
     )
 
