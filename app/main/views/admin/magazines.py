@@ -64,7 +64,6 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
             if 'error' in session:
                 errors = session.pop('error')
             else:
-                print(response)
                 return redirect(
                     url_for('main.admin_magazines', selected_magazine_id=response['id'], api_message=message))
         except HTTPError as e:

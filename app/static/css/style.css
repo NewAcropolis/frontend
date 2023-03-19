@@ -127,6 +127,11 @@ html, body {
   bottom: 0;
   width: 100%;
 }
+
+.tagify__input {  
+  text-align: left; 
+} 
+
 /* FOOTER */
 
 footer{

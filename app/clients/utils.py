@@ -55,3 +55,7 @@ def get_event_dates(event_dates):
         dates.append(_datetime.strftime('%Y-%m-%d'))
 
     return dates
+
+
+def size_from_b64(b64string):
+    return float(len(b64string) * 3) / 4 - b64string.count('=', -2)

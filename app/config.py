@@ -80,7 +80,7 @@ class Review(Config):
     DEBUG = True
     SESSION_COOKIE_SECURE = False
     SESSION_PROTECTION = None
-    NO_ADMIN_AUTH = False
+    NO_ADMIN_AUTH = True
     IMAGES_URL = "/static/images/review"
     DOWNLOADS_URL = "/static/download"
 

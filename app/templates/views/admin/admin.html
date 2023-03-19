@@ -41,14 +41,14 @@
             <a href='/admin/api_interstitial?target=orders'>Orders</a>
         </div>
         {% endif %}
+        {% if user_has_permissions('article') %}
+        <div class='col-sm'>
+            <a href='/admin/api_interstitial?target=articles'>Articles</a>
+        </div>
+        {% endif %}
         {% if user_has_permissions('announcement') %}
         <div class='col-sm'>
             Announcements
-        </div>
-        {% endif %}
-        {% if user_has_permissions('article') %}
-        <div class='col-sm'>
-            Articles
         </div>
         {% endif %}
     </div>
