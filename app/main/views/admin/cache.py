@@ -1,6 +1,7 @@
 from flask import current_app, jsonify, render_template, session
 
 from app import api_client
+from app.main.views.api import api_check_workers
 from app.clients.api_client import only_show_approved_events, update_cache
 from app.cache import Cache
 from app.main import main
@@ -26,13 +27,14 @@ def _reload_cache():
     update_cache(func=api_client.get_articles_summary_from_db)
     update_cache(func=api_client.get_books_from_db)
     update_cache(func=api_client.get_magazines_from_db)
+    update_cache(func=api_check_workers)
 
     Cache.purge_older_versions()
 
     return jsonify(
         {
             'response':
-            'get_events_in_future, get_events_past_year, get_articles_summary, get_books, get_magazines reloaded'
+            'get_events_in_future, get_events_past_year, get_articles_summary, get_books, get_magazines, api_check_workers reloaded'
         }
     )
 
