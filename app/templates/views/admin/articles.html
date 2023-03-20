@@ -112,6 +112,7 @@
     $(function() {
         var elements = {
             _articles: $('#articles'),
+            _magazines: $('#magazines'),
             _title: $('#title'),
             _author: $('#author'),
             _content: $('#article_content'),
@@ -128,6 +129,7 @@
 
             if (!send.article_id) {
                 elements._title.val('');
+                elements._magazines.val('');
                 elements._article_image.attr('style', 'display:none;width:100px;');
                 elements._article_image.attr('src', '');
                 elements._author.val('');
@@ -138,8 +140,10 @@
             }
 
             $.getJSON("{{ url_for('main._get_article') }}", send, function(data) {
+                console.log(data);
                 if (data) {
                     elements._articles.val(data['id']);
+                    elements._magazines.val(data['magazine_id']);
                     elements._title.val(data['title']);
                     elements._author.val(data['author']);
                     if (data['image_filename']) {

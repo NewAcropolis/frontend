@@ -133,6 +133,14 @@ class ArticleForm(FlaskForm):
 
     def set_article_form(self, articles, magazines):
         self.magazines.choices = [('', 'No magazine link')]
+        for magazine in magazines:
+            self.magazines.choices.append(
+                (
+                    magazine['id'],
+                    magazine['title']
+                )
+            )
+
         self.articles.choices = [('', 'New article')]
 
         for article in articles:
