@@ -797,6 +797,7 @@ $(function() {
     }
 
     function setRejectReasons(reject_reasons) {
+        elements._reject_reasons.html('');
         for (i=0; i<reject_reasons.length; i++){
             elements._reject_reasons.append(
                 '<div id="reject_reason_row-' + i + '" class="row">' + 
