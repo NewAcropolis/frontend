@@ -61,13 +61,14 @@ def admin_articles(selected_article_id=None, api_message=None):
             try:
                 message = None
                 if article.get('article_id'):
-                    response = api_client.update_article(article['article_id'], article)
+                    article_id = article.get('article_id')
+                    response = api_client.update_article(article_id, article)
                     if 'error' not in session:
                         message = 'article updated'
                         if form.old_tags.data != form.tags.data:
                             for t in form.tags.data.split(","):
                                 if t not in tags:
-                                    Tag.add_tag(article['article_id'], t)
+                                    Tag.add_tag(article_id, t)
                     else:
                         api_message = ''
                 else:
