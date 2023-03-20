@@ -33,6 +33,7 @@ def admin_articles(selected_article_id=None, api_message=None):
 
         article = {
             'article_id': form.articles.data,
+            'magazine_id': form.magazines.data,
             'title': form.title.data,
             'author': form.author.data,
             'content': form.article_content.data,
