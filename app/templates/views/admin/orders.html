@@ -1,4 +1,29 @@
 {% extends "base.html" %}
+
+{% block extra_head %}
+<script charset="utf-8" type="text/javascript">
+function replayConfirmationEmail(txn_id) {
+    var send = {
+        txn_id: txn_id
+    };
+
+    $.getJSON("{{ url_for('main._replay_confirmation_email') }}", send, function(data) {
+        if (data) {
+            $('#email_sent_at_' + txn_id).text('email sent at ' + data['email_sent_at']);
+            if (data['errors']) {
+                console.log('length: ' + data['errors'].length);
+                for (let i=0; i<data['errors'].length; i++)
+                {
+                    email_sent_at = $('#email_sent_at_' + txn_id).html();
+                    $('#email_sent_at_' + txn_id).html(email_sent_at + "<br>" + data["errors"][i]["error"]);
+                }
+            }
+        }
+    });
+}
+</script>
+{% endblock %}
+
 {% block content %}
 
 {% if user_has_permissions('order') %}
@@ -48,6 +73,9 @@
                     </div>
                     <div class="col">
                         <strong>Confirmation email:</strong> {{ order.email_status }}
+                        <input type="hidden" name="txn_id" value="{{ order.txn_id }}">
+                        <input type="button" value="Resend" onclick="replayConfirmationEmail('{{ order.txn_id }}')">
+                        <div><span id="email_sent_at_{{ order.txn_id }}">email sent at {{ order.email_sent_at }}</span></div>
                     </div>
                 </div>
             {% if order.tickets %}
