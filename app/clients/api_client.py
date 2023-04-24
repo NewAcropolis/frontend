@@ -304,6 +304,9 @@ class ApiClient(BaseAPIClient):
             year = datetime.now().year
         return self.get(url='orders/{}'.format(year))
 
+    def replay_confirmation_email(self, txn_id):
+        return self.get(url=f'orders/replay_confirmation_email/{txn_id}')
+
     def add_magazine(self, magazine):
         return self.post(url='magazine', data=magazine)
 

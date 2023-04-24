@@ -1,4 +1,4 @@
-from flask import current_app, render_template, session
+from flask import current_app, jsonify, render_template, request, session
 
 from app import api_client
 from app.main import main
@@ -60,3 +60,10 @@ def admin_order_update(txn_code):
         updated=updated,
         errors=errors
     )
+
+
+@main.route('/admin/_replay_confirmation_email')
+def _replay_confirmation_email():
+    resp = api_client.replay_confirmation_email(request.args.get('txn_id'))
+
+    return jsonify(resp)
