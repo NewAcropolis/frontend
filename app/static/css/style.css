@@ -377,8 +377,6 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   position: absolute;
   bottom:15px;
   left: 20px;
-
-
 }
 .subscribe_section{
   background-color: rgb(63,96,144);
@@ -961,6 +959,93 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   top: auto;
   bottom: 0px;
   left: 0px;
+}
+
+/* Magazine */
+
+.banner-magazine-type{
+  color: white;
+  font-size: 0.6vw;
+  background-color: black;
+  padding: 0.2rem;
+}
+.nav-magazine-type{
+  color: white;
+  font-size: 0.6vw;
+  background-color: black;
+  padding: 0.2rem;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+}
+.magazine-author {
+  font-size: 13px;  
+  color: black;
+}
+.magazine-content-text {
+  color: grey;
+  font-size: 13px;
+}
+.magazine-title {
+  font-size: 20px;
+}
+.magazine-title-2 {
+  font-size: 17px;
+}
+.banner-magazine-small-tile-text{
+  color: white;
+  font-size: 1.2vw;
+}
+.banner-magazine-med-tile-text{
+  color: white;
+  font-size: 1.4vw;
+}
+.banner-magazine-large-tile-text{
+  color: white;
+  font-size: 1.9vw;
+}
+.magazine-tiles-padding {
+  padding: 1%;
+}
+.magazine-tiles-img-alignment{
+  padding: 0 !important;
+}
+.magazine-tiles-img-alignment-2{
+  padding-top: 90px !important;
+  padding-left: 4% !important;
+}
+.magazine-tiles-img-alignment-3{
+  padding-top: 280px !important;
+  padding-left: 2% !important;
+}
+.tiles-image-block {
+  border: 5px solid white ;
+  padding: 5px;    
+  text-align: left;
+  vertical-align: bottom;
+}
+.magazine-nav-padding {
+  padding-right: 3%;
+}
+.nav-main-magazine {
+  background-size: cover !important;
+  height: 250px;
+}
+.nav-small-magazine {
+  background-size: cover !important;
+  height: 90px;
+}
+.banner-small-magazines {
+  background-size: cover !important;
+  height: 210px;
+}
+.banner-large-magazines {
+  background-size: cover !important;
+  height: 420px;
+}
+.nav-small-magazine-row-padding {
+  padding-right: 15px;
+  padding-left: 15px;
 }
 
 /* Colors */

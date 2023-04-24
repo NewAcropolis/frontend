@@ -3,7 +3,8 @@ from flask import Blueprint
 main = Blueprint('main', __name__)  # noqa
 
 from app.main.views import (  # noqa
-    index, articles, api, cache, courses, download, events, magazines, member, order, queue, shop, subscription, tag
+    index, articles, api, cache, courses, download, events, magazines, member, order, queue, shop, subscription, tag,
+    magazines2
 )
 
 from app.main.views.admin import (  # noqa

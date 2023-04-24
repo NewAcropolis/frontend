@@ -13,7 +13,7 @@ jsonschema==2.6.0
 markupsafe==1.1.1
 mock==2.0.0
 monotonic>=0.1
-protobuf==3.20.0
+protobuf==3.20.2
 pytest==3.5
 pytest-cov==2.5.1
 pytest-eradicate==0.0.3

@@ -19,9 +19,36 @@
     font-size: 0.8em;
     color: black;
 }
-  
+
+.nav-link.magazine {
+  font-size: 0.8em;
+  color: #c3c1c1;
+}
+
+.dropdown-item.magazine {
+  font-size: 0.8em !important;
+  color: #c3c1c1 !important;
+}
+
+.dropdown-item.active.magazine {
+  font-size: 0.8em;
+  color: black;
+}
+
+.dropdown-item.active {
+  color: black;
+  background-color: #f5d737 !important;
+  border-color: #dee2e6 #dee2e6 #fff;
+  border-bottom: #f5d737;
+}
+
+.nav-link.active.magazine {
+  font-size: 0.8em;
+  color: black;
+}
+
 .nav-link.active {
-    color: #495057;
+    color: black;
     background-color: #f5d737 !important;
     border-color: #dee2e6 #dee2e6 #fff;
     border-bottom: #f5d737;
@@ -36,6 +63,17 @@
 .nav-link.delivery {
     font-size: 0.8em;
     color: black;
+}
+
+.nav-link.buygift {
+    font-size: 0.8em;
+    color: black;
+}
+
+.nav-link.active.buygift {
+    color: black;   
+    background-color: #55a718 !important;
+    border-bottom: #55a718;
 }
 
 .nav-link.active.delivery {
@@ -54,6 +92,10 @@
 
 .nav-tabs.delivery {
     border-bottom: 3px solid #7ff1e2;
+}
+
+.nav-tabs.buygift {
+  border-bottom: 3px solid #55a718;
 }
 
 .mag img {
