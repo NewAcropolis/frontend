@@ -1,22 +1,17 @@
+from flask import current_app
+
 from app import api_client
 from app.main import main
 from app.main.views import render_page
 
 
 @main.route('/magazines')
-@main.route('/magazines/<int:page>')
-def magazines(page=0):
-    magazines = api_client.get_magazines()
-
-    start = page * 5
-    end = (page + 1) * 5
-    next_page = page + 1
-
-    if end > len(magazines):
-        next_page = None
+def magazines():
+    magazines = None
+    if not current_app.config["SHOW_RESOURCE_MAINTENANCE"]:
+        magazines = api_client.get_magazines()
 
     return render_page(
         'views/magazines.html',
-        magazines=magazines[start:end],
-        next_page=next_page
+        magazines=magazines
     )
