@@ -159,6 +159,7 @@ def sim_get_event_by_id(*args, **kwargs):
 def sim_get_articles_summary(*args, **kwargs):
     return [
         {
+            'id': '17d0834f-1178-4fbd-b40b-9d5bca334a0d',
             'title': 'Article title 1',
             'short_content':
                 'some short content 1, some short content 1, some short content 1, some short content 1',
@@ -166,6 +167,7 @@ def sim_get_articles_summary(*args, **kwargs):
             'image_filename': 'article.png'
         },
         {
+            'id': '27d0834f-1178-4fbd-b40b-9d5bca334a0d',
             'title': 'Article title 2',
             'short_content':
                 'some short content 2, some short content 2, some short content 2, some short content 2',
@@ -173,6 +175,7 @@ def sim_get_articles_summary(*args, **kwargs):
             'image_filename': 'article.png'
         },
         {
+            'id': '37d0834f-1178-4fbd-b40b-9d5bca334a0d',
             'title': 'Article title 3',
             'short_content':
                 'some short content 3, some short content 3, some short content 3, some short content 3',
@@ -180,6 +183,7 @@ def sim_get_articles_summary(*args, **kwargs):
             'image_filename': 'article.png'
         },
         {
+            'id': '47d0834f-1178-4fbd-b40b-9d5bca334a0d',
             'title': 'Article title 4',
             'short_content':
                 'some short content 4, some short content 4, some short content 4, some short content 4',
@@ -187,6 +191,7 @@ def sim_get_articles_summary(*args, **kwargs):
             'image_filename': 'article.png'
         },
         {
+            'id': '57d0834f-1178-4fbd-b40b-9d5bca334a0d',
             'title': 'Article title 5',
             'short_content':
                 'some short content 5, some short content 5, some short content 5, some short content 5',
@@ -194,6 +199,16 @@ def sim_get_articles_summary(*args, **kwargs):
             'image_filename': 'article.png'
         }
     ]
+
+
+def sim_get_article(*args, **kwargs):
+    return {
+        'title': 'Article title 1',
+        'author': 'Test',
+        'content': 'some short content 1, some short content 1, some short content 1, some short content 1',
+        'image_filename': 'article.png',
+        'tags': 'Philosophy,Art'
+    }
 
 
 def sim_get_latest_magazine(*args, **kwargs):

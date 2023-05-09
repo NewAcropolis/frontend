@@ -33,6 +33,24 @@ def get_events_intro_courses_prioritised(events):
     return intro_courses_first
 
 
+def call_sim_function(f, *args, **kwargs):
+    import importlib
+    mod = importlib.import_module('app.clients.sim_data')
+    func = getattr(mod, 'sim_' + f.__name__)
+    return func(*args, **kwargs)
+
+
+def sim_data_available(**dkwargs):
+    def sim_data_available_inner(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            if os.environ.get('ENVIRONMENT', 'development') != 'live' and request.args.get('test') == 'sim_data':
+                return call_sim_function(f, args, kwargs)
+            return f(*args, **kwargs)
+        return decorated
+    return sim_data_available_inner
+
+
 def use_cache(**dkwargs):
     def use_cache_inner(f):
         @wraps(f)
@@ -45,10 +63,7 @@ def use_cache(**dkwargs):
                     elif request.args.get('test') == 'intro_external':
                         return get_intro_course(external=True)
             elif os.environ.get('ENVIRONMENT', 'development') == 'review':
-                import importlib
-                mod = importlib.import_module('app.clients.sim_data')
-                func = getattr(mod, 'sim_' + f.__name__)
-                return func(*args, **kwargs)
+                return call_sim_function(f, args, kwargs)
             elif current_app.config['TESTING']:
                 if 'db_call' in dkwargs:
                     data = dkwargs['db_call'](*args, **kwargs)
@@ -267,6 +282,11 @@ class ApiClient(BaseAPIClient):
     def get_articles_summary(self):
         return self.get_articles_summary_from_db()
 
+    def get_article_from_db(self, id):
+        article = self.get(url='article/{}'.format(id))
+        return article
+
+    @sim_data_available()
     def get_article(self, id):
         return self.get(url='article/{}'.format(id))
 
