@@ -235,9 +235,22 @@ def _api_workers_running():
     return Cache.get_data('api_check_workers', default=None)
 
 
+def use_sim_data():
+    return os.environ.get('ENVIRONMENT', 'development') == 'review' or (
+        os.environ.get('ENVIRONMENT', 'development') != 'live' and request.args.get('test') == 'sim_data'
+    )
+
+
+def _get_images_url():
+    if use_sim_data():
+        return '/static/images'
+    else:
+        return current_app.config['IMAGES_URL']
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
-    app.jinja_env.globals['IMAGES_URL'] = app.config['IMAGES_URL']
+    app.jinja_env.globals['get_images_url'] = _get_images_url
     app.jinja_env.globals['get_paypal_url'] = _get_paypal_url
     app.jinja_env.globals['get_paypal_base'] = _get_paypal_base
     app.jinja_env.globals['get_email'] = _get_email
