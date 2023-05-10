@@ -63,7 +63,7 @@
       <div class="col-md-3 text-center">
         <div>
           {% if latest_magazine %}
-          <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" class="footer_magazine"><br><br>
+          <img src="{{ get_images_url() }}/standard/pdfs/{{latest_magazine.filename}}.png" class="footer_magazine"><br><br>
           <div class="magazine_form_padding">
               {% if slim_subscription_form %}
               <form action="/" method=post>

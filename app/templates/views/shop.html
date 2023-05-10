@@ -41,7 +41,7 @@
                     {% for book in books %}
                     <div class="row{{ loop.cycle('', ' alt-row-colour') }}">
                         <div class="col-md-6 book-image">
-                            <img src="{{ IMAGES_URL }}/books/{{book.image_filename}}">
+                            <img src="{{ get_images_url() }}/books/{{book.image_filename}}">
                         </div>
                         <div class="col-md-6">
                             <div>{{book.title|upper}}</div>
@@ -114,23 +114,23 @@
                         <div>
                             <div class="row">
                                 <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none  mx-auto mx-sm-3">
-                                <img class="card-img-top card_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png">
+                                <img class="card-img-top card_img_size" src="{{ get_images_url() }}/standard/pdfs/{{latest_magazine.filename}}.png">
                                 </a>
                             </div>
                             <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG" role="dialog" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
                                     <div class="modal-content modal-content-magazine">
                                     <div class="modal-body modal-body-magazine mb-0 p-0">
-                                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
-                                        <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" style="width:100%">
+                                        <a href="{{ get_images_url() }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                                        <img src="{{ get_images_url() }}/standard/pdfs/{{latest_magazine.filename}}.png" style="width:100%">
                                         </a>
                                     </div>
                                     <div class="modal-footer modal-footer-magazine">
                                         <div>
-                                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" target="_blank" download>Download</a>
+                                        <a href="{{ get_images_url() }}/pdfs/{{latest_magazine.filename}}" target="_blank" download>Download</a>
                                         </div>
                                         <div>
-                                        <a href="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" data-dismiss="modal">Close</a>
+                                        <a href="{{ get_images_url() }}/standard/pdfs/{{latest_magazine.filename}}.png" data-dismiss="modal">Close</a>
                                         </div>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
 
                     </div>
                     <div class="blue-text mag-text">
-                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                        <a href="{{ get_images_url() }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
                         NEW ACROPOLIS MAGAZINE - {{latest_magazine.title|upper}}
                         </a>
                     </div>

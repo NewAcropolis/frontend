@@ -104,7 +104,7 @@
                     elements._title.val(data['title']);
                     if (!($('#message').val().includes('magazine added'))) {
                         elements._magazine_image.attr('style', 'display:block;width:100px;');
-                        elements._magazine_image.attr('src', '{{IMAGES_URL}}/thumbnail/pdfs/' + data['filename'] + ".png");
+                        elements._magazine_image.attr('src', '{{get_images_url()}}/thumbnail/pdfs/' + data['filename'] + ".png");
                     }
                     elements._topics.val(data['topics']);
                     elements._topics.attr('disabled', false);
@@ -140,7 +140,7 @@
 
         function prepSubmit() {
             if ($('#magazine_img').attr('src'))
-                $('#existing_magazine_filename').val($('#magazine_img').attr('src').replace('{{images_url}}/thumbnail/pdfs/', ''));
+                $('#existing_magazine_filename').val($('#magazine_img').attr('src').replace('{{get_images_url()}}/thumbnail/pdfs/', ''));
             $('#save').prop('disabled', true);
             $('#tags').val(elements._tags.val());
         }
