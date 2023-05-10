@@ -149,7 +149,7 @@
                     elements._author.val(data['author']);
                     if (data['image_filename']) {
                         elements._article_image.attr('style', 'display:block;width:100px;');
-                        elements._article_image.attr('src', '{{IMAGES_URL}}/thumbnail/articles/' + data['image_filename']);
+                        elements._article_image.attr('src', '{{get_images_url()}}/thumbnail/articles/' + data['image_filename']);
                     } else {
                         elements._article_image.attr('style', 'display:none;');
                     }
@@ -237,7 +237,7 @@
 
         function prepSubmit() {
             if ($('#article_img').attr('src'))
-                $('#existing_image_filename').val($('#article_img').attr('src').replace('{{IMAGES_URL}}/thumbnail/articles/', ''));
+                $('#existing_image_filename').val($('#article_img').attr('src').replace('{{get_images_url()}}/thumbnail/articles/', ''));
             $('#publish').prop('disabled', true);
             $('#tags').val(elements._tags.val());
         }
