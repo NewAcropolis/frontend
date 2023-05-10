@@ -205,8 +205,28 @@ def sim_get_article(*args, **kwargs):
     return {
         'title': 'Article title 1',
         'author': 'Test',
-        'content': 'some short content 1, some short content 1, some short content 1, some short content 1',
-        'image_filename': 'article.png',
+        'content': '''<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin id felis justo. Nullam aliquet
+        aliquet rhoncus. Aliquam vehicula at ante eget suscipit. Sed condimentum iaculis ligula, eu porta dui vehicula
+        ut. Suspendisse eleifend varius dapibus. Sed varius nibh eu pretium sollicitudin. Curabitur sit amet tortor id
+        nibh ultricies convallis et maximus tortor. Nullam rhoncus, nisl eget fringilla blandit, enim nibh pretium
+        sapien, sit amet interdum felis risus eget turpis. Quisque tristique aliquet ex, vel placerat nisl. Morbi nec
+        magna malesuada, ornare risus non, cursus ex. Maecenas at lacus sollicitudin, lacinia quam dapibus, convallis
+        lectus. Ut lobortis porta feugiat. Curabitur laoreet id sem et dignissim.</p>
+        <p>Sed ullamcorper libero vitae varius ullamcorper. Maecenas elementum in nibh ac ornare. Mauris condimentum
+        nec tellus sit amet consequat. Pellentesque sapien neque, auctor id scelerisque finibus, scelerisque at odio.
+        Donec ultrices felis sit amet aliquet pulvinar. Quisque pretium tortor eget lacus lobortis tristique. Donec
+        iaculis convallis consectetur. Praesent quis metus quis ligula euismod rutrum. Quisque pharetra nibh et velit
+        scelerisque aliquam. Ut vestibulum venenatis viverra. Duis tincidunt, nisl at pulvinar tincidunt, turpis odio
+        sodales orci, eu porttitor risus eros a nisi. In vehicula ut augue ac facilisis. Nullam sit amet lobortis
+        felis, vel faucibus neque. Vestibulum ultrices orci eu rutrum imperdiet.</p>
+        <p>Nulla sodales dapibus arcu faucibus viverra. Sed ultrices, erat rutrum condimentum feugiat, nunc dolor
+        imperdiet mi, eu maximus mauris lacus in orci. Ut vitae mollis lacus. Fusce nec lectus accumsan, mattis eros
+        ac, finibus nisi. Vestibulum lectus tortor, ultrices auctor enim et, efficitur molestie magna. Vivamus pharetra
+        eros nibh. Quisque purus sapien, tempus at gravida non, pretium in massa. Duis varius tincidunt auctor. Sed
+        pulvinar neque non ex vehicula, eget aliquam elit posuere. Aenean ut enim blandit, ultrices tellus at, ornare
+        nunc.</p>
+        ''',
+        'image_filename': 'article.jpeg',
         'tags': 'Philosophy,Art'
     }
 
