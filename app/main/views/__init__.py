@@ -6,7 +6,7 @@ import requests
 from requests_oauthlib import OAuth2Session
 from oauthlib.oauth2 import TokenExpiredError
 
-from app import api_client
+from app import api_client, use_sim_data
 from app.main import main
 from app.main.forms import ContactForm, SlimSubscriptionForm
 from app.clients.errors import HTTPError
@@ -189,10 +189,12 @@ def render_page(template, **kwargs):
             current_app.logger.error("Unhandled error %r", error)
             kwargs['error'] = "Unhandled error"
 
+    latest_magazine = {'filename': 'magazine.pdf'} if use_sim_data() else api_client.get_latest_magazine()
+
     return render_template(
         template,
         contact_form=contact_form,
         slim_subscription_form=slim_subscription_form,
-        latest_magazine=api_client.get_latest_magazine(),
+        latest_magazine=latest_magazine,
         **kwargs
     )
