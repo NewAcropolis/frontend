@@ -1,0 +1,272 @@
+{% extends "public_base.html" %}
+
+{% block title %}
+  Magazines V2
+{% endblock %}
+
+{% block extra_head %}
+  <link rel="stylesheet" href="/static/css/alt-style.css" />
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row magazine-tiles-padding">
+    {% set random_magazine = magazines|random %}
+    <div class="tiles-image-block col-sm-6 magazine-tiles-img-alignment-3 banner-large-magazines" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{random_magazine.filename}}.png)">
+      <h1>
+        <span class="banner-magazine-type"><strong> {{ random_magazine.type }} </strong></span> <br>
+        <p class="banner-magazine-large-tile-text"><strong> {{ random_magazine.title }} </strong> </p>
+      </h1>
+    </div>
+    
+    <div class="col-sm-6 magazine-tiles-img-alignment">
+      <div class="row">
+        {% set random_magazine = magazines|random %}
+        <div class="tiles-image-block col-sm-12 magazine-tiles-img-alignment-2 d-none d-sm-block banner-small-magazines" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{random_magazine.filename}}.png)">
+          <h1>
+            <span class="banner-magazine-type"><strong> {{ random_magazine.type }} </strong></span> <br>
+            <p class="banner-magazine-med-tile-text"><strong> {{ random_magazine.title }} </strong> </p>
+          </h1>
+        </div>
+      </div>
+
+      <div class="row ">
+        {% set random_magazine = magazines|random %}
+      <div class="tiles-image-block col-sm-6 magazine-tiles-img-alignment-2 d-none d-sm-block banner-small-magazines" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{random_magazine.filename}}.png)">
+        <h1>
+          <span class="banner-magazine-type"><strong> {{ random_magazine.type }} </strong></span> <br>
+          <p class="banner-magazine-small-tile-text"><strong> {{ random_magazine.title }} </strong> </p>
+        </h1>
+      </div>
+      {% set random_magazine = magazines|random %}
+      <div class="tiles-image-block col-sm-6 magazine-tiles-img-alignment-2 d-none d-sm-block banner-small-magazines" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{random_magazine.filename}}.png)">
+        <h1>
+          <span class="banner-magazine-type"><strong> {{ random_magazine.type }} </strong></span> <br>
+          <p class="banner-magazine-small-tile-text"><strong> {{ random_magazine.title }} </strong> </p>
+        </h1>
+      </div>
+    </div>
+    
+    </div>
+  </div>
+</div>
+
+{% if config.get('SHOW_RESOURCE_MAINTENANCE') %}
+  <div class="container-fluid padding yellow_background">
+    <div class="row padding">
+      <div class="col-lg-12">
+        <p class="dark_grey_txt content-width mx-auto text-center">
+          This page is under construction, thank you for your patience.
+        </p>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="container pt-2">
+    <div class="row">
+      <div class="col-lg-8">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item magazine-nav-padding">
+            <a class="nav-link active magazine font-weight-bold" id="latest-issue-tab" data-toggle="tab" href="#latest-issue" role="tab" aria-controls="latest-issue" aria-selected="true">LATEST ISSUE</a>
+          </li>
+          <li class="nav-item magazine-nav-padding">
+            <a class="nav-link magazine font-weight-bold" id="Philosophy-tab" data-toggle="tab" href="#Philosophy" role="tab" aria-controls="Philosophy" aria-selected="false">Philosophy</a>
+          </li>
+          <li class="nav-item magazine-nav-padding">
+            <a class="nav-link magazine font-weight-bold" id="Society-tab" data-toggle="tab" href="#Society" role="tab" aria-controls="Society" aria-selected="false">Society</a>
+          </li>
+          <li class="nav-item magazine-nav-padding">
+            <a class="nav-link magazine font-weight-bold" id="Estorica-tab" data-toggle="tab" href="#Estorica" role="tab" aria-controls="Estorica" aria-selected="false">Estorica</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle magazine font-weight-bold" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">More</a>
+            <div class="dropdown-menu">
+              {% set magazine_types = ['Philosophy', 'Society', 'Estorica'] %}
+              {% set more_magazines = magazines | rejectattr('type', 'in', magazine_types) | groupby('type') | map('first') %}
+              {% for magazine_type in more_magazines %}
+              
+                <a class="dropdown-item magazine font-weight-bold" id="{{magazine_type}}-tab" data-toggle="tab" href="#{{magazine_type}}" role="tab" aria-controls="{{magazine_type}}" aria-selected="false" data-content="#{{ magazine_type }}">{{ magazine_type }}</a>
+              {% endfor %}
+              
+            </div>
+          </li>
+        </ul>
+
+        <div class="tab-content pt-2" id="resouce-tab-content">
+          <div class="tab-pane fade show active" id="latest-issue" role="tabpanel" aria-labelledby="latest-issue-tab">
+            <div class="row">
+              {% set latest_magazine = magazines|last %}
+                <div class="col-sm-6 ">
+                  <div>
+                    <div class="col-sm-12 nav-main-magazine" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png)">
+                      <h1>
+                        <span class="nav-magazine-type"><strong> {{ latest_magazine.type }} </strong></span>
+                      </h1>
+                    </div>
+                    <br>
+                    <h1 class="magazine-title"><strong> {{ latest_magazine.title }} </strong></h1>
+                    <p class="magazine-content-text"><strong class="magazine-author"> {{ latest_magazine.author }} </strong> - {{ latest_magazine.date }}</p>
+                    <p class="magazine-content-text">{{ latest_magazine.description }}</p>
+                  </div>
+                </div>
+                
+              <div class="col-sm-6">
+                {% set latest_magazines = magazines[-5:-1] %}
+                {% for magazine in latest_magazines %}
+                  {% if loop.index <= 4 %}
+                  <div class="row nav-small-magazine-row-padding">
+                    <div class="col-sm-4 nav-small-magazine" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{magazine.filename}}.png)"></div>
+                    <div class="col-sm-8">
+                      <p class="magazine-title-2"><strong>{{ magazine.title }}</strong></p>
+                      <p class="magazine-content-text">{{ magazine.date }}</p>
+                    </div>
+                  </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+
+          {% for magazine_type in magazine_types %}
+            <div class="tab-pane fade" id="{{magazine_type}}" role="tabpanel" aria-labelledby="{{magazine_type}}-tab"> 
+              <div class="row">
+                {% set type_magazines = magazines | selectattr('type', 'equalto', magazine_type) | list %}
+                {% set latest_magazine = type_magazines|last %}
+                  <div class="col-sm-6 ">
+                    <div>
+                      <div class="col-sm-12 nav-main-magazine" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png)">
+                        <h1>
+                          <span class="nav-magazine-type"><strong> {{ latest_magazine.type }} </strong></span>
+                        </h1>
+                      </div>
+                      <br>
+                      <h1 class="magazine-title"><strong> {{ latest_magazine.title }} </strong></h1>
+                      <p class="magazine-content-text"><strong class="magazine-author"> {{ latest_magazine.author }} </strong> - {{ latest_magazine.date }}</p>
+                      <p class="magazine-content-text">{{ latest_magazine.description }}</p>
+                    </div>
+                  </div>
+                  
+                <div class="col-sm-6">
+                  {% for magazine in type_magazines %}
+                    {% if loop.index <= 4 %}
+                    <div class="row nav-small-magazine-row-padding">
+                      <div class="col-sm-4 nav-small-magazine" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{magazine.filename}}.png)"></div>
+                      <div class="col-sm-8">
+                        <p class="magazine-title-2"><strong>{{ magazine.title }}</strong></p>
+                        <p class="magazine-content-text">{{ magazine.date }}</p>
+                      </div>
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+        {% set more_magazine_types = magazines | rejectattr('type', 'in', magazine_types) | groupby('type') | map('first') %}
+        {% for magazine_type in more_magazine_types %}
+          <div class="tab-pane fade" id="{{magazine_type}}" role="tabpanel" aria-labelledby="{{magazine_type}}-tab"> 
+            <div class="row">
+              {% set more_magazines_types = magazines | selectattr('type', 'equalto', magazine_type) | list %}
+              {% set latest_magazine = more_magazines_types|last %}
+                <div class="col-sm-6 ">
+                  <div>
+                    <div class="col-sm-12 nav-main-magazine" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png)">
+                      <h1>
+                        <span class="nav-magazine-type"><strong> {{ latest_magazine.type }} </strong></span>
+                      </h1>
+                    </div>
+                    <br>
+                    <h1 class="magazine-title"><strong> {{ latest_magazine.title }} </strong></h1>
+                    <p class="magazine-content-text"><strong class="magazine-author"> {{ latest_magazine.author }} </strong> - {{ latest_magazine.date }}</p>
+                    <p class="magazine-content-text">{{ latest_magazine.description }}</p>
+                  </div>
+                </div>
+
+              <div class="col-sm-6">
+                {% for magazine in more_magazines_types %}
+                  {% if loop.index <= 4 %}
+                    <div class="row nav-small-magazine-row-padding">
+                      <div class="col-sm-4 nav-small-magazine" style="background: url({{ IMAGES_URL }}/standard/pdfs/{{magazine.filename}}.png)"></div>
+                      <div class="col-sm-8">
+                        <p class="magazine-title-2"><strong>{{ magazine.title }}</strong></p>
+                        <p class="magazine-content-text">{{ magazine.date }}</p>
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="row">
+          <div class="col-12 pt-0 mt-0">
+            <div class="nav nav-tabs mag" role="tablist">
+              <div class="nav-link active shop mag font-weight-bold">Our Latest Magazine</div>
+            </div>
+            <div class="py-2">
+              <div>
+                <div class="row">
+                  <a data-target="#modalIMG" data-toggle="modal" href="#" class="color-gray-darker td-hover-none  mx-auto mx-sm-3">
+                    <img class="card-img-top card_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png"/>
+                  </a>
+                </div>
+                <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal fade" id="modalIMG" role="dialog" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
+                    <div class="modal-content modal-content-magazine">
+                      <div class="modal-body modal-body-magazine mb-0 p-0">
+                        <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                          <img src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png">
+                        </a>
+                      </div>
+                      <div class="modal-footer modal-footer-magazine">
+                        <div>
+                          <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" target="_blank" download>Download</a>
+                        </div>
+                        <div>
+                          <a href="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png" data-dismiss="modal">Close</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="blue-text mag-text">
+              <a href="{{ IMAGES_URL }}/pdfs/{{latest_magazine.filename}}" download target="_blank">
+                NEW ACROPOLIS MAGAZINE - {{latest_magazine.title|upper}}
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty_space"></div>
+
+        <div class="row">
+          <div class="col-12 pt-0 mt-0">
+            <div class="nav nav-tabs buygift" role="tablist">
+              <div class="nav-link active buygift font-weight-bold">Buy a Gift</div>
+            </div>
+            <div class="py-2">
+              <div>
+                <div class="row">
+                  <a data-target="#modalIMG3" data-toggle="modal" href="#" class="color-gray-darker td-hover-none  mx-auto mx-sm-3">
+                    <img class="card-img-top card_img_size" src="{{ IMAGES_URL }}/standard/pdfs/{{latest_magazine.filename}}.png"/>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% block block_footer %}
+{% endblock %}
+
+{% endblock %}
