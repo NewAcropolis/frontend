@@ -7,11 +7,11 @@ from app.main.views import render_page
 
 @main.route('/magazinesV2')
 def magazinesV2():
-    magazines = None
+    articles = None
     if not current_app.config["SHOW_RESOURCE_MAINTENANCE"]:
-        magazines = api_client.get_magazines()
+        articles = api_client.get_articles_summary()
 
     return render_page(
         'views/magazinesV2.html',
-        magazines=magazines
+        articles=articles
     )

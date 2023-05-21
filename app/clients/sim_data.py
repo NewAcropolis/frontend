@@ -164,7 +164,10 @@ def sim_get_articles_summary(*args, **kwargs):
             'short_content':
                 'some short content 1, some short content 1, some short content 1, some short content 1',
             'very_short_content': 'some short content 1',
-            'image_filename': 'article.png'
+            'image_filename': 'article.png',
+            'tags': 'Art',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
         },
         {
             'id': '27d0834f-1178-4fbd-b40b-9d5bca334a0d',
@@ -172,7 +175,10 @@ def sim_get_articles_summary(*args, **kwargs):
             'short_content':
                 'some short content 2, some short content 2, some short content 2, some short content 2',
             'very_short_content': 'some short content 2',
-            'image_filename': 'article.png'
+            'image_filename': 'article.png',
+            'tags': 'Philosophy',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
         },
         {
             'id': '37d0834f-1178-4fbd-b40b-9d5bca334a0d',
@@ -180,7 +186,10 @@ def sim_get_articles_summary(*args, **kwargs):
             'short_content':
                 'some short content 3, some short content 3, some short content 3, some short content 3',
             'very_short_content': 'some short content 3',
-            'image_filename': 'article.png'
+            'image_filename': 'article.png',
+            'tags': 'Society',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
         },
         {
             'id': '47d0834f-1178-4fbd-b40b-9d5bca334a0d',
@@ -188,7 +197,10 @@ def sim_get_articles_summary(*args, **kwargs):
             'short_content':
                 'some short content 4, some short content 4, some short content 4, some short content 4',
             'very_short_content': 'some short content 4',
-            'image_filename': 'article.png'
+            'image_filename': 'article.png',
+            'tags': 'Estorica',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
         },
         {
             'id': '57d0834f-1178-4fbd-b40b-9d5bca334a0d',
@@ -196,7 +208,10 @@ def sim_get_articles_summary(*args, **kwargs):
             'short_content':
                 'some short content 5, some short content 5, some short content 5, some short content 5',
             'very_short_content': 'some short content 5',
-            'image_filename': 'article.png'
+            'image_filename': 'article.png',
+            'tags': 'Science & Nature',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
         }
     ]
 
@@ -248,103 +263,45 @@ def sim_get_books(*args, **kwargs):
 
 
 def sim_get_magazines(*args, **kwargs):
-    return [{"title": "issue 10",
-             "type": "Philosophy",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 9",
-             "type": "Philosophy",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 8",
-             "type": "Philosophy",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 7",
-             "type": "Society",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 6",
-             "type": "Society",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 5",
-             "type": "Estorica",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 4",
-             "type": "Estorica",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 3",
-             "type": "Art",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 2",
-             "type": "Science & Nature",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."},
-            {"title": "issue 1",
-             "type": "Art",
-             "filename": "latest_magazine.pdf",
-             "author": "Joe bloggs",
-             "date": "18/07/1897",
-             "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce a dui metus. "
-             "Etiam non viverra metus. "
-             "Pellentesque fermentum, massa id sodales euismod, eros sem aliquet urna, consequat maximus erat "
-             "mauris interdum augue. Quisque in semper ante. Aenean id rutrum mi. Sed at sapien nibh. Praesent "
-             "urna metus, malesuada sed ipsum quis, consectetur lacinia tortor."}]
+    return [
+        {
+            "title": "issue 10",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 9",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 8",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 7",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 6",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 5",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 4",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 3",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 2",
+            "filename": "latest_magazine.pdf"
+        },
+        {
+            "title": "issue 1",
+            "filename": "latest_magazine.pdf"
+        }
+    ]
