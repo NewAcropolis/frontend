@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os
+from flask import request
 
 
 class Config(object):
@@ -91,3 +92,9 @@ configs = {
     'review': Review,
     'live': Live,
 }
+
+
+def use_sim_data():
+    return os.environ.get('ENVIRONMENT', 'development') == 'review' or (
+        os.environ.get('ENVIRONMENT', 'development') != 'live' and request.args.get('test') == 'sim_data'
+    )
