@@ -1,6 +1,6 @@
 import base64
 from flask import current_app, jsonify, redirect, render_template, request, session, url_for
-from six.moves.html_parser import HTMLParser
+from html import unescape
 import json
 import urllib.parse as urlparse
 
@@ -165,8 +165,7 @@ def events_attendance(eventdate_id=None, year=None):
 def _get_event():
     event = [e for e in session['events'] if e['id'] == request.args.get('event')]
     if event:
-        h = HTMLParser()
-        event[0]['description'] = h.unescape(event[0]['description'])
+        event[0]['description'] = unescape(event[0]['description'])
         return jsonify(event[0])
     return ''
 
@@ -211,8 +210,7 @@ def preview_event_detail():
     if venue['name'] == 'Online Event':
         data['event_type'] = 'Online ' + data['event_type']
 
-    h = HTMLParser()
-    data['_description'] = h.unescape(data['description'])
+    data['_description'] = unescape(data['description'])
 
     return render_page(
         'views/event_details.html',
@@ -235,8 +233,7 @@ def preview_events():
     if venue['name'] == 'Online Event':
         data['event_type'] = 'Online ' + data['event_type']
 
-    h = HTMLParser()
-    data['_description'] = h.unescape(data['description'])
+    data['_description'] = unescape(data['description'])
 
     return render_page(
         'views/events.html',
