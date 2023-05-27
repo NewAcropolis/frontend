@@ -5,7 +5,7 @@ from random import randint
 from app import api_client
 from app.main import main
 from app.main.views import render_page
-from six.moves.html_parser import HTMLParser
+from html import unescape
 from app.main.forms import ContactForm
 from app.clients.errors import HTTPError
 
@@ -50,9 +50,8 @@ def about():
 
 
 def _unescape_html(items, field_name):
-    h = HTMLParser()
     for item in items:
-        item[field_name] = h.unescape(item[field_name])
+        item[field_name] = unescape(item[field_name])
 
     return items
 

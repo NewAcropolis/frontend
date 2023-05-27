@@ -10,6 +10,7 @@ import textile
 from na_common.delivery import statuses as delivery_statuses
 
 from app.cache import Cache
+from app.config import use_sim_data
 from app.clients.api_client import ApiClient
 
 
@@ -233,12 +234,6 @@ def _get_paypal_base():
 
 def _api_workers_running():
     return Cache.get_data('api_check_workers', default=None)
-
-
-def use_sim_data():
-    return os.environ.get('ENVIRONMENT', 'development') == 'review' or (
-        os.environ.get('ENVIRONMENT', 'development') != 'live' and request.args.get('test') == 'sim_data'
-    )
 
 
 def _get_images_url():

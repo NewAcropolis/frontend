@@ -6,7 +6,8 @@ import requests
 from requests_oauthlib import OAuth2Session
 from oauthlib.oauth2 import TokenExpiredError
 
-from app import api_client, use_sim_data
+from app import api_client
+from app.config import use_sim_data
 from app.main import main
 from app.main.forms import ContactForm, SlimSubscriptionForm
 from app.clients.errors import HTTPError

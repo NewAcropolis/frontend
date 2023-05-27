@@ -1,7 +1,8 @@
 # coding: utf-8
 from datetime import datetime
 from flask import current_app, jsonify, request, session
-from html.parser import HTMLParser
+from html import unescape
+
 import pytz
 
 from app import api_client
@@ -69,8 +70,7 @@ def event_details(event_id=None, **kwargs):
     event['accept_donation'] = event["fee"] == -3
     event['show_buy_now'] = event["fee"] and event["fee"] not in [-3, -1]
 
-    h = HTMLParser()
-    event['_description'] = h.unescape(event['description'])
+    event['_description'] = unescape(event['description'])
 
     reserve_place_form = ReservePlaceForm() if event['is_future_event'] and\
         event['event_type'] == 'Introductory Course' else None

@@ -4,6 +4,7 @@ from functools import wraps
 import json
 import os
 
+from app.config import use_sim_data
 from app.cache import Cache
 from app.queue import Queue
 from app.clients import BaseAPIClient
@@ -55,14 +56,14 @@ def use_cache(**dkwargs):
     def use_cache_inner(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            if 'test' in request.args:
+            if 'test' in request.args and request.args.get('test') != 'sim_data':
                 if f.__name__ == 'get_event_by_id':
                     from app.clients.test_data import get_intro_course
                     if request.args.get('test') == 'intro':
                         return get_intro_course()
                     elif request.args.get('test') == 'intro_external':
                         return get_intro_course(external=True)
-            elif os.environ.get('ENVIRONMENT', 'development') == 'review':
+            elif use_sim_data():
                 return call_sim_function(f, args, kwargs)
             elif current_app.config['TESTING']:
                 if 'db_call' in dkwargs:
