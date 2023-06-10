@@ -388,7 +388,7 @@ class ApiClient(BaseAPIClient):
 
     def get_users(self):
         Queue.add(
-            f'get users', url='users', method='get', backoff_duration=30,
+            'get users', url='users', method='get', backoff_duration=30,
             cache_name="get_users", cache_is_unique=True)
         return Cache.get_data('get_users', default=[])
 
@@ -399,7 +399,7 @@ class ApiClient(BaseAPIClient):
         }
         resp = self.post(url='user', data=data)
         Queue.add(
-            f'get users', url='users', method='get', backoff_duration=30,
+            'get users', url='users', method='get', backoff_duration=30,
             cache_name="get_users", cache_is_unique=True, replace=True)
         return resp
 
@@ -409,7 +409,7 @@ class ApiClient(BaseAPIClient):
         }
         resp = self.post(url='user/{}'.format(user_id), data=data)
         Queue.add(
-            f'get users', url='users', method='get', backoff_duration=30,
+            'get users', url='users', method='get', backoff_duration=30,
             cache_name="get_users", cache_is_unique=True, replace=True)
         return resp
 

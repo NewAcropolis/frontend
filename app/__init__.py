@@ -77,7 +77,7 @@ def create_app(**kwargs):
 
 def _get_email():
     profile = session.get('user_profile')
-    if profile:
+    if profile and type(profile) == dict and 'email' in profile:
         return profile['email']
 
 
