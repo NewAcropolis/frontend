@@ -13,7 +13,7 @@ def get_nice_event_dates(events, future_dates_only=False):
 
 
 def get_nice_event_date(event):
-    event_date_count = len(event['original_event_dates'])
+    event_date_count = len(event['original_event_dates']) if 'original_event_dates' in event else 0
     event['formatted_event_datetimes'] = common_get_nice_event_dates(event['event_dates'])
     event['dates'] = get_event_dates(event['event_dates'])
     event['date_offset'] = event_date_count - len(event['dates'])
