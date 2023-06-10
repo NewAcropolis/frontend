@@ -327,7 +327,6 @@ def sample_latest_magazine(mocker):
     return magazine
 
 
-@pytest.fixture
 def mock_sessions(mocker, session_dict={}):
     mocker.patch('app.session', session_dict)
     mocker.patch('app.clients.session', session_dict)
