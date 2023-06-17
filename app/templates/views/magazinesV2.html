@@ -87,7 +87,7 @@
               {% set latest_article = articles|last %}
                 <div class="col-sm-6 ">
                   <div>
-                    <div class="col-sm-12 nav-main-magazine" style="background: url({{ get_images_url() }}/articles/{{latest_article.filename}})">
+                    <div class="col-sm-12 nav-main-magazine" style="background: url({{ get_images_url() }}/articles/{{latest_article.image_filename}})">
                       <h1>
                         <span class="nav-magazine-type"><strong> {{ latest_article.tags }} </strong></span>
                       </h1>
@@ -104,7 +104,7 @@
                 {% for article in latest_articles %}
                   {% if loop.index <= 4 %}
                   <div class="row nav-small-magazine-row-padding">
-                    <div class="col-sm-4 nav-small-magazine" style="background: url({{ get_images_url() }}/articles/{{article.filename}})"></div>
+                    <div class="col-sm-4 nav-small-magazine" style="background: url({{ get_images_url() }}/articles/{{article.image_filename}})"></div>
                     <div class="col-sm-8">
                       <p class="magazine-title-2"><strong>{{ article.title }}</strong></p>
                       <p class="magazine-content-text">{{ article.date }}</p>
@@ -123,7 +123,7 @@
                 {% set latest_article = type_articles|last %}
                   <div class="col-sm-6 ">
                     <div>
-                      <div class="col-sm-12 nav-main-magazine" style="background: url({{ get_images_url() }}/articles/{{latest_article.filename}})">
+                      <div class="col-sm-12 nav-main-magazine" style="background: url({{ get_images_url() }}/articles/{{latest_article.image_filename}})">
                         <h1>
                           <span class="nav-magazine-type"><strong> {{ latest_article.tags }} </strong></span>
                         </h1>
@@ -136,10 +136,10 @@
                   </div>
                   
                 <div class="col-sm-6">
-                  {% for article in type_article %}
+                  {% for article in type_articles %}
                     {% if loop.index <= 4 %}
                     <div class="row nav-small-magazine-row-padding">
-                      <div class="col-sm-4 nav-small-magazine" style="background: url({{ get_images_url() }}/articles/{{article.filename}})"></div>
+                      <div class="col-sm-4 nav-small-magazine" style="background: url({{ get_images_url() }}/articles/{{article.image_filename}})"></div>
                       <div class="col-sm-8">
                         <p class="magazine-title-2"><strong>{{ article.title }}</strong></p>
                         <p class="magazine-content-text">{{ article.date }}</p>
@@ -160,7 +160,7 @@
               {% set latest_article = more_articles_types|last %}
                 <div class="col-sm-6 ">
                   <div>
-                    <div class="col-sm-12 nav-main-magazine" style="background: url({{ get_images_url() }}/articles/{{latest_article.filename}})">
+                    <div class="col-sm-12 nav-main-magazine" style="background: url({{ get_images_url() }}/articles/{{latest_article.image_filename}})">
                       <h1>
                         <span class="nav-magazine-type"><strong> {{ latest_article.tags }} </strong></span>
                       </h1>
@@ -176,7 +176,7 @@
                 {% for article in more_articles_types %}
                   {% if loop.index <= 4 %}
                     <div class="row nav-small-magazine-row-padding">
-                      <div class="col-sm-4 nav-small-magazine" style="background: url({{ get_images_url() }}/articles/{{article.filename}})"></div>
+                      <div class="col-sm-4 nav-small-magazine" style="background: url({{ get_images_url() }}/articles/{{article.image_filename}})"></div>
                       <div class="col-sm-8">
                         <p class="magazine-title-2"><strong>{{ article.title }}</strong></p>
                         <p class="magazine-content-text">{{ article.date }}</p>
@@ -243,7 +243,7 @@
             <div class="py-2">
               <div>
                 <div class="row">
-                  <a data-target="#modalIMG3" data-toggle="modal" href="#" class="color-gray-darker td-hover-none  mx-auto mx-sm-3">
+                  <a href="/shop" class="color-gray-darker td-hover-none  mx-auto mx-sm-3">
                     <img class="card-img-top card_img_size" src="{{ get_images_url() }}/standard/pdfs/magazine.pdf.png"/>
                   </a>
                 </div>

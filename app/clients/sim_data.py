@@ -159,18 +159,18 @@ def sim_get_event_by_id(*args, **kwargs):
 def sim_get_articles_summary(*args, **kwargs):
     return [
         {
-            'id': '17d0834f-1178-4fbd-b40b-9d5bca334a0d',
+            'id': '17d0834f-1178-4fbd-b40b-9d5bca334a0dy',
             'title': 'Article title 1',
             'short_content':
                 'some short content 1, some short content 1, some short content 1, some short content 1',
             'very_short_content': 'some short content 1',
-            'image_filename': 'article.jpeg',
+            'image_filename': 'article4.jpeg',
             'tags': 'Art',
             "date": "18/07/1897",
             "author": "Joe bloggs"
         },
         {
-            'id': '27d0834f-1178-4fbd-b40b-9d5bca334a0d',
+            'id': '27d0834f-1178-4fbd-b40b-9d5bca334a0a',
             'title': 'Article title 2',
             'short_content':
                 'some short content 2, some short content 2, some short content 2, some short content 2',
@@ -181,7 +181,29 @@ def sim_get_articles_summary(*args, **kwargs):
             "author": "Joe bloggs"
         },
         {
-            'id': '37d0834f-1178-4fbd-b40b-9d5bca334a0d',
+            'id': '27d0834f-1178-4fbd-b40b-9d5bca334a0b',
+            'title': 'Article title 7',
+            'short_content':
+                'some short content 7, some short content 7, some short content 7, some short content 2',
+            'very_short_content': 'some short content 7',
+            'image_filename': 'article.jpeg',
+            'tags': 'Philosophy',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
+        },
+        {
+            'id': '27d0834f-1178-4fbd-b40b-9d5bca334a0c',
+            'title': 'Article title 8',
+            'short_content':
+                'some short content 8, some short content 8, some short content 8, some short content 8',
+            'very_short_content': 'some short content 8',
+            'image_filename': 'article.jpeg',
+            'tags': 'Philosophy',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
+        },
+        {
+            'id': '37d0834f-1178-4fbd-b40b-9d5bca334a0e',
             'title': 'Article title 3',
             'short_content':
                 'some short content 3, some short content 3, some short content 3, some short content 3',
@@ -192,23 +214,45 @@ def sim_get_articles_summary(*args, **kwargs):
             "author": "Joe bloggs"
         },
         {
-            'id': '47d0834f-1178-4fbd-b40b-9d5bca334a0d',
+            'id': '47d0834f-1178-4fbd-b40b-9d5bca334a0f',
             'title': 'Article title 4',
             'short_content':
                 'some short content 4, some short content 4, some short content 4, some short content 4',
             'very_short_content': 'some short content 4',
+            'image_filename': 'article3.jpeg',
+            'tags': 'Estorica',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
+        },
+        {
+            'id': '57d0834f-1178-4fbd-b40b-9d5bca334a0g',
+            'title': 'Article title 5',
+            'short_content':
+                'some short content 5, some short content 5, some short content 5, some short content 5',
+            'very_short_content': 'some short content 5',
+            'image_filename': 'article4.jpeg',
+            'tags': 'Science & Nature',
+            "date": "18/07/1897",
+            "author": "Joe bloggs"
+        },
+        {
+            'id': '47d0834f-1178-4fbd-b40b-9d5bca334a0h',
+            'title': 'Article title 9',
+            'short_content':
+                'some short content 9, some short content 9, some short content 9, some short content 9',
+            'very_short_content': 'some short content 9',
             'image_filename': 'article.jpeg',
             'tags': 'Estorica',
             "date": "18/07/1897",
             "author": "Joe bloggs"
         },
         {
-            'id': '57d0834f-1178-4fbd-b40b-9d5bca334a0d',
-            'title': 'Article title 5',
+            'id': '57d0834f-1178-4fbd-b40b-9d5bca334a0i',
+            'title': 'Article title 10',
             'short_content':
-                'some short content 5, some short content 5, some short content 5, some short content 5',
-            'very_short_content': 'some short content 5',
-            'image_filename': 'article.jpeg',
+                'some short content 10, some short content 10, some short content 10, some short content 10',
+            'very_short_content': 'some short content 10',
+            'image_filename': 'article2.jpeg',
             'tags': 'Science & Nature',
             "date": "18/07/1897",
             "author": "Joe bloggs"
