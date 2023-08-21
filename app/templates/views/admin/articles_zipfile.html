@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin.css"/>
+{% endblock %}
+
+{% if user_has_permissions('article') %}
+<div class="container pb-3 text-right" style="width: 800px;">
+    <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors|safe }}</div>
+    <form class="form" id="articles_form" method="post" enctype="multipart/form-data">{{ form.csrf_token }}
+        <div class="row">
+            <div class='ml-3 col-12'>
+                <div class='row mb-2'>
+                    {{form.magazines}}
+                </div>
+                <div id="zip_section" class='row text-left'>
+                    {{form.articles_zipfile(class_="form-control", placeholder='Zip file of articles', size=20)}}
+                    <hr>
+                </div>
+                <div class="row">
+                    <div id='form_errors' class='text-danger link-danger' style='display:{% if form.errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
+                    <div id='message' class='text-success pb-3' style='display:{% if message %}block{% else %}none{% endif%}'>{{message|safe}}</div>
+                </div>
+                <div class="row">
+                    <button id="upload" type="submit" class="btn btn-outline-success mt-2">Upload articles zipfile</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script charset="utf-8" type="text/javascript">
+    var selected = false;
+    var do_submit = false;
+    $(function() {
+        var elements = {
+            _magazines: $('#magazines'),
+        };
+
+        var showMessage={% if selected_article_id %}true{% else %}false{% endif %};
+        $( "#articles_form" ).submit(function() {
+            prepSubmit();
+        });
+
+        // $('#upload').on('click', function() {
+        //     alert('publish');
+        // })
+
+        function prepSubmit() {
+            $('#upload').prop('disabled', true);
+        }
+    });
+</script>
+{% endif %}
+{% endblock %}

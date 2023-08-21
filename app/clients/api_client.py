@@ -298,6 +298,9 @@ class ApiClient(BaseAPIClient):
     def add_article(self, article):
         return self.post(url='article', data=article)
 
+    def upload_articles_zipfile(self, article):
+        return self.post(url='articles/upload', data=article)
+
     def get_books_from_db(self):
         return self.get(url='books')
 
