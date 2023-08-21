@@ -141,13 +141,28 @@ class ArticleForm(FlaskForm):
                 )
             )
 
-        self.articles.choices = [('', 'New article')]
+        self.articles.choices = [('', '== New article ==')]
 
         for article in articles:
             self.articles.choices.append(
                 (
                     article['id'],
                     article['title']
+                )
+            )
+
+
+class ArticlesZipfileForm(FlaskForm):
+    articles_zipfile = FileField('Zip file of articles')
+    magazines = SelectField('Magazines')
+
+    def set_articles_zipfile_form(self, magazines):
+        self.magazines.choices = [('', 'No magazine link')]
+        for magazine in magazines:
+            self.magazines.choices.append(
+                (
+                    magazine['id'],
+                    magazine['title']
                 )
             )
 

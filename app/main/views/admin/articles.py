@@ -7,7 +7,7 @@ from app.tag import Tag
 from app.clients.api_client import update_cache
 from app.clients.errors import HTTPError
 from app.main import main
-from app.main.forms import ArticleForm
+from app.main.forms import ArticleForm, ArticlesZipfileForm
 from app.clients.utils import size_from_b64
 
 
@@ -84,6 +84,7 @@ def admin_articles(selected_article_id=None, api_message=None):
             except HTTPError as e:
                 current_app.logger.error(e)
                 errors = json.dumps(e.message)
+
     return render_template(
         'views/admin/articles.html',
         errors=errors,
@@ -91,6 +92,64 @@ def admin_articles(selected_article_id=None, api_message=None):
         message=api_message,
         selected_article_id=selected_article_id,
         tags=",".join(tags)
+    )
+
+
+@main.route('/admin/articles/zipfile', methods=['GET', 'POST'])
+def admin_articles_zipfile(zipfile_id=None, api_message=None):
+    errors = []
+    magazines = api_client.get_magazines_from_db()
+
+    form = ArticlesZipfileForm()
+
+    form.set_articles_zipfile_form(magazines)
+    if form.validate_on_submit():
+        zipfile_request = request.files.get('articles_zipfile')
+        if form.articles_zipfile.data:
+            articles_zipfile_filename = form.articles_zipfile.data.filename
+
+            article_zipfile = {
+                'magazine_id': form.magazines.data,
+                'source_filename': articles_zipfile_filename
+            }
+            if form.magazines.data:
+                article_zipfile['magazine_id']: form.magazines.data
+
+            if zipfile_request:
+                file_data = zipfile_request.read()
+                file_data_encoded = str(base64.b64encode(file_data), 'utf-8')
+                _file_size = size_from_b64(str(file_data_encoded))
+                if _file_size > current_app.config['MAX_IMAGE_SIZE']:
+                    _file_size_mb = round(_file_size/(1024*1024), 1)
+                    _max_size_mb = current_app.config['MAX_IMAGE_SIZE']/(1024*1024)
+                    errors.append("Zip {} file size ({} mb) is larger than max ({} mb)".format(
+                        zipfile_request.filename, _file_size_mb, _max_size_mb))
+                else:
+                    article_zipfile['articles_data'] = file_data_encoded
+
+            if not errors:
+                try:
+                    response = api_client.upload_articles_zipfile(article_zipfile)
+                    update_cache(func=api_client.get_articles_summary_from_db)
+                    if 'errors' in response:
+                        errors = '<br>'.join(
+                            [f"<a href='/admin/articles/{i['id']}'>{i['article']}</a>" for i in response['errors']]
+                        )
+                    api_message = '<br>'.join(
+                        [f"<a href='/admin/articles/{i['id']}'>{i['name']}</a>" for i in response['articles']]
+                    )
+
+                    if 'error' in session:
+                        errors = session.pop('error')
+                except HTTPError as e:
+                    current_app.logger.error(e)
+                    errors = json.dumps(e.message)
+
+    return render_template(
+        'views/admin/articles_zipfile.html',
+        errors=errors,
+        form=form,
+        message=api_message
     )
 
 
