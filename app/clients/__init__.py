@@ -67,7 +67,7 @@ class BaseAPIClient(object):
                     auth_url,
                     api_error.status_code,
                     api_error.message,
-                    e.message
+                    str(e)
                 )
             )
             # raise api_error
@@ -80,6 +80,15 @@ class BaseAPIClient(object):
 
     def request(self, method, url, data=None, params=None, headers=None):
         current_app.logger.info("API request {} {}".format(method, url))
+
+        if current_app.config.get('NO_API'):
+            current_app.logger.warning("No API available {} {}".format(method, url))
+            session['error'] = {
+                'code': 503,
+                'message': {'error': 'No API available'}
+            }
+
+            return []
 
         # don't set access token for API call to info
         set_access_token = url != ''
