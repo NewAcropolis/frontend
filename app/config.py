@@ -37,6 +37,7 @@ class Config(object):
     QUEUE_RETRY_LIMIT = 10
     ENABLE_STATS = os.environ.get('ENABLE_STATS', '') == 'True'
     TESTING = False
+    NO_API = False
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
@@ -56,6 +57,7 @@ class Development(Config):
     NO_ADMIN_AUTH = True
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
     PAYPAL_VERIFY_URL = "http://localhost:5005"
+    NO_API = True
 
 
 class Live(Config):
@@ -65,6 +67,7 @@ class Live(Config):
     NO_ADMIN_AUTH = False
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
     PAYPAL_VERIFY_URL = "https://ipnpb.paypal.com/cgi-bin/webscr"
+    NO_API = True
 
 
 class Preview(Config):
