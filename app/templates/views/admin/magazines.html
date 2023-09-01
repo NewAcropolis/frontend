@@ -35,7 +35,7 @@
                 <div class='row mt-2'>
                     <img id='magazine_img'>
                 </div>
-                <div class="row">{{form.magazine_filename}}</div>
+                <div class="row">{{form.magazine_filename}} ( Expected filename:&nbsp;<div id="expected_filename"></div>&nbsp;)</div>
                 {{form.existing_magazine_filename}}
                 <div class="row">
                     {{form.tags}}
@@ -74,6 +74,7 @@
         var elements = {
             _magazines: $('#magazines'),
             _title: $('#title'),
+            _expected_filename: $('#expected_filename'),
             _next_issue: $('#next_issue'),
             _magazine_image: $('#magazine_img'),
             _topics: $('#topics'),
@@ -89,6 +90,7 @@
 
             if (!send.magazine_id) {
                 elements._title.val(elements._next_issue.val());
+                elements._expected_filename.text("bi_monthly_issue_" + elements._title.val().split(" ")[1] + ".pdf");
                 elements._magazine_image.attr('style', 'display:none;width:100px;');
                 elements._magazine_image.attr('src', '');
                 elements._topics.attr('disabled', true);
@@ -102,6 +104,7 @@
                 if (data) {
                     elements._magazines.val(data['id']);
                     elements._title.val(data['title']);
+                    elements._expected_filename.text("bi_monthly_issue_" + elements._title.val().split(" ")[1] + ".pdf");
                     if (!($('#message').val().includes('magazine added'))) {
                         elements._magazine_image.attr('style', 'display:block;width:100px;');
                         elements._magazine_image.attr('src', '{{get_images_url()}}/thumbnail/pdfs/' + data['filename'] + ".png");
