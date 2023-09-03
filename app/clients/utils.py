@@ -58,4 +58,5 @@ def get_event_dates(event_dates):
 
 
 def size_from_b64(b64string):
-    return float(len(b64string) * 3) / 4 - b64string.count('=', -2)
+    # adjust file size as base64 increases the size by about 30%
+    return (float(len(b64string) * 3) / 4 - b64string.count('=', -2)) * 0.77
