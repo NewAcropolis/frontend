@@ -389,6 +389,9 @@ class ApiClient(BaseAPIClient):
 
         return user
 
+    def get_users_from_db(self):
+        return self.get(url='users')
+
     def get_users(self):
         Queue.add(
             'get users', url='users', method='get', backoff_duration=30,
