@@ -23,6 +23,7 @@ def _reload_cache():
     update_cache(
         func=api_client.get_events_in_future_from_db,
         decorator=only_show_approved_events, approved_only=True)
+    update_cache(func=api_client.get_users_from_db)
     update_cache(func=api_client.get_events_past_year_from_db)
     update_cache(func=api_client.get_articles_summary_from_db)
     update_cache(func=api_client.get_books_from_db)
@@ -34,7 +35,7 @@ def _reload_cache():
     return jsonify(
         {
             'response':
-            'get_events_in_future, get_events_past_year, '
+            'get_events_in_future, get_events_past_year, get_users, '
             'get_articles_summary, get_books, get_magazines, api_check_workers reloaded'
         }
     )
