@@ -3,6 +3,7 @@ from flask import current_app, jsonify, render_template, session
 from requests_oauthlib import OAuth2Session
 
 from app import api_client
+from app.clients.api_client import update_cache
 from app.main import main
 from app.main.forms import UserListForm
 from app.main.views import requires_google_auth
@@ -63,6 +64,7 @@ def admin_users():
             if users[i]['access_area'] != access_area:
                 update_count += 1
                 api_client.update_user_access_area(users[i]['id'], access_area)
+                update_cache(func=api_client.get_users_from_db)
 
     form.populate_user_form(users)
 
