@@ -76,7 +76,7 @@ def use_cache(**dkwargs):
             if 'from_cache' in dkwargs:
                 for cache_name in dkwargs['from_cache'].split(','):
                     data_cache = Cache.get_data(cache_name)
-                    if data_cache:
+                    if data_cache is not None:
                         if len(args) == 2:
                             data = [d for d in data_cache if d[dkwargs['key']] == str(args[1])]
                             if len(data) > 0:
@@ -87,7 +87,7 @@ def use_cache(**dkwargs):
             else:
                 data = Cache.get_data(f.__name__)
 
-                if data and dkwargs.get('update_daily'):
+                if data is not None and dkwargs.get('update_daily'):
                     updated_on = Cache.get_updated_on(f.__name__)
                     kwargs['func'] = f
                     if 'decorator' in dkwargs:
@@ -97,7 +97,7 @@ def use_cache(**dkwargs):
                     if (datetime.utcnow() - updated_on).seconds > 60*60*24:  # update pages once a day
                         update_cache(*args, **kwargs)
 
-            if not data:
+            if data is None:
                 if 'db_call' in dkwargs:
                     data = dkwargs['db_call'](*args, **kwargs)
                 else:
