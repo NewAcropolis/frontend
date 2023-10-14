@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block extra_head %}
+<script charset="utf-8" type="text/javascript">
+    function play_item(hash_item) {
+        call_ajax("play", hash_item);
+    }
+    function suspend_item(hash_item) {
+        call_ajax("suspend", hash_item);
+    }
+    function delete_item(hash_item) {
+        call_ajax("delete", hash_item);
+    }
+
+    function call_ajax(action, id) {
+        console.log('call_ajax ' + action + ' - ' + id);
+        var request = new XMLHttpRequest();
+
+        request.open("GET", "/admin/queue/process/" + action + "/" + id);
+        request.onreadystatechange = function() {
+            if(this.readyState === 4 && this.status === 200) {
+                if (action == "play" || action == "suspend") {
+                    document.getElementById("play-" + id).disabled = true;
+                    document.getElementById("suspend-" + id).disabled = true;
+                    document.getElementById("delete-" + id).disabled = true;
+                }
+                if (action == "delete" || action == "suspend") {
+                    elem = document.getElementById("row-" + id);
+                    elem.parentNode.removeChild(elem);
+                    document.getElementById("result-" + id).innerHTML = action + "ed";
+                }
+                else {
+                    document.getElementById("result-" + id).innerHTML = this.responseText;
+                }
+                console.log(this.responseText);
+            }
+        };
+        request.send();
+    }
+</script>
+{% endblock %}
+{% block content %}
+
+{% if user_has_permissions('cache') %}
+<div class="container p-3 mx-auto" style="width: 800px;">
+    <div class="row">
+        <div class="col-12">
+            <div id="row-{{q.hash_item}}">
+                <div class="row">{{q.updated}} {{q.hash_item}}</div>
+                <div class="row">{{q.description}} / {{q.method}} {{q.url}}</div>
+                <div class="row">{{q.payload|safe}}</div>
+                {% if q.headers and q.headers != 'null' %}
+                <div class="row">{{q.headers}}</div>
+                {% endif %}
+                {% if q.cache_name %}
+                <div class="row"><strong>{{q.cache_name}}</strong></div>
+                {% endif %}
+                {% if q.held_until %}
+                <div class="row">Held until: {{q.held_until}}</div>
+                {% endif %}
+                {% if q.status in ['error', 'ok', 'suspend'] %}
+                <div class="row pl-3">{{q.response}}</div>
+                {% endif %}
+                {% if q.status in ['error', 'suspend'] %}
+                <div class="row pl-3">Retried {{q.retry_count}}</div>
+                {% endif %}
+                <div class="row">
+                    <div class="col-2 font-weight-bold">
+                        <button id="play-{{q.hash_item}}" type="button" class="btn btn-warning" onclick=play_item('{{q.hash_item}}')
+                        >Play</button>
+                    </div>
+                    <div class="col-2 font-weight-bold">
+                        <button id="suspend-{{q.hash_item}}" type="button" class="btn btn-warning" onclick=suspend_item('{{q.hash_item}}')
+                        >Suspend</button>
+                    </div>
+                    <div class="col-2 font-weight-bold">
+                        <button id="delete-{{q.hash_item}}" type="button" class="btn btn-warning" onclick=delete_item('{{q.hash_item}}')>Delete</button>
+                    </div>
+                </div>
+                <div class="row"><span id="result-{{q.hash_item}}"></span></div>
+                <hr class="dotted">
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

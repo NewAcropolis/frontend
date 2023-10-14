@@ -54,10 +54,15 @@
                 <div id="row-{{q.hash_item}}">
                     <div class="row">{{q.updated}} {{q.hash_item}}</div>
                     <div class="row">{{q.description}} / {{q.method}} {{q.url}}</div>
-                    <div class="row">{{q.payload}}</div>
+                    <div class="row">{{q.payload|safe}}</div>
+                    {% if q.headers and q.headers != 'null' %}
                     <div class="row">{{q.headers}}</div>
+                    {% endif %}
                     {% if q.cache_name %}
-                    <div class="row">{{q.cache_name}}</div>
+                    <div class="row"><strong>{{q.cache_name}}</strong></div>
+                    {% endif %}
+                    {% if q.held_until %}
+                    <div class="row">Held until: {{q.held_until}}</div>
                     {% endif %}
                     {% if q.status in ['error', 'ok', 'suspend'] %}
                     <div class="row pl-3">{{q.response}}</div>

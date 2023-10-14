@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block content %}
+{% block extra_head %}
+
+{% endblock %}
+
+{% if user_has_permissions('cache') %}
+<div class="container p-3 mx-auto" style="width: 800px;">
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-2 font-weight-bold">Name</div>
+                <div class="col-10">{{cache.name}}</div>
+            </div>
+            <div class="row">
+                <div class="col-2 font-weight-bold">Data</div>
+                <div class="col-10"><pre id="data">{{cache.data|safe}}</pre></div>
+            </div>
+            <div class="row">
+                <div class="col-2 font-weight-bold">Updated on</div>
+                <div class="col-10">{{cache.updated_on}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+            <button id="reload" type="button" class="btn btn-warning">Reload cache</button>
+        </div>
+        <div class="col-9">
+            <button id="return" type="button" class="btn btn-danger">Return</button>
+        </div>
+    </div>
+</div>
+<script charset="utf-8" type="text/javascript">   
+    function formatJson() {
+        var element = $("#data");
+        var obj = JSON.parse(element.text());
+        element.html(JSON.stringify(obj, undefined, 2));
+    } 
+    $(function() {
+        formatJson()
+        $('#reload').on('click', function() {
+            $.getJSON("/admin/_update_cache/{{cache.name}}", null, function(data) {
+                alert(data['response']);
+                location.reload();
+            });
+        });
+        $('#return').on('click', function() {
+            window.location.replace("/admin/cache");
+        });
+    });
+</script>    
+{% endif %}
+{% endblock %}

@@ -1,4 +1,6 @@
+import base64
 from flask import jsonify, render_template
+import json
 
 from app import api_client
 from app.queue import Queue
@@ -17,6 +19,18 @@ def queue():
     return render_template('views/admin/queue.html', queue=queue, form=form)
 
 
+@main.route('/admin/queue/<string:cache_name>/<string:key>/<string:val>', methods=['GET', 'POST'])
+def show_queue_item(cache_name, key, val):
+    queue_item = Queue.get_item_by_payload_key(cache_name, key, val)
+    payload = json.loads(queue_item.payload)
+    if 'image_data' in payload.keys():
+        image_data = base64.b64decode(payload['image_data']).decode('utf-8', 'ignore')
+        payload['image_data'] = f"<img class='img-thumbnail' src='data:image/png;base64, {image_data}' />"
+        queue_item.payload = json.dumps(payload)
+
+    return render_template('views/admin/queue_show.html', q=queue_item)
+
+
 @main.route('/admin/queue/process/<string:action>/<string:hash_item>')
 def process(action, hash_item):
     if action == 'delete':
@@ -25,7 +39,7 @@ def process(action, hash_item):
         return 'deleted'
     elif action == 'play':
         q_item = Queue.get(hash_item)
-        response = api_client.process(q_item)
+        response = api_client.process(q_item, override=True)
 
         return jsonify(response)
 

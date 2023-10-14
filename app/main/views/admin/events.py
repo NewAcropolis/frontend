@@ -5,14 +5,14 @@ import json
 import urllib.parse as urlparse
 
 from app import api_client
-from app.cache import Cache
-from app.clients.api_client import only_show_approved_events, update_cache
 from app.clients.errors import HTTPError
 from app.clients.utils import get_event_dates, size_from_b64
 from app.main import main
 from app.main.forms import EventAttendanceForm, EventForm
 from app.main.views import render_page
 from app.main.views.events import is_future_event
+from app.clients.utils import get_nice_event_date
+from app.queue import Queue
 
 from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
@@ -22,11 +22,17 @@ def is_admin_user():
     return 'admin' in user.get('access_area') or user.get('access_area') == 'admin'
 
 
+def get_value(json_obj, id, return_value):
+    for p in json_obj:
+        if p['id'] == id:
+            return p[return_value]
+
+
 @main.route('/admin/events', methods=['GET', 'POST'])
-@main.route('/admin/events/<uuid:selected_event_id>', methods=['GET', 'POST'])
-@main.route('/admin/events/<uuid:selected_event_id>/<api_message>', methods=['GET', 'POST'])
+@main.route('/admin/events/<string:selected_event_id>', methods=['GET', 'POST'])
+@main.route('/admin/events/<string:selected_event_id>/<api_message>', methods=['GET', 'POST'])
 def admin_events(selected_event_id=None, api_message=None):
-    events = api_client.get_limited_events()
+    events = api_client.get_pending_and_limited_events()
     event_types = api_client.get_event_types()
     speakers = api_client.get_speakers()
     venues = api_client.get_venues()
@@ -55,6 +61,7 @@ def admin_events(selected_event_id=None, api_message=None):
             )
 
         event = {
+            'id': form.events.data,
             'event_id': form.events.data,
             'event_type_id': form.event_type.data,
             'title': form.title.data,
@@ -103,19 +110,20 @@ def admin_events(selected_event_id=None, api_message=None):
 
             try:
                 message = None
+
+                for d in adjusted_event['event_dates']:
+                    d['event_datetime'] = d['event_date']
+
+                adjusted_event['event_type'] = get_value(event_types, adjusted_event['event_type_id'], 'event_type')
+                adjusted_event = get_nice_event_date(adjusted_event)
+                adjusted_event['venue'] = {}
+                adjusted_event['venue']['id'] = adjusted_event['venue_id']
+
                 if event.get('event_id'):
                     response = api_client.update_event(event['event_id'], adjusted_event)
                     message = 'event updated'
-
-                    if event['event_state'] != "approved" and not form.cache_switch.data:
-                        Cache.set_review_entity('get_events_in_future', event.get('event_id'))
-                    else:
-                        Cache.delete_review_entity('get_events_in_future', event.get('event_id'))
-                        update_cache(
-                            func=api_client.get_events_in_future_from_db,
-                            decorator=only_show_approved_events, approved_only=True)
                 else:
-                    # do not need to update the cache here as an event is never in approved state when first created
+                    session['events'] = events.append(adjusted_event)
                     response = api_client.add_event(adjusted_event)
 
                 if 'error' in session:
@@ -165,7 +173,16 @@ def events_attendance(eventdate_id=None, year=None):
 def _get_event():
     event = [e for e in session['events'] if e['id'] == request.args.get('event')]
     if event:
-        event[0]['description'] = unescape(event[0]['description'])
+        event[0] = get_nice_event_date(event[0], set_timemarkers=False)
+        if 'image_data' in event[0].keys():
+            event[0]['image_data'] = base64.b64decode(event[0]['image_data']).decode('utf-8')
+        if event[0].get('pending'):
+            q_item = Queue.get_item_by_payload_key('pending_events', 'id', event[0]['id'])
+            event[0]['held_until'] = Queue.hold_off_processing(q_item).strftime('%-I:%M %p')
+        if 'description' in event[0].keys():
+            event[0]['description'] = unescape(event[0]['description'])
+        else:
+            event[0]['description'] = ''
         return jsonify(event[0])
     return ''
 
@@ -176,10 +193,10 @@ def _sync_paypal(event_id):
     return ''
 
 
-@main.route('/admin/_delete_event/<uuid:event_id>')
+@main.route('/admin/_delete_event/<string:event_id>')
 def _delete_event(event_id):
     api_client.delete_event(event_id)
-    return redirect(url_for('main.admin_events'))
+    return redirect(url_for('main.admin_events', selected_event_id=event_id))
 
 
 @main.route('/admin/_add_speaker')

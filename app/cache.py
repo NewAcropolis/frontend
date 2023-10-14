@@ -22,6 +22,17 @@ class Cache(ndb.Model):
         return cache
 
     @staticmethod
+    def get_cache(name):
+        retval = Cache.query(Cache.name == name).order(-Cache.updated_on).fetch(1)
+        if retval:
+            return {
+                "name": retval[0].name,
+                "data": retval[0].data,
+                "updated_on": str(retval[0].updated_on)
+            }
+        return {}
+
+    @staticmethod
     def get_data(name, index=0, default=None):
         retval = Cache.query(Cache.name == name).order(-Cache.updated_on).fetch(1, offset=index)
         if retval:
@@ -73,17 +84,18 @@ class Cache(ndb.Model):
     @staticmethod
     def set_review_entity(name, value, key='id'):
         latest = Cache.query(Cache.name == name).order(-Cache.updated_on).get()
-        for item in json.loads(latest.data):
-            if item[key] == value:
-                # remove any other review items that match the key, as there should only be 1 in review
-                for r_item in Cache.query(Cache.name == name + "_review").fetch():
-                    _r_item = json.loads(r_item.data)
-                    if _r_item[key] == value:
-                        r_item.key.delete()
+        if latest:
+            for item in json.loads(latest.data):
+                if item[key] == value:
+                    # remove any other review items that match the key, as there should only be 1 in review
+                    for r_item in Cache.query(Cache.name == name + "_review").fetch():
+                        _r_item = json.loads(r_item.data)
+                        if _r_item[key] == value:
+                            r_item.key.delete()
 
-                cache = Cache(name=name + "_review", data=json.dumps(item))
-                cache.put()
-                return
+                    cache = Cache(name=name + "_review", data=json.dumps(item))
+                    cache.put()
+                    return
         current_app.logger.info("No matching item found in cache {} to set for {}".format(name, value))
 
     @staticmethod

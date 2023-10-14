@@ -12,7 +12,7 @@ def get_nice_event_dates(events, future_dates_only=False):
     return events
 
 
-def get_nice_event_date(event):
+def get_nice_event_date(event, set_timemarkers=True):
     event_date_count = len(event['original_event_dates']) if 'original_event_dates' in event else 0
     event['formatted_event_datetimes'] = common_get_nice_event_dates(event['event_dates'])
     event['dates'] = get_event_dates(event['event_dates'])
@@ -26,7 +26,7 @@ def get_nice_event_date(event):
     event_date['event_time'] = _datetime.strftime('%H:%M')
     if not event.get('event_time'):
         event['event_time'] = event_date['event_time']
-    else:
+    elif set_timemarkers:
         if _datetime.minute > 0:
             time = _datetime.strftime('%-I:%M %p')
         else:
