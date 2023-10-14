@@ -55,7 +55,7 @@ def _update_cache(name):
             func=api_client.get_events_in_future_from_db,
             decorator=only_show_approved_events, approved_only=True)
     else:
-        update_cache(func=api_client.get_limited_events_from_db)
+        update_cache(func=getattr(api_client, f"{name}_from_db"))
 
     return jsonify(
         {'response': f'{name} updated'}
