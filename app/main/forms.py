@@ -274,15 +274,34 @@ class EventForm(FlaskForm):
         for speaker in speakers:
             self.speakers.choices.append((speaker['id'], speaker['name']))
 
+    def is_pending(self, event):
+        return 'pending' in event.keys()
+
+    def is_deleting(self, event):
+        return event.get('pending') == 'delete'
+
     def set_events(self, form_select, events, first_item_text=''):
         form_select.choices = [('', first_item_text)]
+        pending_events = []
 
         for event in events:
+            is_pending = self.is_pending(event)
+            is_deleting = self.is_deleting(event)
+            prefix = ''
+            if is_pending:
+                pending_events.append(event['id'])
+                prefix = f'[pending {event["pending"]}] '
+            elif event['id'] in pending_events:
+                continue
+
+            _eventdate = event['event_dates'][0]['event_datetime'] if not is_pending or is_deleting \
+                else event['event_dates'][0]['event_date']
+
             form_select.choices.append(
                 (
                     event['id'],
                     u'{} - {} - {}'.format(
-                        event['event_dates'][0]['event_datetime'], event['event_type'], event['title'])
+                        _eventdate, prefix + event['event_type'], event['title'])
                 )
             )
 

@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import current_app, request, session
 from functools import wraps
+import hashlib
 import json
 import os
 
@@ -104,7 +105,8 @@ def use_cache(**dkwargs):
                     data = f(*args, **kwargs)
                 if 'from_cache' not in dkwargs:
                     Cache.set_data(f.__name__, data)
-            return data
+
+            return json.loads(data) if type(data) is str else data
         return decorated
     return use_cache_inner
 
@@ -118,12 +120,6 @@ def update_cache(*args, **kwargs):
 
     data = func(*args, **kwargs)
 
-    review_data = Cache.get_review_entities(func.__name__)
-
-    if review_data and 'sort_by' in kwargs:
-        sort_by = kwargs.pop('sort_by')
-        data = sort_by(data.extend(review_data))
-
     if cached_data != data:
         current_app.logger.info('Cache updated from db')
         Cache.set_data(cache___name__, data)
@@ -133,16 +129,92 @@ def update_cache(*args, **kwargs):
     Cache.purge_older_versions(func.__name__)
 
 
+def set_pending(description, url, method, payload, cache_type, key=None, val=None):
+    message = ""
+    cache_name = f'pending_{cache_type}s'
+
+    if method == 'delete':
+        q_item = Queue.get_item_by_payload_key(cache_name, key, val)
+        if q_item:
+            Queue.delete(q_item.hash_item)
+            return {
+                'id': val,
+                'success': True,
+                'message': f"Pending {cache_type} deleted"
+            }
+        else:
+            payload[key] = val
+            payload['pending'] = 'delete'
+            message = f"Pending {cache_type} will be deleted"
+
+    if 'pending' not in payload.keys():
+        payload['pending'] = 'add' if description.startswith('add') else 'update'
+
+    if key:
+        q_item = Queue.get_item_by_payload_key(cache_name, key, val)
+        if q_item:
+            q_item.payload = json.dumps(payload)
+            Queue.update(q_item)
+            message = f'Pending {cache_type} will be updated'
+
+    if not message:
+        str_payload = json.dumps(payload)
+
+        if key:
+            payload[key] = val
+        else:
+            hash_id = hashlib.md5(','.join([description, url, method, str_payload]).encode('utf-8')).hexdigest()
+
+            payload['id'] = hash_id
+
+        message = f'{cache_type} {description} will be added'
+
+    Queue.add(
+        description,
+        cache_name=cache_name, cache_type=cache_type,
+        url=url, method=method, payload=payload
+    )
+
+    return {
+        'id': payload['id'],
+        'success': True if message else False,
+        'message': message or f"Problem updating {cache_type}"
+    }
+
+
 class ApiClient(BaseAPIClient):
     def init_app(self, app):
         super(ApiClient, self).init_app(app)
 
-    def process(self, q_item):
+    def process(self, q_item, override=False):
+        if not override and q_item.held_until and (datetime.now() < q_item.held_until):
+            return {
+                "success": False,
+                "message": f"Cannot process {q_item.hash_item} until {q_item.held_until}"
+            }
+
+        payload = json.loads(q_item.payload) if q_item.payload.startswith('{') else q_item.payload
+
         if q_item.method.lower() == 'post':
+            _payload = {}
+            if q_item.cache_type == 'event':
+                # ignore fields which are normally returned for convenience
+                # cannot be processed during update
+                ignore_fields = ['event_type', 'speakers', 'venue']
+                keys = payload.keys()
+                for k in keys:
+                    if k not in ignore_fields:
+                        _payload[k] = payload[k]
+            else:
+                _payload = payload
             json_resp = self.post(
                 url=q_item.url,
-                data=json.loads(q_item.payload) if q_item.payload.startswith('{') else q_item.payload,
+                data=_payload,
                 headers=json.loads(q_item.headers) if q_item.headers else None
+            )
+        elif q_item.method.lower() == 'delete':
+            json_resp = self.delete(
+                url=q_item.url
             )
         else:
             json_resp = self.get(url=q_item.url)
@@ -164,55 +236,109 @@ class ApiClient(BaseAPIClient):
             q_item.status = "ok"
             q_item.response = json.dumps(json_resp)
 
+        if q_item.cache_type == 'event':
+            cache = Cache.get_cache('get_limited_events')
+            found = False
+            json_response = json.loads(q_item.response)
+            json_cache = json.loads(cache['data'])
+            delete_index = -1
+            for i, c in enumerate(json_cache):
+                if c['id'] == payload['id']:
+                    if q_item.method == 'delete':
+                        delete_index = i
+                    else:
+                        json_cache[i] = json_response
+                    found = True
+                    break
+            if not found:
+                if q_item.method == 'delete':
+                    current_app.logger.error(f'event {q_item} not found in limited_events')
+                else:
+                    json_cache.append(json_response)
+            elif q_item.method == 'delete':
+                del json_cache[delete_index]
+            Cache.set_data('get_limited_events', json_cache, is_unique=True)
+            session['events'] = json_cache
+
         Queue.update(q_item)
+
         return json_resp
 
-    def get_speakers(self):
+    def get_speakers_from_db(self):
         return self.get(url='speakers')
+
+    @use_cache(db_call=get_speakers_from_db)
+    def get_speakers(self):
+        return self.get_speakers_from_db()
 
     def add_speaker(self, name):
         data = {'name': name}
 
         return self.post(url='speaker', data=data)
 
-    def get_venues(self):
+    def get_venues_from_db(self):
         return self.get(url='venues')
+
+    @use_cache(db_call=get_venues_from_db)
+    def get_venues(self):
+        return self.get_venues_from_db()
 
     def get_venue_by_id(self, venue_id):
         return self.get(url='venue/{}'.format(venue_id))
 
     def add_event(self, event):
-        return self.post(url='event', data=event)
+        return set_pending(
+            f'add event {event["title"]}', 'event', 'post', event, 'event'
+        )
 
     def delete_event(self, event_id):
-        return self.delete(url='event/{}'.format(event_id))
+        event = self.get_event_by_id(event_id)
+        return set_pending(
+            f'delete event {event_id}', f'event/{event_id}', 'delete', event, 'event', key="id", val=str(event_id)
+        )
 
     def update_event(self, event_id, event):
-        return self.post(url='event/{}'.format(event_id), data=event)
+        return set_pending(
+            f'update event {event["title"]}', f'event/{event_id}', 'post',
+            event, 'event', key="id", val=event_id
+        )
 
     def sync_paypal(self, event_id):
         self.get(url='event/sync_paypal/{}'.format(event_id))
 
     def get_event_by_id_from_db(self, event_id):
-        return get_nice_event_date(self.get(url='event/{}'.format(event_id)))
+        return self.get(url='event/{}'.format(event_id))
 
     @use_cache(
         db_call=get_event_by_id_from_db,
-        from_cache='get_events_in_future,get_events_past_year',
+        from_cache='get_limited_events',
         key='id')
     def get_event_by_id(self, event_id):
-        return self.get_event_by_id_from_db(event_id)
+        return get_nice_event_date(self.get_event_by_id_from_db(event_id))
 
     def get_event_by_old_id(self, event_id):
         event = self.get(url='legacy/event_handler?eventid={}'.format(event_id))
         if event:
             return self.get_nice_event_date(event)
 
-    def get_event_types(self):
+    def get_event_types_from_db(self):
         return self.get(url='event_types')
 
-    def get_limited_events(self):
+    @use_cache(db_call=get_event_types_from_db)
+    def get_event_types(self):
+        return self.get_event_types_from_db()
+
+    def get_limited_events_from_db(self):
         return get_nice_event_dates(self.get(url='events/limit/30'))
+
+    @use_cache(db_call=get_limited_events_from_db)
+    def get_limited_events(self):
+        return self.get_limited_events_from_db()
+
+    def get_pending_and_limited_events(self):
+        _pending_events = Queue.get_by_cache_name('pending_events')
+        pending_events = [json.loads(e.payload) for e in _pending_events if e.payload != []]
+        return pending_events + self.get_limited_events()
 
     def get_events_in_year(self, year=None):
         if not year:

@@ -11,7 +11,7 @@
             </div>
         {% for _, c in cache.items() %}
             <div class="row">
-                <div class="col-6">{{c.name}}</div>
+                <div class="col-6"><a href="/admin/cache/show/{{c.name}}">{{c.name}}</a></div>
                 <div class="col-6">{{c.count}}</div>
             </div>  
         {% endfor %}

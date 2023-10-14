@@ -83,6 +83,11 @@
                     <div class='row'>
                         <div class='col-11'>{{form.events}}</div>
                     </div>
+                    <div id="pending_block" class="row d-none mb-2">
+                        <div class='col-13'>
+                            Event will be processed after <span id="held_until"></span>, delete to stop processing, or <a id="play_now" href="">process now</a>
+                        </div>
+                    </div>
                     <div class='row'>
                         <div id='status_bar' class='col-7 rounded mb-1 ml-3 pl-4 w-70 bg-primary text-white'>new</div>
                         <div class="justify-content-end col-4">
@@ -162,38 +167,40 @@
                 {{ form.cache_switch(class="custom-control-input") }}
                 <label class="custom-control-label" for="cache_switch">Update cache (will remove from event website unless approved)</label>
             </div>
-            <button id="preview_event_detail" type="submit" class="btn btn-outline-info">Preview detail</button>
-            <button id="preview_events" type="submit" class="btn btn-outline-info">Preview events</button>
-            <button id="draft" type="submit" class="btn btn-default">Draft</button>
-            <button id="ready" type="submit" class="btn btn-outline-warning">Ready</button>
-            {% if is_admin_user %}
-                <button id="publish" type="submit" class="btn btn-outline-success">Publish</button>
-                <button id="rejectBtn" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#rejectModal">Reject</button>
+            <div id="buttons_block">
+                <button id="preview_event_detail" type="submit" class="btn btn-outline-info">Preview detail</button>
+                <button id="preview_events" type="submit" class="btn btn-outline-info">Preview events</button>
+                <button id="draft" type="submit" class="btn btn-default">Draft</button>
+                <button id="ready" type="submit" class="btn btn-outline-warning">Ready</button>
+                {% if is_admin_user %}
+                    <button id="publish" type="submit" class="btn btn-outline-success">Publish</button>
+                    <button id="rejectBtn" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#rejectModal">Reject</button>
 
-                <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="rejectModalLabel" style='white-space:pre;'>Enter rejection reason:</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form>
-                            <div class="form-group">
-                                {{ form.reject_reason(class_="form-control") }}
+                    <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="rejectModalLabel" style='white-space:pre;'>Enter rejection reason:</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button id="reject" type="submit" class="btn btn-outline-danger">Reject</button>
-                        </div>
+                            <div class="modal-body">
+                                <form>
+                                <div class="form-group">
+                                    {{ form.reject_reason(class_="form-control") }}
+                                </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button id="reject" type="submit" class="btn btn-outline-danger">Reject</button>
+                            </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
             <a href="{{ url_for('main.admin') }}" id="return" name="return" class="btn btn-outline-secondary">Return</a>
         </div>
     </form>
@@ -394,7 +401,7 @@ $(function() {
     });
 
     $( "#events_form" ).submit(function() {
-        prepSubmit();
+        return prepSubmit();
     });
 
     var elements = {
@@ -495,7 +502,11 @@ $(function() {
                 tinymce.activeEditor.setContent(data['description']);
                 elements._booking_code.val(data['booking_code']);
                 elements._file_img.attr('style', 'display:none;');
-                if (data['image_filename']) {
+                if (data['image_data']) {
+                    elements._file_img.attr('style', 'display:block;width:100px;');
+                    elements._file_img.attr('src', 'data:image/png;base64, ' + data['image_data']);
+                }
+                else if (data['image_filename']) {
                     elements._file_img.attr('style', 'display:block;width:100px;');
                     elements._file_img.attr('src', '{{images_url}}/thumbnail/' + data['image_filename']);
                 }
@@ -512,8 +523,25 @@ $(function() {
                 set_event_dates(data['event_dates']);
 
                 $('#datepicker').datepicker("setDate", data['dates']);
+
                 set_start_time(data['event_time']);
                 set_end_time(data['end_time']);
+                
+                if (data["pending"] || data["deleting"]) {
+                    $('#pending_block').attr('class', '');
+                    $("#held_until").html(data['held_until']);
+                    $("#play_now").attr('href', "{{ url_for('main.queue') }}/pending_events/id/" + data['id']);
+                } else {
+                    $('#pending_block').attr('class', 'd-none');
+                }
+
+                if (data['deleting']) {
+                    $('#buttons_block').attr('class', 'd-none');
+                    $('#cache-switch-div').attr('class', 'd-none');
+                } else {
+                    $('#buttons_block').attr('class', '');
+                    $('#cache-switch-div').attr('class', 'custom-control custom-switch pb-2');
+                }
 
                 update_for_event_state(data['event_state']);
                 setRejectReasons(data['reject_reasons']);
@@ -797,6 +825,7 @@ $(function() {
     }
 
     function setRejectReasons(reject_reasons) {
+        if (!reject_reasons) return; 
         elements._reject_reasons.html('');
         for (i=0; i<reject_reasons.length; i++){
             elements._reject_reasons.append(
@@ -830,10 +859,17 @@ $(function() {
     }
 
     function prepSubmit() {
+        dates = $('#datepicker').datepicker('getFormattedDate');
+        if (!dates) {
+            alert('No date selected');
+            window.scrollTo(dates.left,dates.top);
+            return false;
+        }
         event_dates = getEventDates();
         reject_reasons = getRejectReasons();
 
         $('#event_dates').val(JSON.stringify(event_dates));
+
         $('#reject_reasons_json').val(JSON.stringify(reject_reasons));
         if ($('#file_img').attr('src'))
             $('#existing_image_filename').val($('#file_img').attr('src').replace('{{images_url}}/thumbnail/', ''));

@@ -1,7 +1,6 @@
 # coding: utf-8
 import base64
 import json
-from uuid import UUID
 from flask import url_for
 from mock import Mock
 
@@ -62,6 +61,9 @@ class MockAPIClient:
                 "description": "test description"
             }
         ]
+
+    def get_pending_and_limited_events(self):
+        return self.get_limited_events()
 
     def get_event_types(self):
         return [
@@ -151,7 +153,7 @@ class WhenCallingAjaxDeleteEvent:
         assert response.status_code == 302
         args = mock_delete_event.call_args_list[0]
         arg, _ = args
-        assert arg == (UUID('9ad571e1-4b5e-49af-a814-0958b23888c5'),)
+        assert arg == ('9ad571e1-4b5e-49af-a814-0958b23888c5',)
 
 
 class WhenCallingAjaxGetEvent:
@@ -160,7 +162,19 @@ class WhenCallingAjaxGetEvent:
             'app.main.views.admin.events.session',
             {
                 'events': [
-                    {'id': 'test', 'description': '&pound;test description'}
+                    {
+                        'id': 'test',
+                        'description': '&pound;test description',
+                        'event_type': 'Talk',
+                        'event_dates': [
+                            {
+                                'event_date': '2019-03-23 19:00',
+                                'end_time': '21:00',
+                                'event_datetime': '2019-03-23 19:00',
+                                'event_time': '19:00'
+                            }
+                        ]
+                    }
                 ]
             }
         )
@@ -169,7 +183,23 @@ class WhenCallingAjaxGetEvent:
 
         assert response.status_code == 200
         data = json.loads(response.get_data(as_text=True))
-        assert data == {'description': u'£test description', 'id': 'test'}
+        assert data == {
+            'description': u'£test description',
+            'id': 'test',
+            'event_dates': [
+                {
+                    'end_time': '21:00',
+                    'event_date': '2019-03-23 19:00',
+                    'event_datetime': '2019-03-23 19:00',
+                    'event_time': '19:00'
+                }],
+            'event_time': '19:00',
+            'event_type': 'Talk',
+            'formatted_event_datetimes': 'Sat 23 of March - 7 PM',
+            'date_offset': -1,
+            'dates': ['2019-03-23'],
+            'end_time': '21:00'
+        }
 
 
 class WhenSubmittingEventsForm:
@@ -204,8 +234,13 @@ class WhenSubmittingEventsForm:
 
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
         href = page.select_one('a')['href']
-        assert mock_api_client.add_event.call_args[0][0]['event_dates'] == json.loads(
-            '[{"event_date": "2019-03-23 19:00", "end_time": "21:00"}]')
+
+        event_dates = json.loads(data['event_dates'])
+        event_dates[0]['event_datetime'] = '2019-03-23 19:00'
+        event_dates[0]['event_time'] = '19:00'
+        event_dates[0]['end_time'] = '21:00'
+
+        assert mock_api_client.add_event.call_args[0][0]['event_dates'] == event_dates
 
         file_data_encoded = base64.b64encode(b'test data')
         file_data_encoded = base64.b64encode(file_data_encoded).decode('utf-8')
@@ -246,8 +281,10 @@ class WhenSubmittingEventsForm:
 
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
         href = page.select_one('a')['href']
-
-        assert mock_api_client.add_event.call_args[0][0]['event_dates'] == json.loads(data['event_dates'])
+        event_dates = json.loads(data['event_dates'])
+        event_dates[0]['event_datetime'] = '2019-03-23 19:00'
+        event_dates[0]['event_time'] = '19:00'
+        assert mock_api_client.add_event.call_args[0][0]['event_dates'] == event_dates
         assert mock_api_client.add_event.call_args[0][0]['image_filename'] == 'test.png'
         assert 'image_data' not in mock_api_client.add_event.call_args[0][0].keys()
         assert mock_api_client.add_event.call_args[0][0]['description'] == '&lt;test&gt;'
@@ -287,7 +324,11 @@ class WhenSubmittingEventsForm:
         href = page.select_one('a')['href']
 
         assert mock_api_client.update_event.call_args[0][0] == data['events']
-        assert mock_api_client.update_event.call_args[0][1]['event_dates'] == json.loads(data['event_dates'])
+        event_dates = json.loads(data['event_dates'])
+        event_dates[0]['event_datetime'] = '2019-03-23 19:00'
+        event_dates[0]['event_time'] = '19:00'
+        assert mock_api_client.update_event.call_args[0][1]['event_dates'] == event_dates
+        # assert mock_api_client.update_event.call_args[0][1]['event_dates'] == json.loads(data['event_dates'])
         assert mock_api_client.update_event.call_args[0][1]['image_filename'] == 'test.png'
         assert mock_api_client.update_event.call_args[0][1]['description'] == '&lt;test&gt;'
         assert href == '{}/{}/{}'.format(url_for('main.admin_events'), 'test_id', 'event%20updated')
