@@ -8,11 +8,10 @@ indexes:
 - kind: Queue
   properties:
   - name: status
-  - name: updated
-- kind: Queue
-  properties:
-  - name: status
   - name: retry_count
+  - name: cache_name
+  - name: updated
+    direction: asc
 - kind: Tag
   properties:
   - name: item_id
