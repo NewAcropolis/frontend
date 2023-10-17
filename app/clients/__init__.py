@@ -107,6 +107,7 @@ class BaseAPIClient(object):
         if headers:
             _headers.update(headers)
         start_time = time.time()
+        status_code = None
         try:
             response = requests.request(
                 method,
@@ -116,8 +117,9 @@ class BaseAPIClient(object):
                 headers=_headers,
                 timeout=30
             )
+            status_code = response.status_code
 
-            if response.status_code == 404:
+            if status_code == 404:
                 current_app.logger.warn('%r: 404 - %r', url, response.json()['message'])
 
                 session['error'] = {
@@ -127,7 +129,7 @@ class BaseAPIClient(object):
 
                 return
 
-            if response.status_code == 401 and response.json()['message'] == "Signature expired":
+            if status_code == 401 and response.json()['message'] == "Signature expired":
                 self.set_access_token()
                 response = requests.request(
                     method,
@@ -138,6 +140,7 @@ class BaseAPIClient(object):
                 )
 
             response.raise_for_status()
+            session["retry_count"] = 0
         except requests.RequestException as e:
             api_error = HTTPError.create(e)
             if (
@@ -152,6 +155,13 @@ class BaseAPIClient(object):
                         api_error.message
                     )
                 )
+            elif api_error.status_code == 503 and session.get('retry_count', 0) < 10:
+                if 'retry_count' not in session:
+                    session['retry_count'] = 0
+                session["retry_count"] += 1
+                current_app.logger.error(f"503 response from {url}, retry {session.get('retry_count')}")
+                time.sleep(10)
+                return self.request(method, url, data=data, params=params, headers=headers)
             else:
                 current_app.logger.error(
                     "API {} request on {} failed with {} '{}'".format(
@@ -172,8 +182,8 @@ class BaseAPIClient(object):
             current_app.logger.debug("API {} request on {} finished in {}".format(method, url, elapsed_time))
 
         try:
-            if response.status_code == 204:
-                return
+            if status_code == 204:
+                return []
             return response.json()
         except ValueError:
             raise InvalidResponse(
