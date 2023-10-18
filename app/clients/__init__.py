@@ -155,11 +155,13 @@ class BaseAPIClient(object):
                         api_error.message
                     )
                 )
-            elif api_error.status_code == 503 and session.get('retry_count', 0) < 10:
+            elif api_error.status_code in [502, 503] and session.get('retry_count', 0) < 10:
                 if 'retry_count' not in session:
                     session['retry_count'] = 0
                 session["retry_count"] += 1
-                current_app.logger.error(f"503 response from {url}, retry {session.get('retry_count')}")
+                current_app.logger.error(
+                    f"{api_error.status_code} response from {url}, retry {session.get('retry_count')}"
+                )
                 time.sleep(10)
                 return self.request(method, url, data=data, params=params, headers=headers)
             else:
