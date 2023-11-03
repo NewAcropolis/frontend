@@ -10,6 +10,9 @@
     function delete_item(hash_item) {
         call_ajax("delete", hash_item);
     }
+    function set_new_item(hash_item) {
+        call_ajax("set_new", hash_item);
+    }
 
     function call_ajax(action, id) {
         console.log('call_ajax ' + action + ' - ' + id);
@@ -80,6 +83,11 @@
                             <button id="suspend-{{q.hash_item}}" type="button" class="btn btn-warning" onclick=suspend_item('{{q.hash_item}}')
                             {% if form.status_filter.data in ['ok', 'suspend'] %} disabled{% endif %}
                             >Suspend</button>
+                        </div>
+                        <div class="col-2 font-weight-bold">
+                            <button id="suspend-{{q.hash_item}}" type="button" class="btn btn-warning" onclick=set_new_item('{{q.hash_item}}')
+                            {% if form.status_filter.data not in ['error', 'suspend'] %} disabled{% endif %}
+                            >Set to new</button>
                         </div>
                         <div class="col-2 font-weight-bold">
                             <button id="delete-{{q.hash_item}}" type="button" class="btn btn-warning" onclick=delete_item('{{q.hash_item}}')>Delete</button>

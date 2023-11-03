@@ -48,4 +48,9 @@ def process(action, hash_item):
         q_item.status = 'suspend'
         Queue.update(q_item)
 
+    elif action == 'set_new':
+        q_item = Queue.get(hash_item)
+        q_item.status = 'new'
+        Queue.update(q_item)
+
     return f"{q_item.hash_item} {action}ed"
