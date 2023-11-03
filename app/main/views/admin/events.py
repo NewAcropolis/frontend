@@ -16,6 +16,8 @@ from app.queue import Queue
 
 from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
+EVENT_STATES = ['new', 'draft', 'ready', 'approved', 'rejected']
+
 
 def is_admin_user():
     user = session['user']
@@ -76,7 +78,7 @@ def admin_events(selected_event_id=None, api_message=None):
             'event_dates': form.event_dates.data,
             'start_time': form.start_time.data,
             'end_time': form.end_time.data,
-            'event_state': form.submit_type.data,
+            'event_state': form.submit_type.data if form.submit_type.data in EVENT_STATES else 'new',
             'reject_reasons': reject_reasons,
             'remote_access': form.remote_access.data,
             'remote_pw': form.remote_pw.data,
