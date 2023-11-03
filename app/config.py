@@ -57,7 +57,7 @@ class Development(Config):
     NO_ADMIN_AUTH = True
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
     PAYPAL_VERIFY_URL = "http://localhost:5005"
-    NO_API = True
+    NO_API = False
 
 
 class Live(Config):
