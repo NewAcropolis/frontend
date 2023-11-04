@@ -129,6 +129,10 @@ def update_cache(*args, **kwargs):
     Cache.purge_older_versions(func.__name__)
 
 
+def is_uuid(_val):
+    return _val.count('-') == 4
+
+
 def set_pending(description, url, method, payload, cache_type, key=None, val=None):
     message = ""
     cache_name = f'pending_{cache_type}s'
@@ -148,7 +152,8 @@ def set_pending(description, url, method, payload, cache_type, key=None, val=Non
             message = f"Pending {cache_type} will be deleted"
 
     if 'pending' not in payload.keys():
-        payload['pending'] = 'add' if description.startswith('add') else 'update'
+        payload['pending'] = 'add' if description.startswith('add') or \
+            key and not is_uuid(val) else 'update'
 
     if key:
         q_item = Queue.get_item_by_payload_key(cache_name, key, val)
@@ -299,8 +304,9 @@ class ApiClient(BaseAPIClient):
 
     def update_event(self, event_id, event):
         return set_pending(
-            f'update event {event["title"]}', f'event/{event_id}', 'post',
-            event, 'event', key="id", val=event_id
+            f'update event {event["title"]}',
+            f'event/{event_id}' if is_uuid(event_id) else 'event',
+            'post', event, 'event', key="id", val=event_id
         )
 
     def sync_paypal(self, event_id):
