@@ -502,6 +502,7 @@ $(function() {
                 tinymce.activeEditor.setContent(data['description']);
                 elements._booking_code.val(data['booking_code']);
                 elements._file_img.attr('style', 'display:none;');
+                elements._file_img.attr('src', '');
                 if (data['image_data']) {
                     elements._file_img.attr('style', 'display:block;width:100px;');
                     elements._file_img.attr('src', 'data:image/png;base64, ' + data['image_data']);
@@ -557,7 +558,7 @@ $(function() {
         elements._sub_title.val('');
         tinymce.activeEditor.setContent('');
         elements._booking_code.val('');
-        elements._file_img.val('');
+        elements._file_img.attr('src', '');
         elements._file_img.attr('style', 'display:none;');
         elements._fee.val('');
         elements._conc_fee.val('');
