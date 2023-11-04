@@ -4,6 +4,7 @@ from functools import wraps
 import hashlib
 import json
 import os
+import uuid
 
 from app.config import use_sim_data
 from app.cache import Cache
