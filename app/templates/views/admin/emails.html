@@ -258,7 +258,7 @@
                         event_id = '';
 
                         $('#magazine_title').text(data['magazine']['title']);
-                        $('#magazine_image').html('<img src="{{IMAGES_URL}}/standard/pdfs/' + data['magazine']['filename'] + '.png">');
+                        $('#magazine_image').html('<img src="{{get_images_url()}}/thumbnail/pdfs/' + data['magazine']['filename'] + '.png">');
                         $('#magazine_link').attr('href', '/admin/magazines/' + data['magazine_id']);
 
                         setDisplayBlocks();
