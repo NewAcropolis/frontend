@@ -56,6 +56,8 @@ class Development(Config):
     OAUTHLIB_INSECURE_TRANSPORT = "True"
     NO_ADMIN_AUTH = True
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
+    GOOGLE_APPLICATION_CREDENTIALS = os.environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+    STORAGE = os.environ.get('GOOGLE_STORE')
     PAYPAL_VERIFY_URL = "http://localhost:5005"
     NO_API = False
 

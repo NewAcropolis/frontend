@@ -8,6 +8,7 @@ Flask-WTF==1.1.1
 freezegun>=0.3.5
 google-cloud-logging==2.5.0
 google-cloud-ndb==1.11.1
+google-cloud-storage==2.2.1
 gunicorn==19.9.0
 iso8601==0.1.12
 jsonschema==2.6.0

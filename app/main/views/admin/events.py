@@ -11,7 +11,7 @@ from app.main import main
 from app.main.forms import EventAttendanceForm, EventForm
 from app.main.views import render_page
 from app.main.views.events import is_future_event
-from app.clients.utils import get_nice_event_date
+from app.clients.utils import get_nice_event_date, upload_blob_from_base64string
 from app.queue import Queue
 from app.cache import Cache
 
@@ -95,7 +95,6 @@ def admin_events(selected_event_id=None, api_message=None):
         if file_request:
             file_data = file_request.read()
             file_data_encoded = base64.b64encode(file_data)
-            file_data_encoded = base64.b64encode(file_data_encoded).decode('utf-8')
             _file_size = size_from_b64(str(file_data_encoded))
             if _file_size > current_app.config['MAX_IMAGE_SIZE']:
                 _file_size_mb = round(_file_size/(1024*1024), 1)
@@ -103,7 +102,9 @@ def admin_events(selected_event_id=None, api_message=None):
                 errors.append("Image {} file size ({} mb) is larger than max ({} mb)".format(
                     file_request.filename, _file_size_mb, _max_size_mb))
             else:
-                adjusted_event['image_data'] = file_data_encoded
+                tmp_filename = f"tmp/{filename}"
+                upload_blob_from_base64string(filename, tmp_filename, file_data_encoded)
+                adjusted_event['image_filename'] = tmp_filename
 
         if not errors:
             # remove empty values

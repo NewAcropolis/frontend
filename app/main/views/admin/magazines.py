@@ -8,6 +8,7 @@ from app.clients.api_client import update_cache
 from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import MagazineForm
+from app.clients.utils import upload_blob_from_base64string
 
 
 @main.route('/admin/magazines', methods=['GET', 'POST'])
@@ -44,6 +45,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
 
             magazine['pdf_data'] = base64.b64encode(file_data_encoded).decode('utf-8')
 
+            upload_blob_from_base64string(filename, f"pdf_test/{filename}", file_data_encoded)
         try:
             message = None
             if magazine.get('magazine_id'):

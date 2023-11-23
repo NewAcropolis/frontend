@@ -1,4 +1,7 @@
-from datetime import datetime
+import base64
+from datetime import datetime, timedelta
+from flask import current_app
+from google.cloud import storage
 
 from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
@@ -60,3 +63,65 @@ def get_event_dates(event_dates):
 def size_from_b64(b64string):
     # adjust file size as base64 increases the size by about 30%
     return (float(len(b64string) * 3) / 4 - b64string.count('=', -2)) * 0.77
+
+
+def purge_old_tmp_files(days=7):
+    storage_client = storage.Client()
+
+    purged = []
+    blobs = storage_client.list_blobs(f"{current_app.config.get('STORAGE')}", prefix="tmp")
+    for blob in blobs:
+        expiry_date = blob.updated.replace(tzinfo=None) + timedelta(days=1)
+        is_expired = expiry_date < datetime.now()
+        if is_expired:
+            blob.reload()
+            generation_match_precondition = blob.generation
+
+            try:
+                blob.delete(if_generation_match=generation_match_precondition)
+                purged.append(
+                    {
+                        "name": blob.name,
+                        "updated": blob.updated,
+                        "expiry": expiry_date,
+                        "expired": is_expired
+                    }
+                )
+            except Exception:
+                current_app.logger.warn(f"#{blob.name} not deleted")
+
+    return purged
+
+
+def upload_blob_from_base64string(
+    src_filename, destination_blob_name, base64data, content_type='image/png'
+):
+    data_len = len(base64data)
+    current_app.logger.info('Uploading {} file {} uploaded to {}'.format(
+        sizeof_fmt(data_len),
+        src_filename,
+        destination_blob_name))
+
+    storage_client = storage.Client()
+    bucket = storage_client.bucket(current_app.config.get('STORAGE'))
+
+    blob = bucket.blob(destination_blob_name)
+
+    binary = base64.b64decode(base64data)
+
+    blob.upload_from_string(binary, content_type=content_type)
+    blob.make_public()
+
+    data_len = len(binary)
+    current_app.logger.info('Uploaded {} file {} uploaded to {}'.format(
+        sizeof_fmt(data_len),
+        src_filename,
+        destination_blob_name))
+
+
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['', 'Ki', 'Mi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Gi', suffix)

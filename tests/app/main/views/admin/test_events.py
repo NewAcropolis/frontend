@@ -2,7 +2,7 @@
 import base64
 import json
 from flask import url_for
-from mock import Mock
+from mock import Mock, call
 
 from bs4 import BeautifulSoup
 
@@ -213,6 +213,7 @@ class WhenSubmittingEventsForm:
         mock_request.files.get.return_value = Mock()
         mock_request.files.get.return_value.read.return_value = b'test data'
 
+        mocker_upload = mocker.patch("app.main.views.admin.events.upload_blob_from_base64string")
         mocker.patch('app.main.views.admin.events.request', mock_request)
 
         data = {
@@ -243,9 +244,7 @@ class WhenSubmittingEventsForm:
         assert mock_api_client.add_event.call_args[0][0]['event_dates'] == event_dates
 
         file_data_encoded = base64.b64encode(b'test data')
-        file_data_encoded = base64.b64encode(file_data_encoded).decode('utf-8')
-
-        assert mock_api_client.add_event.call_args[0][0]['image_data'] == file_data_encoded
+        assert mocker_upload.call_args == call(None, 'tmp/None', file_data_encoded)
         assert mock_api_client.add_event.call_args[0][0]['description'] == '&lt;test&gt;'
         assert href == '{}/{}'.format(url_for('main.admin_events'), 'test_id')
 
