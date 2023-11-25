@@ -265,6 +265,9 @@ class ApiClient(BaseAPIClient):
             Cache.set_data('get_limited_events', json_cache, is_unique=True)
             session['events'] = json_cache
 
+            Queue.add('get future event post-process', url='events/future', method='get')
+            Queue.add('get past event post-process', url='events/past_year', method='get')
+
         Queue.update(q_item)
 
         return json_resp
