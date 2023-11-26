@@ -48,17 +48,20 @@ def _reload_cache():
     )
 
 
-@main.route('/admin/_update_cache/<string:name>')
-def _update_cache(name):
-    if name == 'get_events_in_future':
-        update_cache(
-            func=api_client.get_events_in_future_from_db,
-            decorator=only_show_approved_events, approved_only=True)
-    else:
-        update_cache(func=getattr(api_client, f"{name}_from_db"))
+@main.route('/admin/_update_cache/<string:names>')
+def _update_cache(names):
+    resp = []
+    for name in names.split(','):
+        if name == 'get_events_in_future':
+            updated = update_cache(
+                func=api_client.get_events_in_future_from_db,
+                decorator=only_show_approved_events, approved_only=True)
+        else:
+            updated = update_cache(func=getattr(api_client, f"{name}_from_db"))
+        resp.append("{}{}".format(name, " updated" if updated else " unchanged"))
 
     return jsonify(
-        {'response': f'{name} updated'}
+        {'response': ", ".join(resp)}
     )
 
 

@@ -13,6 +13,7 @@ from app.main.views import render_page
 from app.main.views.events import is_future_event
 from app.clients.utils import get_nice_event_date
 from app.queue import Queue
+from app.cache import Cache
 
 from na_common.dates import get_nice_event_dates as common_get_nice_event_dates
 
@@ -147,7 +148,8 @@ def admin_events(selected_event_id=None, api_message=None):
         selected_event_id=selected_event_id,
         message=api_message,
         temp_event=temp_event,
-        errors=json.dumps(errors)
+        errors=json.dumps(errors),
+        limited_events_last_updated=Cache.get_updated_on('get_limited_events').strftime('%d/%m/%Y %H:%M')
     )
 
 
