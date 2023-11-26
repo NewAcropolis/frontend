@@ -120,13 +120,17 @@ def update_cache(*args, **kwargs):
 
     data = func(*args, **kwargs)
 
+    updated = False
     if cached_data != data:
         current_app.logger.info('Cache updated from db')
         Cache.set_data(cache___name__, data)
+        updated = True
     else:
         current_app.logger.info('Cache does not need updating for {}'.format(func.__name__))
 
     Cache.purge_older_versions(func.__name__)
+
+    return updated
 
 
 def is_uuid(_val):
