@@ -81,7 +81,7 @@
             <div class="row justify-content-center">
                 <div class='col-7'>
                     <div class='row'>
-                        <div class='col-11'>{{form.events}}</div>
+                        <div class='col-10'>{{form.events}}<button id="reload" type="button" class="btn btn-warning">Reload</button> [{{limited_events_last_updated}}]</div>
                     </div>
                     <div id="pending_block" class="row d-none mb-2">
                         <div class='col-13'>
@@ -163,10 +163,6 @@
         {% endif %}
         <div class="justify-content-end">
             {{ form.submit_type }}
-            <div id="cache-switch-div" class="custom-control custom-switch pb-2">
-                {{ form.cache_switch(class="custom-control-input") }}
-                <label class="custom-control-label" for="cache_switch">Update cache (will remove from event website unless approved)</label>
-            </div>
             <div id="buttons_block">
                 <button id="preview_event_detail" type="submit" class="btn btn-outline-info">Preview detail</button>
                 <button id="preview_events" type="submit" class="btn btn-outline-info">Preview events</button>
@@ -274,6 +270,13 @@ $(function() {
 
         return false;
     })
+
+    $('#reload').on('click', function() {
+        $.getJSON("/admin/_update_cache/get_limited_events,get_events_in_future,get_events_past_year", null, function(data) {
+            alert(data['response']);
+            location.reload();
+        });
+    });
 
     $('#preview_events').on('click', function() {
         $('#submit_type').val('preview_events');
@@ -538,10 +541,8 @@ $(function() {
 
                 if (data['deleting']) {
                     $('#buttons_block').attr('class', 'd-none');
-                    $('#cache-switch-div').attr('class', 'd-none');
                 } else {
                     $('#buttons_block').attr('class', '');
-                    $('#cache-switch-div').attr('class', 'custom-control custom-switch pb-2');
                 }
 
                 update_for_event_state(data['event_state']);
@@ -601,9 +602,8 @@ $(function() {
     function update_for_event_state(event_state) {
         var base_css = 'rounded col-7 mb-1 ml-3 pl-4 w-70 ';
         var css = '';
-        $('#cache-switch-div').attr('style', 'display:block;'); 
         switch(event_state) {
-            case 'new': css = 'bg-primary text-white'; $('#cache-switch-div').attr('style', 'display:none;'); break;
+            case 'new': css = 'bg-primary text-white'; break;
             case 'draft': css = 'bg-default'; break;
             case 'ready': css = 'bg-warning'; break;
             case 'rejected': css = 'bg-danger text-white'; break;
