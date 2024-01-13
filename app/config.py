@@ -30,6 +30,7 @@ class Config(object):
     RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
     RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
     RECAPTCHA_OPTIONS = {'theme': 'black'}
+    STORAGE = os.environ.get('GOOGLE_STORE')
     GA_ID = os.environ.get('GA_ID')
     GA_TM_ID = os.environ.get('GA_TM_ID')
     MAX_IMAGE_SIZE = 2 * 1024 * 1024
