@@ -3,6 +3,7 @@ from flask import jsonify, render_template
 import json
 
 from app import api_client
+from app.clients.utils import purge_old_tmp_files
 from app.queue import Queue
 from app.main import main
 from app.main.forms import QueueForm
@@ -29,6 +30,12 @@ def show_queue_item(cache_name, key, val):
         queue_item.payload = json.dumps(payload)
 
     return render_template('views/admin/queue_show.html', q=queue_item)
+
+
+@main.route('/admin/queue/tmp/purge', methods=['GET'])
+def tmp_purge():
+    response = purge_old_tmp_files()
+    return jsonify(response)
 
 
 @main.route('/admin/queue/process/<string:action>/<string:hash_item>')

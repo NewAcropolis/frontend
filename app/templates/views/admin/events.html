@@ -219,6 +219,8 @@ $(function() {
     var temp_event = null;
     {% endif %}
 
+    var _image_filename = '';
+
     {% if errors %}
     console.log('error: {{ errors|safe }}');
     var errors = '{{ errors|safe }}';
@@ -511,8 +513,11 @@ $(function() {
                     elements._file_img.attr('src', 'data:image/png;base64, ' + data['image_data']);
                 }
                 else if (data['image_filename']) {
+                    console.log(data['image_filename']);
+                    _image_filename = data['image_filename'].startsWith('tmp/') ? data['image_filename'] : 'thumbnail/' + data['image_filename'];
+
                     elements._file_img.attr('style', 'display:block;width:100px;');
-                    elements._file_img.attr('src', '{{images_url}}/thumbnail/' + data['image_filename']);
+                    elements._file_img.attr('src', '{{images_url}}/' + _image_filename);
                 }
                 elements._fee.val(data['fee']);
                 elements._conc_fee.val(data['conc_fee']);
@@ -593,7 +598,9 @@ $(function() {
             if (data) {
                 if (data['image_filename']) {
                     elements._file_img.attr('style', 'display:block;width:100px;');
-                    elements._file_img.attr('src', '{{images_url}}/thumbnail/' + data['image_filename']);
+                    _image_filename = ['image_filename'].startsWith('tmp/') ? 'thumbnail/' + data['image_filename'] : data['image_filename'];
+                    alert(_image_filename);
+                    elements._file_img.attr('src', '{{images_url}}/' + _image_filename);
                 }
             }
         });
@@ -873,7 +880,8 @@ $(function() {
 
         $('#reject_reasons_json').val(JSON.stringify(reject_reasons));
         if ($('#file_img').attr('src'))
-            $('#existing_image_filename').val($('#file_img').attr('src').replace('{{images_url}}/thumbnail/', ''));
+            _replace_filename = $('#file_img').attr('src').indexOf("/tmp/") > 0 ? '{{images_url}}/' : '{{images_url}}/thumbnail/';
+            $('#existing_image_filename').val($('#file_img').attr('src').replace(_replace_filename, ''));
         $('#pubish').prop('disabled', true);
     }
 

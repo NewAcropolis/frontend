@@ -140,6 +140,7 @@ def is_uuid(_val):
 def set_pending(description, url, method, payload, cache_type, key=None, val=None):
     message = ""
     cache_name = f'pending_{cache_type}s'
+    q_item = None
 
     if method == 'delete':
         q_item = Queue.get_item_by_payload_key(cache_name, key, val)
@@ -178,11 +179,12 @@ def set_pending(description, url, method, payload, cache_type, key=None, val=Non
 
         message = f'{cache_type} {description} will be added'
 
-    Queue.add(
-        description,
-        cache_name=cache_name, cache_type=cache_type,
-        url=url, method=method, payload=payload
-    )
+    if not q_item:
+        Queue.add(
+            description,
+            cache_name=cache_name, cache_type=cache_type,
+            url=url, method=method, payload=payload
+        )
 
     return {
         'id': payload['id'],
