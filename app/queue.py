@@ -72,18 +72,23 @@ class Queue(ndb.Model):
 
     @staticmethod
     def purge_expired_items():
-        deleted = 0
         datetime_now = datetime.utcnow()
-        for q in Queue.query().filter(
-            Queue.status == "ok"
-        ):
-            if datetime_now > q.updated + timedelta(
-                minutes=q.backoff_duration if q.backoff_duration else current_app.config["QUEUE_EXPIRY"]
-            ):
-                q.key.delete()
-                deleted += 1
 
-        return deleted
+        def _purge(filter, expiry):
+            deleted = 0
+            for q in filter:
+                if datetime_now > q.updated + timedelta(
+                    minutes=q.backoff_duration if q.backoff_duration else expiry
+                ):
+                    q.key.delete()
+                    deleted += 1
+            return deleted
+
+        deleted_ok = _purge(Queue.query().filter(Queue.status == "ok"), current_app.config["QUEUE_OK_EXPIRY"])
+        deleted_not_ok = _purge(
+            Queue.query().filter(Queue.status.IN(["error", "suspend"])), current_app.config["QUEUE_EXPIRY"])
+
+        return f"ok: {deleted_ok}, not ok: {deleted_not_ok}"
 
     @staticmethod
     def suspend_error_items():

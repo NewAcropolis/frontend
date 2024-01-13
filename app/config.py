@@ -34,7 +34,8 @@ class Config(object):
     GA_ID = os.environ.get('GA_ID')
     GA_TM_ID = os.environ.get('GA_TM_ID')
     MAX_IMAGE_SIZE = 2 * 1024 * 1024
-    QUEUE_EXPIRY = 60 * 24 * 7
+    QUEUE_EXPIRY = 60 * 24 * 14
+    QUEUE_OK_EXPIRY = 60 * 24 * 7
     QUEUE_RETRY_LIMIT = 10
     ENABLE_STATS = os.environ.get('ENABLE_STATS', '') == 'True'
     TESTING = False
