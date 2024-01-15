@@ -243,9 +243,23 @@ def _get_images_url():
         return current_app.config['IMAGES_URL']
 
 
+def _get_standard_image_url(image_filename=''):
+    if use_sim_data():
+        return '/static/images'
+    else:
+        if image_filename:
+            if '/tmp/' in image_filename:
+                return f"{current_app.config['IMAGES_URL']}{image_filename}"
+            else:
+                return f"{current_app.config['IMAGES_URL']}/standard/{image_filename}"
+        else:
+            return current_app.config['IMAGES_URL']
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['get_images_url'] = _get_images_url
+    app.jinja_env.globals['get_standard_image_url'] = _get_standard_image_url
     app.jinja_env.globals['get_paypal_url'] = _get_paypal_url
     app.jinja_env.globals['get_paypal_base'] = _get_paypal_base
     app.jinja_env.globals['get_email'] = _get_email

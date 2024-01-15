@@ -10,7 +10,7 @@
       {% for event in future_events %}
         <div class="carousel-item {% if loop.index == 1 %} active{% endif %}">
           {% if event.show_banner_text %}
-          <img class="d-block w-100" src="{{ get_images_url() }}/standard/{{ event.image_filename }}">
+          <img class="d-block w-100" src="{{ get_standard_image_url(event.image_filename) }}">
           <div class="carousel-caption d-md-block">
             <div class="carousel-title">{{ event.title }}</div>
             <div class="carousel-banner">
