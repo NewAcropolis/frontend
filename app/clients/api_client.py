@@ -265,7 +265,7 @@ class ApiClient(BaseAPIClient):
                 if q_item.method == 'delete':
                     current_app.logger.error(f'event {q_item} not found in limited_events')
                 else:
-                    json_cache.append(json_response)
+                    json_cache.insert(0, json_response)
             elif q_item.method == 'delete':
                 del json_cache[delete_index]
             Cache.set_data('get_limited_events', json_cache, is_unique=True)
