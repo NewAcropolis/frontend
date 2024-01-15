@@ -48,8 +48,7 @@ class Cache(ndb.Model):
     @staticmethod
     def set_data(name, data, is_unique=False):
         if is_unique:
-            _cache = Cache.query(Cache.name == name).get()
-            if _cache:
+            for _cache in Cache.query(Cache.name == name).fetch():
                 _cache.key.delete()
 
         cache = Cache(name=name, data=json.dumps(data))
