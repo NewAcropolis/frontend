@@ -248,13 +248,13 @@ $(function() {
 
     $('#preview_event_detail').on('click', function() {
         $('#submit_type').val('preview_event_detail');
+        _preview_image_src = '{{images_url}}' + ($('#file_img').attr('src').includes('/tmp/') ? '' : '/thumbnail');
         var send = {
-            // alt_event_images: $('#alt_event_images').val(),
             event_type: $('#event_type option:selected').text(),
             title: $('#title').val(),
             sub_title: $('#sub_title').val(),
             description: tinymce.activeEditor.getContent(),
-            image_filename: $('#file_img').attr('src').replace('{{images_url}}/thumbnail', ''),
+            image_filename: $('#file_img').attr('src').replace(_preview_image_src, ''),
             fee: $('#fee').val(),
             conc_fee: $('#conc_fee').val(),
             multi_day_fee: $('#multi_day_fee').val(),
@@ -282,12 +282,13 @@ $(function() {
 
     $('#preview_events').on('click', function() {
         $('#submit_type').val('preview_events');
+        _preview_image_src = '{{images_url}}' + ($('#file_img').attr('src').includes('/tmp/') ? '' : '/thumbnail');
         var send = {
             event_type: $('#event_type option:selected').text(),
             title: $('#title').val(),
             sub_title: $('#sub_title').val(),
             description: $('#description').val(),
-            image_filename: $('#file_img').attr('src').replace('{{images_url}}/thumbnail', ''),
+            image_filename: $('#file_img').attr('src').replace(_preview_image_src, ''),
             fee: $('#fee').val(),
             conc_fee: $('#conc_fee').val(),
             multi_day_fee: $('#multi_day_fee').val(),
@@ -513,7 +514,6 @@ $(function() {
                     elements._file_img.attr('src', 'data:image/png;base64, ' + data['image_data']);
                 }
                 else if (data['image_filename']) {
-                    console.log(data['image_filename']);
                     _image_filename = data['image_filename'].startsWith('tmp/') ? data['image_filename'] : 'thumbnail/' + data['image_filename'];
 
                     elements._file_img.attr('style', 'display:block;width:100px;');
