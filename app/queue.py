@@ -26,7 +26,7 @@ class Queue(ndb.Model):
 
     @staticmethod
     def list_queue(status="all", return_as_string=True):
-        if type(status) == list:
+        if isinstance(status, list):
             query = Queue.query(ndb.OR(Queue.status == status[0], Queue.status == status[1]))
         elif status != "all":
             query = Queue.query(Queue.status == status)
