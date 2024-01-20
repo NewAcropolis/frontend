@@ -1,4 +1,4 @@
-runtime: python37
+runtime: python312
 entrypoint: gunicorn -t 300 -b :$PORT main:app --threads 8 --limit-request-line 0
 handlers:
 - url: /static
