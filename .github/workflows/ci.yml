@@ -23,7 +23,7 @@ jobs:
     - name: Run tests
       run: |
         pip install --upgrade 'pip==20.3.4'
-        pip install virtualenv==20.25.0
+        pip install virtualenv==20.25.0 --upgrade setuptools
         virtualenv venv
         source ./venv/bin/activate
         pip install -r requirements.txt
