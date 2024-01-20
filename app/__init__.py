@@ -2,6 +2,7 @@ import io
 import os
 import re
 
+from datetime import datetime
 from flask import Flask, current_app, make_response, render_template, request, session, url_for
 from flask_wtf.csrf import CSRFProtect, CSRFError
 
@@ -77,7 +78,7 @@ def create_app(**kwargs):
 
 def _get_email():
     profile = session.get('user_profile')
-    if profile and type(profile) == dict and 'email' in profile:
+    if profile and isinstance(profile, dict) and 'email' in profile:
         return profile['email']
 
 
@@ -256,6 +257,11 @@ def _get_standard_image_url(image_filename=''):
             return current_app.config['IMAGES_URL']
 
 
+def _strfdate(date):
+    date_obj = datetime.strptime(date, '%Y-%m-%d')
+    return date_obj.strftime('%A %-d %B')
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['get_images_url'] = _get_images_url
@@ -275,6 +281,7 @@ def init_app(app):
     app.jinja_env.globals['api_workers_running'] = _api_workers_running
     app.jinja_env.globals['is_not_live'] = is_not_live
     app.jinja_env.globals['get_env'] = get_env
+    app.jinja_env.globals['strfdate'] = _strfdate
     app.jinja_env.globals['config'] = app.config
     app.jinja_env.globals['delivery_statuses'] = delivery_statuses
 
