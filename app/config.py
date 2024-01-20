@@ -25,6 +25,7 @@ class Config(object):
     ACCESS_AREAS = ['admin', 'event', 'email', 'order', 'magazine', 'cache', 'announcement', 'article']
     SUMMARY_LIMIT = 190
     ARTICLE_SUMMARY_LIMIT = 110
+    SESSION_COOKIE_NAME = os.environ.get('SESSION_COOKIE_NAME', 'na-frontend')
     SESSION_EXPIRY = os.environ.get('SESSION_EXPIRY', 30)
     RECAPTCHA_USE_SSL = False
     RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')

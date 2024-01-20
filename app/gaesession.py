@@ -101,7 +101,7 @@ class GaeNdbSessionInterface(FlaskSessionInterface):
         return None  # In case of exceptions, Null session will be created.
 
     def _try_open_session(self, request):
-        sid = request.cookies.get(self.app.session_cookie_name)
+        sid = request.cookies.get(current_app.config.get('SESSION_COOKIE_NAME'))
 
         if sid:
             sid = self._unsign_sid(sid)
@@ -169,7 +169,7 @@ class GaeNdbSessionInterface(FlaskSessionInterface):
         self._set_session_cookie(response, sid, db_session.expires_on)
 
     def _set_session_cookie(self, response, sid, expires=None):
-        name = self.app.session_cookie_name
+        name = current_app.config.get('SESSION_COOKIE_NAME')
         domain = self.get_cookie_domain(self.app)
         path = self.get_cookie_path(self.app)
         secure = self.get_cookie_secure(self.app)
@@ -177,7 +177,7 @@ class GaeNdbSessionInterface(FlaskSessionInterface):
         if not sid:
             response.delete_cookie(name, domain=domain, path=path)
         else:
-            response.set_cookie(name, sid,
+            response.set_cookie(name, sid.decode("utf-8") if isinstance(sid, bytes) else sid,
                                 expires=expires, httponly=True,
                                 domain=domain, path=path, secure=secure)
 
