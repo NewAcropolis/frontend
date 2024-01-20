@@ -8,4 +8,8 @@ if [ -z "$VIRTUAL_ENV" ] && [ -d venv ]; then
   source ./venv/bin/activate
 fi
 
-python3 main.py runserver --port $port
+if [ "$ENVIRONMENT" = 'development' ]; then
+  debug='--debug'
+fi
+
+flask --app main $debug run -p 8080
