@@ -57,8 +57,8 @@ jobs:
         # Create indexes
         gcloud -q datastore indexes create index.yaml
 
-        # update cron jobs
-        gcloud app deploy cron.yaml
+        # update cron jobs - stop cron deployment temporarily
+        # gcloud -q app deploy cron.yaml
 
     - name: Initialize Google Cloud SDK test
       if: github.ref == 'refs/heads/test_deploy'
