@@ -12,17 +12,18 @@ jobs:
   build_test_deploy:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v2
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.7
+        python-version: 3.12
+        cache: 'pip'
 
     - name: Run tests
       run: |
         pip install --upgrade 'pip==20.3.4'
-        pip install virtualenv==16.7.8 flake8==3.7.4 pytest==3.5.0
+        pip install virtualenv==20.25.0
         virtualenv venv
         source ./venv/bin/activate
         pip install -r requirements.txt
