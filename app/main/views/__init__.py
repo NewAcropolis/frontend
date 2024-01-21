@@ -183,9 +183,14 @@ def render_page(template, **kwargs):
     if 'error' in session and 'error' not in kwargs:
         error = session.pop('error')
         try:
-            kwargs['error'] = error['message']['error'] if isinstance(error, dict) else\
-                error['message'] if 'message' in error else\
-                error if isinstance(error, str) else "Unhandled error"
+            if isinstance(error, dict) and 'message' in error and 'error' in error['message']:
+                kwargs['error'] = error['message']['error']
+            elif 'message' in error:
+                kwargs['error'] = error['message']
+            elif isinstance(error, str):
+                kwargs['error'] = error
+            else:
+                kwargs['error'] = "Unhandled error"
         except TypeError:
             current_app.logger.error("Unhandled error %r", error)
             kwargs['error'] = "Unhandled error"
