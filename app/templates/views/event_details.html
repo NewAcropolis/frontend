@@ -158,7 +158,7 @@
                           <input type="hidden" name="on1" value="Date">
                           <select id="dateSel" onchange="UpdateDateSelected();" name="os1">
                             {% for date in event.dates %}
-                            <option value="{{ loop.index + event.date_offset }}">{{ date|strfdate }}</option>
+                            <option value="{{ loop.index + event.date_offset }}">{{ strfdate(date) }}</option>
                             {% endfor %}
                             {% if event.multi_day_fee %}
                               <option value="all">All dates</option>
@@ -206,7 +206,7 @@
       <div>
       <select id="dateSel" onchange="UpdateDateSelected();" name="os1">
           {% for date in event.dates %}
-        <option value="{{ loop.index + event.date_offset }}">{{ date|strfdate }}</option>
+        <option value="{{ loop.index + event.date_offset }}">{{ strfdate(date) }}</option>
           {% endfor %}
           {% if event.multi_day_fee %}
           <option value="all">All dates</option>
