@@ -1,5 +1,4 @@
-from flask import current_app, jsonify
-import hashlib
+from flask import jsonify
 
 from app.main import main
 from app.main.views import requires_auth, app_engine_only
