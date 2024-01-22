@@ -6,6 +6,13 @@ cron:
     min_backoff_seconds: 5
     max_doublings: 5
 
+- description: "cache reload"
+  url: /cache/reload
+  schedule: every 24 hours synchronized
+  retry_parameters:
+    min_backoff_seconds: 5
+    max_doublings: 5
+
 - description: "purge queue"
   url: /queue/purge
   schedule: every 24 hours synchronized
