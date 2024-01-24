@@ -9,7 +9,7 @@ from app.clients.utils import purge_old_tmp_files
 
 @main.route('/cache/reload')
 @app_engine_only
-def cache_reload(key):
+def cache_reload():
     return _reload_cache()
 
 
