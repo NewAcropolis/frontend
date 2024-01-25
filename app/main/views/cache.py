@@ -20,6 +20,6 @@ def purge_cache():
 
 
 @main.route('/tmp_files/purge', methods=['GET'])
-@requires_auth
+@app_engine_only
 def purge_tmp_files():
     return purge_old_tmp_files()
