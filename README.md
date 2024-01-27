@@ -2,11 +2,11 @@
 
 ## Pre-requisites
 
-Before starting, ensure you are using python 3.7 and that you have (gcloud sdk version 357.0.0)[https://cloud.google.com/sdk/docs/] and follow the instructions to install it.
+Before starting, ensure you are using python 3.12, on macs `brew install python@3.12`, and that you have (gcloud sdk version 459.0.0)[https://cloud.google.com/sdk/docs/] and follow the instructions to install it.
 
-If you have another version of gcloud installed, you can set it to 357.0.0 -
+If you have another version of gcloud installed, you can set it to 459.0.0 -
 
-`gcloud components update --version 357.0.0`
+`gcloud components update --version 459.0.0`
 
 Also install the gcloud datastore emulator - 
 
@@ -15,12 +15,14 @@ Also install the gcloud datastore emulator -
 You should have these components installed, `gcloud version` - 
 
 ```
-Google Cloud SDK 357.0.0
-beta 2021.10.04
-bq 2.0.71
-cloud-datastore-emulator 2.1.0
-core 2021.09.10
-gsutil 4.67
+Google Cloud SDK 459.0.0
+app-engine-python 1.9.108
+beta 2024.01.06
+bq 2.0.101
+cloud-datastore-emulator 2.3.1
+core 2024.01.06
+gcloud-crc32c 1.0.0
+gsutil 5.27
 ```
 
 ### Quickstart
@@ -31,7 +33,7 @@ gsutil 4.67
   `./scripts/bootstrap.sh`
 
 2. Run the datastore in another terminal window:
-  - this needs to be kept running in another terminal for the duration of the local app life.
+  - NB - this needs to be kept running in another terminal for the duration of the local app life.
 
   `make datastore`
 

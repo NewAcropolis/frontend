@@ -225,6 +225,7 @@
                 update_for_email_state('new');
                 event_id = '';
                 email_json = null;
+                elements._send_starts_at.datepicker("setDate", new Date());
 
                 if (elements._email_types.val() == 'magazine') {
                     setDisplayBlocks();

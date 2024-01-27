@@ -121,7 +121,10 @@ def _get_email():
 
 @main.route('/admin/_get_event_dates/<date_type>')
 def _get_event_dates(date_type):
-    event = [e for e in session['future_events'] if e['id'] == request.args.get('event')]
+    if 'event' in request.args:
+        event = [e for e in session['future_events'] if e['id'] == request.args.get('event')]
+    elif 'future_events' in session:
+        event = [session['future_events'][0]]
     if event:
         if date_type == 'send':
             first_event_date = event[0]['event_dates'][0]['event_datetime'].split(' ')[0]
