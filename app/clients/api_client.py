@@ -95,7 +95,7 @@ def use_cache(**dkwargs):
                         kwargs['decorator'] = dkwargs['decorator']
                     if 'sort_by' in dkwargs:
                         kwargs['sort_by'] = dkwargs['sort_by']
-                    if (datetime.utcnow() - updated_on).seconds > 60*60*24:  # update pages once a day
+                    if (datetime.utcnow() - updated_on).total_seconds() > 60*60*24:  # update pages once a day
                         update_cache(*args, **kwargs)
 
             if data is None:
@@ -121,7 +121,10 @@ def update_cache(*args, **kwargs):
     data = func(*args, **kwargs)
 
     updated = False
-    if cached_data != data:
+    if 'error' in session:
+        current_app.logger.info(f'Error from API call {cache___name__}')
+        return False
+    elif cached_data != data:
         current_app.logger.info('Cache updated from db')
         Cache.set_data(cache___name__, data)
         updated = True
