@@ -75,6 +75,6 @@ def _purge_cache():
 
 @main.route('/admin/_update_future_events')
 def _update_future_events():
-    update_cache(api_client.get_events_in_future)
+    update_cache(func=api_client.get_events_in_future)
 
     return 'Updating future events'
