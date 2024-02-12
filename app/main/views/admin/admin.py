@@ -60,6 +60,8 @@ def admin_users():
                 access_area += 'announcement,'
             if user.article.data:
                 access_area += 'article,'
+            if user.member.data:
+                access_area += 'member,'
 
             if users[i]['access_area'] != access_area:
                 update_count += 1

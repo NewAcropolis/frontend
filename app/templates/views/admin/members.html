@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin.css"/>
+{% endblock %}
+
+{% block content %}
+
+{% if user_has_permissions('member') %}
+<div class="container pb-3 text-right" style="width: 800px;">
+    <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors|safe }}</div>
+    <form class="form" id="members_form" method="post" enctype="multipart/form-data">{{ form.csrf_token }}
+        <div class="row">
+            <div class='col-12'>
+                <div class="row">
+                    <div id='form_errors' class='text-danger link-danger' style='display:{% if form.errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
+                    <div id='message' class='text-success pb-3' style='display:{% if message %}block{% else %}none{% endif%}'>{{message|safe}}</div>
+                </div>
+                <div class="row">
+                    <div class='col-12'>
+                        <div class='row'>
+                            {{form.email_address(placeholder='Email Address', size=60)}}
+                            <button id="search" type="button" class="btn btn-outline-success ml-2" onsubmit="return false;">Search</button>
+                        </div>
+                        <div class='row mt-2'>
+                            {{form.name(placeholder='Name')}}
+                        </div>
+                        <div class='row mt-2'>
+                            Subscribed:&nbsp;{{form.active(placeholder='Active')}}
+                        </div>
+                        {{form.unsubcode}}
+                    </div>
+                </div>  
+                <div class="row" >
+                    <button id="update" type="submit" class="btn btn-outline-success mt-2" disabled>Update member</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script charset="utf-8" type="text/javascript">
+    $(function() {
+        $('#search').on('click', function() {
+            $('#message').attr('style', 'display:none');
+            $('#form_errors').attr('style', 'display:none');
+            $('#form_errors').text('');
+            $('#name').val('');
+            $('#active').prop('checked', false);
+            $('#update').prop('disabled', true);
+            send = {"email": $('#email_address').val()}
+            $.getJSON("{{ url_for('main._get_member') }}", send, function(data) {
+                console.log(data);
+                if (data) {
+                    $('#name').val(data['name']);
+                    $('#active').prop('checked', data['active']);
+                    $('#unsubcode').val(data['unsubcode']);
+                    $('#update').prop('disabled', false);
+                } 
+            })
+            .fail(
+                function(jqXHR, message, errorThrown) {
+                    console.log(errorThrown);
+                    $('#form_errors').attr('style', 'display:block');
+                    $('#form_errors').text(errorThrown);
+                    $('#update').prop('disabled', true);
+                }
+            );
+        });
+    });
+</script>
+{% endif %}
+{% endblock %}

@@ -22,7 +22,7 @@ class Config(object):
     PAYPAL_ACCOUNT_ID = os.environ.get('PAYPAL_ACCOUNT_ID')
     PAYPAL_ENCRYPTED = os.environ.get('PAYPAL_ENCRYPTED_1', '') + os.environ.get('PAYPAL_ENCRYPTED_2', '')
     PAYPAL_DELIVERY = os.environ.get('PAYPAL_DELIVERY')
-    ACCESS_AREAS = ['admin', 'event', 'email', 'order', 'magazine', 'cache', 'announcement', 'article']
+    ACCESS_AREAS = ['admin', 'event', 'email', 'order', 'magazine', 'cache', 'article', 'member']
     SUMMARY_LIMIT = 190
     ARTICLE_SUMMARY_LIMIT = 110
     SESSION_COOKIE_NAME = os.environ.get('SESSION_COOKIE_NAME', 'na-frontend')

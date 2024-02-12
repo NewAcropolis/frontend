@@ -46,9 +46,9 @@
             <a href='/admin/api_interstitial?target=articles'>Articles</a> / <a href="/admin/api_interstitial?target=articles/zipfile">Zipfile</a>
         </div>
         {% endif %}
-        {% if user_has_permissions('announcement') %}
+        {% if user_has_permissions('member') %}
         <div class='col-sm'>
-            Announcements
+            <a href='/admin/api_interstitial?target=members'>Members</a>
         </div>
         {% endif %}
     </div>

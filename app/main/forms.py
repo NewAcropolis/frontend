@@ -178,6 +178,7 @@ class UserForm(FlaskForm):
     cache = BooleanField('cache')
     announcement = BooleanField('announcement')
     article = BooleanField('article')
+    member = BooleanField('member')
 
 
 class UserListForm(FlaskForm):
@@ -199,6 +200,7 @@ class UserListForm(FlaskForm):
                 user_form.cache = _has_access_area('cache', user['access_area'])
                 user_form.announcement = _has_access_area('announcement', user['access_area'])
                 user_form.article = _has_access_area('article', user['access_area'])
+                user_form.member = _has_access_area('member', user['access_area'])
 
                 self.users.append_entry(user_form)
         else:
@@ -470,3 +472,10 @@ class OrderListForm(FlaskForm):
                 # order_form.books = order.books
 
                 self.orders.append_entry(order_form)
+
+
+class MemberForm(FlaskForm):
+    email_address = StringField('Email address')
+    name = StringField("Name")
+    active = BooleanField()
+    unsubcode = HiddenField()
