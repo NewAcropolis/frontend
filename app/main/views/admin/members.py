@@ -1,10 +1,6 @@
-import base64
-from flask import current_app, jsonify, redirect, render_template, request, session, url_for
-import json
+from flask import render_template, request, session
 
 from app import api_client
-from app.tag import Tag
-from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import MemberForm
 
