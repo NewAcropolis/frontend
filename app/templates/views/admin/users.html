@@ -1,15 +1,20 @@
 {% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin.css"/>
+{% endblock %}
+
 {% block content %}
 
 {% if user_has_permissions('admin') %}
 <div class="container pb-3 text-right">
     <form class="form" id="users_form" method="post">{{ form.csrf_token }}
         <div class="row">
-            <div class='col-2'>
+            <div class='col-3'>
             user
             </div>
             {% for area in access_areas %}
-            <div class='col-sm'>
+            <div class='col-sm text-right{{ " back-alt" if loop.index % 2 == 1 }}'>
             {{ area }}
             </div>
             {% endfor %}
@@ -17,33 +22,33 @@
         <hr>
             {% for user in form.users %}
         <div class="row">
-            <div class='col-2' style='padding-top:0;'>
+            <div class='col-3' style='padding-top:0;z-index: 100;'>
                 {{ user.str_email.data }}
                 {{ user.user_id}}
             </div>
-            <div class='col'>
+            <div class='col back-alt'>
                 {{ user.admin }}
             </div>
             <div class='col'>
                 {{ user.event }}
             </div>
-            <div class='col'>
+            <div class='col back-alt'>
                 {{ user.email }}
             </div>
             <div class='col'>
                 {{ user.order }}
             </div>
-            <div class='col'>
+            <div class='col back-alt'>
                 {{ user.magazine }}
             </div>
             <div class='col'>
                 {{ user.cache }}
             </div>
-            <div class='col'>
+            <div class='col back-alt'>
                 {{ user.article }}
             </div>
             <div class='col'>
-                {{ user.announcement }}
+                {{ user.member }}
             </div>
         </div>
             {% endfor %}

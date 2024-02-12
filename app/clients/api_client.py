@@ -494,8 +494,20 @@ class ApiClient(BaseAPIClient):
     def get_member_from_unsubcode(self, unsubcode):
         return self.get(url='member/{}'.format(unsubcode))
 
+    def get_member_from_email_address(self, email_address):
+        return self.get(url='member/email/{}'.format(email_address))
+
     def unsubscribe_member(self, unsubcode):
-        return self.post(url='member/unsubscribe/{}'.format(unsubcode), data=None)
+        Queue.add('unsubscribe member', url=f'member/unsubscribe/{unsubcode}', method='post')
+        return json.dumps({'message': 'Your unsubscription will be processed'})
+
+    def update_member_by_admin(self, unsubcode, name, email, active):
+        data = {
+            'name': name,
+            'email': email,
+            'active': active
+        }
+        return self.post(url='member/update/{}'.format(unsubcode), data=data)
 
     def update_member(self, unsubcode, name, email):
         data = {

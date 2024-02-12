@@ -54,3 +54,7 @@
   .modal-footer{
       height: 60px;
   }
+
+  .back-alt {
+    background-color: lightgrey;
+  }
