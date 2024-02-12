@@ -118,9 +118,12 @@ class BaseAPIClient(object):
                 timeout=30
             )
             status_code = response.status_code
-
             if status_code == 404:
-                current_app.logger.warn('%r: 404 - %r', url, response.json()['message'])
+                if response.headers.get('content-type') == 'application/json':
+                    message = response.json()['message']
+                else:
+                    message = 'Not found'
+                current_app.logger.warn('%r: 404 - %r', url, message)
 
                 session['error'] = {
                     'code': 404,
