@@ -42,10 +42,10 @@ class WhenGettingUsers:
 
         row = BeautifulSoup("<html>{}</html>".format(rows[1]), 'html.parser')
 
-        email = row.select_one('.col-2')
+        email = row.select_one('.col-3')
         assert email.text.strip() == users[1]['email']
 
-        user_id = row.select_one('.col-2 input')
+        user_id = row.select_one('.col-3 input')
         assert user_id.get('value') == users[1]['id']
 
         areas = row.select('.col input')
@@ -88,10 +88,10 @@ class WhenGettingUsers:
 
         row = BeautifulSoup("<html>{}</html>".format(rows[1]), 'html.parser')
 
-        email = row.select_one('.col-2')
+        email = row.select_one('.col-3')
         assert email.text.strip() == users[1]['email']
 
-        user_id = row.select_one('.col-2 input')
+        user_id = row.select_one('.col-3 input')
         assert user_id.get('value') == users[1]['id']
 
         areas = row.select('.col input')
@@ -143,11 +143,11 @@ class WhenGettingUsers:
 
         row = BeautifulSoup("<html>{}{}</html>".format(rows[1], rows[2]), 'html.parser')
 
-        emails = row.select('.col-2')
+        emails = row.select('.col-3')
         assert emails[0].text.strip() == users[1]['email']
         assert emails[1].text.strip() == users[2]['email']
 
-        user_ids = row.select('.col-2 input')
+        user_ids = row.select('.col-3 input')
         assert user_ids[0].get('value') == users[1]['id']
         assert user_ids[1].get('value') == users[2]['id']
 
@@ -188,7 +188,7 @@ class WhenGettingUsers:
 
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
 
-        user_col = page.select('.row .col-2')
+        user_col = page.select('.row .col-3')
         assert not user_col
 
 
@@ -273,6 +273,7 @@ class WhenPostingUsers:
                 },
                 'cache': {},
                 'announcement': {},
+                'member': {},
                 'article': {},
             },
             {
@@ -290,6 +291,7 @@ class WhenPostingUsers:
                 },
                 'cache': {},
                 'announcement': {},
+                'member': {},
                 'article': {},
             }
         ]
@@ -348,6 +350,7 @@ class WhenPostingUsers:
                 'magazine': {},
                 'shop': {},
                 'announcement': {},
+                'member': {},
                 'article': {},
             },
             {
@@ -364,6 +367,7 @@ class WhenPostingUsers:
                 },
                 'shop': {},
                 'announcement': {},
+                'member': {},
                 'article': {},
             }
         ]
