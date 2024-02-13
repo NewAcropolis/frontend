@@ -14,7 +14,7 @@
             <div class='col-12'>
                 <div class="row">
                     <div id='form_errors' class='text-danger link-danger' style='display:{% if form.errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
-                    <div id='message' class='text-success pb-3' style='display:{% if message %}block{% else %}none{% endif%}'>{{message|safe}}</div>
+                    <div id='message' class='text-success' style='display:{% if message %}block{% else %}none{% endif%}'>{{message|safe}}</div>
                 </div>
                 <div class="row">
                     <div class='col-12'>
@@ -32,7 +32,7 @@
                     </div>
                 </div>  
                 <div class="row" >
-                    <button id="update" type="submit" class="btn btn-outline-success mt-2" disabled>Update member</button>
+                    <button id="update" type="submit" class="btn btn-outline-success mt-2" {% if not message %}disabled{% endif %}>Update member</button>
                 </div>
             </div>
         </div>
@@ -41,7 +41,8 @@
 <script charset="utf-8" type="text/javascript">
     $(function() {
         $('#search').on('click', function() {
-            $('#message').attr('style', 'display:none');
+            $('#message').attr('style', 'display:block');
+            $('#message').text('Searching...');
             $('#form_errors').attr('style', 'display:none');
             $('#form_errors').text('');
             $('#name').val('');
@@ -51,6 +52,7 @@
             $.getJSON("{{ url_for('main._get_member') }}", send, function(data) {
                 console.log(data);
                 if (data) {
+                    $('#message').attr('style', 'display:none');
                     $('#name').val(data['name']);
                     $('#active').prop('checked', data['active']);
                     $('#unsubcode').val(data['unsubcode']);
@@ -59,12 +61,16 @@
             })
             .fail(
                 function(jqXHR, message, errorThrown) {
-                    console.log(errorThrown);
+                    $('#message').attr('style', 'display:none');
                     $('#form_errors').attr('style', 'display:block');
                     $('#form_errors').text(errorThrown);
                     $('#update').prop('disabled', true);
                 }
             );
+        });
+        $('#update').on('click', function() {
+            $('#message').attr('style', 'display:block');
+            $('#message').text('Updating...');
         });
     });
 </script>
