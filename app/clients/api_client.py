@@ -88,15 +88,19 @@ def use_cache(**dkwargs):
             else:
                 data = Cache.get_data(f.__name__)
 
-                if data is not None and dkwargs.get('update_daily'):
-                    updated_on = Cache.get_updated_on(f.__name__)
-                    kwargs['func'] = f
-                    if 'decorator' in dkwargs:
-                        kwargs['decorator'] = dkwargs['decorator']
-                    if 'sort_by' in dkwargs:
-                        kwargs['sort_by'] = dkwargs['sort_by']
-                    if (datetime.utcnow() - updated_on).total_seconds() > 60*60*24:  # update pages once a day
-                        update_cache(*args, **kwargs)
+                ## cache_reload should be able to update the cache once daily, 
+                ## so try out not doing a cache update as the updated_on only gets updated if there is an update
+                ## if there isn't an update then it doesn't get updated which means that the cache will always be called
+                ## revisit 2024/05/01
+                # if data is not None and dkwargs.get('update_daily'):
+                #     updated_on = Cache.get_updated_on(f.__name__)
+                #     kwargs['func'] = f
+                #     if 'decorator' in dkwargs:
+                #         kwargs['decorator'] = dkwargs['decorator']
+                #     if 'sort_by' in dkwargs:
+                #         kwargs['sort_by'] = dkwargs['sort_by']
+                #     if (datetime.utcnow() - updated_on).total_seconds() > 60*60*24:  # update pages once a day
+                #         update_cache(*args, **kwargs)
 
             if data is None:
                 if 'db_call' in dkwargs:
