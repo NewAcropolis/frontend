@@ -1,5 +1,5 @@
 from decimal import Decimal
-from flask import current_app, jsonify, request, session
+from flask import current_app, request, session
 
 from app import api_client, paypal_client
 from app.main import main
@@ -38,11 +38,11 @@ def cart():
             "zip": delivery_form.zip.data,
         }
 
-        num_items = request.form.get("num_items","0")
+        num_items = request.form.get("num_items", "0")
         _cart = {"items": []}
         for i in range(1, int(num_items) + 1):
-            id = request.form.get(f"item_number_{i}","")
-            price = request.form.get(f"amount_{i}","")
+            id = request.form.get(f"item_number_{i}", "")
+            price = request.form.get(f"amount_{i}", "")
             valid = False
             for b in books:
                 if b['id'] == id and b['price'] == price:
@@ -50,10 +50,10 @@ def cart():
             if valid:
                 _cart['items'].append(
                     {
-                        "product": request.form.get(f"item_name_{i}",""),
+                        "product": request.form.get(f"item_name_{i}", ""),
                         "id": id,
                         "price": price,
-                        "quantity": request.form.get(f"quantity_{i}",""),
+                        "quantity": request.form.get(f"quantity_{i}", ""),
                     }
                 )
         return paypal_client.checkout(delivery_form, _cart)
@@ -84,12 +84,12 @@ def get_cart():
                         "product": b["title"],
                         "price": b["price"]
                     }
-                    
+
                     items.append(item)
                 total += Decimal(b["price"])
-    
+
     total += Decimal(current_app.config["DELIVERY_UK"])
-    return { "items": items, "total": str(total) }
+    return {"items": items, "total": str(total)}
 
 
 @main.route('/cart/add/<book_id>')
