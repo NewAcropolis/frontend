@@ -19,6 +19,8 @@ class Config(object):
     GOOGLE_OAUTH2_CLIENT_SECRET = os.environ.get('GOOGLE_OAUTH2_CLIENT_SECRET')
     GOOGLE_OAUTH2_REDIRECT_URI = os.environ.get('GOOGLE_OAUTH2_REDIRECT_URI')
     OAUTHLIB_INSECURE_TRANSPORT = "False"
+    PAYPAL_URL = "https://www.sandbox.paypal.com/"
+    PAYPAL_ACCOUNT = os.environ.get('PAYPAL_ACCOUNT')
     PAYPAL_ACCOUNT_ID = os.environ.get('PAYPAL_ACCOUNT_ID')
     PAYPAL_ENCRYPTED = os.environ.get('PAYPAL_ENCRYPTED_1', '') + os.environ.get('PAYPAL_ENCRYPTED_2', '')
     PAYPAL_DELIVERY = os.environ.get('PAYPAL_DELIVERY')
@@ -41,6 +43,7 @@ class Config(object):
     ENABLE_STATS = os.environ.get('ENABLE_STATS', '') == 'True'
     TESTING = False
     NO_API = False
+    DELIVERY_UK = 3.50
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
@@ -71,6 +74,7 @@ class Live(Config):
     SESSION_PROTECTION = None
     NO_ADMIN_AUTH = False
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
+    PAYPAL_URL = "https://www.paypal.com/"
     PAYPAL_VERIFY_URL = "https://ipnpb.paypal.com/cgi-bin/webscr"
     NO_API = False
 
