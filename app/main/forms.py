@@ -53,6 +53,23 @@ class ReservePlaceForm(FlaskForm):
     reserve_place_date_id = HiddenField()
 
 
+class DeliveryForm(FlaskForm):
+    first_name = StringField('first name', validators=[DataRequired()])
+    last_name = StringField('last name', validators=[DataRequired()])
+    address1 = StringField('address_1', validators=[DataRequired()])
+    address2 = StringField('address_2')
+    city = StringField('city')
+    zip = StringField('post_code', validators=[DataRequired()])
+
+    def set_delivery_address(self, address):
+        self.first_name.data = address["first_name"]
+        self.last_name.data = address["last_name"]
+        self.address1.data = address["address1"]
+        self.address2.data = address["address2"]
+        self.city.data = address["city"]
+        self.zip.data = address["zip"]
+
+
 class EventAttendanceForm(FlaskForm):
     event_year = SelectField('event_year')
     events = SelectField('events')

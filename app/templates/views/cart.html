@@ -1,0 +1,279 @@
+{% extends "public_base.html" %}
+{% block title %}Shop{% endblock %}
+{% block extra_head %}
+
+{% if cart.get('items') %}
+<link rel="stylesheet" href="/static/css/alt-style.css" />
+<script>
+    var cart = {{ cart|safe }};
+    function addToCart(book_id) {
+        call_ajax('add', book_id);
+    }
+
+    function removeFromCart(book_id) {
+        call_ajax('remove', book_id);
+    }
+
+    function emptyCart(book_id) {
+        document.getElementById('emptyModalLabel').innerText = 'Emptying cart...';
+        call_ajax('empty');
+    }
+
+    function getProduct(id) {
+        items = cart['items'];
+        for (i=0; i<items.length; i++) {
+            if (items[i]['id'] == id) return items[i];
+        }
+        return null;
+    }
+
+    function updateCart(item, total) {
+        items = cart['items'];
+        for (i=0; i<items.length; i++) {
+            if (item[i]['id'] == id) {
+                items[i] = item;
+            } 
+        }
+    }
+
+    function formatPrice(price) {
+        return price.toLocaleString("en-GB", {style:"currency", currency:"GBP"});
+    }
+
+    function sessionTimedOut() {
+        const modalExpired= document.getElementById('modalExpired');
+        const _modalExpired = new bootstrap.Modal(modalExpired);
+        _modalExpired.show()
+
+        setTimeout(() => {history.back();}, 3000);                        
+    }
+
+    function call_ajax(action, id = "") {
+        var request = new XMLHttpRequest();
+        item = getProduct(id);
+
+        if (action == 'remove' && item['quantity'] == 0) return;
+ 
+        request.open("GET", "/cart/" + action + (id ? "/" + id : ""));
+        request.onreadystatechange = function() {
+            console.log(this.status);
+            if(this.readyState === 4 && this.status === 200) {
+                if (action == 'add') {
+                    if (parseInt(this.responseText) != item['quantity'] + 1) {
+                        sessionTimedOut();
+                    }
+
+                    document.getElementById("q_" + id).innerText = this.responseText;
+                    item['quantity'] = parseInt(this.responseText);
+                    cart["total"] = parseFloat(cart["total"]) + parseFloat(item["price"]);
+                    document.getElementById("p_" + id).innerText = formatPrice(item['price'] * item['quantity']);
+                    document.getElementById("total").innerText = formatPrice(cart["total"]);
+                }
+                else if (action == 'remove') {
+                    if (item['quantity'] > 0 && parseInt(this.responseText) != item['quantity'] - 1) {
+                        sessionTimedOut();
+                    }
+
+                    document.getElementById("q_" + id).innerText = this.responseText;
+                    item['quantity'] = parseInt(this.responseText);
+                    cart["total"] = parseFloat(cart["total"]) - parseFloat(item["price"]);
+                    document.getElementById("p_" + id).innerText = formatPrice(item['price'] * item['quantity']);
+                    document.getElementById("total").innerText = formatPrice(cart["total"]);
+                }
+                else if (action == 'empty') {
+                    setTimeout(() => {history.back();}, 3000);
+                }
+            }
+        };
+        request.send();
+    }
+</script>
+{% else %}
+<script>
+    setTimeout(() => {
+        history.back();
+    }, 3000);
+</script>
+{% endif %}
+{% endblock %}
+
+{% block post_header %}
+{% if not config.get('SHOW_RESOURCE_MAINTENANCE') %}
+    {% if cart.get('items') %}
+<div id="banner" class="carousel slide">
+    <img class="d-block w-100 fit-image" src="/static/images/resource-banner.png">
+</div>
+    {% else %}
+    <div class="container-fluid padding yellow_background">
+        <div class="row padding mt-3">
+            <div class="col-lg-12 pt-4">
+            <p class="dark_grey_txt content-width mx-auto text-center"> 
+                No items in cart
+            </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+{% if config.get('SHOW_RESOURCE_MAINTENANCE') %}
+<div class="container-fluid padding yellow_background">
+    <div class="row padding">
+        <div class="col-lg-12">
+        <p class="dark_grey_txt content-width mx-auto text-center"> 
+            This page is under construction, thank you for your patience.
+        </p>
+        </div>
+    </div>
+</div>
+{% elif cart.get('items') %}
+  <div class="container pt-2">
+    <div class="row">
+        <div class="col-8">
+            <form id='_delivery_form' target="paypal" method="post">
+                {{ delivery_form.csrf_token }}
+                <div id="cart" class="row">
+                    <div class="col-12 p-2">
+                        <h5 class="row">Your shopping cart</h5>
+                        <div class="row pb-0">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-2 font-weight-bold">Quantity</div>
+                                    <div class="col-8 font-weight-bold">Product</div>
+                                    <div class="col-2 font-weight-bold">Price</div>
+                                </div>
+                                <input type="hidden" name="num_items" value="{{cart['items']|length}}">
+                                {% for c in cart['items'] %}
+                                <div class="row">
+                                    <input type="hidden" name="item_name_{{ loop.index }}" value="{{c.product}}">
+                                    <input type="hidden" name="item_number_{{ loop.index }}" value="{{c.id}}">
+                                    <input type="hidden" name="amount_{{ loop.index }}" value="{{c.price}}">
+                                    <input type="hidden" name="quantity_{{ loop.index }}" value="{{c.quantity}}">
+        
+                                    <div class="col-2 pb-1 pt-1">
+                                        <span id="q_{{c.id}}">{{c.quantity}}</span>
+                                        <a href="" class="pl-2" id="remove_{{c.id}}" onclick="removeFromCart('{{c.id}}')">-</a> 
+                                        <a href="" id="add_{{c.id}}" onclick="addToCart('{{c.id}}')">+</a>
+                                    </div>
+                                    <div class="col-8 pb-1 pt-1">{{c.product}}</div>
+                                    <div id="p_{{c.id}}" class="col-2 pb-1 pt-1">{{ format_price(to_decimal(c.price) * c.quantity) }}</div>
+                                </div>
+                                <script>
+                                    document.getElementById("remove_{{c.id}}").addEventListener("click", function(event){
+                                    event.preventDefault()
+                                    });                                
+                                    document.getElementById("add_{{c.id}}").addEventListener("click", function(event){
+                                    event.preventDefault()
+                                    });                                
+                                </script>
+                                {% endfor %}
+                                <div class="row">
+                                    <div class="col-10 pb-1 pt-1 text-right font-weight-bold">Delivery</div>
+                                    <div class="col-2 pb-1 pt-1">{{ format_price(config["DELIVERY_UK"]) }}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-2">&nbsp;</div>
+                            <div class="col-8 text-right font-weight-bold pb-1 pt-1">Total</div>
+                            <div id="total" class="col-2 pb-1 pt-1">{{ format_price(cart.total) }}</div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div id="address" class="row">
+                    <div class="col-12">
+                        <h5 class="row"><div class="col-12 p-0">Delivery address</div></h5>
+                        <div class="row">
+                            <div class="col-4 col-sm-4 p-1">
+                            {{ delivery_form.first_name(placeholder='First name', class="w-100") }}
+                            </div>
+                            <div class="col-7 col-sm-8 p-1">
+                            {{ delivery_form.last_name(placeholder='Last name', class="w-100") }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 p-1">
+                                {{ delivery_form.address1(placeholder='Address 1', class="w-100") }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 p-1">
+                                {{ delivery_form.address2(placeholder='Address 2', class="w-100") }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 p-1">
+                                {{ delivery_form.city(placeholder='City', class="w-70") }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 p-1">
+                                {{ delivery_form.zip(placeholder='Postcode', class="w-5") }}
+                            </div>
+                        </div>
+                        <div class="row p-2">We only deliver to addresses in the UK, delivery cost will be &pound;3.50</div>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-8 col-sm-6">
+                        <button id="checkout" onclick="history.back()" type="button" class="btn btn-outline-secondary">Back</button>
+                    </div>
+                    <div class="col-2 col-sm-4 text-right">
+                        <button id="empty" data-target="#modalEmpty" data-toggle="modal" type="button" class="btn btn-outline-warning">Empty</button>
+                    </div>
+                    <div class="col-2 col-sm-2 text-right">
+                        <button id="checkout" type="submit" class="btn btn-outline-success">Checkout</button>
+                    </div>
+                    <script>
+                        document.getElementById("empty").addEventListener("click", function(event){
+                        event.preventDefault()
+                        });                                
+                    </script>
+                </div>
+            </form>
+
+            <div aria-hidden="true" aria-labelledby="expiredModalLabel" class="modal fade" id="modalExpired" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="expiredModalLabel">Session expired</h5>
+                        </div>
+                        <div class="modal-body pb-3 text-center">
+                            Returning to previous page...
+                        </div> 
+                    </div>
+                </div>
+            </div>
+
+            <div aria-hidden="true" aria-labelledby="emptyModalLabel" class="modal fade" id="modalEmpty" role="dialog" tabindex="-1">
+                <div class="modal-dialog modal-dialog-magazine modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="emptyModalLabel">Empty shopping cart?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body pb-3 text-center">
+                            <button id="empty" onclick="emptyCart()" type="button" class="btn btn-outline-warning">Click to confirm</button>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="empty_space_sm"></div>
+
+{% endblock %}

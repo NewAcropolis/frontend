@@ -13,6 +13,8 @@ def order_end():
     status = request.args.get('st')
     txn_code = request.args.get('tx')
 
+    session.pop("cart", "")
+
     return render_page(
         'views/order_end.html',
         status=status,

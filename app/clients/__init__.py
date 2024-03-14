@@ -13,10 +13,11 @@ from app.stats import send_ga_event
 
 
 class BaseAPIClient(object):
-    def init_app(self, app):
-        self.base_url = app.config['API_BASE_URL']
-        self.client_id = app.config['ADMIN_CLIENT_ID']
-        self.secret = app.config['ADMIN_CLIENT_SECRET']
+    def init_app(self, app, base_url='API_BASE_URL', client_id='ADMIN_CLIENT_ID', secret='ADMIN_CLIENT_SECRET'):
+        self.base_url = base_url
+        if client_id:
+            self.client_id = client_id
+            self.secret = secret
 
     def post(self, url, data, headers=None):
         return self.request("POST", url, data=data, headers=headers)
@@ -91,7 +92,7 @@ class BaseAPIClient(object):
             return []
 
         # don't set access token for API call to info
-        set_access_token = url != ''
+        set_access_token = url != '' and hasattr(self, 'client_id')
         if not self.base_url:
             current_app.logger.info("No API URL")
             return []

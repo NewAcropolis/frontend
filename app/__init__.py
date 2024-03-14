@@ -3,6 +3,7 @@ import os
 import re
 
 from datetime import datetime
+from decimal import Decimal
 from flask import Flask, current_app, make_response, render_template, request, session, url_for
 from flask_wtf.csrf import CSRFProtect, CSRFError
 
@@ -13,11 +14,13 @@ from na_common.delivery import statuses as delivery_statuses
 from app.cache import Cache
 from app.config import use_sim_data
 from app.clients.api_client import ApiClient
+from app.clients.paypal_client import PaypalClient
 
 
 __version__ = '1.11.0'
 
 api_client = ApiClient()
+paypal_client = PaypalClient()
 csrf = CSRFProtect()
 
 
@@ -69,6 +72,7 @@ def create_app(**kwargs):
     init_app(application)
 
     api_client.init_app(application)
+    paypal_client.init_app(application, application.config["PAYPAL_URL"])
 
     from app.main import main as main_blueprint
     application.register_blueprint(main_blueprint)
@@ -262,6 +266,16 @@ def _strfdate(date):
     return date_obj.strftime('%A %-d %B')
 
 
+def _to_decimal(num):
+    return Decimal(num)
+
+def _format_price(price):
+    price = Decimal(price)
+    _price = str('{:.2f}'.format(price))
+
+    return f"£{_price}"
+
+
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
     app.jinja_env.globals['get_images_url'] = _get_images_url
@@ -282,6 +296,8 @@ def init_app(app):
     app.jinja_env.globals['is_not_live'] = is_not_live
     app.jinja_env.globals['get_env'] = get_env
     app.jinja_env.globals['strfdate'] = _strfdate
+    app.jinja_env.globals['to_decimal'] = _to_decimal
+    app.jinja_env.globals['format_price'] = _format_price
     app.jinja_env.globals['config'] = app.config
     app.jinja_env.globals['delivery_statuses'] = delivery_statuses
 

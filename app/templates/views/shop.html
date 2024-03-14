@@ -2,6 +2,19 @@
 {% block title %}Shop{% endblock %}
 {% block extra_head %}
 <link rel="stylesheet" href="/static/css/alt-style.css" />
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+<script>
+    function cartClick(index, book_id) {
+        var button = document.getElementById('cart-' + index);
+        call_ajax('add', book_id);
+        console.log(button.classList);
+        button.classList.add('clicked');
+
+        setTimeout(() => {
+            button.classList.remove('clicked');
+        }, 2000);
+    }
+</script>
 {% endblock %}
 
 {% block post_header %}
@@ -60,39 +73,27 @@
                                 </div>
                                 <div class="col-4">
                                     <div>
-                                        <form id="paypalForm" target="paypal" action="{{ get_paypal_url() }}" method="post">
-                                        <input type="hidden" name="cmd" value="_s-xclick">
-                                        <input type="hidden" name="cn" value="Add special instructions to the seller:">
-                                        <input type="hidden" name="shopping_url" value="{{ config['FRONTEND_BASE_URL'] }}/shop">
-                                        <input type="hidden" name="fee" value="{{book.price}}">
-                                        <input type="hidden" name="hosted_button_id" value="{{book.buy_code}}">
-                                        <input type="hidden" name="currency_code" value="GBP">
-                                        <input 
-                                            type="image"
-                                            src="/static/images/add_to_cart_orange.png"
-                                            border="0"
-                                            name="submit"
-                                            alt="PayPal - The safer, easier way to pay online."
-                                            style="height:30px;"
-                                        >
-                                        </form>
+                                        <button id="cart-{{ loop.index }}" onclick="cartClick({{ loop.index}}, '{{ book.id }}');" class="cart-button">
+                                            <span class="add-to-cart">Add to cart</span>
+                                            <span class="added">Added</span>
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <i class="fas fa-box"></i>
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-4 text-right">
                                     <div>
-                                        <form target="paypal" action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" >
-                                            <input type="hidden" name="cmd" value="_s-xclick">
-                                            <input type="hidden" name="encrypted" value="{{config['PAYPAL_ENCRYPTED']}}">
-                                            <input type="image" style="height:30px;" src="/static/images/cart_orange.png" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
-                                            <img alt="" border="0" src="https://www.sandbox.paypal.com/en_GB/i/scr/pixel.gif" width="1" height="1">
-                                        </form>
+                                        <div class="col p-0 pb-2">
+                                            <a href="/shop/cart">
+                                                <img style="height:30px;" src="/static/images/cart_orange.png">
+                                            </a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
-                    </form>
                 </div>
                 <div class="tab-pane fade" id="gifts" role="tabpanel" aria-labelledby="gifts-tab">
                     <div class="row">
@@ -149,34 +150,5 @@
     </div>
 </div>
 {% endif %}
-
-<div class="empty_space_sm"></div>
-
-{% block block_footer %}
-
-{% if not config.get('SHOW_RESOURCE_MAINTENANCE') %}
-<div class="bottom-band bottom sticky">
-    <div class="text-center row" style="margin-top: 10px;">
-        <div class="col text-right p-0" style="margin-top:-10px;">Please add postage and packing</div>
-        <div class="col" style="padding-right: 100px;">
-            <form target="paypal" action="{{ get_paypal_url() }}" method="post">
-                <input type="hidden" name="cmd" value="_s-xclick">
-                <input type="hidden" name="hosted_button_id" value="{{config['PAYPAL_DELIVERY']}}">
-                <input type="hidden" name="on0" value="Postage">
-                <input type="hidden" name="currency_code" value="GBP">
-                <input type="hidden" name="shopping_url" value="{{ config['FRONTEND_BASE_URL'] }}/shop">
-                <select class="form-control" name="os0" style="height:30px;width:200px;font-size: 0.8em; float: left; margin-left:10px;">
-                    <option value="UK">UK £2.00</option>
-                    <option value="Europe">Europe £4.50</option>
-                    <option value="RoW">Rest of the World £6.00</option>
-                </select>
-                <input type="image" src="/static/images/add_to_cart_orange.png" style="height:30px; float:left; margin-left:10px;" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
-            </form>
-        </div>
-    </div>
-</div>
-{% endif %}
-
-{% endblock %}
 
 {% endblock %}
