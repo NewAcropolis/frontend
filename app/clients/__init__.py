@@ -14,7 +14,7 @@ from app.stats import send_ga_event
 
 class BaseAPIClient(object):
     def init_app(self, app, base_url='API_BASE_URL', client_id='ADMIN_CLIENT_ID', secret='ADMIN_CLIENT_SECRET'):
-        self.base_url = base_url
+        self.base_url = app.config.get(base_url)
         if client_id:
             self.client_id = app.config.get(client_id)
             self.secret = app.config.get(secret)
