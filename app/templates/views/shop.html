@@ -4,6 +4,19 @@
 <link rel="stylesheet" href="/static/css/alt-style.css" />
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 <script>
+    function call_ajax(action, id = "") {
+        console.log('call_ajax ' + action + ' - ' + id);
+        var request = new XMLHttpRequest();
+
+        request.open("GET", "/cart/" + action + (id ? "/" + id : ""));
+        request.onreadystatechange = function() {
+            if(this.readyState === 4 && this.status === 200) {
+                console.log(this.responseText);
+            }
+        };
+        request.send();
+    }
+
     function cartClick(index, book_id) {
         var button = document.getElementById('cart-' + index);
         call_ajax('add', book_id);
