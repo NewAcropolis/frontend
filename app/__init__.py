@@ -72,7 +72,7 @@ def create_app(**kwargs):
     init_app(application)
 
     api_client.init_app(application)
-    paypal_client.init_app(application, application.config["PAYPAL_URL"])
+    paypal_client.init_app(application, "PAYPAL_URL")
 
     from app.main import main as main_blueprint
     application.register_blueprint(main_blueprint)
