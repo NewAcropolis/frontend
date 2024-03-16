@@ -16,8 +16,8 @@ class BaseAPIClient(object):
     def init_app(self, app, base_url='API_BASE_URL', client_id='ADMIN_CLIENT_ID', secret='ADMIN_CLIENT_SECRET'):
         self.base_url = base_url
         if client_id:
-            self.client_id = client_id
-            self.secret = secret
+            self.client_id = app.config.get(client_id)
+            self.secret = app.config.get(secret)
 
     def post(self, url, data, headers=None):
         return self.request("POST", url, data=data, headers=headers)
