@@ -92,7 +92,7 @@ class WhenAccessingEventsPastYearPage(object):
                     "sub_title": "",
                     "title": "Test title 1",
                     "venue": {
-                        "address": "19 Compton Terrace N1 2UN, next door to Union Chapel.",
+                        "address": "18 Compton Terrace N1 2UN, next door to Union Chapel.",
                         "default": True,
                         "directions": "<div>Bus: Bus routes 4, 19, 30, 43 & 277 stop nearby</div>",
                         "name": "Head Branch",
@@ -139,7 +139,7 @@ class WhenAccessingEventsPastYearPage(object):
                     "sub_title": "",
                     "title": "The Language of Symbols",
                     "venue": {
-                        "address": "19 Compton Terrace N1 2UN, next door to Union Chapel.",
+                        "address": "18 Compton Terrace N1 2UN, next door to Union Chapel.",
                         "default": True,
                         "directions": "<div>Bus: Bus routes 4, 19, 30, 43 & 277 stop nearby</div>",
                         "name": "Head Branch",
@@ -186,7 +186,7 @@ class WhenAccessingFutureEventsPage(object):
                     "sub_title": "",
                     "title": "Test title 1",
                     "venue": {
-                        "address": "19 Compton Terrace N1 2UN, next door to Union Chapel.",
+                        "address": "18 Compton Terrace N1 2UN, next door to Union Chapel.",
                         "default": True,
                         "directions": "<div>Bus: Bus routes 4, 19, 30, 43 & 277 stop nearby</div>",
                         "name": "Head Branch",
@@ -238,7 +238,7 @@ class WhenAccessingFutureEventsPage(object):
                     "sub_title": "",
                     "title": "The Language of Symbols",
                     "venue": {
-                        "address": "19 Compton Terrace N1 2UN, next door to Union Chapel.",
+                        "address": "18 Compton Terrace N1 2UN, next door to Union Chapel.",
                         "default": True,
                         "directions": "<div>Bus: Bus routes 4, 19, 30, 43 & 277 stop nearby</div>",
                         "name": "Head Branch",
