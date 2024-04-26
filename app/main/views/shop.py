@@ -51,7 +51,7 @@ def cart():
                 _cart['items'].append(
                     {
                         "product": request.form.get(f"item_name_{i}", ""),
-                        "id": id,
+                        "id": f"book-{id}",
                         "price": price,
                         "quantity": request.form.get(f"quantity_{i}", ""),
                     }
