@@ -114,3 +114,8 @@ def empty_cart():
     session.pop('cart', [])
 
     return []
+
+
+@main.route('/cart/get_account')
+def get_account():
+    return current_app.config.get('PAYPAL_ACCOUNT')
