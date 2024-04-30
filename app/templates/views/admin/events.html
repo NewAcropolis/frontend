@@ -211,6 +211,7 @@ tinymce.init({
     plugins: 'code'
 });
 var selected = false;
+var pending = false;
 
 $(function() {
     {% if temp_event %}
@@ -537,10 +538,12 @@ $(function() {
                 set_end_time(data['end_time']);
                 
                 if (data["pending"] || data["deleting"]) {
+                    pending = true;
                     $('#pending_block').attr('class', '');
                     $("#held_until").html(data['held_until']);
                     $("#play_now").attr('href', "{{ url_for('main.queue') }}/pending_events/id/" + data['id']);
                 } else {
+                    pending = false;
                     $('#pending_block').attr('class', 'd-none');
                 }
 
@@ -621,7 +624,7 @@ $(function() {
             $('#copy-event').prop('disabled', event_state == 'new');
             $('#delete-event').prop('disabled', event_state == 'new');
             $('#rejectBtn').prop('disabled', $.inArray( event_state, [ "draft", "new" ] ) >= 0);
-            $('#publish').prop('disabled', event_state != 'ready');
+            $('#publish').prop('disabled', event_state != 'ready' || pending);
         {% endif %}
     }
 
