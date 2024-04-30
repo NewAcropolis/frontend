@@ -598,8 +598,7 @@ $(function() {
             if (data) {
                 if (data['image_filename']) {
                     elements._file_img.attr('style', 'display:block;width:100px;');
-                    _image_filename = ['image_filename'].startsWith('tmp/') ? 'thumbnail/' + data['image_filename'] : data['image_filename'];
-                    alert(_image_filename);
+                    _image_filename = data['image_filename'].startsWith('tmp/') ? 'thumbnail/' + data['image_filename'] : data['image_filename'];
                     elements._file_img.attr('src', '{{images_url}}/' + _image_filename);
                 }
             }
