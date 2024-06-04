@@ -10,6 +10,8 @@ from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import ReservePlaceForm
 from app.main.views import render_page
+from app.clients.utils import get_nice_event_date
+
 
 @main.route('/events')
 def events():
@@ -72,8 +74,11 @@ def event_details(event_id=None, **kwargs):
 
     event['_description'] = unescape(event['description'])
 
+    if 'dates' not in event:
+        event = get_nice_event_date(event)
+
     reserve_place_form = ReservePlaceForm() if event['is_future_event'] and\
-        event['event_type'] == 'Introductory Course' else None
+        (event['event_type'] == 'Introductory Course' or event['fee'] == 0) else None
 
     return render_page(
         'views/event_details.html',

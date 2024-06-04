@@ -7,7 +7,7 @@
   function UpdateDateSelected() {
     var date_id = document.getElementById("reserve_place_date_id");
     var date_span = document.getElementById("date_span");
-    {% if event.fee == -2 %}
+    {% if event.fee == -2 or event.fee == 0 %}
     var dateSel = document.getElementById("dateSel");
     date_span.innerText = dateSel.options[dateSel.selectedIndex].text;
     date_id.value = date_ids[dateSel.selectedIndex];
@@ -202,7 +202,7 @@
           {% endif %}
     
       {% if reserve_place_form %}
-        {% if event.fee == -2 %}
+        {% if event.fee == -2 or event.fee == 0 %}
       <div>
       <select id="dateSel" onchange="UpdateDateSelected();" name="os1">
           {% for date in event.dates %}
@@ -216,14 +216,14 @@
       <br>
         {% endif %}
       <a data-toggle="modal" data-target="#reservePlaceModal" href="#email" class="btn btn-warning text-info font-weight-bold">
-      Reserve the first evening for FREE
+      Reserve the {% if event.event_type == 'Introductory Course' %}first evening for FREE{% else %}event to guarantee a place{% endif %} 
       </a>
       <br>
                 <div class="modal fade" id="reservePlaceModal" tabindex="-1" role="dialog" aria-labelledby="reservePlaceModalLabel" aria-hidden="true">
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="reservePlaceModalLabel">Reserve first evening: <span id="date_span"></span></h5>
+                        <h5 class="modal-title" id="reservePlaceModalLabel">Reserve {% if event.event_type == 'Introductory Course' %}first evening{% else %}event{% endif %}: <span id="date_span"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
