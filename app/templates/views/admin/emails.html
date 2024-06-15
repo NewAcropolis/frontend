@@ -36,6 +36,8 @@
                 <div class ='row' class='text-left ml-2 mt-1'>
                     <div id='emails_sent_counts' ></div>
                 </div>
+                <div id="admin_email_sent" class="row d-none">                    
+                </div>
             </div>
         </div>
         <div class="row">
@@ -177,7 +179,8 @@
             _extra_txt: $('#extra_txt'),
             _send_starts_at: $('#_send_starts_at'),
             _expires: $('#_expires'),
-            _emails_sent_counts: $('#emails_sent_counts')
+            _emails_sent_counts: $('#emails_sent_counts'),
+            _admin_email_sent: $('#admin_email_sent')
         };
 
         $('#_send_starts_at').datepicker({
@@ -295,6 +298,15 @@
                         '<span class="text-danger">failed: ' + data['emails_sent_counts']['failed'] + '</span> - ' +
                         '<span class="text-primary">total to send: ' + data['emails_sent_counts']['total_active_members'] + '</span>'
                     );
+                    if (data['admin_email_sent_at']) {
+                        elements._admin_email_sent.attr('class', 'row'); 
+                        elements._admin_email_sent.html(
+                            'Admin email sent: ' + data['admin_email_sent_at']
+                        );
+                    }
+                    else {
+                        elements._admin_email_sent.attr('class', 'd-none'); 
+                    }
                     update_for_email_state(data['email_state'], data);
                 }
             });
