@@ -339,16 +339,25 @@ class EmailForm(FlaskForm):
     reject_reason = TextAreaField('Reject reason')
 
     def set_emails_form(self, emails, email_types, events):
+        pending_emails = []
         self.emails.choices = [('', 'New email')]
         email_events = []
         for email in emails:
+            is_pending = 'pending' in email.keys()
+            prefix = ''
+            if is_pending:
+                pending_emails.append(email['id'])
+                prefix = f'[pending {email["pending"]}] '
+            elif email['id'] in pending_emails:
+                continue
+
             if email['email_type'] == 'event' and email.get('event_id'):
                 email_events.append(email['event_id'])
 
             self.emails.choices.append(
                 (
                     email['id'],
-                    email['subject']
+                    prefix + email['subject'] if 'subject' in email else email['title']
                 )
             )
 

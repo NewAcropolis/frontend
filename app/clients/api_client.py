@@ -224,6 +224,9 @@ class ApiClient(BaseAPIClient):
                 for k in keys:
                     if k not in ignore_fields:
                         _payload[k] = payload[k]
+            elif q_item.cache_type == 'email':
+                _payload = payload
+                del _payload['pending']
             else:
                 _payload = payload
             json_resp = self.post(
@@ -255,8 +258,8 @@ class ApiClient(BaseAPIClient):
             q_item.status = "ok"
             q_item.response = json.dumps(json_resp)
 
-        if q_item.cache_type == 'event':
-            cache = Cache.get_cache('get_limited_events')
+        def update_cache(cache_name):
+            cache = Cache.get_cache(cache_name)
             found = False
             json_response = json.loads(q_item.response)
             json_cache = json.loads(cache['data'])
@@ -271,16 +274,21 @@ class ApiClient(BaseAPIClient):
                     break
             if not found:
                 if q_item.method == 'delete':
-                    current_app.logger.error(f'event {q_item} not found in limited_events')
+                    current_app.logger.error(f'event {q_item} not found in {cache_name}')
                 else:
                     json_cache.insert(0, json_response)
             elif q_item.method == 'delete':
                 del json_cache[delete_index]
-            Cache.set_data('get_limited_events', json_cache, is_unique=True)
+            Cache.set_data(cache_name, json_cache, is_unique=True)
             session['events'] = json_cache
+
+        if q_item.cache_type == 'event':
+            update_cache('get_limited_events')
 
             Queue.add('get future event post-process', url='events/future', method='get')
             Queue.add('get past event post-process', url='events/past_year', method='get')
+        elif q_item.cache_type == 'email':
+            update_cache('get_latest_emails')
 
         Queue.update(q_item)
 
@@ -402,10 +410,30 @@ class ApiClient(BaseAPIClient):
         return self.get_events_past_year_from_db()
 
     def add_email(self, email):
-        return self.post(url='email', data=email)
+        return set_pending(
+            f'add email {email["subject"]}', 'email', 'post', email, 'email'
+        )
 
     def update_email(self, email_id, email):
-        return self.post(url='email/{}'.format(email_id), data=email)
+        return set_pending(
+            f'update email {email["subject"]}',
+            f'email/{email_id}' if is_uuid(email_id) else 'email',
+            'post',
+            email, 'email', key="id", val=email_id
+        )
+
+    def cancel_pending_email(self, email_id):
+        q_item = Queue.get_item_by_payload_key('pending_emails', 'id', email_id)
+        success = False
+        if q_item:
+            Queue.delete(q_item.hash_item)
+            success = True
+
+        return {
+            'id': email_id,
+            'success': success,
+            'message': "Pending email deleted"
+        }
 
     def get_email_types(self):
         return self.get(url='email/types')
@@ -413,14 +441,32 @@ class ApiClient(BaseAPIClient):
     def post_email_preview(self, data):
         return self.post(url='email/preview', data=data)
 
-    def get_future_emails(self):
+    def get_future_emails_from_db(self):
         return self.get(url='emails/future')
+
+    @use_cache(db_call=get_future_emails_from_db)
+    def get_future_emails(self):
+        return self.get_future_emails_from_db()
+
+    def get_pending_and_future_emails(self):
+        _pending_emails = Queue.get_by_cache_name('pending_emails')
+        pending_emails = [json.loads(e.payload) for e in _pending_emails if e.payload != []]
+        return pending_emails + self.get_future_emails()
 
     def get_info(self):
         return self.get(url='')
 
-    def get_latest_emails(self):
+    def get_latest_emails_from_db(self):
         return self.get(url='emails/latest')
+
+    @use_cache(db_call=get_latest_emails_from_db)
+    def get_latest_emails(self):
+        return self.get_latest_emails_from_db()
+
+    def get_pending_and_latest_emails(self):
+        _pending_emails = Queue.get_by_cache_name('pending_emails')
+        pending_emails = [json.loads(e.payload) for e in _pending_emails if e.payload != []]
+        return pending_emails + self.get_latest_emails()
 
     def get_articles_from_db(self):
         return self.get(url='articles')

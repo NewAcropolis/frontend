@@ -7,16 +7,22 @@ from app import api_client
 from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import EmailForm
+from app.queue import Queue
 
 
 @main.route('/admin/emails', methods=['GET', 'POST'])
 @main.route('/admin/emails/magazine/<uuid:magazine_id>', methods=['GET', 'POST'])
 @main.route('/admin/emails/<uuid:selected_email_id>', methods=['GET', 'POST'])
-@main.route('/admin/events/<uuid:selected_event_id>/<api_message>', methods=['GET', 'POST'])
+@main.route('/admin/emails/<string:selected_email_id>/<api_message>', methods=['GET', 'POST'])
 def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
     errors = []
 
-    future_emails = api_client.get_latest_emails()
+    future_emails = api_client.get_pending_and_latest_emails()
+    session['emails'] = future_emails
+    future_events = api_client.get_events_in_future(approved_only=True)
+    session['future_events'] = future_events
+
+    email_types = api_client.get_email_types()
     if magazine_id:
         for e in future_emails:
             if e['magazine_id'] == str(magazine_id):
@@ -24,12 +30,6 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
 
         if not selected_email_id:
             errors = "No matching magazine email found"
-
-    email_types = api_client.get_email_types()
-    future_events = api_client.get_events_in_future(approved_only=True)
-
-    session['emails'] = future_emails
-    session['future_events'] = future_events
 
     form = EmailForm()
 
@@ -39,8 +39,13 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
         form.events.data = None
 
     if form.validate_on_submit():
+        subject = ''
+        for k, v in form.events.choices:
+            if k == form.events.data:
+                subject = v
         email = {
-            'email_id': form.emails.data,
+            'id': form.emails.data,
+            'subject': subject,
             'details': form.details.data,
             'extra_txt': form.extra_txt.data,
             'email_state': form.email_state.data,
@@ -54,7 +59,7 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
 
         try:
             message = None
-            if email.get('email_id'):
+            if email.get('id'):
                 if form.email_types.data == 'event' and not email['event_id']:
                     emails = [e for e in future_emails if e['id'] == form.emails.data]
                     if emails:
@@ -63,10 +68,10 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
                 if email['email_state'] == 'rejected':
                     email['reject_reason'] = form.reject_reason.data
 
-                response = api_client.update_email(email['email_id'], email)
+                response = api_client.update_email(email['id'], email)
                 message = 'email updated'
             else:
-                del email['email_id']
+                del email['id']
                 response = api_client.add_email(email)
 
             current_app.logger.info('Submit email: {}, {}'.format(email, response))
@@ -87,12 +92,13 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
 
 @main.route('/admin/_get_email')
 def _get_email():
-    email = [e for e in session['emails'] if e['id'] == request.args.get('email')]
-    if email:
-        if email[0]['email_type'] == 'event':
+    _email = [e for e in session['emails'] if e['id'] == request.args.get('email')]
+    if _email:
+        email = _email[0]
+        if email['email_type'] == 'event':
             event = [e for e in session['future_events'] if e['id'] == request.args.get('event')]
             if not event:
-                event = api_client.get_event_by_id(email[0]['event_id'])
+                event = api_client.get_event_by_id(email['event_id'])
 
                 event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
                 parts = [
@@ -100,7 +106,7 @@ def _get_email():
                     for date_parts in [date.split('-') for date in event_dates]
                 ]
 
-                email[0]['event'] = {
+                email['event'] = {
                     'value': event['id'],
                     'text': u'{} - {} - {}'.format(
                         ", ".join(parts),
@@ -109,13 +115,25 @@ def _get_email():
                     ),
                     'has_expired': event['has_expired']
                 }
-        elif email[0]['email_type'] == 'magazine':
-            magazine = api_client.get_magazine(email[0]['magazine_id'])
-            email[0]['magazine'] = {
+        elif email['email_type'] == 'magazine':
+            magazine = api_client.get_magazine(email['magazine_id'])
+            email['magazine'] = {
                 'title': magazine['title'],
                 'filename': magazine['filename'],
             }
-        return jsonify(email[0])
+
+        if 'emails_sent_counts' not in email:
+            email['emails_sent_counts'] = {
+                "success": 0,
+                "failed": 0,
+                "total_active_members": "N/A"
+            }
+
+        if email.get('pending'):
+            q_item = Queue.get_item_by_payload_key('pending_emails', 'id', email['id'])
+            email['held_until'] = Queue.hold_off_processing(q_item).strftime('%-I:%M %p')
+
+        return jsonify(email)
     return ''
 
 
@@ -154,3 +172,12 @@ def _get_default_details():
         u"{}</div>{}".format(event['fee'], event['conc_fee'], event['venue']['address'], event['venue']['directions'])
 
     return jsonify({'details': details})
+
+
+@main.route('/admin/_cancel_pending_email')
+def _cancel_pending_email():
+    email_id = request.args.get('email')
+    if email_id:
+        api_client.cancel_pending_email(email_id)
+
+    return redirect(f"{url_for('main.admin_emails')}/" + email_id)
