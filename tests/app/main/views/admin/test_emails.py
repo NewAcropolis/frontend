@@ -22,7 +22,7 @@ class MockAPIClient:
             }
         ]
 
-    def get_latest_emails(self):
+    def get_pending_and_latest_emails(self):
         return [
             {
                 'id': 'test id',

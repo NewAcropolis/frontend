@@ -33,10 +33,12 @@
                 <div class='row'>
                     <div id='status_bar' class='text-left col-6 rounded mt-2 bg-primary text-white'>new</div>
                 </div>
-                <div class ='row' class='text-left ml-2 mt-1'>
+                <div class ='row text-left mt-1'>
                     <div id='emails_sent_counts' ></div>
                 </div>
-                <div id="admin_email_sent" class="row d-none">                    
+                <div id="admin_email_sent" class="row d-none text-left"></div>
+                <div id="pending_block" class="row d-none mb-2 text-left">
+                    Email will be processed after&nbsp;<span id="held_until"></span>,&nbsp;<a id="cancel" href="">cancel</a>&nbsp;to stop processing, or&nbsp;<a id="play_now" href="">process now</a>
                 </div>
             </div>
         </div>
@@ -170,6 +172,7 @@
     var event_id = '';
     var has_expired = false;
     var email_json = null;
+    var pending = false;
     $(function() {
         var elements = {
             _emails: $('#emails'),
@@ -229,6 +232,7 @@
                 event_id = '';
                 email_json = null;
                 elements._send_starts_at.datepicker("setDate", new Date());
+                elements._admin_email_sent.attr('class', 'd-none'); 
 
                 if (elements._email_types.val() == 'magazine') {
                     setDisplayBlocks();
@@ -248,68 +252,80 @@
                 }
                 return;
             }
+            else {
+                $.getJSON("{{ url_for('main._get_email') }}", send, function(data) {
+                    if (data) {
+                        if (data["pending"]) {
+                            pending = true;
+                            $('#pending_block').attr('class', 'row mb-2 text-left');
+                            $("#held_until").html(data['held_until']);
+                            $("#play_now").attr('href', "{{ url_for('main.queue') }}/pending_emails/id/" + data['id']);
+                            $("#cancel").attr('href', "{{ url_for('main._cancel_pending_email') }}?email=" + data['id']);
+                        } else {
+                            pending = false;
+                            $('#pending_block').attr('class', 'd-none');
+                        }
 
-            $.getJSON("{{ url_for('main._get_email') }}", send, function(data) {
-                if (data) {
-                    console.log(data);
-                    email_json = data;
-                    elements._email_types.val(data['email_type']);
-                    if (data['email_type'] == 'magazine') {
-                        elements._emails_sent_counts.attr('style', 'display:block;');
-                        elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
-                        elements._expires.datepicker("setDate", data['expires']);
+                        console.log(data);
+                        email_json = data;
+                        elements._email_types.val(data['email_type']);
+                        if (data['email_type'] == 'magazine') {
+                            elements._emails_sent_counts.attr('style', 'display:block;');
+                            elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
+                            elements._expires.datepicker("setDate", data['expires']);
 
-                        event_id = '';
+                            event_id = '';
 
-                        $('#magazine_title').text(data['magazine']['title']);
-                        $('#magazine_image').html('<img src="{{get_images_url()}}/thumbnail/pdfs/' + data['magazine']['filename'] + '.png">');
-                        $('#magazine_link').attr('href', '/admin/magazines/' + data['magazine_id']);
+                            $('#magazine_title').text(data['magazine']['title']);
+                            $('#magazine_image').html('<img src="{{get_images_url()}}/thumbnail/pdfs/' + data['magazine']['filename'] + '.png">');
+                            $('#magazine_link').attr('href', '/admin/magazines/' + data['magazine_id']);
 
-                        setDisplayBlocks();
-                    }
-                    else if (data['email_type'] == 'event') {
-                        elements._emails_sent_counts.attr('style', 'display:block;');
-                        var found = false;
-                        for (i=0; i<events.length; i++) {
-                            if (events[i]['value'] == data['event']['value']) {
-                                found = true;
-                                break;
+                            setDisplayBlocks();
+                        }
+                        else if (data['email_type'] == 'event') {
+                            elements._emails_sent_counts.attr('style', 'display:block;');
+                            var found = false;
+                            for (i=0; i<events.length; i++) {
+                                if (events[i]['value'] == data['event']['value']) {
+                                    found = true;
+                                    break;
+                                }
                             }
-                        }
-                        if (!found) {
-                            events.push({
-                                'name': data['event']['text'],
-                                'value': data['event']['value']
-                            });
-                        }
-                        has_expired = data['event']['has_expired']
+                            if (!found) {
+                                events.push({
+                                    'name': data['event']['text'],
+                                    'value': data['event']['value']
+                                });
+                            }
+                            has_expired = data['event']['has_expired']
 
-                        elements._events.val(data['event_id']);
-                        elements._details.val(data['details']);
-                        elements._extra_txt.val(data['extra_txt']);
-                        elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
-                        elements._expires.datepicker("setDate", data['expires']);
-                        event_id = data['event_id'];
+                            elements._events.val(data['event_id']);
+                            elements._details.val(data['details']);
+                            elements._extra_txt.val(data['extra_txt']);
+                            elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
+                            elements._expires.datepicker("setDate", data['expires']);
+                            event_id = data['event_id'];
 
-                        updateEvents();
-                    }
-                    elements._emails_sent_counts.html(
-                        '<span class="text-success">success: ' + data['emails_sent_counts']['success'] + '</span> - ' +
-                        '<span class="text-danger">failed: ' + data['emails_sent_counts']['failed'] + '</span> - ' +
-                        '<span class="text-primary">total to send: ' + data['emails_sent_counts']['total_active_members'] + '</span>'
-                    );
-                    if (data['admin_email_sent_at']) {
-                        elements._admin_email_sent.attr('class', 'row'); 
-                        elements._admin_email_sent.html(
-                            'Admin email sent: ' + data['admin_email_sent_at']
+                            updateEvents();
+                        }
+                        elements._emails_sent_counts.html(
+                            '<span class="text-success">success: ' + data['emails_sent_counts']['success'] + '</span> - ' +
+                            '<span class="text-danger">failed: ' + data['emails_sent_counts']['failed'] + '</span> - ' +
+                            '<span class="text-primary">total to send: ' + data['emails_sent_counts']['total_active_members'] + '</span>'
                         );
+                        if (data['admin_email_sent_at']) {
+                            elements._admin_email_sent.attr('class', 'row'); 
+                            elements._admin_email_sent.html(
+                                'Admin email sent: ' + data['admin_email_sent_at']
+                            );
+                        }
+                        else {
+                            elements._admin_email_sent.attr('class', 'd-none'); 
+                        }
+                        update_for_email_state(data['email_state'], data);
                     }
-                    else {
-                        elements._admin_email_sent.attr('class', 'd-none'); 
-                    }
-                    update_for_email_state(data['email_state'], data);
-                }
-            });
+                });
+            }
         }
 
         function updateExpiry() {
@@ -417,7 +433,7 @@
             {% if is_admin_user() %}
                 $('#rejectBtn').prop('disabled', has_expired || $.inArray( email_state, [ "draft", "new" ] ) >= 0);
                 $('#ready').prop('disabled', has_expired || email_state == 'ready');
-                $('#send').prop('disabled', has_expired || email_state != 'ready');
+                $('#send').prop('disabled', has_expired || email_state != 'ready' || pending);
             {% endif %}
         }
 
