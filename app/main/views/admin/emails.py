@@ -12,7 +12,7 @@ from app.queue import Queue
 
 @main.route('/admin/emails', methods=['GET', 'POST'])
 @main.route('/admin/emails/magazine/<uuid:magazine_id>', methods=['GET', 'POST'])
-@main.route('/admin/emails/<uuid:selected_email_id>', methods=['GET', 'POST'])
+@main.route('/admin/emails/<string:selected_email_id>', methods=['GET', 'POST'])
 @main.route('/admin/emails/<string:selected_email_id>/<api_message>', methods=['GET', 'POST'])
 def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
     errors = []
