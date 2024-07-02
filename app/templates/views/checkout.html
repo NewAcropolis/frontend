@@ -18,10 +18,12 @@
         <input type="hidden" name="currency_code" value="GBP">
         <input tpye="hidden" name="return" value="{{config['FRONTEND_BASE_URL']}}/order/end">
         {% for item in cart['items'] %}
+            {% if item.quantity | int > 0 %}
         <input type="hidden" name="item_name_{{loop.index}}" value="{{item.product}}">
         <input type="hidden" name="item_number_{{loop.index}}" value="{{item.id}}">
         <input type="hidden" name="amount_{{loop.index}}" value="{{item.price}}">
         <input type="hidden" name="quantity_{{loop.index}}" value="{{item.quantity}}">
+            {% endif %}
         {% endfor %}
     </form>
     <script>
