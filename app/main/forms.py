@@ -373,7 +373,9 @@ class EmailForm(FlaskForm):
                 )
             )
 
-        self.events.choices = []
+        # Set event choice first option to show events
+        # TODO: this probably needs fixing
+        self.events.choices = [('No event', 'No event')]
         if events:
             for event in events:
                 event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
@@ -391,8 +393,6 @@ class EmailForm(FlaskForm):
                         )
                     )
                 )
-        else:
-            self.events.choices.append(('', ''))
 
 
 #  regex from https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom

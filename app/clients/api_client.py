@@ -451,6 +451,7 @@ class ApiClient(BaseAPIClient):
     def get_pending_and_future_emails(self):
         _pending_emails = Queue.get_by_cache_name('pending_emails')
         pending_emails = [json.loads(e.payload) for e in _pending_emails if e.payload != []]
+        # TODO: should really filter out duplicate ids to simplify the code
         return pending_emails + self.get_future_emails()
 
     def get_info(self):

@@ -456,6 +456,11 @@
                     );
                 }
             }
+
+            if (elements._events.length > 1) {
+                $('#events').find('option').get(0).remove();
+            }
+
             if (event_id != '') {
                 elements._events.val(event_id);
             }
@@ -490,6 +495,7 @@
                 }
                 else if (elements._email_types.val() == 'event') {
                     $('#magazine_block').attr('style', 'display:none;');
+                    // if (elements._events.length == 1) {
                     if (elements._events.val() == '' || !elements._events.val()) {
                         $("#has_event").attr('style', 'display:none;');
                         $("#no_event").attr('style', 'display:block;');
