@@ -24,7 +24,7 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
 
     email_types = api_client.get_email_types()
     if magazine_id:
-        for e in future_emails:
+        for e in [fe for fe in future_emails if 'magazine_id' in fe]:
             if e['magazine_id'] == str(magazine_id):
                 selected_email_id = e['id']
 

@@ -62,6 +62,7 @@ def admin_magazines(selected_magazine_id=None, api_message=None):
                 response = api_client.add_magazine(magazine)
                 message = 'magazine added, please wait a few minutes for the upload to complete'
                 update_cache(func=api_client.get_latest_magazine_from_db)
+                update_cache(func=api_client.get_latest_emails_from_db)
 
             if 'error' in session:
                 errors = session.pop('error')
