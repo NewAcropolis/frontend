@@ -40,12 +40,8 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
 
     if form.validate_on_submit():
         subject = ''
-        for k, v in form.events.choices:
-            if k == form.events.data:
-                subject = v
         email = {
             'id': form.emails.data,
-            'subject': subject,
             'details': form.details.data,
             'extra_txt': form.extra_txt.data,
             'email_state': form.email_state.data,
@@ -55,7 +51,13 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
         }
 
         if form.email_types.data == 'event':
+            for k, v in form.events.choices:
+                if k == form.events.data:
+                    subject = v
+
             email.update(event_id=form.events.data)
+
+        email.update(subject=subject)
 
         try:
             message = None
@@ -64,6 +66,11 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
                     emails = [e for e in future_emails if e['id'] == form.emails.data]
                     if emails:
                         email['event_id'] = emails[0]['event_id']
+                elif form.email_types.data == 'magazine' and 'magazine_id' not in email:
+                    emails = [e for e in future_emails if e['id'] == form.emails.data]
+                    if emails:
+                        email['subject'] = emails[0]['subject']
+                        email['magazine_id'] = emails[0]['magazine_id']
 
                 if email['email_state'] == 'rejected':
                     email['reject_reason'] = form.reject_reason.data
