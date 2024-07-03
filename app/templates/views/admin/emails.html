@@ -28,7 +28,7 @@
         <div class="row">
             <div class='ml-3 col-12'>
                 <div class='row'>
-                    {{form.emails}}
+                    {{form.emails}}&nbsp;<button id="reload" type="button" class="btn btn-info">Reload</button>
                 </div>
                 <div class='row'>
                     <div id='status_bar' class='text-left col-6 rounded mt-2 bg-primary text-white'>new</div>
@@ -380,6 +380,13 @@
         $('#send').on('click', function() {
             $('#email_state').val('approved');
         })
+
+        $('#reload').on('click', function() {
+            $.getJSON("/admin/_update_cache/get_latest_emails", null, function(data) {
+                alert(data['response']);
+                location.reload();
+            });
+        });
 
         $('#preview').on('click', function() {
             var send = {
