@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block extra_head %}
+<link rel="stylesheet" href="/static/css/email-copy.css" />
+<script src="/static/js/email-copy.js"></script>
 <script charset="utf-8" type="text/javascript">
 function replayConfirmationEmail(txn_id) {
     var send = {
@@ -43,7 +45,7 @@ function replayConfirmationEmail(txn_id) {
                 <a href='{{ get_paypal_base() }}/activity/payment/{{ order.txn_id }}'>{{ order.txn_id }}</a>
             </div>
             <div class='col'>
-                {{ order.buyer_name }}
+                <a href="mailto:{{ order.email_address }}">{{ order.email_address }}</a>
             </div>
             <div class='col'>
                 &pound;{{ order.payment_total }}
@@ -70,6 +72,7 @@ function replayConfirmationEmail(txn_id) {
                 <div class="row">
                     <div class="col">
                         <strong>Payment status:</strong> {{ order.payment_status }}
+                        <div>{{ order.buyer_name }}</div>
                     </div>
                     <div class="col">
                         <strong>Confirmation email:</strong> {{ order.email_status }}
