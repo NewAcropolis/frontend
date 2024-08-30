@@ -78,7 +78,7 @@ def event_details(event_id=None, **kwargs):
         event = get_nice_event_date(event)
 
     reserve_place_form = ReservePlaceForm() if event['is_future_event'] and\
-        (event['event_type'] == 'Introductory Course' or event['fee'] == 0) else None
+        (event['fee'] == 0) else None
 
     return render_page(
         'views/event_details.html',

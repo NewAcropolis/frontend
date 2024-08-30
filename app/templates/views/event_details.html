@@ -19,15 +19,18 @@
     if (dateSel.value == "all") {
       pay_type.options[0].text = "Full £"+ PaypalForm.m_fee.value + " GBP";
       pay_type.options[0].value = "All_Full";
+      {% if event.conc_fee != '' and event.conc_fee != '0' %}
       pay_type.options[1].text = "Concesssion £"+ PaypalForm.m_concfee.value + " GBP";
       pay_type.options[1].value = "All_Concession";
+      {% endif %}
     } 
     else {
       pay_type.options[0].text = "Full £"+ PaypalForm.fee.value + " GBP";
       pay_type.options[0].value = "Full";
+      {% if event.conc_fee != '' and event.conc_fee != '0' %}
       pay_type.options[1].text = "Concesssion £"+ PaypalForm.concfee.value + " GBP";
       pay_type.options[1].value = "Concession";
-
+      {% endif %}
       date_span.innerText = dateSel.options[dateSel.selectedIndex].text;
       date_id.value = date_ids[dateSel.selectedIndex];
     }
