@@ -19,7 +19,7 @@
     if (dateSel.value == "all") {
       pay_type.options[0].text = "Full £"+ PaypalForm.m_fee.value + " GBP";
       pay_type.options[0].value = "All_Full";
-      {% if event.conc_fee > 0 %}
+      {% if 'conc_fee' in event and event.conc_fee > 0 %}
       pay_type.options[1].text = "Concesssion £"+ PaypalForm.m_concfee.value + " GBP";
       pay_type.options[1].value = "All_Concession";
       {% endif %}
@@ -27,7 +27,7 @@
     else {
       pay_type.options[0].text = "Full £"+ PaypalForm.fee.value + " GBP";
       pay_type.options[0].value = "Full";
-      {% if event.conc_fee > 0 %}
+      {% if 'conc_fee' in event and event.conc_fee > 0 %}
       pay_type.options[1].text = "Concesssion £"+ PaypalForm.concfee.value + " GBP";
       pay_type.options[1].value = "Concession";
       {% endif %}
@@ -171,7 +171,7 @@
                             <td>
                               <select id='PayType' name="os0">
                                   <option value="Full">Full &pound;{{ event.fee }} GBP</option>
-                                  {% if event.conc_fee > 0 %}
+                                  {% if 'conc_fee' in event and event.conc_fee > 0 %}
                                   <option value="Concession">Concession &pound;{{ event.conc_fee }} GBP</option>
                                   {% endif %}
                               </select> 
