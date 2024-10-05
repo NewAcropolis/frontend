@@ -551,7 +551,7 @@ class ApiClient(BaseAPIClient):
 
     def unsubscribe_member(self, unsubcode):
         Queue.add('unsubscribe member', url=f'member/unsubscribe/{unsubcode}', method='post')
-        return json.dumps({'message': 'Your unsubscription will be processed'})
+        return {'message': 'Your unsubscription will be processed'}
 
     def update_member_by_admin(self, unsubcode, name, email, active):
         data = {
