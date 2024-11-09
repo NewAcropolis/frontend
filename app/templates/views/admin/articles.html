@@ -160,9 +160,7 @@
                             selected = false;
                         });
                     }
-                    else {
-                        tinymce.activeEditor.setContent(data['content']);
-                    }
+                    tinymce.activeEditor.setContent(data['content']);
 
                     tagify.removeAllTags();
                     if (data['tags']) {
