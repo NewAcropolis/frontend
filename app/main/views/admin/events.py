@@ -83,7 +83,8 @@ def admin_events(selected_event_id=None, api_message=None):
             'reject_reasons': reject_reasons,
             'remote_access': form.remote_access.data,
             'remote_pw': form.remote_pw.data,
-            'show_banner_text': form.show_banner_text.data
+            'show_banner_text': form.show_banner_text.data,
+            'headline': form.headline.data
         }
 
         adjusted_event = event.copy()

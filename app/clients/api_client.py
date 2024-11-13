@@ -22,17 +22,19 @@ def only_show_approved_events(func):
     return _only_show_approved_events
 
 
-def get_events_intro_courses_prioritised(events):
-    intro_courses_first = []
+def get_events_headline_then_intro_courses_prioritised(events):
+    headline_events = []
+    intro_courses = []
     other_events = []
     for event in events:
-        if event['event_type'] == 'Introductory Course':
-            intro_courses_first.append(event)
+        if event.get('headline'):
+            headline_events.append(event)
+        elif event['event_type'] == 'Introductory Course':
+            intro_courses.append(event)
         else:
             other_events.append(event)
 
-    intro_courses_first.extend(other_events)
-    return intro_courses_first
+    return headline_events + intro_courses + other_events
 
 
 def call_sim_function(f, *args, **kwargs):
@@ -389,14 +391,14 @@ class ApiClient(BaseAPIClient):
     @only_show_approved_events
     def get_events_in_future_from_db(self):
         events = get_nice_event_dates(self.get(url='events/future'), future_dates_only=True)
-        return get_events_intro_courses_prioritised(events)
+        return get_events_headline_then_intro_courses_prioritised(events)
 
     @use_cache(
         update_daily=True,
         decorator=only_show_approved_events,
         approved_only=True,  # used by only_show_approved_events
         db_call=get_events_in_future_from_db,
-        sort_by=get_events_intro_courses_prioritised)
+        sort_by=get_events_headline_then_intro_courses_prioritised)
     @only_show_approved_events
     def get_events_in_future(self):
         return self.get_events_in_future_from_db()

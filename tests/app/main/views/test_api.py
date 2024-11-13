@@ -179,6 +179,7 @@ class WhenAccessingFutureEventsPage(object):
                         }
                     ],
                     "fee": 5,
+                    "headline": False,
                     "image_filename": "2019/test_image.jpg",
                     "multi_day_conc_fee": 0,
                     "multi_day_fee": 0,
@@ -231,6 +232,7 @@ class WhenAccessingFutureEventsPage(object):
                         }
                     ],
                     "fee": 15,
+                    "headline": False,
                     "image_filename": "2019/IMG_2122.JPG",
                     "multi_day_conc_fee": 30,
                     "multi_day_fee": 40,
