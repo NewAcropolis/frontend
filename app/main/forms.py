@@ -261,6 +261,7 @@ class EventForm(FlaskForm):
     remote_access = StringField('Remote access')
     remote_pw = StringField('Remote password')
     show_banner_text = BooleanField('Show banner text?', default=True)
+    headline = BooleanField('Headline?', default=False)
 
     def set_events_form(self, events, event_types, speakers, venues):
         self.set_events(self.events, events, 'New event')

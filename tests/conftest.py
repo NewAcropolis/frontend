@@ -124,6 +124,7 @@ def sample_future_events(mocker):
             "event_state": "approved",
             "venue": {"name": "London"},
             "show_banner_text": True,
+            "headline": False,
             "fee": 5
         },
         {
@@ -139,6 +140,7 @@ def sample_future_events(mocker):
             "event_state": "approved",
             "venue": {"name": "Bristol"},
             "show_banner_text": True,
+            "headline": False,
             "fee": 5
         },
         {
@@ -155,6 +157,7 @@ def sample_future_events(mocker):
             "event_state": "approved",
             "venue": {"name": "London"},
             "show_banner_text": True,
+            "headline": False,
             "fee": 5
         },
         {
@@ -170,6 +173,7 @@ def sample_future_events(mocker):
             "event_state": "approved",
             "venue": {"name": "Online Event"},
             "show_banner_text": True,
+            "headline": False,
             "fee": 5
         },
     ]
