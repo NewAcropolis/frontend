@@ -292,7 +292,11 @@ class ApiClient(BaseAPIClient):
         elif q_item.cache_type == 'email':
             update_cache('get_latest_emails')
 
-        Queue.update(q_item)
+        if q_item.status == "ok":
+            current_app.logger.info(f"Purged: {q_item.cache_name}")
+            Queue.purge(q_item)
+        else:
+            Queue.update(q_item)
 
         return json_resp
 

@@ -91,6 +91,10 @@ class Queue(ndb.Model):
         return f"ok: {deleted_ok}, not ok: {deleted_not_ok}"
 
     @staticmethod
+    def purge(item):
+        item.key.delete()
+
+    @staticmethod
     def suspend_error_items():
         suspended = 0
         for q in Queue.query().filter(
