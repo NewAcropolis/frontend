@@ -169,6 +169,14 @@ class ArticleForm(FlaskForm):
             )
 
 
+class SelectedTagsForm(FlaskForm):
+    selected_tags = HiddenField()
+    active = HiddenField(default=0)
+
+    def set_selected_tags_form(self, tags):
+        self.selected_tags.data = tags
+
+
 class ArticlesZipfileForm(FlaskForm):
     articles_zipfile = FileField('Zip file of articles')
     magazines = SelectField('Magazines')

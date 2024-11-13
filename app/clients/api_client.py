@@ -8,6 +8,7 @@ import os
 from app.config import use_sim_data
 from app.cache import Cache
 from app.queue import Queue
+from app.selected_tags import SelectedTags
 from app.clients import BaseAPIClient
 from app.clients.utils import get_nice_event_dates, get_nice_event_date
 
@@ -487,6 +488,19 @@ class ApiClient(BaseAPIClient):
     @use_cache(update_daily=True, db_call=get_articles_summary_from_db)
     def get_articles_summary(self):
         return self.get_articles_summary_from_db()
+
+    def get_articles_by_tags_from_db(self):
+        return self.get(url='articles/tags')
+
+    def get_articles_summary_by_tags_from_db(self):
+        tags = SelectedTags.get_selected_tags().tags
+        # breakpoint()
+        return self.get(url=f'articles/summary/tags/{tags}')
+
+    @use_cache(update_daily=True, db_call=get_articles_summary_by_tags_from_db)
+    def get_articles_summary_by_tags(self):
+        # breakpoint()
+        return self.get_articles_summary_by_tags_from_db()
 
     def get_article_from_db(self, id):
         article = self.get(url='article/{}'.format(id))

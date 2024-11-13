@@ -15,7 +15,7 @@ from app.clients.utils import get_nice_event_date
 
 @main.route('/events')
 def events():
-    articles = api_client.get_articles_summary()
+    articles = api_client.get_articles_summary_by_tags()
 
     future_events = api_client.get_events_in_future(approved_only=True)
 

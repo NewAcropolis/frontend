@@ -4,10 +4,11 @@ import json
 
 from app import api_client
 from app.tag import Tag
+from app.selected_tags import SelectedTags
 from app.clients.api_client import update_cache
 from app.clients.errors import HTTPError
 from app.main import main
-from app.main.forms import ArticleForm, ArticlesZipfileForm
+from app.main.forms import ArticleForm, ArticlesZipfileForm, SelectedTagsForm
 from app.clients.utils import size_from_b64
 
 
@@ -20,12 +21,16 @@ def admin_articles(selected_article_id=None, api_message=None):
     magazines = api_client.get_magazines_from_db()
 
     form = ArticleForm()
+    selected_tags_form = SelectedTagsForm()
 
     form.set_article_form(articles, magazines)
 
     tags = Tag.get_tags()
 
-    if form.validate_on_submit():
+    if selected_tags_form.active.data == '1' and selected_tags_form.validate_on_submit():
+        # breakpoint()
+        SelectedTags.update_selected_tags(selected_tags_form.selected_tags.data)
+    elif form.validate_on_submit():
         if form.image_filename.data:
             image_filename = form.image_filename.data.filename
         else:
@@ -60,6 +65,7 @@ def admin_articles(selected_article_id=None, api_message=None):
         if not errors:
             try:
                 message = None
+
                 if article.get('article_id'):
                     article_id = article.get('article_id')
                     response = api_client.update_article(article_id, article)
@@ -74,7 +80,7 @@ def admin_articles(selected_article_id=None, api_message=None):
                 else:
                     response = api_client.add_article(article)
                     message = 'article added, please wait a few minutes for the upload to complete'
-                    update_cache(func=api_client.get_articles_summary_from_db)
+                    update_cache(func=api_client.get_articles_summary_by_tags_from_db)
 
                 if 'error' in session:
                     errors = session.pop('error')
@@ -85,10 +91,14 @@ def admin_articles(selected_article_id=None, api_message=None):
                 current_app.logger.error(e)
                 errors = json.dumps(e.message)
 
+    if SelectedTags.get_selected_tags():
+        selected_tags_form.set_selected_tags_form(SelectedTags.get_selected_tags().tags)
+
     return render_template(
         'views/admin/articles.html',
         errors=errors,
         form=form,
+        selected_tags_form=selected_tags_form,
         message=api_message,
         selected_article_id=selected_article_id,
         tags=",".join(tags)
@@ -130,7 +140,7 @@ def admin_articles_zipfile(zipfile_id=None, api_message=None):
             if not errors:
                 try:
                     response = api_client.upload_articles_zipfile(article_zipfile)
-                    update_cache(func=api_client.get_articles_summary_from_db)
+                    update_cache(func=api_client.get_articles_summary_by_tags_from_db)
                     if 'errors' in response:
                         errors = '<br>'.join(
                             [f"<a href='/admin/articles/{i['id']}'>{i['article']}</a>" for i in response['errors']]
@@ -160,3 +170,9 @@ def _get_article():
     article = api_client.get_article(id)
 
     return jsonify(article)
+
+
+@main.route('/admin/_update_selected_tags', methods=['GET', 'POST'])
+def _update_selected_tags():
+    breakpoint()
+    return 'ok'
