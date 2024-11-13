@@ -17,6 +17,7 @@
   transition: transform 0.5s ease, -webkit-transform 0.5s ease;
   -webkit-backface-visibility: visible;
   backface-visibility: visible;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 /*--- Fixed Background Image --*/
 figure {
