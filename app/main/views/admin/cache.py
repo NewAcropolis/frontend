@@ -67,10 +67,11 @@ def _update_cache(names):
 
 
 @main.route('/admin/_purge_cache')
-def _purge_cache():
-    current_app.logger.info("Purging all cache: {}".format(session["user_profile"]["name"]))
+@main.route('/admin/_purge_cache/<string:name>')
+def _purge_cache(name=None):
+    current_app.logger.info("Purging {} cache: {}".format(name if name else "all", session["user_profile"]["name"]))
 
-    Cache.purge_cache()
+    Cache.purge_cache(name)
     return jsonify({'response': 'cache purged'})
 
 

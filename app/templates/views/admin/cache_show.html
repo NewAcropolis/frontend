@@ -26,6 +26,9 @@
         <div class="col-3">
             <button id="reload" type="button" class="btn btn-warning">Reload cache</button>
         </div>
+        <div class="col-3">
+            <button id="purge" type="button" class="btn btn-warning">Purge cache</button>
+        </div>
         <div class="col-9">
             <button id="return" type="button" class="btn btn-danger">Return</button>
         </div>
@@ -41,6 +44,12 @@
         formatJson()
         $('#reload').on('click', function() {
             $.getJSON("/admin/_update_cache/{{cache.name}}", null, function(data) {
+                alert(data['response']);
+                location.reload();
+            });
+        });
+        $('#purge').on('click', function() {
+            $.getJSON("/admin/_purge_cache/{{cache.name}}", null, function(data) {
                 alert(data['response']);
                 location.reload();
             });
