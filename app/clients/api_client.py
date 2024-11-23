@@ -264,6 +264,9 @@ class ApiClient(BaseAPIClient):
             cache = Cache.get_cache(cache_name)
             found = False
             json_response = json.loads(q_item.response)
+            if 'id' not in json_response or json_response['result'] == 'error':
+                current_app.logger.warning(f'Invalid response for update cache of {cache_name}: {q_item.response}')
+                return
             json_cache = json.loads(cache['data'])
             delete_index = -1
             for i, c in enumerate(json_cache):
