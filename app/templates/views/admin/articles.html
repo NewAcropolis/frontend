@@ -20,9 +20,6 @@
                 <button id="update" type="submit" class="btn btn-default">Update</button>
                 {{ selected_tags_form.active }}
             </div>
-            <div class='ml-1 col-12 text-left'>
-                Filter using tags <input type="radio">
-            </div>
         </div>
     </form>
     <form class="form" id="articles_form" method="post" enctype="multipart/form-data">{{ form.csrf_token }}
@@ -108,7 +105,7 @@
       originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
       dropdown : {
             enabled       : 0,              // show the dropdown immediately on focus
-            maxItems      : 5,
+            maxItems      : -1,
             closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
             // highlightFirst: true
       },
@@ -120,7 +117,7 @@
       enforceWhitelist: true,
       dropdown : {
             enabled       : 0,              // show the dropdown immediately on focus
-            maxItems      : 5,
+            maxItems      : -1,
             closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
             // highlightFirst: true
       },
@@ -143,9 +140,11 @@
             _author: $('#author'),
             _content: $('#article_content'),
             _article_image: $('#article_img'),
+            _existing_image: $('#existing_image_filename'),
             _tags: $('#tagify'),
             _selected_tags: $('#tagify_selected_tags')
         };
+        tagify_selected_tags.addTags("{{ selected_tags_form.selected_tags.data }}");
 
         updateArticle();
 
@@ -159,10 +158,10 @@
                 elements._magazines.val('');
                 elements._article_image.attr('style', 'display:none;width:100px;');
                 elements._article_image.attr('src', '');
+                elements._existing_image.val('');
                 elements._author.val('');
                 tinymce.activeEditor.setContent('');
                 tagify.removeAllTags();
-                tagify_selected_tags.addTags("{{ selected_tags_form.selected_tags.data }}");
                 update_for_article_state('new');
                 return;
             }
@@ -174,6 +173,8 @@
                     elements._magazines.val(data['magazine_id']);
                     elements._title.val(data['title']);
                     elements._author.val(data['author']);
+                    elements._existing_image.val('');
+                    elements._article_image.attr('src', '');
                     if (data['image_filename']) {
                         elements._article_image.attr('style', 'display:block;width:100px;');
                         elements._article_image.attr('src', '{{get_images_url()}}/thumbnail/articles/' + data['image_filename']);

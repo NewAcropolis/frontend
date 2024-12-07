@@ -22,15 +22,15 @@ def admin_articles(selected_article_id=None, api_message=None):
 
     form = ArticleForm()
     selected_tags_form = SelectedTagsForm()
+    # breakpoint()
+    if selected_tags_form.active.data == '1' and selected_tags_form.validate_on_submit():
+        SelectedTags.update_selected_tags(selected_tags_form.selected_tags.data)
 
-    form.set_article_form(articles, magazines)
+    form.set_article_form(articles, magazines, SelectedTags.get_selected_tags().tags)
 
     tags = Tag.get_tags()
 
-    if selected_tags_form.active.data == '1' and selected_tags_form.validate_on_submit():
-        # breakpoint()
-        SelectedTags.update_selected_tags(selected_tags_form.selected_tags.data)
-    elif form.validate_on_submit():
+    if selected_tags_form.active.data != '1' and form.validate_on_submit():
         if form.image_filename.data:
             image_filename = form.image_filename.data.filename
         else:

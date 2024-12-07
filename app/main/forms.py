@@ -1,4 +1,5 @@
 from datetime import datetime
+from functools import cmp_to_key
 from pytz import country_names
 import re
 
@@ -148,7 +149,7 @@ class ArticleForm(FlaskForm):
     tags = HiddenField()
     old_tags = HiddenField()
 
-    def set_article_form(self, articles, magazines):
+    def set_article_form(self, articles, magazines, tags):
         self.magazines.choices = [('', 'No magazine link')]
         for magazine in magazines:
             self.magazines.choices.append(
@@ -160,13 +161,39 @@ class ArticleForm(FlaskForm):
 
         self.articles.choices = [('', '== New article ==')]
 
+        articles_list = []
+
         for article in articles:
-            self.articles.choices.append(
-                (
-                    article['id'],
-                    article['title']
+            tagged = False
+            if tags:
+                for tag in tags.lower().split(','):
+                    if article.get('tags') and tag + ',' in article.get('tags').lower() + ',':
+                        tagged = True
+                articles_list.append(
+                    (
+                        article['id'],
+                        ("* " if tagged else "") + article['title']
+                    )
                 )
-            )
+
+        def article_compare(a, b):
+            if a[1].startswith('*'):
+                if b[1].startswith('*'):
+                    if a[1] < b[1]:
+                        return -1
+                    else:
+                        return 1
+                else:
+                    return -1
+            else:
+                if a[1] < b[1]:
+                    return -1
+                else:
+                    return 1
+
+        article_compare_key = cmp_to_key(article_compare)
+        articles_list.sort(key=article_compare_key)
+        self.articles.choices = articles_list
 
 
 class SelectedTagsForm(FlaskForm):

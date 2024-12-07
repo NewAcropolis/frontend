@@ -490,16 +490,15 @@ class ApiClient(BaseAPIClient):
         return self.get_articles_summary_from_db()
 
     def get_articles_by_tags_from_db(self):
-        return self.get(url='articles/tags')
+        tags = SelectedTags.get_selected_tags().tags
+        return self.get(url=f'articles/tags/all/{tags}')
 
     def get_articles_summary_by_tags_from_db(self):
         tags = SelectedTags.get_selected_tags().tags
-        # breakpoint()
         return self.get(url=f'articles/summary/tags/{tags}')
 
     @use_cache(update_daily=True, db_call=get_articles_summary_by_tags_from_db)
     def get_articles_summary_by_tags(self):
-        # breakpoint()
         return self.get_articles_summary_by_tags_from_db()
 
     def get_article_from_db(self, id):

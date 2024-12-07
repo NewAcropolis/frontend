@@ -304,7 +304,7 @@ def sample_articles_summary(mocker):
     ]
 
     mocker.patch(
-        "app.clients.api_client.ApiClient.get_articles_summary",
+        "app.clients.api_client.ApiClient.get_articles_summary_by_tags",
         return_value=articles
     )
     return articles

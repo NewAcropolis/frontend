@@ -19,7 +19,6 @@ def index():
             event['carousel_text'] = 'Courses starting {}'.format(event['event_monthyear'])
         if event['venue']['name'] == 'Online Event':
             event['event_type'] = 'Online ' + event['event_type']
-    # breakpoint()
     articles = api_client.get_articles_summary_by_tags()
     if articles:
         index = randint(0, len(articles) - 1)
