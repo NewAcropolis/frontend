@@ -6,6 +6,7 @@ from app.cache import Cache
 from app.main import main
 from app.main.views import requires_auth, app_engine_only
 from app.queue import Queue
+from app.selected_tags import SelectedTags
 from app.stats import send_ga_event
 from app import api_client, csrf
 
@@ -80,6 +81,15 @@ def api_article(id):
         'views/api_test/article.html',
         article=article
     )
+
+
+@main.route('/api/selected_tags/<string:tags>')
+@main.route('/api/selected_tags')
+@requires_auth
+def api_selected_tags(tags=None):
+    SelectedTags.update_selected_tags('test,test_more' if not tags else tags)
+    selected_tags = SelectedTags.get_selected_tags()
+    return f'Selected tags: {selected_tags.tags}'
 
 
 @main.route('/test/stats/<string:label>')

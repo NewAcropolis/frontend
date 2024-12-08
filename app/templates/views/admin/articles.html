@@ -12,6 +12,16 @@
 {% if user_has_permissions('article') %}
 <div class="container pb-3 text-right" style="width: 800px;">
     <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
+    <form class="form" id="selected_tags_form" method="post" enctype="multipart/form-data">{{ selected_tags_form.csrf_token }}
+        <div class="row">
+            <div class='ml-1 col-12 text-left'>
+                {{ selected_tags_form.selected_tags }}
+                Selected tags: <input id="tagify_selected_tags" placeholder="tags">
+                <button id="update" type="submit" class="btn btn-default">Update</button>
+                {{ selected_tags_form.active }}
+            </div>
+        </div>
+    </form>
     <form class="form" id="articles_form" method="post" enctype="multipart/form-data">{{ form.csrf_token }}
         <div class="row">
             <div class='ml-3 col-12'>
@@ -95,7 +105,19 @@
       originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
       dropdown : {
             enabled       : 0,              // show the dropdown immediately on focus
-            maxItems      : 5,
+            maxItems      : -1,
+            closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
+            // highlightFirst: true
+      },
+        whitelist: "{{tags}}".split(",")
+    });
+    var input_selected_tags = document.querySelector('#tagify_selected_tags')
+    var tagify_selected_tags = new Tagify(input_selected_tags, {
+      originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(','),
+      enforceWhitelist: true,
+      dropdown : {
+            enabled       : 0,              // show the dropdown immediately on focus
+            maxItems      : -1,
             closeOnSelect : false,          // keep the dropdown open after selecting a suggestion
             // highlightFirst: true
       },
@@ -118,8 +140,11 @@
             _author: $('#author'),
             _content: $('#article_content'),
             _article_image: $('#article_img'),
-            _tags: $('#tagify')
+            _existing_image: $('#existing_image_filename'),
+            _tags: $('#tagify'),
+            _selected_tags: $('#tagify_selected_tags')
         };
+        tagify_selected_tags.addTags("{{ selected_tags_form.selected_tags.data }}");
 
         updateArticle();
 
@@ -133,6 +158,7 @@
                 elements._magazines.val('');
                 elements._article_image.attr('style', 'display:none;width:100px;');
                 elements._article_image.attr('src', '');
+                elements._existing_image.val('');
                 elements._author.val('');
                 tinymce.activeEditor.setContent('');
                 tagify.removeAllTags();
@@ -147,6 +173,8 @@
                     elements._magazines.val(data['magazine_id']);
                     elements._title.val(data['title']);
                     elements._author.val(data['author']);
+                    elements._existing_image.val('');
+                    elements._article_image.attr('src', '');
                     if (data['image_filename']) {
                         elements._article_image.attr('style', 'display:block;width:100px;');
                         elements._article_image.attr('src', '{{get_images_url()}}/thumbnail/articles/' + data['image_filename']);
@@ -205,9 +233,18 @@
             updateArticle();
         });
 
+        $( "#selected_tags_form " ).submit(function() {
+            prepSelectedTagsSubmit();
+        });
+
         $( "#articles_form" ).submit(function() {
             prepSubmit();
         });
+
+        $('#selected_tags_form').submit(function() {
+            $('#selected_tags').val(elements._selected_tags.val());
+            $('#active').val('1');
+        })
 
         $('#draft').on('click', function() {
             $('#article_state').val('draft');
@@ -232,6 +269,10 @@
         $("#articles").val("{{selected_article_id}}").change();
         selected = true;
         {% endif %}
+
+        function prepSelectedTagsSubmit() {
+            $('#active').val(1);
+        }
 
         function prepSubmit() {
             if ($('#article_img').attr('src'))

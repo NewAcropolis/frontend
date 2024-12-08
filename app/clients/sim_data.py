@@ -156,7 +156,7 @@ def sim_get_event_by_id(*args, **kwargs):
             return e
 
 
-def sim_get_articles_summary(*args, **kwargs):
+def sim_get_articles_summary_by_tags(*args, **kwargs):
     return [
         {
             'id': '17d0834f-1178-4fbd-b40b-9d5bca334a0dy',
