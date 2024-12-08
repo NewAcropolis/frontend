@@ -22,7 +22,6 @@ def admin_articles(selected_article_id=None, api_message=None):
 
     form = ArticleForm()
     selected_tags_form = SelectedTagsForm()
-    # breakpoint()
     if selected_tags_form.active.data == '1' and selected_tags_form.validate_on_submit():
         SelectedTags.update_selected_tags(selected_tags_form.selected_tags.data)
 
@@ -170,9 +169,3 @@ def _get_article():
     article = api_client.get_article(id)
 
     return jsonify(article)
-
-
-@main.route('/admin/_update_selected_tags', methods=['GET', 'POST'])
-def _update_selected_tags():
-    breakpoint()
-    return 'ok'
