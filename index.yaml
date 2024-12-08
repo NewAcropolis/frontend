@@ -23,3 +23,7 @@ indexes:
   properties:
   - name: item_id
   - name: tag
+- kind: SelectedTags
+  properties:
+  - name: tags
+
