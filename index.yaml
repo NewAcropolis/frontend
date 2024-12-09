@@ -26,4 +26,6 @@ indexes:
 - kind: SelectedTags
   properties:
   - name: tags
+  - name: modified_on
+    direction: desc
 
