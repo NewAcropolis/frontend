@@ -490,11 +490,13 @@ class ApiClient(BaseAPIClient):
         return self.get_articles_summary_from_db()
 
     def get_articles_by_tags_from_db(self):
-        tags = SelectedTags.get_selected_tags().tags
+        _selected_tags = SelectedTags.get_selected_tags()
+        tags = _selected_tags.tags if _selected_tags else 'none'
         return self.get(url=f'articles/tags/all/{tags}')
 
     def get_articles_summary_by_tags_from_db(self):
-        tags = SelectedTags.get_selected_tags().tags
+        _selected_tags = SelectedTags.get_selected_tags()
+        tags = _selected_tags.tags if _selected_tags else 'none'
         return self.get(url=f'articles/summary/tags/{tags}')
 
     @use_cache(update_daily=True, db_call=get_articles_summary_by_tags_from_db)

@@ -169,12 +169,12 @@ class ArticleForm(FlaskForm):
                 for tag in tags.lower().split(','):
                     if article.get('tags') and tag + ',' in article.get('tags').lower() + ',':
                         tagged = True
-                articles_list.append(
-                    (
-                        article['id'],
-                        ("* " if tagged else "") + article['title']
-                    )
+            articles_list.append(
+                (
+                    article['id'],
+                    ("* " if tagged else "") + article['title']
                 )
+            )
 
         def article_compare(a, b):
             if a[1].startswith('*'):

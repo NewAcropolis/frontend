@@ -25,7 +25,8 @@ def admin_articles(selected_article_id=None, api_message=None):
     if selected_tags_form.active.data == '1' and selected_tags_form.validate_on_submit():
         SelectedTags.update_selected_tags(selected_tags_form.selected_tags.data)
 
-    form.set_article_form(articles, magazines, SelectedTags.get_selected_tags().tags)
+    form.set_article_form(
+        articles, magazines, SelectedTags.get_selected_tags().tags if SelectedTags.get_selected_tags() else '')
 
     tags = Tag.get_tags()
 
