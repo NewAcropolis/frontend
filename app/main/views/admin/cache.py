@@ -5,6 +5,7 @@ from app.main.views.api import api_check_workers
 from app.clients.api_client import only_show_approved_events, update_cache
 from app.cache import Cache
 from app.main import main
+from app.selected_tags import SelectedTags
 
 
 @main.route('/admin/cache')
@@ -16,7 +17,9 @@ def cache():
 @main.route('/admin/cache/show/<string:name>')
 def cache_show(name):
     cache = Cache.get_cache(name)
-    return render_template('views/admin/cache_show.html', cache=cache)
+    if name == 'get_articles_summary_by_tags':
+        extra = f' ({SelectedTags.get_selected_tags().tags})'
+    return render_template('views/admin/cache_show.html', cache=cache, extra=extra)
 
 
 @main.route('/admin/_reload_cache')
