@@ -17,7 +17,7 @@ def cache():
 @main.route('/admin/cache/show/<string:name>')
 def cache_show(name):
     cache = Cache.get_cache(name)
-    if name == 'get_articles_summary_by_tags':
+    if name == 'get_articles_summary_by_tags' and SelectedTags.get_selected_tags():
         extra = f' ({SelectedTags.get_selected_tags().tags})'
     return render_template('views/admin/cache_show.html', cache=cache, extra=extra)
 
