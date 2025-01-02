@@ -31,7 +31,7 @@ INTRO_COURSE = {
                    "is the real measure of what we are, theory and practice inform each other. Each course evening "
                    "will explore the practical relevance of philosophy and its potential to transform ourselves and "
                    "society.&lt;br&gt;&lt;br&gt;\r\n\r\n&lt;strong&gt;\r\nFirst introductory evening FREE. Price for "
-                   "the whole course £220 (£150 concessions), handouts included.&lt;/strong&gt;",
+                   "the whole course £220, handouts included.&lt;/strong&gt;",
     "event_dates": [
         {
             "end_time": "00:00",
