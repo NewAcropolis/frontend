@@ -213,6 +213,7 @@ tinymce.init({
 });
 var selected = false;
 var pending = false;
+var showErrors = false;
 
 $(function() {
     {% if temp_event %}
@@ -464,7 +465,11 @@ $(function() {
                         addErrorRow('Error', errs[i]);
                     }
                 }
+                showErrors = true;
                 errors = null;
+            }
+            else {
+                showErrors = false;
             }
             if (temp_event) {
                 elements._title.val(temp_event['title']);
@@ -506,6 +511,7 @@ $(function() {
 
         $.getJSON("{{ url_for('main._get_event') }}", send, function(data) {
             if (data) {
+                showErrors = false;
                 elements._event_type.val(data['event_type_id']);
                 elements._title.val(data['title']);
                 elements._sub_title.val(data['sub_title']);
@@ -905,7 +911,9 @@ $(function() {
     });
 
     function setupEvents(){
-        $('#error_section').html('');
+        if (!showErrors) {
+            $('#error_section').html('');
+        }
         document.location.hash = "event_id=" + $('#events').val();
         updateEvent();
     }

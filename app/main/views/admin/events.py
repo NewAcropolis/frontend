@@ -1,6 +1,6 @@
 import base64
 from flask import current_app, jsonify, redirect, render_template, request, session, url_for
-from html import unescape
+from html import unescape, escape
 import json
 import urllib.parse as urlparse
 
@@ -89,7 +89,6 @@ def admin_events(selected_event_id=None, api_message=None):
 
         adjusted_event = event.copy()
 
-        from html import escape
         adjusted_event['description'] = escape(event['description'])
         adjusted_event['event_dates'] = json.loads(str(event['event_dates']))
         file_request = request.files.get('image_filename')
@@ -139,9 +138,12 @@ def admin_events(selected_event_id=None, api_message=None):
                 current_app.logger.error(e)
                 temp_event = json.dumps(event)
                 if "message" in e.message:
-                    errors = e.message['message']
+                    errors = [escape(e.message['message'])]
                 else:
-                    errors = json.dumps(e.message)
+                    errors = json.dumps(escape(e.message))
+    elif form.errors:
+        errors = [escape(str(form.errors))]
+        selected_event_id = form.events.data
 
     return render_template(
         'views/admin/events.html',
@@ -150,7 +152,7 @@ def admin_events(selected_event_id=None, api_message=None):
         selected_event_id=selected_event_id,
         message=api_message,
         temp_event=temp_event,
-        errors=json.dumps(errors),
+        errors=json.dumps(errors) if errors else None,
         limited_events_last_updated=Cache.get_updated_on('get_limited_events').strftime('%d/%m/%Y %H:%M')
     )
 
