@@ -38,7 +38,7 @@ def _reload_cache():
     update_cache(func=api_client.get_articles_summary_from_db)
     update_cache(func=api_client.get_books_from_db)
     update_cache(func=api_client.get_magazines_from_db)
-    update_cache(func=api_client.get_latest_emails)
+    update_cache(func=api_client.get_latest_emails_from_db)
     update_cache(func=api_check_workers)
 
     Cache.purge_older_versions()
@@ -47,7 +47,7 @@ def _reload_cache():
         {
             'response':
             'get_events_in_future, get_limited_events, get_events_past_year, get_users, '
-            'get_articles_summary, get_books, get_magazines, api_check_workers reloaded'
+            'get_articles_summary, get_books, get_magazines, get_latest_emails, api_check_workers reloaded'
         }
     )
 
