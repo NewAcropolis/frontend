@@ -177,7 +177,7 @@ class Queue(ndb.Model):
 
     @staticmethod
     def hold_off_processing(q_item, minutes=10):
-        q_item.held_until = datetime.now() + timedelta(minutes=minutes)
+        q_item.held_until = q_item.updated + timedelta(minutes=minutes)
         q_item.put()
         return q_item.held_until
 
