@@ -134,7 +134,7 @@
         <div class="justify-content-end">
             <button id='preview' type="submit" class="btn btn-outline-info">Preview</button>
             <button id="draft" type="submit" class="btn btn-default">Draft</button>
-            <button id='ready' type="submit" class="btn btn-outline-warning">Ready</button>
+            <button id='ready' type="submit" class="btn btn-outline-warning">Ready / Send admin email</button>
             {% if is_admin_user() %}
             <button id="send" type="submit" class="btn btn-outline-success">Send</button>
             <button id="rejectBtn" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#rejectModal">Reject</button>
@@ -439,7 +439,7 @@
             $('#draft').prop('disabled', has_expired);
             {% if is_admin_user() %}
                 $('#rejectBtn').prop('disabled', has_expired || $.inArray( email_state, [ "draft", "new" ] ) >= 0);
-                $('#ready').prop('disabled', has_expired || email_state == 'ready');
+                $('#ready').prop('disabled', has_expired);
                 $('#send').prop('disabled', has_expired || email_state != 'ready' || pending);
             {% endif %}
         }
