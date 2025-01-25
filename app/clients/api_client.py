@@ -290,6 +290,7 @@ class ApiClient(BaseAPIClient):
 
         if q_item.cache_type == 'event':
             update_cache('get_limited_events')
+            update_cache('get_events_in_future')
 
             Queue.add('get future event post-process', url='events/future', method='get')
             Queue.add('get past event post-process', url='events/past_year', method='get')
