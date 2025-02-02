@@ -192,8 +192,10 @@
 
         $('#_send_starts_at').on('changeDate', function() {
             start_date = $('#_send_starts_at').datepicker('getFormattedDate');
-            if (start_date > $('#_expires').datepicker('getFormattedDate')) {
-                $('#_expires').datepicker("setDate", start_date);
+            two_weeks_before_expiry = moment($('#_expires').datepicker('getFormattedDate')).subtract(2, 'weeks').format("YYYY-MM-DD");
+
+            if (start_date > two_weeks_before_expiry) {
+                $('#_send_starts_at').datepicker("setDate", two_weeks_before_expiry);
             }
         });
 
