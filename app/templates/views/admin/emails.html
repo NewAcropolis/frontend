@@ -300,12 +300,13 @@
                                 });
                             }
                             has_expired = data['event']['has_expired']
-
                             elements._events.val(data['event_id']);
                             elements._details.val(data['details']);
                             elements._extra_txt.val(data['extra_txt']);
-                            elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
-                            elements._expires.datepicker("setDate", data['expires']);
+                            if (!has_expired) {
+                                elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
+                                elements._expires.datepicker("setDate", data['expires']);
+                            }
                             event_id = data['event_id'];
 
                             updateEvents();
@@ -497,7 +498,7 @@
                 }
                 else if (elements._email_types.val() == 'event') {
                     $('#magazine_block').attr('style', 'display:none;');
-                    // if (elements._events.length == 1) {
+
                     if (elements._events.val() == '' || !elements._events.val()) {
                         $("#has_event").attr('style', 'display:none;');
                         $("#no_event").attr('style', 'display:block;');
