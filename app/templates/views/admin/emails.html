@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block extra_head %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/en-gb.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/en-gb.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.en-GB.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.standalone.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.en-GB.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css"/>
     <link rel="stylesheet" type="text/css" href="/static/css/admin.css"/>
 {% endblock %}
 {% block content %}
@@ -300,12 +300,13 @@
                                 });
                             }
                             has_expired = data['event']['has_expired']
-
                             elements._events.val(data['event_id']);
                             elements._details.val(data['details']);
                             elements._extra_txt.val(data['extra_txt']);
-                            elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
-                            elements._expires.datepicker("setDate", data['expires']);
+                            if (!has_expired) {
+                                elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
+                                elements._expires.datepicker("setDate", data['expires']);
+                            }
                             event_id = data['event_id'];
 
                             updateEvents();
@@ -497,7 +498,7 @@
                 }
                 else if (elements._email_types.val() == 'event') {
                     $('#magazine_block').attr('style', 'display:none;');
-                    // if (elements._events.length == 1) {
+
                     if (elements._events.val() == '' || !elements._events.val()) {
                         $("#has_event").attr('style', 'display:none;');
                         $("#no_event").attr('style', 'display:block;');
@@ -568,7 +569,15 @@
         function prepSubmit() {
             elements._events.prop('disabled', false);
             elements._email_types.prop('disabled', false);
-            $('#send_starts_at').val(elements._send_starts_at.datepicker('getFormattedDate'));
+
+            two_weeks_before_expiry = moment($('#_expires').datepicker('getFormattedDate')).subtract(2, 'weeks').format("YYYY-MM-DD");
+            if (elements._send_starts_at.datepicker('getFormattedDate') > two_weeks_before_expiry) {
+                $('#send_starts_at').val(two_weeks_before_expiry);
+            }
+            else {
+                $('#send_starts_at').val(elements._send_starts_at.datepicker('getFormattedDate'));
+            }
+
             $('#expires').val(elements._expires.datepicker('getFormattedDate'));
             $('#send').prop('disabled', true);
         }
