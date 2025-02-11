@@ -268,6 +268,10 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   height: 500px;
   width: 100%;
 }
+.carousel-top{
+  width: 100%;
+  top:0 !important;
+}
 .carousel-caption{
   width: 100%;
   left:0 !important;
@@ -821,6 +825,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   border-left: 150px solid transparent;
   position:absolute;
   right:0;
+  text-shadow: none;
 }
 .giant_past_corner span {
   position:absolute;

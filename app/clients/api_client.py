@@ -305,6 +305,26 @@ class ApiClient(BaseAPIClient):
 
         return json_resp
 
+    def update_fee_status(self, event):
+        match event.get('fee'):
+            case 0:
+                event['fee_status'] = 'free'
+            case -1:
+                event['fee_status'] = 'to_be_decided'
+            case -2:
+                event['fee_status'] = 'external'
+            case -3:
+                event['fee_status'] = 'donations'
+            case -4:
+                event['fee_status'] = 'sold_out'
+        return event
+
+    def update_events_fee_status(self, events):
+        for event in events:
+            event = self.update_fee_status(event)
+
+        return events
+
     def get_speakers_from_db(self):
         return self.get(url='speakers')
 
@@ -356,7 +376,7 @@ class ApiClient(BaseAPIClient):
         from_cache='get_limited_events',
         key='id')
     def get_event_by_id(self, event_id):
-        return get_nice_event_date(self.get_event_by_id_from_db(event_id))
+        return self.update_fee_status(get_nice_event_date(self.get_event_by_id_from_db(event_id)))
 
     def get_event_by_old_id(self, event_id):
         event = self.get(url='legacy/event_handler?eventid={}'.format(event_id))
@@ -371,7 +391,7 @@ class ApiClient(BaseAPIClient):
         return self.get_event_types_from_db()
 
     def get_limited_events_from_db(self):
-        return get_nice_event_dates(self.get(url='events/limit/30'))
+        return self.update_events_fee_status(get_nice_event_dates(self.get(url='events/limit/30')))
 
     @use_cache(db_call=get_limited_events_from_db)
     def get_limited_events(self):
@@ -385,7 +405,7 @@ class ApiClient(BaseAPIClient):
     def get_events_in_year(self, year=None):
         if not year:
             year = int(datetime.today().strftime("%Y"))
-        return get_nice_event_dates(self.get(url='events/year/{}'.format(year)))
+        return self.update_events_fee_status(get_nice_event_dates(self.get(url='events/year/{}'.format(year))))
 
     def get_event_attendance(self, eventdate_id):
         return self.get(url='event/tickets_and_reserved/' + eventdate_id)
@@ -400,7 +420,7 @@ class ApiClient(BaseAPIClient):
     @only_show_approved_events
     def get_events_in_future_from_db(self):
         events = get_nice_event_dates(self.get(url='events/future'), future_dates_only=True)
-        return get_events_headline_then_intro_courses_prioritised(events)
+        return self.update_events_fee_status(get_events_headline_then_intro_courses_prioritised(events))
 
     @use_cache(
         update_daily=True,
@@ -414,7 +434,7 @@ class ApiClient(BaseAPIClient):
 
     @only_show_approved_events
     def get_events_past_year_from_db(self):
-        return get_nice_event_dates(self.get(url='events/past_year'))
+        return self.update_events_fee_status(get_nice_event_dates(self.get(url='events/past_year')))
 
     @use_cache(update_daily=True, db_call=get_events_past_year_from_db)
     def get_events_past_year(self):
