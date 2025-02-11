@@ -60,11 +60,13 @@
       <div class="col-xs-12 col-sm-12 col-md-6">
         {% if (event.fee != 0 and not event.fee) or event.fee == -1 %}
           <h2 class="event_blue">Fee to be decided</h2>
-        {% elif event.fee == -2 %}
+        {% elif event.fee_status == 'external' %}
           <h2 class="event_blue">See external site for fees</h2>
         {% elif event.is_future_event %}
-          {% if event.fee == 0 %}
+          {% if event.fee_status == 'free' %}
           <h2 class="event_blue">Free Admission</h2>
+          {% elif event.fee_status == 'sold_out' %}
+          <h2 class="event_blue">Event has sold out</h2>
           {% else %}
             {% if event.show_buy_now %}
           <h2 class="event_blue">BUY YOUR TICKETS NOW</h2>

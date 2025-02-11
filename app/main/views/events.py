@@ -70,7 +70,8 @@ def event_details(event_id=None, **kwargs):
     event['is_paypal_ready'] = is_paypal_ready(event)
     event['date_ids'] = [str(e['id']) for e in event['event_dates']]
     event['accept_donation'] = event["fee"] == -3
-    event['show_buy_now'] = event["fee"] and event["fee"] not in [-3, -1]
+    event['sold_out'] = event['fee'] == -4
+    event['show_buy_now'] = event["fee"] and event["fee"] not in [-4, -3, -1]
 
     event['_description'] = unescape(event['description'])
 

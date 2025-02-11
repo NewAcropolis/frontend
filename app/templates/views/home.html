@@ -15,7 +15,7 @@
         </div>
         {% endif %}
       </div>
-    {% endfor %}
+      {% endfor %}
       {% for event in all_events %}
         {% if not event.get('past') %}
           {% if get_home_banner_files() %}
@@ -23,19 +23,22 @@
             {% else %}
           <div class="carousel-item {% if loop.index == 1 %} active{% endif %}"></div>
           {% endif %}
-            {% if event.show_banner_text %}
+          {% if event.fee_status == 'sold_out' %}
+          <div class="carousel-top giant_past_corner"><span>Sold Out</span></div>
+          {% endif %}    
+          {% if event.show_banner_text %}
             <img class="d-block w-100" src="{{ get_images_url() }}/standard/{{ event.image_filename }}">
-            <div class="carousel-caption d-md-block">
-              <div class="carousel-title">{{ event.title }}</div>
+          <div class="carousel-caption d-md-block">
+            <div class="carousel-title">{{ event.title }}</div>
               <div class="carousel-banner">
-                <h3> {{ event.event_type.upper() }}: {{ event.formatted_event_datetimes }} </h3>
+                    <h3> {{ event.event_type.upper() }}: {{ event.formatted_event_datetimes }} </h3>
                 <h5><a href="{{ url_for('main.event_details', event_id=event.id) }}">FIND OUT MORE</a></h5>
               </div>
             </div>
             {% else %}
             <a href="{{ url_for('main.event_details', event_id=event.id) }}">
               <img class="d-block w-100" src="{{ get_images_url() }}/standard/{{ event.image_filename }}">
-            </a>  
+            </a>
             {% endif %}
           </div>
         {% endif %}
@@ -115,9 +118,15 @@
           <div class="col-md-4 col-sm-6">
             <div class="card cardmulti bg-light">
               <img class="card-img-top cardimgtopmulti" src="{{ get_images_url() }}/standard/{{ event.image_filename }}">
-              {% if event.get('past') %}
-                <div class="card-body past_card_padding cream_backgroundcolour">
-                <div class="past_corner"><span>Past Event</span></div>
+              {% if event.get('past') or event.get('fee_status') == 'sold_out' %}
+                <div class="card-body past_card_padding">
+                <div class="past_corner"><span>
+                  {% if event.fee == -4 %}
+                  Sold Out
+                  {% else %}
+                  Past Event
+                  {% endif %}
+                </span></div>
                 <div class="past_card_text_padding">
               {% else %}
                 <div class="card-body">
@@ -125,7 +134,7 @@
                 <h4 class="card-title" id="blue_txt">{{ event.event_type }}</h4>
                 <p class="card-text cardtextmulti">{{ event.formatted_event_datetimes }}</p>
                 <p class="card-text cardtextmulti dark_grey_txt"><a href="{{ url_for('main.event_details', event_id=event.id) }}">{{ event.title }}</a></p>
-              {% if event.get('past') %}
+              {% if event.get('past') or event.get('fee_status') == 'sold_out' %}
                 </div>
               {% endif %}
               </div>
