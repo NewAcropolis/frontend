@@ -16,7 +16,7 @@ def unsubscribe(unsubcode):
         message = '{} has already unsubscribed'.format(member['name'])
 
     if unsubscribe_form.validate_on_submit():
-        if unsubscribe_form.email.data == member['email']:
+        if unsubscribe_form.email.data.lower().strip() == member['email'].lower().strip():
             response = api_client.unsubscribe_member(unsubcode)
             if 'message' in response:
                 message = response['message']
