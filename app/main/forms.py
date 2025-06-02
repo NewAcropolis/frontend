@@ -367,6 +367,8 @@ class EmailForm(FlaskForm):
     events = SelectField('Events')
     details = TextAreaField('Details')
     extra_txt = TextAreaField('Extra text')
+    subject = StringField('Subject')
+    basic_content = TextAreaField('Basic Content')
     submit_type = HiddenField()
     send_starts_at = HiddenField()
     email_state = HiddenField()

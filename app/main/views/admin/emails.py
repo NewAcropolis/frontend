@@ -56,6 +56,9 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
                     subject = v
 
             email.update(event_id=form.events.data)
+        elif form.email_types.data == 'basic':
+            email.update(extra_txt=form.basic_content.data)
+            subject = form.subject.data
 
         email.update(subject=subject)
 
@@ -66,6 +69,9 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
                     emails = [e for e in future_emails if e['id'] == form.emails.data]
                     if emails:
                         email['event_id'] = emails[0]['event_id']
+                elif form.email_types.data == 'basic':
+                    email['subject'] = form.subject.data
+                    email['extra_txt'] = form.basic_content.data
                 elif form.email_types.data == 'magazine' and 'magazine_id' not in email:
                     emails = [e for e in future_emails if e['id'] == form.emails.data]
                     if emails:
