@@ -93,6 +93,20 @@
                     </div>
                 </div>
             </div>
+            <div id='basic_block'>
+                <div class="row">
+                    <div class='col-s-6 text-left'>
+                        <div>Subject</div>
+                        {{form.subject(cols=50)}}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class='col-s-6 text-left'>
+                        <div>Content</div>
+                        {{form.basic_content(cols=60, rows=10)}}
+                    </div>
+                </div>
+            </div>
             <div id="dates_block">
                 <div id="datepicker_block">
                     <div class="row">
@@ -236,7 +250,7 @@
                 elements._send_starts_at.datepicker("setDate", new Date());
                 elements._admin_email_sent.attr('class', 'd-none'); 
 
-                if (elements._email_types.val() == 'magazine') {
+                if (elements._email_types.val() == 'magazine' || elements._email_types.val() == 'basic') {
                     setDisplayBlocks();
                 }
                 else if (elements._email_types.val() == 'event') {
@@ -281,6 +295,18 @@
                             $('#magazine_title').text(data['magazine']['title']);
                             $('#magazine_image').html('<img src="{{get_images_url()}}/thumbnail/pdfs/' + data['magazine']['filename'] + '.png">');
                             $('#magazine_link').attr('href', '/admin/magazines/' + data['magazine_id']);
+
+                            setDisplayBlocks();
+                        }
+                        else if (data['email_type'] == 'basic') {
+                            elements._emails_sent_counts.attr('style', 'display:block;');
+                            elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
+                            elements._expires.datepicker("setDate", data['expires']);
+
+                            event_id = '';
+
+                            $('#subject').val(data['subject']);
+                            $('#basic_content').text(data['extra_txt']);
 
                             setDisplayBlocks();
                         }
@@ -404,6 +430,9 @@
             else if (send['email_type'] == 'magazine') {
                 send['magazine_id'] = email_json['magazine_id'];
             }
+            else if (send['email_type'] == 'basic') {
+                send['extra_txt'] = $('#basic_content').val();
+            }
 
             var preview = window.open("{{API_BASE_URL}}/email/preview?data=" + encodeURIComponent(JSON.stringify(send)));
             setTimeout(function() {
@@ -491,10 +520,19 @@
                 $('#announcement_block').attr('style', 'display:none;');
                 $("#has_email").attr('style', 'display:none;');
                 $("#no_magazine_email").attr('style', 'display:none;');
+                $("#basic_block").attr('style', 'display:none;');
                 if (elements._email_types.val() == 'magazine') {
                     $("#no_email").attr('style', 'display:none;');
                     $("#no_magazine_email").attr('style', 'display:block;');
                     $('#events_block').attr('style', 'display:none;');
+                }
+                else if (elements._email_types.val() == 'basic') {
+                    $("#has_email").attr('style', 'display:block;');
+                    $("#no_email").attr('style', 'display:none;');
+                    $("#no_magazine_email").attr('style', 'display:none;');
+                    $('#magazine_block').attr('style', 'display:none;');
+                    $('#events_block').attr('style', 'display:none;');
+                    $('#basic_block').attr('style', 'display:block;');
                 }
                 else if (elements._email_types.val() == 'event') {
                     $('#magazine_block').attr('style', 'display:none;');
@@ -554,6 +592,12 @@
                     $('#events_block').attr('style', 'display:none;');
                     $('#magazine_block').attr('style', 'display:block;');
                     $('#announcement_block').attr('style', 'display:none;');
+                }
+                else if (elements._email_types.val() == 'basic') {
+                    $("#no_magazine_email").attr('style', 'display:none;');
+                    $('#magazine_block').attr('style', 'display:none;');
+                    $('#events_block').attr('style', 'display:none;');
+                    $('#basic_block').attr('style', 'display:block;');
                 } else if ($('#email_types').val() == 'announcement') {
                     $('#events_block').attr('style', 'display:none;');
                     $('#magazine_block').attr('style', 'display:none;');
