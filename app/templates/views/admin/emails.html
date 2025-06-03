@@ -431,7 +431,8 @@
                 send['magazine_id'] = email_json['magazine_id'];
             }
             else if (send['email_type'] == 'basic') {
-                send['extra_txt'] = $('#basic_content').val();
+                delete send['extra_txt'];
+                send['message'] = $('#basic_content').val();
             }
 
             var preview = window.open("{{API_BASE_URL}}/email/preview?data=" + encodeURIComponent(JSON.stringify(send)));
