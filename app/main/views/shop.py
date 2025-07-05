@@ -1,5 +1,6 @@
 from decimal import Decimal
 from flask import current_app, request, session
+import os
 
 from app import api_client, paypal_client
 from app.main import main
@@ -18,7 +19,8 @@ def shop():
         'views/shop.html',
         books=books,
         delivery_form=delivery_form,
-        show_resource_maintenance=request.args.get("show", "") != "shop"
+        show_resource_maintenance=request.args.get("show", "") != "shop" and
+        os.environ.get('ENVIRONMENT', 'development') == 'live'
     )
 
 @main.route('/shop/cart', methods=['GET', 'POST'])
