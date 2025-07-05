@@ -40,7 +40,7 @@
 
 {% block content %}
 
-{% if config.get('SHOW_RESOURCE_MAINTENANCE') %}
+{% if config.get('SHOW_RESOURCE_MAINTENANCE') or show_resource_maintenance %}
 <div class="container-fluid padding yellow_background">
     <div class="row padding">
         <div class="col-lg-12">

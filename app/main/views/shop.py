@@ -17,7 +17,8 @@ def shop():
     return render_page(
         'views/shop.html',
         books=books,
-        delivery_form=delivery_form
+        delivery_form=delivery_form,
+        show_resource_maintenance=request.args.get("show", "") != "shop"
     )
 
 @main.route('/shop/cart', methods=['GET', 'POST'])
