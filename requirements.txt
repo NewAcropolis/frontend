@@ -34,4 +34,4 @@ virtualenv==20.25.0
 Werkzeug==3.0.1
 WTForms==3.1.2
 
-git+https://github.com/NewAcropolis/na-common.git@4efb1dabcaa55e0c24562f7dcb56f429e90b45c1#egg=na-common
+git+https://github.com/NewAcropolis/na-common.git@707862afd0321e17a2babdb561e1f06b832e6b32#egg=na-common
