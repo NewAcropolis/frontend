@@ -43,7 +43,7 @@ class Config(object):
     ENABLE_STATS = os.environ.get('ENABLE_STATS', '') == 'True'
     TESTING = False
     NO_API = False
-    DELIVERY_UK = 3.50
+    DELIVERY_UK = 0.01
 
     WTF_CSRF_ENABLED = True
     WTF_CSRF_TIME_LIMIT = None
