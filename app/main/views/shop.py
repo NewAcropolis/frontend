@@ -121,4 +121,4 @@ def empty_cart():
 
 @main.route('/cart/get_account')
 def get_account():
-    return current_app.config.get('PAYPAL_ACCOUNT_ID')
+    return current_app.config.get('PAYPAL_ACCOUNT')
