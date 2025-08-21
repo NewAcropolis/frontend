@@ -10,7 +10,7 @@ google-api-core==2.15.0
 google-cloud-logging==3.9.0
 google-cloud-ndb==2.2.2
 google-cloud-storage==2.14.0
-gunicorn==21.2.0
+gunicorn==23.0.0
 iso8601==2.1.0
 jsonschema==4.21.0
 MarkupSafe==2.1.3
