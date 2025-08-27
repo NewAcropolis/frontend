@@ -122,6 +122,9 @@ $(document).ready(function() {
       $('#contact_reasons').val("order");
       $('#contact_message').val('Transaction ID: ' + $.urlParam('txn_code') + '\n');
     }
+    else if ($.urlParam('type') == 'order_process_error' ) {
+      $('#contact_reasons').val("bug");
+    }
   }
 
     $('#sendMessageModal').on('shown.bs.modal', function () {

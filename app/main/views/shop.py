@@ -123,7 +123,7 @@ def empty_cart():
 
 @main.route('/cart/get_account')
 def get_account():
-    json_obj = json.loads(request.args.get('data')) if request.args.get('data') else None 
+    json_obj = json.loads(request.args.get('data')) if request.args.get('data') else None
     if json_obj:
         cached_books = Cache.get_cache('get_books')
         for i in range(1, int(json_obj['item_count']) + 1):

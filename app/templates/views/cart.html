@@ -133,6 +133,11 @@
 </div>
 {% elif cart.get('items') %}
   <div class="container pt-2">
+    {% if request.args.get('checkout_resp') == "error" %}
+    <div class="row text-danger">
+            There was a problem processing your order, to help us improve the website please&nbsp;<a href='?send_message=true&checkout_resp=error&type=order_process_error'> report it</a>.
+    </div>
+    {% endif %}    
     <div class="row">
         <div class="col-8">
             <form id='_delivery_form' target="paypal" method="post">
