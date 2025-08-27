@@ -1,8 +1,10 @@
 from decimal import Decimal
 from flask import current_app, request, session
+import json
 import os
 
 from app import api_client, paypal_client
+from app.cache import Cache
 from app.main import main
 from app.main.forms import DeliveryForm
 from app.main.views import render_page
@@ -121,4 +123,20 @@ def empty_cart():
 
 @main.route('/cart/get_account')
 def get_account():
-    return current_app.config.get('PAYPAL_ACCOUNT')
+    json_obj = json.loads(request.args.get('data')) if request.args.get('data') else None 
+    if json_obj:
+        cached_books = Cache.get_cache('get_books')
+        for i in range(1, int(json_obj['item_count']) + 1):
+            json_books = json.loads(cached_books['data'])
+            item_number = json_obj.get(f'item_number_{i}')[5:]
+            matched_book = [book for book in json_books if item_number == book['id']]
+            if not matched_book:
+                current_app.logger.error(f'Book not found {item_number}, sale aborted')
+                return "error"
+            elif matched_book:
+                price_verify = json_obj.get(f"amount_{i}") == matched_book[0]['price']
+                if not price_verify:
+                    current_app.logger.error(f'Price is different for {item_number}, sale aborted')
+                    return "error"
+        return current_app.config.get('PAYPAL_ACCOUNT')
+    return "error"
