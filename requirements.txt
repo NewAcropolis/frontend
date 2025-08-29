@@ -28,7 +28,7 @@ PyJWT==2.8.0
 requests==2.31.0
 requests-oauthlib==1.3.1
 requests-toolbelt==1.0.0
-setuptools==69.0.3
+setuptools==70.0.0
 textile==4.0.2
 virtualenv==20.25.0
 Werkzeug==3.0.3
