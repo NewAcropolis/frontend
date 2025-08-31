@@ -17,8 +17,8 @@
         <input type="hidden" name="business" value="">
         <input type="hidden" name="shipping_1" value="{{config['DELIVERY_UK']}}">
         <input type="hidden" name="currency_code" value="GBP">
-        <input tpye="hidden" name="return" value="{{config['FRONTEND_BASE_URL']}}/order/end">
-        <input tpye="hidden" name="item_count" value="{{cart['items']|length}}">
+        <input type="hidden" name="return" value="{{config['FRONTEND_BASE_URL']}}/order/end">
+        <input type="hidden" name="item_count" value="{{cart['items']|length}}">
         {% for item in cart['items'] %}
             {% if item.quantity | int > 0 %}
         <input type="hidden" name="item_name_{{loop.index}}" value="{{item.product}}">
