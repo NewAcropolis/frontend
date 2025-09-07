@@ -1,0 +1,88 @@
+<html>
+    <head>
+        <style>
+            @media print {
+                @page {
+                    padding: 30pt;
+                    size: auto;   /* auto is the initial value */
+                    margin: 0;  /* this affects the margin in the printer settings */
+                }
+            }        
+            html, body, td {
+                height: auto;
+                font-size: 16pt;
+            }
+            body {
+                padding: 30pt;
+            }
+
+            .slip {
+                font-size: 13pt;
+            }
+            .slip td {
+                font-size: 13pt;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <table>
+                <tr>
+                    <td>{{name}}</td>
+                </tr>
+                <tr>
+                    <td>{{street}}</td>
+                </tr>
+                <tr>
+                    <td>{{city}}</td>
+                </tr>
+                <tr>
+                    <td>{{postcode}}</td>
+                </tr>
+            </table>
+        </div>
+        <hr style="margin-top:30px; margin-bottom:30px">
+        <div class="slip">
+            <p>Dear {{name}}, <br><br>
+            Thank you for your order ({{txn_id}}) placed on {{order_date}}.
+                <p>
+                    <table>
+                        {% for book in string_to_json(books) %}
+                        <tr>
+                            <td>{{ book.quantity }} of</td><td>{{ book.title }}</td><td>&pound;{{ book.price }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td colspan="2">Delivery</td><td>&pound;{{ delivery_cost }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Total</td><td>&pound;{{ total }}</td>
+                        </tr>
+                    </table>
+                </p>
+            </p>
+            <table>
+                <tr>
+                    <td>Delivered to:</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10pt;">{{name}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10pt;">{{street}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10pt;">{{city}}</td>
+                </tr>
+                <tr>
+                    <td style="padding-left:10pt;">{{postcode}}</td>
+                </tr>
+            </table>
+            <p>
+                If there are any issues with this order please contact us on 0207 359 0059 or send an email to orders@newacropolisuk.org.<br><br>
+                All the best,<br>
+                New Acropolis UK Sales
+            </p>
+        </div>
+    </body>
+</html>
