@@ -6,7 +6,7 @@ from datetime import datetime
 from decimal import Decimal
 from flask import Flask, current_app, make_response, render_template, request, session, url_for
 from flask_wtf.csrf import CSRFProtect, CSRFError
-
+import json
 import textile
 
 from na_common.delivery import statuses as delivery_statuses
@@ -275,6 +275,11 @@ def _format_price(price):
 
     return f"£{_price}"
 
+def _json_to_string(_json):
+    return json.dumps(_json)
+
+def _to_json(_json_str):
+    return json.loads(_json_str)
 
 def init_app(app):
     app.jinja_env.globals['API_BASE_URL'] = app.config['API_BASE_URL']
@@ -298,6 +303,8 @@ def init_app(app):
     app.jinja_env.globals['strfdate'] = _strfdate
     app.jinja_env.globals['to_decimal'] = _to_decimal
     app.jinja_env.globals['format_price'] = _format_price
+    app.jinja_env.globals['json_to_string'] = _json_to_string
+    app.jinja_env.globals['string_to_json'] = _to_json
     app.jinja_env.globals['config'] = app.config
     app.jinja_env.globals['delivery_statuses'] = delivery_statuses
 

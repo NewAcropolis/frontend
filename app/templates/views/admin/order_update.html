@@ -89,6 +89,19 @@
                 Order updated
             </div>
             {% endif %}
+            {% 
+                set qs = "name=" + order.buyer_name + 
+                "&street=" + order.address_street + "&city=" + order.address_city +
+                "&postcode=" + order.address_postal_code + "&txn_id=" + order.txn_id +
+                "&order_date=" + strfdate(order.created_at[:10]) +
+                "&total=" + order.payment_total +
+                "&delivery_cost=" + config["DELIVERY_UK"]|string
+            %}
+            {% if order.books %}
+                {% set books = json_to_string(order.books) %}
+                {% set qs = qs + "&books=" + books %}
+            {% endif %}
+            <a href="/admin/order/shipping?{{ qs }}" target="shipping" id="shipping" name="shipping" class="btn btn-outline-info">Shipping label</a>
                 <button type="submit" class="btn btn-outline-success">Update</button>
             <a href="/admin/orders/{{ order.created_at[:4] }}" id="return" name="return" class="btn btn-outline-secondary">Return</a>
         </div>

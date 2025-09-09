@@ -67,3 +67,19 @@ def _replay_confirmation_email():
     resp = api_client.replay_confirmation_email(request.args.get('txn_id'))
 
     return jsonify(resp)
+
+
+@main.route('/admin/order/shipping')
+def shipping():
+    return render_template(
+        'views/admin/shipping.html',
+        name=request.args.get("name"),
+        street=request.args.get("street"),
+        city=request.args.get("city"),
+        postcode=request.args.get("postcode"),
+        books=request.args.get("books"),
+        txn_id=request.args.get("txn_id"),
+        delivery_cost=request.args.get("delivery_cost"),
+        total=request.args.get("total"),
+        order_date=request.args.get("order_date"),
+    )

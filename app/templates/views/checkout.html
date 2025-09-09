@@ -17,7 +17,8 @@
         <input type="hidden" name="business" value="">
         <input type="hidden" name="shipping_1" value="{{config['DELIVERY_UK']}}">
         <input type="hidden" name="currency_code" value="GBP">
-        <input tpye="hidden" name="return" value="{{config['FRONTEND_BASE_URL']}}/order/end">
+        <input type="hidden" name="return" value="{{config['FRONTEND_BASE_URL']}}/order/end">
+        <input type="hidden" name="item_count" value="{{cart['items']|length}}">
         {% for item in cart['items'] %}
             {% if item.quantity | int > 0 %}
         <input type="hidden" name="item_name_{{loop.index}}" value="{{item.product}}">
@@ -29,16 +30,21 @@
     </form>
     <script>
         function set_business() {
-            var request = new XMLHttpRequest();
+            var form = document.getElementById("_paypal");
+            data = new FormData(form).entries();
+            json = Object.assign(...Array.from(data, ([x,y]) => ({[x]:y})));
 
-            request.open("GET", "/cart/get_account");
+            var request = new XMLHttpRequest();
+            request.open("GET", "/cart/get_account?data=" + JSON.stringify(json));
             request.onreadystatechange = function() {
-                console.log(this.status);
-                if(this.readyState === 4 && this.status === 200) {
+                if(this.readyState === 4 && this.status === 200 && this.responseText != "error") {
                     document.getElementsByName("business")[0].value = this.responseText;
                     console.log('test - ' + document.getElementsByName("business")[0].value);
+                    document.getElementById("_paypal").submit();
                 }
-                document.getElementById("_paypal").submit();
+                else {
+                    window.location.replace("/shop/cart?checkout_resp=error");
+                }
             };
             request.send();
         }
