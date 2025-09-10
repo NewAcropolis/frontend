@@ -16,6 +16,8 @@ def shop():
     delivery_form = DeliveryForm()
     if not current_app.config["SHOW_RESOURCE_MAINTENANCE"]:
         books = api_client.get_books()
+        if os.environ.get('ENVIRONMENT', 'development') == 'live':
+            books = [b for b in books if not b["title"].startswith("TEST")]
 
     return render_page(
         'views/shop.html',
