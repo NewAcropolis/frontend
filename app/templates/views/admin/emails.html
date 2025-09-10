@@ -148,9 +148,9 @@
         <div class="justify-content-end">
             <button id='preview' type="submit" class="btn btn-outline-info">Preview</button>
             <button id="draft" type="submit" class="btn btn-default">Draft</button>
-            <button id='ready' type="submit" class="btn btn-outline-warning">Ready / Send admin email</button>
+            <button id='ready' type="submit" class="btn btn-outline-warning">Ready for review / Send admin review email</button>
             {% if is_admin_user() %}
-            <button id="send" type="submit" class="btn btn-outline-success">Approve</button>
+            <button id="send" type="submit" class="btn btn-outline-success">Send</button>
             <button id="rejectBtn" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#rejectModal">Reject</button>
 
             <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
