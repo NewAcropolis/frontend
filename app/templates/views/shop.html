@@ -39,18 +39,6 @@
 {% endblock %}
 
 {% block content %}
-
-{% if config.get('SHOW_RESOURCE_MAINTENANCE') or show_resource_maintenance %}
-<div class="container-fluid padding yellow_background">
-    <div class="row padding">
-        <div class="col-lg-12">
-        <p class="dark_grey_txt content-width mx-auto text-center"> 
-            This page is under construction, thank you for your patience.
-        </p>
-        </div>
-    </div>
-</div>
-{% else %}
   <div class="container pt-2">
     <div class="row">
         <div class="col-lg-8">
@@ -162,6 +150,4 @@
         </div>
     </div>
 </div>
-{% endif %}
-
 {% endblock %}

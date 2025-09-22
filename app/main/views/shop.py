@@ -14,17 +14,14 @@ from app.main.views import render_page
 def shop():
     books = None
     delivery_form = DeliveryForm()
-    if not current_app.config["SHOW_RESOURCE_MAINTENANCE"]:
-        books = api_client.get_books()
-        if os.environ.get('ENVIRONMENT', 'development') == 'live':
-            books = [b for b in books if not b["title"].startswith("TEST")]
+    books = api_client.get_books()
+    if os.environ.get('ENVIRONMENT', 'development') == 'live':
+        books = [b for b in books if not b["title"].startswith("TEST")]
 
     return render_page(
         'views/shop.html',
         books=books,
-        delivery_form=delivery_form,
-        show_resource_maintenance=request.args.get("show", "") != "shop" and
-        os.environ.get('ENVIRONMENT', 'development') == 'live'
+        delivery_form=delivery_form
     )
 
 @main.route('/shop/cart', methods=['GET', 'POST'])
