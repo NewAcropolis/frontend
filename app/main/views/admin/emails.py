@@ -113,21 +113,24 @@ def _get_email():
             if not event:
                 event = api_client.get_event_by_id(email['event_id'])
 
-                event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
-                parts = [
-                    "{}/{}".format(date_parts[1].lstrip('0'), date_parts[0].lstrip('0'))
-                    for date_parts in [date.split('-') for date in event_dates]
-                ]
+                try:
+                    event_dates = [e['event_datetime'][5:-6] for e in event['event_dates']]
+                    parts = [
+                        "{}/{}".format(date_parts[1].lstrip('0'), date_parts[0].lstrip('0'))
+                        for date_parts in [date.split('-') for date in event_dates]
+                    ]
 
-                email['event'] = {
-                    'value': event['id'],
-                    'text': u'{} - {} - {}'.format(
-                        ", ".join(parts),
-                        event['event_type'],
-                        event['title']
-                    ),
-                    'has_expired': event['has_expired']
-                }
+                    email['event'] = {
+                        'value': event['id'],
+                        'text': u'{} - {} - {}'.format(
+                            ", ".join(parts),
+                            event['event_type'],
+                            event['title']
+                        ),
+                        'has_expired': event['has_expired']
+                    }
+                except Exception as e:
+                    current_app.logger.error(f"get_email exception: #{str(e)}")
         elif email['email_type'] == 'magazine':
             magazine = api_client.get_magazine(email['magazine_id'])
             email['magazine'] = {
