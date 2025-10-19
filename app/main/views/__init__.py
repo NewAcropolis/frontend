@@ -171,6 +171,16 @@ def keep_alive():
     return 'API called'
 
 
+@main.route('/sitemap.txt', methods=['GET'])
+def sitemap():
+    sitemap = ""
+    pages = ["", "about", "courses", "course_details", "events", "magazines", "shop"]
+
+    for page in pages:
+        sitemap += current_app.config["FRONTEND_BASE_URL"] + f"/{page}\n"
+    return sitemap
+
+
 def render_page(template, **kwargs):
     contact_form = ContactForm()
     contact_form.setup()
