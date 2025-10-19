@@ -9,7 +9,7 @@
     <div class="row topic_details_section">
       <div class="col-xs-12 col-lg-6 ">
         <div class="course_details_text">
-          {% set topic = request.args.get('topic') %}
+          {% set topic = request.args.get('topic', 'timeless_universal') %}
           {% set details = get_course_details(topic) %}
           {{details|safe}}
         </div>
