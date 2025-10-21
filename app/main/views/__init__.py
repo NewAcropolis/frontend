@@ -184,10 +184,9 @@ def sitemap():
 @main.route('/robots.txt', methods=['GET'])
 def robots():
     if os.environ.get('ENVIRONMENT', 'development') == "live":
-        robots = "User-agent: *\nDisallow: /admin\n"
+        return "User-agent: *\nDisallow: /admin\n"
     else:
-        robots = "User-agent: *\nDisallow: /\n"
-    return robots
+        return "User-agent: *\nDisallow: /\n"
 
 
 def render_page(template, **kwargs):
