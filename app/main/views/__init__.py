@@ -181,6 +181,15 @@ def sitemap():
     return sitemap
 
 
+@main.route('/robots.txt', methods=['GET'])
+def robots():
+    if os.environ.get('ENVIRONMENT', 'development') == "live":
+        robots = "User-agent: *\nDisallow: /admin\n"
+    else:
+        robots = "User-agent: *\nDisallow: /\n"
+    return robots
+
+
 def render_page(template, **kwargs):
     contact_form = ContactForm()
     contact_form.setup()
