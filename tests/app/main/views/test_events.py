@@ -12,7 +12,7 @@ class WhenAccessingEventsPage(object):
         ))
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
         header_image = page.find('img')['src']
-        assert header_image == '/static/images/NA_Logo.png'
+        assert header_image == '/static/images/NALogo25.png'
 
     def it_should_show_in_events_past_and_future_events_in_cards(
         self, mocker, client,
