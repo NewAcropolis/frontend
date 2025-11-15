@@ -197,8 +197,7 @@ footer{
 }
 #yellow_txt {
   color: rgb(240,200,129);
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
-  
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;  
 }
 #white_txt {
   color: rgb(255, 255, 255);
@@ -331,6 +330,14 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   height: auto;
   padding: 3%;
   color: rgb(255, 255, 255);
+}
+.blue_background a {
+    color: rgb(240,200,129);
+    font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;  
+}
+.blue_background a:hover {
+  color: rgb(240,200,129);
+  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;  
 }
 .display-4 {
   font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
