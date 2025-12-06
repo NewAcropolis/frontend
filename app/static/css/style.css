@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 /*---Media Queries --*/
 @media (max-width: 992px) {
@@ -71,7 +72,7 @@ Extra (xl) large devices (large desktops, 1200px and up)
 
 html, body {
   width: 100%;
-  font-family: Avenir, Arial, Helvetica, sans-serif;
+  font-family: 'Noto Sans', Avenir, Arial, Helvetica, sans-serif;
 }
 
 .top-buffer div {
@@ -88,7 +89,7 @@ html, body {
 
 /* HEADER */
 .navbar{
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   color: rgb(1,75,68);
   background-color: rgb(255, 255, 255);
   padding-top: 0;
@@ -96,8 +97,8 @@ html, body {
 
 }
 .navbar-menu{
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
-  background-color: rgb(10,134,101);
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  background-color: rgb(0, 101, 87);
   border-bottom: solid 10px rgb(238,191,109);
   overflow: hidden;
 }
@@ -136,7 +137,7 @@ html, body {
 /* FOOTER */
 
 footer{
-  background-color: rgb(10,134,101);
+  background-color: rgb(0,101,87);
   color: white;
   padding: 2% 4% 2% 4%;
   font-size: 0.8em;
@@ -197,11 +198,11 @@ footer{
 }
 #yellow_txt {
   color: rgb(240,200,129);
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;  
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;  
 }
 #white_txt {
   color: rgb(255, 255, 255);
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   font-size: 1.2em;
 }
 #bright_yellow_txt {
@@ -209,23 +210,23 @@ footer{
 }
 #blue_txt {
   color: rgb(115, 156, 228);
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   font-size: 20px;
 }
 #blue_txt_foundation {
   color: rgb(115, 156, 228);
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   font-size: 20px;
 }
 #light_grey_txt {
 color:rgb(167, 167, 167);
-font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
 }
 #footer_title_txt {
   color: rgba(175,154,89);
 }
 .dark_grey_txt {
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: rgb(74,74,74) !important;
   font-size: 16px;
 }
@@ -279,7 +280,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   border-width: 1px;
   border-color: rgba(150,150,150,1.0);
   background: rgba(116, 116, 116, 0.45);
-  font-family: 'Avenir',Helvetica,Arial,serif;
+  font-family: 'Noto Sans','Avenir',Helvetica,Arial,serif;
   color: rgb(255, 255, 255);
   padding-bottom: 5px !important;
   padding-top: 10px !important;
@@ -292,10 +293,10 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   color: yellow;
   margin-bottom: 75px;
   font-size: 50px;
-  font-family: 'AvenirNext-Bold',Avenir;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir;
 }
 .introtext {
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   padding: 2% 9% 2% 9%;
   font-size: 1.2em;
   color: rgb(167, 167, 167);
@@ -308,7 +309,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   height: 260px;
   background-color: white;
   width: 100%;
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   
   color: rgb(167,167,167); 
 }
@@ -325,7 +326,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 }
 .blue_background {
   background-color: rgb(63,96,144);
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   letter-spacing: 1px;
   height: auto;
   padding: 3%;
@@ -333,19 +334,19 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 }
 .blue_background a {
     color: rgb(240,200,129);
-    font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;  
+    font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;  
 }
 .blue_background a:hover {
   color: rgb(240,200,129);
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;  
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;  
 }
 .display-4 {
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   padding-top: 2%;
   font-size: 35px !important;
 }
 .display-5 {
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   padding-top: 2%;
   font-size: 25px !important;
 }
@@ -381,7 +382,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   border-color: rgba(150,150,150,1.0);
 }
 .light_text {
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   color: rgb(157,157,157);
 }
 .light_text a {
@@ -396,7 +397,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   background-color: rgb(63,96,144);
   height: auto;
   width: 100%;
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: white;
   line-height: 27.0px;
   padding: 1%;
@@ -405,20 +406,20 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   background-color: rgb(63,96,144);
   height: auto;
   width: 100%;
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   color: rgb(255, 255, 255);
   line-height: 27.0px;
   padding: 1%;
 }
 .magazine_head {
   font-size: 1.8em;
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: rgb(115, 156, 228);
   text-align: right;
 }
 .magazine_txt {
   font-size: 1.2em;
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: rgb(0, 0, 0);
   text-align: right;
 }
@@ -438,7 +439,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   opacity: .76;
   height: auto;
   width: auto;
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   font-size: 2em;
   color: rgb(74,74,74);
   line-height: 32.0px;
@@ -467,7 +468,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   font-size: 17px;
   transform: rotate(45deg);
   display:block;
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
   color: white;
 }
 .past_card_padding{
@@ -561,14 +562,14 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 .about_box{
   border: solid 2px rgba(121, 121, 121, 0.5);
   padding: 5%; 
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   color: rgba(105, 105, 105, 0.5);
   text-align: left;
   height:355px;
   max-width: 470px;
 }
 .about_blue_box_txt{
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
 }
 .about_hotspot {
   position: relative;
@@ -584,7 +585,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   display: block;
 }
 #about_us_pyramid_text {
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   overflow:scroll;
   height:355px;
 }
@@ -594,7 +595,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   border: solid 2px rgba(121, 121, 121, 0.5);
 }
 .statistics_font {
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   font-size: 3em;
 }
 .quote_img {
@@ -607,7 +608,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 .visit_website_section{
   height: auto;
   width: 100%;
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
   padding: 2% 5% 2% 5%;
 }
 .card-img_person {
@@ -615,7 +616,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   object-fit: cover;
 }
 .ourschool_text{
-  font-family: 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Medium',Avenir,Helvetica,Arial,serif;
  
   padding: 2% 7%;
   width: 100%;
@@ -662,7 +663,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   min-width: 390px;
   width: 100%;
   border: 4px solid rgb(240,200,129);
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
 }
 .courses_reserve_box {
   height: 70px;
@@ -670,7 +671,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   width: 340px;
   border: 4px solid rgb(240,200,129);
   background-color:rgb(240,200,129);
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
 }
 .courses_reserve_box a{
   color: black;
@@ -686,7 +687,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 .foundation_courses_banner{
   background-color:rgb(63,96,144);
   width: 100%;
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   color: yellow;
   padding-top: 10px;
 }
@@ -774,7 +775,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   left: 8%;
   transform: translateY(-50%);
   white-space: nowrap;
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   color: #D8D8D8;
 }
 .box:hover > .spot-text-1 h5 {
@@ -793,7 +794,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   top: 120%;
   transform: translateY(-50%);
   white-space: nowrap;
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   color: #D8D8D8;
 }
 .box:hover > .spot-text-2 h5 {
@@ -812,7 +813,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
   transform: translateY(-50%);
   left: 14%;
   white-space: nowrap;
-  font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans','AvenirNext',Avenir,Helvetica,Arial,serif;
   color: #D8D8D8;
 }
 .box:hover > .spot-text-3 h5 {
@@ -866,7 +867,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 .find_out_more_link{
   text-decoration: none;
   color: white;
-  font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
 }
 /* EVENT DETAILS */
 .event_blue {
@@ -874,7 +875,7 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 }
 .event_title {
   color: black;
-  font-family: 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
+  font-family: 'Noto Sans', 'AvenirNext-Bold',Avenir,Helvetica,Arial,serif;
 }
 .event_details_img{
   object-fit: cover;  
@@ -1094,3 +1095,4 @@ font-family: 'AvenirNext',Avenir,Helvetica,Arial,serif;
 .corner-ribbon.red{background: #e43;}
 .corner-ribbon.orange{background: #e82;}
 .corner-ribbon.yellow{background: #ec0;}
+.corner-ribbon.heketgreen{background: #086357;}
