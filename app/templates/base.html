@@ -25,7 +25,7 @@
   </head>
   <body>
     {% if is_not_live() %}
-    <div class="corner-ribbon bottom-left sticky turquoise">{{ get_env() }}</div>
+    <div class="corner-ribbon bottom-left sticky heketgreen">{{ get_env() }}</div>
     {% endif %}
     {% block first_body %}{% endblock %}
     {% if is_not_live() or not API_BASE_URL %}
