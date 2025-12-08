@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 .fit-image{
     width: 100%;
     object-fit: cover;
@@ -9,7 +11,7 @@
 }
 
 .navbar-menu{
-    font-family: 'AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
+    font-family: 'Noto Sans','AvenirNext-DemiBold',Avenir,Helvetica,Arial,serif;
     background-color: rgb(157, 163, 162);
     border-bottom: solid 10px rgb(238,191,109);
     overflow: hidden;
