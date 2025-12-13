@@ -10,7 +10,7 @@ class WhenAccessingHomePage(object):
         ))
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
         header_image = page.find('img')['src']
-        assert header_image == '/static/images/NALogo25.png'
+        assert header_image == '/static/images/NALogo25a.png'
 
     def it_should_show_future_events_in_carousel(self, client, sample_future_events, sample_articles_summary):
         response = client.get(url_for(
