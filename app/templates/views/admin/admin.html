@@ -51,6 +51,11 @@
             <a href='/admin/api_interstitial?target=members'>Members</a>
         </div>
         {% endif %}
+        {% if user_has_permissions('stats') %}
+        <div class='col-sm'>
+            <a href='/admin/api_interstitial?target=stats'>Stats</a>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

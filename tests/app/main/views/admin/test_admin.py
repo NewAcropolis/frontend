@@ -146,7 +146,7 @@ class WhenAccessingAdminPagesAfterLogin(object):
         page = BeautifulSoup(response.data.decode('utf-8'), 'html.parser')
 
         areas = page.select('#content .row div')
-        assert len(areas) == 8
+        assert len(areas) == 9
 
         area_strs = [a.text.strip() for a in areas]
         assert set(access_areas) == set(area_strs)
