@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<link rel="stylesheet" type="text/css" href="/static/css/admin.css"/>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/en-gb.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/locales/bootstrap-datepicker.en-GB.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.standalone.min.css"/>
+{% endblock %}
+
+{% block content %}
+
+{% if user_has_permissions('stats') %}
+<div class="container pb-3 text-right" style="width: 800px;">
+    <div id='errors' class='text-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors|safe }}</div>
+    <form class="form" id="members_form" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class='col-12'>
+                <div class="row">
+                    <div id='form_errors' class='text-danger link-danger' style='display:{% if errors %}block{% else %}none{% endif%}'>{{ errors }}</div>
+                    <div id='message' class='text-success' style='display:{% if message %}block{% else %}none{% endif%}'>{{message|safe}}</div>
+                </div>
+                <div class="row">
+                    <div class='col-12'>
+                        <div class='row'>
+                            <div class='col-xs-4'>
+                                <div id="datepicker" data-date=""></div>
+                            </div>
+                            <button id="update" type="button" class="btn btn-outline-success ml-2" onsubmit="return false;">Update</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="stats_block" class="container row d-none border">
+                    <div class="col-12 text-left">
+                        <div class="row">
+                            <div class='col-4'>
+                                Emails sent
+                            </div>
+                            <div class='col-6'>
+                                <div id="emails_sent">1</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class='col-4'>
+                                Active members
+                            </div>
+                            <div class='col-4'>
+                                <div id="active_members_sent">1</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class='col-4'>
+                                New members
+                            </div>
+                            <div class='col-4'>
+                                <div id="new_members_sent">1</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class='col-4'>
+                                Unsubscribed members
+                            </div>
+                            <div class='col-4'>
+                                <div id="unsub_members_sent">1</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <a href="/admin" id="return" name="return" class="btn btn-outline-secondary">Return</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script charset="utf-8" type="text/javascript">
+    $(function() {
+        var d = new Date(),
+        m = d.getMonth(),
+        y = d.getFullYear();
+
+        console.log("year-month" + y + m);
+
+        $('#datepicker').datepicker({
+            format: "yyyy-mm",
+            viewMode: "months", 
+            minViewMode: "months"
+        });
+
+        $('#update').on('click', function() {
+            $('#message').attr('style', 'display:block');
+            $('#message').text('Searching...');
+            $('#form_errors').attr('style', 'display:none');
+            $('#form_errors').text('');
+            $('#update').prop('disabled', true);
+
+            reportDate = moment($('#datepicker').datepicker('getFormattedDate')).format("YYYY-MM-DD");
+
+            send = {"report_date": $('#datepicker').datepicker('getFormattedDate')}
+            $.getJSON("{{ url_for('main._fetch_stats') }}", send, function(data) {
+                console.log(data['members']);
+                $('#message').attr('style', 'display:none');
+                $('#update').prop('disabled', false);
+                $('#stats_block').attr('class', 'container row border');
+                $('#emails_sent').text(data['emails']['count']);
+                $('#active_members_sent').text(data['members']['active']);
+                $('#new_members_sent').text(data['members']['new']);
+                $('#unsub_members_sent').text(data['members']['unsub']);
+            })
+            .fail(
+                function(jqXHR, message, errorThrown) {
+                    $('#message').attr('style', 'display:none');
+                    $('#form_errors').attr('style', 'display:block');
+                    $('#form_errors').text(errorThrown);
+                    $('#update').prop('disabled', true);
+                }
+            );
+        });
+        $('#update').on('click', function() {
+            $('#message').attr('style', 'display:block');
+            $('#message').text('Updating...');
+        });
+
+        $('#datepicker').datepicker("setDate", new Date());
+    });
+</script>
+{% endif %}
+{% endblock %}

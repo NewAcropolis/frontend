@@ -9,5 +9,5 @@ from app.main.views import ( # noqa
 )
 
 from app.main.views.admin import (  # noqa
-    admin, articles, cache, events, emails, magazines, members, orders, queue
+    admin, articles, cache, events, emails, magazines, members, orders, stats, queue
 )
