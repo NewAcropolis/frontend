@@ -26,16 +26,26 @@
                 </div>
                 <div class="row">
                     <div class='col-12'>
-                        <div class='row'>
+                        <div class='row text-left'>
                             <div class='col-xs-4'>
+                                Start from:
                                 <div id="datepicker" data-date=""></div>
+                            </div>
+                            <div class='col-xs-4'>
+                                Until end of:
+                                <div id="enddatepicker" data-date=""></div>
                             </div>
                             <button id="update" type="button" class="btn btn-outline-success ml-2" onsubmit="return false;">Update</button>
                         </div>
                     </div>
                 </div>
-                <div id="stats_block" class="container row d-none border">
+                <div id="stats_block" class="container row d-none">
                     <div class="col-12 text-left">
+                        <div class="row">
+                            <div class="col-10">
+                                Stats from: <span id="stats_range"></span>
+                            </div>
+                        </div>
                         <div class="row">
                             <div class='col-4'>
                                 Emails sent
@@ -90,6 +100,26 @@
             viewMode: "months", 
             minViewMode: "months"
         });
+        $('#enddatepicker').datepicker({
+            format: "yyyy-mm",
+            viewMode: "months", 
+            minViewMode: "months"
+        });
+
+        $('#datepicker').datepicker("setDate", new Date());
+        $('#enddatepicker').datepicker("setDate", new Date());
+
+        $('#datepicker').on('changeDate', function() {
+            if ($('#enddatepicker').datepicker('getFormattedDate') < $('#datepicker').datepicker('getFormattedDate')) {
+                $('#datepicker').datepicker('update', $('#enddatepicker').datepicker('getFormattedDate')); 
+            }
+        });
+
+        $('#enddatepicker').on('changeDate', function() {
+            if ($('#enddatepicker').datepicker('getFormattedDate') < $('#datepicker').datepicker('getFormattedDate')) {
+                $('#enddatepicker').datepicker('update', $('#datepicker').datepicker('getFormattedDate')); 
+            }
+        });
 
         $('#update').on('click', function() {
             $('#message').attr('style', 'display:block');
@@ -98,11 +128,13 @@
             $('#form_errors').text('');
             $('#update').prop('disabled', true);
 
-            reportDate = moment($('#datepicker').datepicker('getFormattedDate')).format("YYYY-MM-DD");
+            send = {
+                "report_date": $('#datepicker').datepicker('getFormattedDate'),
+                "end_report_date": $('#enddatepicker').datepicker('getFormattedDate')
+            }
+            $('#stats_range').text(send["report_date"] + " to " + send["end_report_date"])
 
-            send = {"report_date": $('#datepicker').datepicker('getFormattedDate')}
             $.getJSON("{{ url_for('main._fetch_stats') }}", send, function(data) {
-                console.log(data['members']);
                 $('#message').attr('style', 'display:none');
                 $('#update').prop('disabled', false);
                 $('#stats_block').attr('class', 'container row border');
@@ -124,8 +156,6 @@
             $('#message').attr('style', 'display:block');
             $('#message').text('Updating...');
         });
-
-        $('#datepicker').datepicker("setDate", new Date());
     });
 </script>
 {% endif %}
