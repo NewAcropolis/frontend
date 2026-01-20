@@ -695,11 +695,14 @@ class ApiClient(BaseAPIClient):
         Queue.add(f'reserve place for {name}', url='event/reserve', method='post', payload=data)
         return json.dumps({'message': 'Your place will be reserved'})
 
-    def get_stats(self, year_month):
+    def get_stats(self, year_month, end_year_month):
         year_month_parts = year_month.split("-")
         year = year_month_parts[1]
         month = year_month_parts[0]
-        return self.get(url=f"/stats/{year}/{month}")
+        end_year_month_parts = end_year_month.split("-")
+        end_year = end_year_month_parts[1]
+        end_month = end_year_month_parts[0]
+        return self.get(url=f"/stats/{year}/{month}/to/{end_year}/{end_month}")
 
     def test_api(self):
         return self.get(url="/")

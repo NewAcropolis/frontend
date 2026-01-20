@@ -18,7 +18,7 @@ def admin_stats():
 
 @main.route('/admin/stats/fetch', methods=['GET'])
 def _fetch_stats():
-    response = api_client.get_stats(request.args.get("report_date"))
+    response = api_client.get_stats(request.args.get("report_date"), request.args.get("end_report_date"))
 
     if 'error' in session:
         return session.pop('error'), 404
