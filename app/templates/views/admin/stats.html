@@ -35,7 +35,9 @@
                                 Until end of:
                                 <div id="enddatepicker" data-date=""></div>
                             </div>
-                            <button id="update" type="button" class="btn btn-outline-success ml-2" onsubmit="return false;">Update</button>
+                            <div class='col-xs-4'>
+                                <button id="update" type="button" class="btn btn-block btn-outline-success ml-2 mt-3" onsubmit="return false;">Update</button>
+                            </div>        
                         </div>
                     </div>
                 </div>
@@ -81,7 +83,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <a href="/admin" id="return" name="return" class="btn btn-outline-secondary">Return</a>
+                    <div class='col-xs-4'>
+                        <a href="/admin" id="return" name="return" class="btn btn-outline-secondary">Return</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,8 +96,6 @@
         var d = new Date(),
         m = d.getMonth(),
         y = d.getFullYear();
-
-        console.log("year-month" + y + m);
 
         $('#datepicker').datepicker({
             format: "yyyy-mm",
@@ -132,7 +134,8 @@
                 "report_date": $('#datepicker').datepicker('getFormattedDate'),
                 "end_report_date": $('#enddatepicker').datepicker('getFormattedDate')
             }
-            $('#stats_range').text(send["report_date"] + " to " + send["end_report_date"])
+            $('#stats_range').text(
+                moment(send["report_date"]).format('MMM YYYY') + " to end of " + moment(send["end_report_date"]).format('MMM YYYY'))
 
             $.getJSON("{{ url_for('main._fetch_stats') }}", send, function(data) {
                 $('#message').attr('style', 'display:none');
