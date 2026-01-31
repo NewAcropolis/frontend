@@ -275,6 +275,7 @@ class WhenPostingUsers:
                 'announcement': {},
                 'member': {},
                 'article': {},
+                'stats': {},
             },
             {
                 'user_id': {
@@ -293,6 +294,7 @@ class WhenPostingUsers:
                 'announcement': {},
                 'member': {},
                 'article': {},
+                'stats': {},
             }
         ]
 
