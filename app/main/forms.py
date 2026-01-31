@@ -231,6 +231,7 @@ class UserForm(FlaskForm):
     announcement = BooleanField('announcement')
     article = BooleanField('article')
     member = BooleanField('member')
+    stats = BooleanField('stats')
 
 
 class UserListForm(FlaskForm):
@@ -253,6 +254,7 @@ class UserListForm(FlaskForm):
                 user_form.announcement = _has_access_area('announcement', user['access_area'])
                 user_form.article = _has_access_area('article', user['access_area'])
                 user_form.member = _has_access_area('member', user['access_area'])
+                user_form.stats = _has_access_area('stats', user['access_area'])
 
                 self.users.append_entry(user_form)
         else:
