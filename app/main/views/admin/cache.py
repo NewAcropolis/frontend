@@ -39,6 +39,9 @@ def _reload_cache():
     update_cache(func=api_client.get_books_from_db)
     update_cache(func=api_client.get_magazines_from_db)
     update_cache(func=api_client.get_latest_emails_from_db)
+    update_cache(func=api_client.get_events_in_future_from_db)
+    update_cache(func=api_client.get_venues_from_db)
+    update_cache(func=api_client.get_event_types_from_db)
     update_cache(func=api_check_workers)
 
     Cache.purge_older_versions()
@@ -46,8 +49,9 @@ def _reload_cache():
     return jsonify(
         {
             'response':
-            'get_events_in_future, get_limited_events, get_events_past_year, get_users, '
-            'get_articles_summary, get_books, get_magazines, get_latest_emails, api_check_workers reloaded'
+            'get_events_in_future, get_limited_events, get_events_past_year, get_users, get_events_in_future, '
+            'get_articles_summary, get_books, get_magazines, get_latest_emails, api_check_workers, '
+            'get_venues, get_event_types, reloaded'
         }
     )
 
