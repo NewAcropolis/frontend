@@ -377,6 +377,7 @@ class EmailForm(FlaskForm):
     expires = HiddenField()
     events_emailed = HiddenField()
     reject_reason = TextAreaField('Reject reason')
+    parent_email_id = HiddenField()
 
     def set_emails_form(self, emails, email_types, events):
         pending_emails = []
@@ -390,6 +391,8 @@ class EmailForm(FlaskForm):
                 prefix = f'[pending {email["pending"]}] '
             elif email['id'] in pending_emails:
                 continue
+            elif 'parent_email_id' in email and email['parent_email_id']:
+                prefix = '[Follow up] '
 
             if email['email_type'] == 'event' and email.get('event_id'):
                 email_events.append(email['event_id'])

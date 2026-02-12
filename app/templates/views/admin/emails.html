@@ -25,6 +25,7 @@
     <form class="form" id="emails_form" method="post">{{ form.csrf_token }}
         {{form.email_state}}
         {{form.events_emailed}}
+        {{form.parent_email_id}}
         <div class="row">
             <div class='ml-3 col-12'>
                 <div class='row'>
@@ -40,10 +41,16 @@
                 <div id="pending_block" class="row d-none mb-2 text-left">
                     Email will be processed after&nbsp;<span id="held_until"></span>,&nbsp;<a id="cancel" href="">cancel</a>&nbsp;to stop processing, or&nbsp;<a id="play_now" href="">process now</a>
                 </div>
+                <div id="parent_email_block" class="row mb-2 text-left d-none">
+                    This is a follow up to <a id="_parent_email_id" href="">email</a>
+                </div>
+                <div id="child_email_block" class="row mb-2 text-left d-none">
+                    This has a follow up <a id="_child_email_id" href="">email</a>
+                </div>
             </div>
         </div>
         <div class="row">
-            <div class='col-xs-6'>
+            <div class='col-xs-6 pt-1'>
                 {{form.email_types}}
             </div>
         </div>
@@ -151,6 +158,7 @@
             <button id='ready' type="submit" class="btn btn-outline-warning">Ready for review / Send admin review email</button>
             {% if is_admin_user() %}
             <button id="send" type="submit" class="btn btn-outline-success">Send</button>
+            <button id="followUp" type="submit" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" title="Creating a follow up will stop current email" delay=0>Follow up</button>
             <button id="rejectBtn" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#rejectModal">Reject</button>
 
             <div class="modal fade" id="rejectModal" tabindex="-1" role="dialog" aria-labelledby="rejectModalLabel" aria-hidden="true">
@@ -185,6 +193,7 @@
     var events = [];
     var event_id = '';
     var has_expired = false;
+    var has_child = false;
     var email_json = null;
     var pending = false;
     $(function() {
@@ -197,7 +206,13 @@
             _send_starts_at: $('#_send_starts_at'),
             _expires: $('#_expires'),
             _emails_sent_counts: $('#emails_sent_counts'),
-            _admin_email_sent: $('#admin_email_sent')
+            _admin_email_sent: $('#admin_email_sent'),
+            _parent_email_id: $('#parent_email_id'),
+            __parent_email_id: $('#_parent_email_id'),
+            _parent_email_block: $('#parent_email_block'),
+            _child_email_id: $('#child_email_id'),
+            __child_email_id: $('#_child_email_id'),
+            _child_email_block: $('#child_email_block')
         };
 
         $('#_send_starts_at').datepicker({
@@ -223,7 +238,7 @@
             var send = {
                 email: elements._emails.val()
             };
-            has_expired = false;
+            has_child = has_expired = false;
 
             if (elements._email_types.val() == 'event') {
                 for (i=0; i<elements._events[0].length; i++){
@@ -325,10 +340,29 @@
                                     'value': data['event']['value']
                                 });
                             }
-                            has_expired = data['event']['has_expired']
+                            has_expired = data['event']['has_expired'];
+                            has_child = data['has_child'];
+                            if (!has_child) has_child = false;
+
                             elements._events.val(data['event_id']);
                             elements._details.val(data['details']);
                             elements._extra_txt.val(data['extra_txt']);
+                            if (data["parent_email_id"]) {
+                                elements._parent_email_block.attr("class", "row mb-0 text-left d-block");
+                                elements.__parent_email_id.prop("href", "{{ config['FRONTEND_BASE_URL'] }}/admin/emails/" + data["parent_email_id"]);
+                            }
+                            else {
+                                elements._parent_email_block.attr("class", "row mb-0 text-left d-none");
+                                elements.__parent_email_id.prop("href", "");
+                            }
+                            if (data["child_email_id"]) {
+                                elements._child_email_block.attr("class", "row mb-0 text-left d-block");
+                                elements.__child_email_id.prop("href", "{{ config['FRONTEND_BASE_URL'] }}/admin/emails/" + data["child_email_id"]);
+                            }
+                            else {
+                                elements._child_email_block.attr("class", "row mb-0 text-left d-none");
+                                elements.__child_email_id.prop("href", "");
+                            }
                             if (!has_expired) {
                                 elements._send_starts_at.datepicker("setDate", data['send_starts_at']);
                                 elements._expires.datepicker("setDate", data['expires']);
@@ -410,6 +444,10 @@
             $('#email_state').val('approved');
         })
 
+        $('#followUp').on('click', function() {
+            $('#email_state').val('followUp');
+        })
+
         $('#reload').on('click', function() {
             $.getJSON("/admin/_update_cache/get_latest_emails", null, function(data) {
                 alert(data['response']);
@@ -453,6 +491,7 @@
                 case 'ready': css = 'bg-warning'; break;
                 case 'rejected': css = 'bg-danger text-white'; break;
                 case 'approved': css = 'bg-success text-white'; break;
+                case 'followUp': css = 'bg-success text-white'; break;
             }
             if (has_expired) {
                 $('#status_bar').text('Preview only, event has finished');
@@ -469,11 +508,12 @@
                 $('#datepicker_block').attr('style', 'display:block;');
                 $('#dateshow_block').attr('style', 'display:none;');
             }
-            $('#draft').prop('disabled', has_expired);
+            $('#draft').prop('disabled', has_expired || has_child);
             {% if is_admin_user() %}
-                $('#rejectBtn').prop('disabled', has_expired || $.inArray( email_state, [ "draft", "new" ] ) >= 0);
-                $('#ready').prop('disabled', has_expired);
-                $('#send').prop('disabled', has_expired || email_state != 'ready' || pending);
+                $('#rejectBtn').prop('disabled', has_expired || has_child || $.inArray( email_state, [ "draft", "new" ] ) >= 0);
+                $('#ready').prop('disabled', has_expired || has_child || pending);
+                $('#send').prop('disabled', has_expired || email_state != 'ready' || pending || has_child);
+                $('#followUp').prop('disabled', has_expired || email_state != 'approved' || pending || has_child);
             {% endif %}
         }
 
