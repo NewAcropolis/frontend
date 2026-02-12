@@ -465,7 +465,12 @@ class ApiClient(BaseAPIClient):
         return self.post(url='email/preview', data=data)
 
     def get_future_emails_from_db(self):
-        return self.get(url='emails/future')
+        emails = self.get(url='emails/future')
+        for email in emails:
+            for i in range(len(emails)):
+                if 'parent_email_id' in emails[i] and email['id'] == emails[i]["parent_email_id"]:
+                    email['has_child'] = True
+        return emails
 
     @use_cache(db_call=get_future_emails_from_db)
     def get_future_emails(self):
@@ -485,12 +490,19 @@ class ApiClient(BaseAPIClient):
 
     @use_cache(db_call=get_latest_emails_from_db)
     def get_latest_emails(self):
-        return self.get_latest_emails_from_db()
+        return get_nice_event_dates(self.get_latest_emails_from_db())
 
     def get_pending_and_latest_emails(self):
         _pending_emails = Queue.get_by_cache_name('pending_emails')
         pending_emails = [json.loads(e.payload) for e in _pending_emails if e.payload != []]
-        return pending_emails + self.get_latest_emails()
+
+        emails =  pending_emails + self.get_latest_emails()
+        for email in emails:
+            for i in range(len(emails)):
+                if 'parent_email_id' in emails[i] and email['id'] == emails[i]["parent_email_id"]:
+                    email['has_child'] = True
+                    email['child_email_id'] = emails[i]["id"]
+        return emails
 
     def get_articles_from_db(self):
         return self.get(url='articles')

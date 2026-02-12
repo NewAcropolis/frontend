@@ -64,7 +64,7 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
 
         try:
             message = None
-            if email.get('id'):
+            if email.get('id') and email['email_state'] != 'followUp':
                 if form.email_types.data == 'event' and not email['event_id']:
                     emails = [e for e in future_emails if e['id'] == form.emails.data]
                     if emails:
@@ -84,6 +84,9 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
                 response = api_client.update_email(email['id'], email)
                 message = 'email updated'
             else:
+                if email['email_state'] == 'followUp':
+                    email['parent_email_id'] = email['id']
+                    email['email_state'] = 'ready'
                 del email['id']
                 response = api_client.add_email(email)
 
