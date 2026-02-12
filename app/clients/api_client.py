@@ -496,7 +496,7 @@ class ApiClient(BaseAPIClient):
         _pending_emails = Queue.get_by_cache_name('pending_emails')
         pending_emails = [json.loads(e.payload) for e in _pending_emails if e.payload != []]
 
-        emails =  pending_emails + self.get_latest_emails()
+        emails = pending_emails + self.get_latest_emails()
         for email in emails:
             for i in range(len(emails)):
                 if 'parent_email_id' in emails[i] and email['id'] == emails[i]["parent_email_id"]:
