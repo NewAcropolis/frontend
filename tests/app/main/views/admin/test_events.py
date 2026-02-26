@@ -195,7 +195,7 @@ class WhenCallingAjaxGetEvent:
                 }],
             'event_time': '19:00',
             'event_type': 'Talk',
-            'formatted_event_datetimes': 'Sat 23 of March - 7 PM',
+            'formatted_event_datetimes': 'Sat 23 of March - 7 PM to 9 PM',
             'date_offset': -1,
             'dates': ['2019-03-23'],
             'end_time': '21:00'

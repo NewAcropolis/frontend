@@ -7,7 +7,10 @@ class WhenGettingNiceEventDate:
     def it_gets_nice_event_date(self, app, sample_future_events):
         future_dates = []
         for n in range(3):
-            d = datetime.strftime(datetime.now() + timedelta(days=n + 1), "%a %-d of %B - 7 PM")
+            end_time = ""
+            if n == 1:
+                end_time = " to 8:30 PM"
+            d = datetime.strftime(datetime.now() + timedelta(days=n + 1), "%a %-d of %B - 7 PM" + end_time)
             if 'Tue' in d:
                 d = d.replace('Tue', 'Tues')
             elif 'Thu' in d:
