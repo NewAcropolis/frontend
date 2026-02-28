@@ -10,7 +10,7 @@ from app.clients.errors import HTTPError
 from app.main import main
 from app.main.forms import ReservePlaceForm
 from app.main.views import render_page
-from app.clients.utils import get_nice_event_date
+from app.clients.utils import get_nice_event_date, get_nice_event_dates
 
 
 @main.route('/events')
@@ -18,6 +18,7 @@ def events():
     articles = api_client.get_articles_summary_by_tags()
 
     future_events = api_client.get_events_in_future(approved_only=True)
+    future_events = get_nice_event_dates(future_events)
 
     for event in future_events:
         if event['venue']['name'] == 'Online Event':

@@ -8,11 +8,13 @@ from app.main.views import render_page
 from html import unescape
 from app.main.forms import ContactForm
 from app.clients.errors import HTTPError
+from app.clients.utils import get_nice_event_dates
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
     future_events = api_client.get_events_in_future(approved_only=True)
+    future_events = get_nice_event_dates(future_events)
 
     for event in future_events:
         if event['event_type'] == 'Introductory Course':
