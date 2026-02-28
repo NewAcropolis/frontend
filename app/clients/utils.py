@@ -38,13 +38,6 @@ def get_nice_event_date(event, set_timemarkers=True):
         event['event_time'] = time
     if not event.get('end_time'):
         event['end_time'] = event_date["end_time"]
-        if event_date["end_time"] and event_date["end_time"] != "00:00":
-            _end_time = datetime.strptime(event_date["end_time"], '%H:%M')
-            if _end_time.minute > 0:
-                time = _end_time.strftime('%-I:%M %p')
-            else:
-                time = _end_time.strftime('%-I %p')
-            event['formatted_event_datetimes'] += " to " + time
 
     return event
 
