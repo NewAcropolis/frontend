@@ -229,8 +229,7 @@ def preview_event_detail():
     data['fee'] = int(data['fee'])
     data['venue'] = venue
     data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'],
-                                                                    data['event_type'] != 'Competition',
-                                                                    data['emd_time'])
+                                                                    data['event_type'] != 'Competition')
     data['is_future_event'] = is_future_event(data)
     data['dates'] = get_event_dates(data['event_dates'])
 
@@ -253,8 +252,7 @@ def preview_events():
     current_app.logger.info(u'Preview event banner args: {}'.format(data))
 
     data['formatted_event_datetimes'] = common_get_nice_event_dates(data['event_dates'],
-                                                                    data['event_type'] != 'Competition',
-                                                                    data['end_time'])
+                                                                    data['event_type'] != 'Competition')
     data['is_future_event'] = is_future_event(data)
     data['dates'] = get_event_dates(data['event_dates'])
 
