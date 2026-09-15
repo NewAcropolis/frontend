@@ -89,7 +89,8 @@ Run `Make` to list other available commands
     "PAYPAL_ACCOUNT_ID": <Paypal account ID>,
     "ENABLE_STATS": "False",
     "SHOW_RESOURCE_MAINTENANCE": "False",
-    "IS_APP_ENGINE": "True"
+    "IS_APP_ENGINE": "True".
+    "NO_API": "True" # only set to disable API connections
   }
 }
 ```
