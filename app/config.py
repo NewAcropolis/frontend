@@ -86,6 +86,7 @@ class Preview(Config):
     NO_ADMIN_AUTH = False
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
     PAYPAL_VERIFY_URL = 'https://ipnpb.sandbox.paypal.com/cgi-bin/webscr'
+    NO_API = True
 
 
 class Review(Config):
