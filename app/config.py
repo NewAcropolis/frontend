@@ -76,7 +76,7 @@ class Live(Config):
     FACEBOOK_VERIFICATION = "w6adh6kjwrw5c3tmwo6e87o0ij0kgt"
     PAYPAL_URL = "https://www.paypal.com/"
     PAYPAL_VERIFY_URL = "https://ipnpb.paypal.com/cgi-bin/webscr"
-    NO_API = False
+    NO_API = True
 
 
 class Preview(Config):
