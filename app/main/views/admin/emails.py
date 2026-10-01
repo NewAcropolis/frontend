@@ -17,6 +17,7 @@ from app.queue import Queue
 def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
     errors = []
 
+    last_email_sent = api_client.get_last_email_sent_from_db()
     future_emails = api_client.get_pending_and_latest_emails()
     session['emails'] = future_emails
     future_events = api_client.get_events_in_future(approved_only=True)
@@ -99,6 +100,7 @@ def admin_emails(selected_email_id=None, magazine_id=None, api_message=None):
 
     return render_template(
         'views/admin/emails.html',
+        last_email_sent=last_email_sent,
         selected_email_id=selected_email_id,
         message=api_message,
         form=form,

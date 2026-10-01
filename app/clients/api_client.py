@@ -476,6 +476,9 @@ class ApiClient(BaseAPIClient):
     def get_future_emails(self):
         return self.get_future_emails_from_db()
 
+    def get_last_email_sent_from_db(self):
+        return self.get(url='emails/last_email_sent')
+
     def get_pending_and_future_emails(self):
         _pending_emails = Queue.get_by_cache_name('pending_emails')
         pending_emails = [json.loads(e.payload) for e in _pending_emails if e.payload != []]
