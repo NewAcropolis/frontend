@@ -22,6 +22,9 @@
         {% endif %}
     </div>
     {% endif %}
+    <div>
+        <strong>Last email sent:</strong> {{ last_email_sent.subject }} on {{ last_email_sent.last_sent_at }}
+    </div>
     <form class="form" id="emails_form" method="post">{{ form.csrf_token }}
         {{form.email_state}}
         {{form.events_emailed}}
