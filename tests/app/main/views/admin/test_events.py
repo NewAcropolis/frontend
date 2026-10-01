@@ -8,6 +8,9 @@ from bs4 import BeautifulSoup
 
 
 class MockAPIClient:
+    def get_last_email_sent_from_db(self):
+        return {"subject": "Test", "last_email_sent": "1st October 2026"}
+
     def get_limited_events(self):
         return [
             {
